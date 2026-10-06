@@ -47,4 +47,5 @@ holds exactly what its key says → freeze (tag `v<keyVersion>`, sha256 of the k
   no `!` null-forgiving operators.
 - Tests: xUnit v3, real assertions, unit + integration (`WebApplicationFactory`) projects under `tests/`.
 - Build and test locally (`dotnet build -c Release && dotnet test -c Release`) before every push. Never run two
-  builds at once on the box: wrap every dotnet build/test/restore in `flock ~/RiderProjects/cai-bench/.build.lock …`.
+  builds at once on the box: wrap every dotnet build/test/restore in `flock -o ~/RiderProjects/cai-bench/.build.lock …` (`-o`: MSBuild worker
+  processes must not inherit the lock), and keep `TMPDIR` short (a long path breaks the test runner socket).
