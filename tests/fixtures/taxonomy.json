@@ -1,0 +1,11 @@
+{
+  "version": "test",
+  "concepts": [
+    { "id": "hardcoded-credential", "title": "Hard-coded credential", "cwe": "CWE-798", "family": "security", "kind": "finding", "description": "fixture" },
+    { "id": "sql-injection", "title": "SQL injection", "cwe": "CWE-89", "family": "security", "kind": "finding", "description": "fixture" },
+    { "id": "weak-hash", "title": "Weak hash", "cwe": "CWE-328", "family": "security", "kind": "finding", "description": "fixture" },
+    { "id": "long-method", "title": "Long method", "cwe": null, "family": "codehealth", "kind": "finding", "description": "fixture" },
+    { "id": "missing-security-policy", "title": "No security policy", "cwe": null, "family": "readiness", "kind": "finding", "description": "fixture" },
+    { "id": "security-policy-present", "title": "Security policy", "cwe": null, "family": "readiness", "kind": "posture", "description": "fixture" }
+  ]
+}

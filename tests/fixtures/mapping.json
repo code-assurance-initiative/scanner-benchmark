@@ -1,0 +1,13 @@
+{
+  "scanner": "fixture-scanner",
+  "version": "test-1",
+  "concepts": {
+    "hardcoded-credential": { "rules": ["^D13$", "^D13[/.:-]"], "dimensions": ["D13"] },
+    "sql-injection": { "rules": ["^D14$"], "dimensions": ["D14"] },
+    "weak-hash": { "rules": ["^D20$"], "dimensions": ["D20"] },
+    "long-method": { "rules": ["^D1$"], "dimensions": ["D1"] },
+    "missing-security-policy": { "rules": ["^P3$"], "dimensions": ["P3"] },
+    "security-policy-present": { "rules": [], "dimensions": ["P3"] }
+  },
+  "ruleDimension": [ { "rule": "^([A-Z]+\\d+)", "dimension": "$1" } ]
+}

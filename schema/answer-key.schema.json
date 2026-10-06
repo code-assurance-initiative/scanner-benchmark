@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/code-assurance-initiative/scanner-benchmark/schema/answer-key.schema.json",
+  "title": "Scanner benchmark answer key",
+  "description": "The labels of one benchmark repository (docs/CONTRACT.md, v1). Labels are not outcomes: TP/FP/TN/FN are produced by scoring a scanner run against these labels. Constraints JSON Schema cannot express (unique entry ids, concepts that exist in taxonomy.json, cwe agreeing with the taxonomy, must-fire/must-not-fire/clean entries that collide on one concept and site) are enforced by `python3 -m cai_bench validate`.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "repo", "keyVersion", "entries"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schema": { "type": "string" },
+    "schemaVersion": { "const": "1.0" },
+    "repo": { "type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$" },
+    "keyVersion": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "languages": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "theme": { "type": "string" },
+    "lineTolerance": { "type": "integer", "minimum": 0, "default": 3 },
+    "entries": { "type": "array", "items": { "$ref": "#/$defs/entry" } }
+  },
+  "$defs": {
+    "conceptId": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$" },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "rationale"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "label": { "enum": ["must-fire", "must-not-fire", "clean", "not-applicable", "score-band"] },
+        "concept": { "$ref": "#/$defs/conceptId" },
+        "concepts": {
+          "oneOf": [
+            { "const": "*" },
+            { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/conceptId" } }
+          ]
+        },
+        "cwe": { "type": "string", "pattern": "^CWE-[0-9]+$" },
+        "file": { "type": "string", "minLength": 1 },
+        "lines": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "integer", "minimum": 1 },
+            { "type": "integer", "minimum": 1 }
+          ],
+          "minItems": 2,
+          "maxItems": 2,
+          "$comment": "start <= end is checked by the validator (JSON Schema cannot compare two items)."
+        },
+        "band": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": 0, "maximum": 100 },
+            { "type": "number", "minimum": 0, "maximum": 100 }
+          ],
+          "minItems": 2,
+          "maxItems": 2,
+          "$comment": "min <= max is checked by the validator."
+        },
+        "rationale": { "type": "string", "minLength": 1 },
+        "watchdog": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+      },
+      "dependentRequired": { "lines": ["file"] },
+      "allOf": [
+        {
+          "if": { "properties": { "label": { "enum": ["must-fire", "must-not-fire", "not-applicable"] } }, "required": ["label"] },
+          "then": { "required": ["concept"], "not": { "anyOf": [{ "required": ["concepts"] }, { "required": ["band"] }] } }
+        },
+        {
+          "if": { "properties": { "label": { "const": "clean" } }, "required": ["label"] },
+          "then": { "required": ["concepts"], "not": { "anyOf": [{ "required": ["concept"] }, { "required": ["band"] }, { "required": ["cwe"] }] } }
+        },
+        {
+          "if": { "properties": { "label": { "const": "score-band" } }, "required": ["label"] },
+          "then": { "required": ["concept", "band"], "not": { "anyOf": [{ "required": ["concepts"] }, { "required": ["file"] }] } }
+        }
+      ]
+    }
+  }
+}

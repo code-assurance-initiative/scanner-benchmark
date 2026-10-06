@@ -1,0 +1,339 @@
+"""Matching a scanner's results against an answer key, and the metrics (docs/CONTRACT.md, "Matching" and "Metrics").
+
+Precedence when one result could match several entries — the first that applies decides it:
+  1. a `must-fire` entry it can be consumed by (one-to-one, key order, located entries before repository-level ones)
+                                                                                                   -> tp
+  2. a `must-fire` entry already consumed (another result on the same planted site)                -> redundant
+  3. a `must-not-fire` trap                                                                        -> trap-fp
+  4. a `clean` region                                                                              -> clean-fp
+  5. a `not-applicable` concept                                                                    -> na-fp
+  6. any other result of a concept the key covers                                                  -> unmatched-fp
+  7. a result of a concept the key does not cover at all                                           -> uncovered
+Outcomes 3–6 are noise. `redundant` is neither a hit nor noise. `uncovered` is reported, never counted as noise.
+"""
+from .keyfile import entry_concepts, line_tolerance
+from .mapping import UNMAPPED
+from .paths import norm, path_match
+
+NOISE = ("trap-fp", "clean-fp", "na-fp", "unmatched-fp")
+STAR = "*"
+
+
+# --- matching -------------------------------------------------------------------------------------------------------
+
+def _applies(entry, concept):
+    cs = entry_concepts(entry)
+    return cs == STAR or concept in cs
+
+
+def _covers(entry, result, tol):
+    """The result's location lies on the entry's (located) site. `clean` regions are exact; plants/traps take ±tol."""
+    if result["file"] is None:
+        return False
+    if not path_match(result["file"], entry["_file"]):
+        return False
+    if "lines" not in entry:
+        return True
+    if result["line"] is None:
+        return False
+    lo, hi = entry["lines"]
+    t = 0 if entry["label"] == "clean" else tol
+    return lo - t <= result["line"] <= hi + t
+
+
+def _result_concepts_for(entry, result):
+    """The result's concepts this entry speaks about (for "*": all of them, or (unmapped) when it has none)."""
+    cs = entry_concepts(entry)
+    if cs == STAR:
+        return list(result["concepts"]) or [UNMAPPED]
+    return [c for c in result["concepts"] if c in cs]
+
+
+class Matcher:
+    def __init__(self, entries, results, tol):
+        self.entries = [dict(e, _file=norm(e["file"])) if "file" in e else dict(e, _file=None)
+                        for e in entries if e["label"] != "score-band"]
+        self.results = results
+        self.tol = tol
+        self.located = [e for e in self.entries if e["_file"] is not None]
+        covered = set()
+        for e in self.entries:
+            cs = entry_concepts(e)
+            if cs != STAR:
+                covered.update(cs)
+        self.covered = covered
+
+    def matches(self, entry, result):
+        concepts = _result_concepts_for(entry, result)
+        if not concepts:
+            return False
+        if entry["_file"] is not None:
+            return _covers(entry, result, self.tol)
+        if result["file"] is None:
+            return True
+        # repository-level: the result's location is outside every located entry of (one of) its concepts
+        return any(not any(_covers(L, result, self.tol) for L in self.located if _applies(L, c)) for c in concepts)
+
+    def run(self):
+        """{"entries": {id: outcome}, "results": [outcome]} — see the module docstring for the outcome names."""
+        res_out = [None] * len(self.results)
+        ent_out = {}
+
+        def claim(i, outcome, entry, concept):
+            res_out[i] = {"outcome": outcome, "entryId": entry["id"] if entry else None, "concept": concept}
+
+        def concept_for(entry, r):
+            return _result_concepts_for(entry, r)[0]
+
+        mf = [e for e in self.entries if e["label"] == "must-fire"]
+        for e in [e for e in mf if e["_file"]] + [e for e in mf if not e["_file"]]:
+            hit = next((i for i, r in enumerate(self.results) if res_out[i] is None and self.matches(e, r)), None)
+            if hit is None:
+                ent_out[e["id"]] = {"outcome": "FN", "results": [], "redundant": []}
+            else:
+                claim(hit, "tp", e, e["concept"])
+                ent_out[e["id"]] = {"outcome": "TP", "results": [hit], "redundant": []}
+        hit_mf = [e for e in mf if ent_out[e["id"]]["outcome"] == "TP"]
+        for i, r in enumerate(self.results):
+            if res_out[i] is None:
+                e = next((e for e in hit_mf if self.matches(e, r)), None)
+                if e:
+                    claim(i, "redundant", e, e["concept"])
+                    ent_out[e["id"]]["redundant"].append(i)
+
+        for label, outcome in (("must-not-fire", "trap-fp"), ("clean", "clean-fp"), ("not-applicable", "na-fp")):
+            group = [e for e in self.entries if e["label"] == label]
+            group = [e for e in group if e["_file"]] + [e for e in group if not e["_file"]]
+            for e in group:
+                ent_out[e["id"]] = {"outcome": "TN", "results": [], "redundant": []}
+            for i, r in enumerate(self.results):
+                if res_out[i] is None:
+                    e = next((e for e in group if self.matches(e, r)), None)
+                    if e:
+                        claim(i, outcome, e, concept_for(e, r))
+                        ent_out[e["id"]]["outcome"] = "FP"
+                        ent_out[e["id"]]["results"].append(i)
+
+        for i, r in enumerate(self.results):
+            if res_out[i] is None:
+                cov = [c for c in r["concepts"] if c in self.covered]
+                if cov:
+                    claim(i, "unmatched-fp", None, cov[0])
+                else:
+                    claim(i, "uncovered", None, r["concepts"][0] if r["concepts"] else UNMAPPED)
+        return {"entries": ent_out, "results": res_out}
+
+
+# --- metrics --------------------------------------------------------------------------------------------------------
+
+def _ratio(n, d):
+    return n / d if d else None
+
+
+def empty_counts():
+    return {"tp": 0, "fn": 0, "fp": 0, "tn": 0, "trapFp": 0, "trapTn": 0,
+            "results": 0, "noise": 0, "redundant": 0, "uncovered": 0}
+
+
+def finish(c):
+    c["recall"] = _ratio(c["tp"], c["tp"] + c["fn"])
+    c["trapResistance"] = _ratio(c["trapTn"], c["trapTn"] + c["trapFp"])
+    c["noiseRate"] = _ratio(c["noise"], c["results"])
+    return c
+
+
+def add_entry(c, label, outcome):
+    if label == "must-fire":
+        c["tp" if outcome == "TP" else "fn"] += 1
+    else:
+        c["fp" if outcome == "FP" else "tn"] += 1
+        if label == "must-not-fire":
+            c["trapFp" if outcome == "FP" else "trapTn"] += 1
+
+
+def add_result(c, outcome):
+    if outcome == "uncovered":
+        c["uncovered"] += 1
+        return
+    c["results"] += 1
+    if outcome in NOISE:
+        c["noise"] += 1
+    elif outcome == "redundant":
+        c["redundant"] += 1
+
+
+def totals(matcher, out):
+    c = empty_counts()
+    for e in matcher.entries:
+        add_entry(c, e["label"], out["entries"][e["id"]]["outcome"])
+    for r in out["results"]:
+        add_result(c, r["outcome"])
+    return finish(c)
+
+
+def by_concept(matcher, out):
+    """Per concept. A `clean` entry listing concepts contributes one FP/TN per listed concept (FP when a result of
+    that concept landed in it); a `"*"` clean entry is counted in the "*" row. Results count under the concept they
+    were attributed to; uncovered ones under their own concept or (unmapped)."""
+    rows = {}
+
+    def row(k):
+        return rows.setdefault(k, empty_counts())
+
+    for e in matcher.entries:
+        o = out["entries"][e["id"]]
+        cs = entry_concepts(e)
+        if e["label"] == "clean" and cs != STAR:
+            fired = {out["results"][i]["concept"] for i in o["results"]}
+            for c in cs:
+                add_entry(row(c), "clean", "FP" if c in fired else "TN")
+        elif cs == STAR:
+            add_entry(row(STAR), "clean", o["outcome"])
+        else:
+            add_entry(row(e["concept"]), e["label"], o["outcome"])
+    for r in out["results"]:
+        add_result(row(r["concept"]), r["outcome"])
+    return {k: finish(v) for k, v in sorted(rows.items(), key=lambda kv: (kv[0] in (STAR, UNMAPPED), kv[0]))}
+
+
+def by_dimension(entries, results, mapping, tol):
+    """Per scanner dimension, matching re-run within the dimension: only its own results against the entries whose
+    concept maps to it (and every `"*"` clean region), so a hit by one dimension is never credited to another."""
+    dims = []
+    for e in entries:
+        cs = entry_concepts(e) if e["label"] != "score-band" else []
+        for c in (cs if cs != STAR else []):
+            for d in mapping.dimensions_of_concept(c):
+                if d not in dims:
+                    dims.append(d)
+    for r in results:
+        if r["dimension"] not in dims:
+            dims.append(r["dimension"])
+    rows = {}
+    for d in dims:
+        ents = []
+        for e in entries:
+            if e["label"] == "score-band":
+                continue
+            cs = entry_concepts(e)
+            if cs == STAR or any(d in mapping.dimensions_of_concept(c) for c in cs):
+                ents.append(e)
+        rs = [r for r in results if r["dimension"] == d]
+        m = Matcher(ents, rs, tol)
+        rows[d] = totals(m, m.run())
+    return {k: rows[k] for k in sorted(rows, key=lambda k: (k == UNMAPPED, _natural(k)))}
+
+
+def _natural(s):
+    import re
+    return [int(t) if t.isdigit() else t for t in re.split(r"(\d+)", s)]
+
+
+def score_bands(entries, scores, mapping):
+    """Each score-band entry: the score found for its concept (else for its concept's dimensions) and in/out."""
+    out = []
+    for e in entries:
+        if e["label"] != "score-band":
+            continue
+        lo, hi = e["band"]
+        found = []
+        if e["concept"] in scores:
+            found.append((e["concept"], scores[e["concept"]]))
+        else:
+            found += [(d, scores[d]) for d in mapping.dimensions_of_concept(e["concept"]) if d in scores]
+        if not found:
+            outcome = "unscored"
+        else:
+            outcome = "in" if all(isinstance(s, (int, float)) and lo <= s <= hi for _, s in found) else "out"
+        out.append({"id": e["id"], "concept": e["concept"], "band": [lo, hi],
+                    "scores": [{"source": k, "score": s} for k, s in found], "outcome": outcome})
+    return out
+
+
+# --- the whole run --------------------------------------------------------------------------------------------------
+
+def score(key, results, mapping, scores=None):
+    """Score `results` (from sarif.read_results) against `key` under `mapping`. Returns the full report dict."""
+    tol = line_tolerance(key)
+    entries = key["entries"]
+    for r in results:
+        r["concepts"] = mapping.concepts_of(r["ruleId"])
+        r["dimension"] = mapping.dimension_of(r["ruleId"], r["concepts"])
+    m = Matcher(entries, results, tol)
+    out = m.run()
+
+    entry_rows = []
+    for e in m.entries:
+        o = out["entries"][e["id"]]
+        row = {"id": e["id"], "label": e["label"], "outcome": o["outcome"]}
+        cs = entry_concepts(e)
+        row["concept" if e["label"] != "clean" else "concepts"] = e["concept"] if e["label"] != "clean" else cs
+        for k in ("file", "lines"):
+            if k in e:
+                row[k] = e[k]
+        row["results"] = [_brief(results[i]) for i in o["results"]]
+        row["redundant"] = [_brief(results[i]) for i in o["redundant"]]
+        entry_rows.append(row)
+
+    result_rows = []
+    for r, o in zip(results, out["results"]):
+        result_rows.append({**_brief(r), "message": r["message"], "concepts": r["concepts"],
+                            "dimension": r["dimension"], "outcome": o["outcome"], "entryId": o["entryId"],
+                            "attributedConcept": o["concept"]})
+
+    bands = score_bands(entries, scores or {}, mapping)
+    return {
+        "lineTolerance": tol,
+        "summary": totals(m, out),
+        "concepts": by_concept(m, out),
+        "dimensions": by_dimension(entries, results, mapping, tol),
+        "scoreBands": bands,
+        "entries": entry_rows,
+        "results": result_rows,
+    }
+
+
+def _brief(r):
+    return {"index": r["index"], "run": r["run"], "resultIndex": r["resultIndex"], "ruleId": r["ruleId"],
+            "file": r["file"], "line": r["line"]}
+
+
+# --- text rendering -------------------------------------------------------------------------------------------------
+
+def _pct(v):
+    return "   n/a" if v is None else f"{100 * v:5.1f}%"
+
+
+def render_table(title, rows):
+    head = (f"{title:<28} {'recall':>7} {'trapRes':>7} {'noise':>7}  {'TP':>3} {'FN':>3} {'FP':>3} {'TN':>3}"
+            f"  {'res':>4} {'redund':>6} {'uncov':>5}")
+    lines = [head, "-" * len(head)]
+    for k, c in rows.items():
+        lines.append(f"{k[:28]:<28} {_pct(c['recall']):>7} {_pct(c['trapResistance']):>7} {_pct(c['noiseRate']):>7}"
+                     f"  {c['tp']:>3} {c['fn']:>3} {c['fp']:>3} {c['tn']:>3}"
+                     f"  {c['results']:>4} {c['redundant']:>6} {c['uncovered']:>5}")
+    return "\n".join(lines)
+
+
+def render(report):
+    parts = [render_table("concept", report["concepts"]), "",
+             render_table("scanner dimension", report["dimensions"]), "",
+             render_table("TOTAL", {"all": report["summary"]})]
+    if report["scoreBands"]:
+        parts += ["", "score bands:"]
+        for b in report["scoreBands"]:
+            got = ", ".join(f"{s['source']}={s['score']}" for s in b["scores"]) or "-"
+            parts.append(f"  {b['id']:<12} {b['concept']:<32} band {b['band'][0]}-{b['band'][1]}  "
+                         f"score {got}  -> {b['outcome']}")
+    misses = [e for e in report["entries"] if e["outcome"] in ("FN", "FP")]
+    if misses:
+        parts += ["", "entries that went wrong (FN = planted defect missed, FP = fired on a trap/clean/n-a):"]
+        for e in misses:
+            where = e.get("file", "(repository)") + (f":{e['lines'][0]}-{e['lines'][1]}" if "lines" in e else "")
+            on = "; ".join(f"#{r['index']} {r['ruleId']} {r['file']}:{r['line']}" for r in e["results"])
+            parts.append(f"  {e['outcome']} {e['id']:<12} {e['label']:<15} {where}" + (f"  <- {on}" if on else ""))
+    stray = [r for r in report["results"] if r["outcome"] == "unmatched-fp"]
+    if stray:
+        parts += ["", "results on covered concepts that match no entry (noise):"]
+        parts += [f"  #{r['index']} {r['ruleId']} {r['file']}:{r['line']} [{r['attributedConcept']}]" for r in stray]
+    return "\n".join(parts)
