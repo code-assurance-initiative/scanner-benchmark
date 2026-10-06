@@ -1,0 +1,1686 @@
+{
+  "scanner": "watchdog",
+  "version": "rubric-2026.10.1",
+  "notes": [
+    "SARIF ruleId format: the ruleId of EVERY Watchdog SARIF result is the bare dimension / meta-dimension id (\"D13\", \"X18\", \"AX6\", \"DM4\", …) with NO sub-rule suffix. Source: engine/src/CodeHealth.Reporting/Sarif/SarifReportRenderer.cs:115 (dimension results: [\"ruleId\"] = r.Id.Value) and :208 (meta-dimension results: [\"ruleId\"] = m.Id); one SARIF rule per dimension with id = dimension id (:36 and :96); results only for Measured/Flag dimensions and non-Info findings (FindingSurface.cs, engine/src/CodeHealth.Core/Dimensions/FindingSurface.cs).",
+    "Hence every regex in this file is an exact, anchored match on dimension ids: ^(?:D13|D28)$. The contract's optional sub-rule form (^D13[/.:-]) never occurs and is not used.",
+    "The sub-rule lives in the RESULT MESSAGE, not the ruleId: message.text = \"{Finding.Title}: {Finding.Detail}\" (SarifReportRenderer.cs:117). Title formats: D13 \"Leaked secret: {secret type}\" (engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108); D28 \"Secret: {gitleaks rule id}\" (engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266); D29 \"{severity}: {semgrep check id}\" (ScanParsers.cs:822-823); D31 \"{severity} IaC: {trivy id}\" (ScanParsers.cs:914). fingerprints.json carries the same title plus a `detector` field.",
+    "Per-result CWE taxa are present on security results (SarifReportRenderer.cs:154-168), but D13 stamps the dimension-wide pair CWE-798+CWE-259 on every row regardless of secret type (SecretScanningAnalyzer.cs:44, SecurityCweMap.cs:36), so CWE cannot discriminate D13 concepts.",
+    "AMBIGUITY under contract v1: where one dimension maps to several concepts (D13, D28, D29, D31, S1, D17 …) the ruleId alone cannot tell which concept a result evidences, so a v1 matcher will offer the result to every concept the dimension maps to. The additive, non-contract field `x-messageDiscriminators` records the message-title regex (and history marker) that would disambiguate the secret dimensions; v1 consumers ignore it. Adopting it is a contract v2 decision.",
+    "Location: physicalLocation.artifactLocation.uri = Finding.FilePath (repo-relative) and region.startLine = LineNumber, with any non-positive or missing line written as 1 (SarifReportRenderer.cs:331-355). A file-level finding therefore matches only entries within lineTolerance of line 1; a repository-level finding has an empty locations array.",
+    "Runtime cards (AX*1) and X31 are mapped for completeness although they are out of scope for v1 (see coverage/matrix.json)."
+  ],
+  "concepts": {
+    "hardcoded-credential": {
+      "rules": [
+        "^(?:D13|D28|D29|D31)$"
+      ],
+      "dimensions": [
+        "D13",
+        "D28",
+        "D29",
+        "D31"
+      ]
+    },
+    "hardcoded-password": {
+      "rules": [
+        "^(?:D13|D28|D29)$"
+      ],
+      "dimensions": [
+        "D13",
+        "D28",
+        "D29"
+      ]
+    },
+    "hardcoded-cryptographic-key": {
+      "rules": [
+        "^(?:D13|D28|D29)$"
+      ],
+      "dimensions": [
+        "D13",
+        "D28",
+        "D29"
+      ]
+    },
+    "committed-private-key": {
+      "rules": [
+        "^(?:D13|D28)$"
+      ],
+      "dimensions": [
+        "D13",
+        "D28"
+      ]
+    },
+    "secret-in-version-history": {
+      "rules": [
+        "^(?:D28)$"
+      ],
+      "dimensions": [
+        "D28"
+      ]
+    },
+    "sql-injection": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "command-injection": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "code-injection": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "path-traversal": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "xml-external-entity": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "insecure-deserialization": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "cross-site-scripting": {
+      "rules": [
+        "^(?:D29|X24)$"
+      ],
+      "dimensions": [
+        "D29",
+        "X24"
+      ]
+    },
+    "regex-denial-of-service": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "ldap-injection": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "xpath-injection": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "server-side-request-forgery": {
+      "rules": [
+        "^(?:D29|X14)$"
+      ],
+      "dimensions": [
+        "D29",
+        "X14"
+      ]
+    },
+    "open-redirect": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "weak-cryptographic-algorithm": {
+      "rules": [
+        "^(?:D29|S1)$"
+      ],
+      "dimensions": [
+        "D29",
+        "S1"
+      ]
+    },
+    "weak-hash-algorithm": {
+      "rules": [
+        "^(?:D29|S1)$"
+      ],
+      "dimensions": [
+        "D29",
+        "S1"
+      ]
+    },
+    "insecure-randomness": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "missing-authorization": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "mass-assignment": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "error-information-exposure": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "improper-certificate-validation": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "token-signature-or-expiry-not-validated": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "sensitive-data-in-logs": {
+      "rules": [
+        "^(?:D29|D32)$"
+      ],
+      "dimensions": [
+        "D29",
+        "D32"
+      ]
+    },
+    "sensitive-data-in-url": {
+      "rules": [
+        "^(?:D32)$"
+      ],
+      "dimensions": [
+        "D32"
+      ]
+    },
+    "sensitive-data-in-browser-storage": {
+      "rules": [
+        "^(?:D32)$"
+      ],
+      "dimensions": [
+        "D32"
+      ]
+    },
+    "unbounded-allocation-from-untrusted-length": {
+      "rules": [
+        "^(?:X15)$"
+      ],
+      "dimensions": [
+        "X15"
+      ]
+    },
+    "uncontrolled-recursion": {
+      "rules": [
+        "^(?:X17)$"
+      ],
+      "dimensions": [
+        "X17"
+      ]
+    },
+    "ci-workflow-injection": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "ci-secret-exposure": {
+      "rules": [
+        "^(?:D29)$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "unpinned-ci-action": {
+      "rules": [
+        "^(?:D29|D36)$"
+      ],
+      "dimensions": [
+        "D29",
+        "D36"
+      ]
+    },
+    "download-without-integrity-check": {
+      "rules": [
+        "^(?:D29|D31)$"
+      ],
+      "dimensions": [
+        "D29",
+        "D31"
+      ]
+    },
+    "container-excessive-privilege": {
+      "rules": [
+        "^(?:D31|AXI1)$"
+      ],
+      "dimensions": [
+        "D31",
+        "AXI1"
+      ]
+    },
+    "container-missing-resource-limits": {
+      "rules": [
+        "^(?:D31)$"
+      ],
+      "dimensions": [
+        "D31"
+      ]
+    },
+    "mutable-image-reference": {
+      "rules": [
+        "^(?:D31|D36)$"
+      ],
+      "dimensions": [
+        "D31",
+        "D36"
+      ]
+    },
+    "iac-misconfiguration": {
+      "rules": [
+        "^(?:D31)$"
+      ],
+      "dimensions": [
+        "D31"
+      ]
+    },
+    "vulnerable-dependency": {
+      "rules": [
+        "^(?:D12|D30)$"
+      ],
+      "dimensions": [
+        "D12",
+        "D30"
+      ]
+    },
+    "malicious-dependency": {
+      "rules": [
+        "^(?:D43)$"
+      ],
+      "dimensions": [
+        "D43"
+      ]
+    },
+    "end-of-life-platform": {
+      "rules": [
+        "^(?:D44)$"
+      ],
+      "dimensions": [
+        "D44"
+      ]
+    },
+    "outdated-dependency": {
+      "rules": [
+        "^(?:D12|R5)$"
+      ],
+      "dimensions": [
+        "D12",
+        "R5"
+      ]
+    },
+    "deprecated-dependency": {
+      "rules": [
+        "^(?:D12)$"
+      ],
+      "dimensions": [
+        "D12"
+      ]
+    },
+    "license-policy-violation": {
+      "rules": [
+        "^(?:D14)$"
+      ],
+      "dimensions": [
+        "D14"
+      ]
+    },
+    "dependencies-not-locked": {
+      "rules": [
+        "^(?:SC1)$"
+      ],
+      "dimensions": [
+        "SC1"
+      ]
+    },
+    "unused-dependency": {
+      "rules": [
+        "^(?:R8)$"
+      ],
+      "dimensions": [
+        "R8"
+      ]
+    },
+    "undeclared-dependency": {
+      "rules": [
+        "^(?:R8)$"
+      ],
+      "dimensions": [
+        "R8"
+      ]
+    },
+    "misplaced-dev-dependency": {
+      "rules": [
+        "^(?:R8)$"
+      ],
+      "dimensions": [
+        "R8"
+      ]
+    },
+    "build-provenance-and-signing": {
+      "rules": [
+        "^(?:D36)$"
+      ],
+      "dimensions": [
+        "D36"
+      ]
+    },
+    "vulnerability-disclosure-policy": {
+      "rules": [
+        "^(?:D37)$"
+      ],
+      "dimensions": [
+        "D37"
+      ]
+    },
+    "vulnerability-disclosure-policy-quality": {
+      "rules": [
+        "^(?:LA3)$"
+      ],
+      "dimensions": [
+        "LA3"
+      ]
+    },
+    "security-response-headers": {
+      "rules": [
+        "^(?:AXH1|S1)$"
+      ],
+      "dimensions": [
+        "AXH1",
+        "S1"
+      ]
+    },
+    "https-enforcement": {
+      "rules": [
+        "^(?:S1)$"
+      ],
+      "dimensions": [
+        "S1"
+      ]
+    },
+    "insecure-cookie-flags": {
+      "rules": [
+        "^(?:AXK1|S1)$"
+      ],
+      "dimensions": [
+        "AXK1",
+        "S1"
+      ]
+    },
+    "inbound-input-validation": {
+      "rules": [
+        "^(?:S1)$"
+      ],
+      "dimensions": [
+        "S1"
+      ]
+    },
+    "security-tooling-in-ci": {
+      "rules": [
+        "^(?:P3)$"
+      ],
+      "dimensions": [
+        "P3"
+      ]
+    },
+    "network-egress-policy": {
+      "rules": [
+        "^(?:D40)$"
+      ],
+      "dimensions": [
+        "D40"
+      ]
+    },
+    "workload-syscall-confinement": {
+      "rules": [
+        "^(?:D41)$"
+      ],
+      "dimensions": [
+        "D41"
+      ]
+    },
+    "runtime-threat-detection-and-admission": {
+      "rules": [
+        "^(?:D42)$"
+      ],
+      "dimensions": [
+        "D42"
+      ]
+    },
+    "data-encryption-controls": {
+      "rules": [
+        "^(?:C1)$"
+      ],
+      "dimensions": [
+        "C1"
+      ]
+    },
+    "authorization-enforcement": {
+      "rules": [
+        "^(?:C2)$"
+      ],
+      "dimensions": [
+        "C2"
+      ]
+    },
+    "audit-trail": {
+      "rules": [
+        "^(?:C3)$"
+      ],
+      "dimensions": [
+        "C3"
+      ]
+    },
+    "data-retention-policy": {
+      "rules": [
+        "^(?:C4)$"
+      ],
+      "dimensions": [
+        "C4"
+      ]
+    },
+    "data-subject-rights": {
+      "rules": [
+        "^(?:C5)$"
+      ],
+      "dimensions": [
+        "C5"
+      ]
+    },
+    "personal-data-inventory": {
+      "rules": [
+        "^(?:LA1)$"
+      ],
+      "dimensions": [
+        "LA1"
+      ]
+    },
+    "environment-separation": {
+      "rules": [
+        "^(?:LA4)$"
+      ],
+      "dimensions": [
+        "LA4"
+      ]
+    },
+    "personal-data-in-event-store": {
+      "rules": [
+        "^(?:ES3)$"
+      ],
+      "dimensions": [
+        "ES3"
+      ]
+    },
+    "high-cyclomatic-complexity": {
+      "rules": [
+        "^(?:D1|R2)$"
+      ],
+      "dimensions": [
+        "D1",
+        "R2"
+      ]
+    },
+    "high-cognitive-complexity": {
+      "rules": [
+        "^(?:D2|R2)$"
+      ],
+      "dimensions": [
+        "D2",
+        "R2"
+      ]
+    },
+    "god-class": {
+      "rules": [
+        "^(?:D3)$"
+      ],
+      "dimensions": [
+        "D3"
+      ]
+    },
+    "oversized-source-file": {
+      "rules": [
+        "^(?:D3|R3)$"
+      ],
+      "dimensions": [
+        "D3",
+        "R3"
+      ]
+    },
+    "duplicated-code": {
+      "rules": [
+        "^(?:D4|R10|X10)$"
+      ],
+      "dimensions": [
+        "D4",
+        "R10",
+        "X10"
+      ]
+    },
+    "low-class-cohesion": {
+      "rules": [
+        "^(?:D6)$"
+      ],
+      "dimensions": [
+        "D6"
+      ]
+    },
+    "technical-debt-marker": {
+      "rules": [
+        "^(?:D17)$"
+      ],
+      "dimensions": [
+        "D17"
+      ]
+    },
+    "suppressed-diagnostic": {
+      "rules": [
+        "^(?:D17)$"
+      ],
+      "dimensions": [
+        "D17"
+      ]
+    },
+    "commented-out-code": {
+      "rules": [
+        "^(?:D17)$"
+      ],
+      "dimensions": [
+        "D17"
+      ]
+    },
+    "unused-code": {
+      "rules": [
+        "^(?:D17|R7)$"
+      ],
+      "dimensions": [
+        "D17",
+        "R7"
+      ]
+    },
+    "unreachable-code": {
+      "rules": [
+        "^(?:IC1|X12)$"
+      ],
+      "dimensions": [
+        "IC1",
+        "X12"
+      ]
+    },
+    "not-implemented-placeholder": {
+      "rules": [
+        "^(?:GD1)$"
+      ],
+      "dimensions": [
+        "GD1"
+      ]
+    },
+    "incomplete-implementation": {
+      "rules": [
+        "^(?:IC1)$"
+      ],
+      "dimensions": [
+        "IC1"
+      ]
+    },
+    "empty-catch-block": {
+      "rules": [
+        "^(?:D17|X3)$"
+      ],
+      "dimensions": [
+        "D17",
+        "X3"
+      ]
+    },
+    "pointless-catch-rethrow": {
+      "rules": [
+        "^(?:X3)$"
+      ],
+      "dimensions": [
+        "X3"
+      ]
+    },
+    "blocking-on-async-code": {
+      "rules": [
+        "^(?:PF3|X1)$"
+      ],
+      "dimensions": [
+        "PF3",
+        "X1"
+      ]
+    },
+    "async-void-method": {
+      "rules": [
+        "^(?:X1)$"
+      ],
+      "dimensions": [
+        "X1"
+      ]
+    },
+    "missing-cancellation-propagation": {
+      "rules": [
+        "^(?:X2)$"
+      ],
+      "dimensions": [
+        "X2"
+      ]
+    },
+    "non-structured-log-message": {
+      "rules": [
+        "^(?:X4)$"
+      ],
+      "dimensions": [
+        "X4"
+      ]
+    },
+    "nullable-analysis-disabled": {
+      "rules": [
+        "^(?:X5)$"
+      ],
+      "dimensions": [
+        "X5"
+      ]
+    },
+    "null-forgiving-suppression": {
+      "rules": [
+        "^(?:X5)$"
+      ],
+      "dimensions": [
+        "X5"
+      ]
+    },
+    "hand-rolled-structured-format-parsing": {
+      "rules": [
+        "^(?:X6)$"
+      ],
+      "dimensions": [
+        "X6"
+      ]
+    },
+    "silent-error-fallback": {
+      "rules": [
+        "^(?:X7)$"
+      ],
+      "dimensions": [
+        "X7"
+      ]
+    },
+    "js-interop-contract-mismatch": {
+      "rules": [
+        "^(?:X8)$"
+      ],
+      "dimensions": [
+        "X8"
+      ]
+    },
+    "redundant-condition-operand": {
+      "rules": [
+        "^(?:X9)$"
+      ],
+      "dimensions": [
+        "X9"
+      ]
+    },
+    "undrained-child-process-stream": {
+      "rules": [
+        "^(?:X13)$"
+      ],
+      "dimensions": [
+        "X13"
+      ]
+    },
+    "unbounded-truncation-loop": {
+      "rules": [
+        "^(?:X16)$"
+      ],
+      "dimensions": [
+        "X16"
+      ]
+    },
+    "improper-resource-disposal": {
+      "rules": [
+        "^(?:X18)$"
+      ],
+      "dimensions": [
+        "X18"
+      ]
+    },
+    "unrestored-process-global-state": {
+      "rules": [
+        "^(?:X19)$"
+      ],
+      "dimensions": [
+        "X19"
+      ]
+    },
+    "argument-guard-tests-wrong-condition": {
+      "rules": [
+        "^(?:X20)$"
+      ],
+      "dimensions": [
+        "X20"
+      ]
+    },
+    "side-effect-in-conditional-guard": {
+      "rules": [
+        "^(?:X21)$"
+      ],
+      "dimensions": [
+        "X21"
+      ]
+    },
+    "lock-release-state-mismatch": {
+      "rules": [
+        "^(?:X22)$"
+      ],
+      "dimensions": [
+        "X22"
+      ]
+    },
+    "unguarded-expensive-debug-logging": {
+      "rules": [
+        "^(?:X23)$"
+      ],
+      "dimensions": [
+        "X23"
+      ]
+    },
+    "inert-configuration-option": {
+      "rules": [
+        "^(?:X25)$"
+      ],
+      "dimensions": [
+        "X25"
+      ]
+    },
+    "unsynchronized-callback-handoff": {
+      "rules": [
+        "^(?:X26)$"
+      ],
+      "dimensions": [
+        "X26"
+      ]
+    },
+    "collection-modified-during-enumeration": {
+      "rules": [
+        "^(?:X27)$"
+      ],
+      "dimensions": [
+        "X27"
+      ]
+    },
+    "index-access-outside-bounds-guard": {
+      "rules": [
+        "^(?:X28)$"
+      ],
+      "dimensions": [
+        "X28"
+      ]
+    },
+    "loop-decision-on-fixed-element": {
+      "rules": [
+        "^(?:X29)$"
+      ],
+      "dimensions": [
+        "X29"
+      ]
+    },
+    "contradictory-support-guard": {
+      "rules": [
+        "^(?:X30)$"
+      ],
+      "dimensions": [
+        "X30"
+      ]
+    },
+    "test-only-api-in-production-code": {
+      "rules": [
+        "^(?:X31)$"
+      ],
+      "dimensions": [
+        "X31"
+      ]
+    },
+    "type-lookup-by-simple-name": {
+      "rules": [
+        "^(?:X32)$"
+      ],
+      "dimensions": [
+        "X32"
+      ]
+    },
+    "missing-configure-await": {
+      "rules": [
+        "^(?:PF3)$"
+      ],
+      "dimensions": [
+        "PF3"
+      ]
+    },
+    "allocation-awareness": {
+      "rules": [
+        "^(?:PF2)$"
+      ],
+      "dimensions": [
+        "PF2"
+      ]
+    },
+    "compiled-code-size": {
+      "rules": [
+        "^(?:D39)$"
+      ],
+      "dimensions": [
+        "D39"
+      ]
+    },
+    "untyped-javascript-share": {
+      "rules": [
+        "^(?:R1)$"
+      ],
+      "dimensions": [
+        "R1"
+      ]
+    },
+    "inconsistent-naming": {
+      "rules": [
+        "^(?:D21)$"
+      ],
+      "dimensions": [
+        "D21"
+      ]
+    },
+    "low-value-comments": {
+      "rules": [
+        "^(?:D24)$"
+      ],
+      "dimensions": [
+        "D24"
+      ]
+    },
+    "module-dependency-cycle": {
+      "rules": [
+        "^(?:D5|D7|AX3|R9)$"
+      ],
+      "dimensions": [
+        "D5",
+        "D7",
+        "AX3",
+        "R9"
+      ]
+    },
+    "unstable-dependency": {
+      "rules": [
+        "^(?:D5)$"
+      ],
+      "dimensions": [
+        "D5"
+      ]
+    },
+    "architecture-rules-unenforced": {
+      "rules": [
+        "^(?:D7)$"
+      ],
+      "dimensions": [
+        "D7"
+      ]
+    },
+    "layer-dependency-violation": {
+      "rules": [
+        "^(?:D7|AX4|R11)$"
+      ],
+      "dimensions": [
+        "D7",
+        "AX4",
+        "R11"
+      ]
+    },
+    "boundary-type-leakage": {
+      "rules": [
+        "^(?:D23)$"
+      ],
+      "dimensions": [
+        "D23"
+      ]
+    },
+    "oversized-module": {
+      "rules": [
+        "^(?:D26)$"
+      ],
+      "dimensions": [
+        "D26"
+      ]
+    },
+    "call-indirection": {
+      "rules": [
+        "^(?:D27)$"
+      ],
+      "dimensions": [
+        "D27"
+      ]
+    },
+    "change-coupling": {
+      "rules": [
+        "^(?:D35)$"
+      ],
+      "dimensions": [
+        "D35"
+      ]
+    },
+    "captive-dependency": {
+      "rules": [
+        "^(?:AX1)$"
+      ],
+      "dimensions": [
+        "AX1"
+      ]
+    },
+    "unsynchronized-shared-state": {
+      "rules": [
+        "^(?:AX2)$"
+      ],
+      "dimensions": [
+        "AX2"
+      ]
+    },
+    "architecture-style-fit": {
+      "rules": [
+        "^(?:AX5)$"
+      ],
+      "dimensions": [
+        "AX5"
+      ]
+    },
+    "fat-interface": {
+      "rules": [
+        "^(?:AX6)$"
+      ],
+      "dimensions": [
+        "AX6"
+      ]
+    },
+    "cross-slice-coupling": {
+      "rules": [
+        "^(?:AX7)$"
+      ],
+      "dimensions": [
+        "AX7"
+      ]
+    },
+    "production-depends-on-test-code": {
+      "rules": [
+        "^(?:AX8)$"
+      ],
+      "dimensions": [
+        "AX8"
+      ]
+    },
+    "query-with-side-effects": {
+      "rules": [
+        "^(?:AX9)$"
+      ],
+      "dimensions": [
+        "AX9"
+      ]
+    },
+    "business-logic-share": {
+      "rules": [
+        "^(?:AX10)$"
+      ],
+      "dimensions": [
+        "AX10"
+      ]
+    },
+    "solution-structure": {
+      "rules": [
+        "^(?:D18)$"
+      ],
+      "dimensions": [
+        "D18"
+      ]
+    },
+    "internal-api-inconsistency": {
+      "rules": [
+        "^(?:D22)$"
+      ],
+      "dimensions": [
+        "D22"
+      ]
+    },
+    "folder-structure": {
+      "rules": [
+        "^(?:M3)$"
+      ],
+      "dimensions": [
+        "M3"
+      ]
+    },
+    "cross-aggregate-object-reference": {
+      "rules": [
+        "^(?:DM1)$"
+      ],
+      "dimensions": [
+        "DM1"
+      ]
+    },
+    "primitive-entity-identifier": {
+      "rules": [
+        "^(?:DM2)$"
+      ],
+      "dimensions": [
+        "DM2"
+      ]
+    },
+    "integration-event-leaks-domain-type": {
+      "rules": [
+        "^(?:DM3)$"
+      ],
+      "dimensions": [
+        "DM3"
+      ]
+    },
+    "anemic-domain-model": {
+      "rules": [
+        "^(?:DM4)$"
+      ],
+      "dimensions": [
+        "DM4"
+      ]
+    },
+    "publicly-mutable-entity-state": {
+      "rules": [
+        "^(?:DM5)$"
+      ],
+      "dimensions": [
+        "DM5"
+      ]
+    },
+    "domain-depends-on-infrastructure": {
+      "rules": [
+        "^(?:DM6)$"
+      ],
+      "dimensions": [
+        "DM6"
+      ]
+    },
+    "repository-for-non-aggregate": {
+      "rules": [
+        "^(?:DM7)$"
+      ],
+      "dimensions": [
+        "DM7"
+      ]
+    },
+    "primitive-obsession": {
+      "rules": [
+        "^(?:DM8)$"
+      ],
+      "dimensions": [
+        "DM8"
+      ]
+    },
+    "scattered-domain-rule": {
+      "rules": [
+        "^(?:DM9)$"
+      ],
+      "dimensions": [
+        "DM9"
+      ]
+    },
+    "multi-aggregate-transaction": {
+      "rules": [
+        "^(?:DM10)$"
+      ],
+      "dimensions": [
+        "DM10"
+      ]
+    },
+    "constructible-invalid-entity": {
+      "rules": [
+        "^(?:DM11)$"
+      ],
+      "dimensions": [
+        "DM11"
+      ]
+    },
+    "ambient-nondeterminism-in-domain": {
+      "rules": [
+        "^(?:DM12)$"
+      ],
+      "dimensions": [
+        "DM12"
+      ]
+    },
+    "synchronous-remote-call-in-event-handler": {
+      "rules": [
+        "^(?:ED1)$"
+      ],
+      "dimensions": [
+        "ED1"
+      ]
+    },
+    "command-with-multiple-handlers": {
+      "rules": [
+        "^(?:ED2)$"
+      ],
+      "dimensions": [
+        "ED2"
+      ]
+    },
+    "event-not-named-in-past-tense": {
+      "rules": [
+        "^(?:ED3)$"
+      ],
+      "dimensions": [
+        "ED3"
+      ]
+    },
+    "dual-write-without-outbox": {
+      "rules": [
+        "^(?:ED4)$"
+      ],
+      "dimensions": [
+        "ED4"
+      ]
+    },
+    "non-idempotent-message-handler": {
+      "rules": [
+        "^(?:ED5)$"
+      ],
+      "dimensions": [
+        "ED5"
+      ]
+    },
+    "nondeterministic-event-fold": {
+      "rules": [
+        "^(?:ES1)$"
+      ],
+      "dimensions": [
+        "ES1"
+      ]
+    },
+    "mutable-persisted-event": {
+      "rules": [
+        "^(?:ES2)$"
+      ],
+      "dimensions": [
+        "ES2"
+      ]
+    },
+    "test-coverage": {
+      "rules": [
+        "^(?:D8|R4)$"
+      ],
+      "dimensions": [
+        "D8",
+        "R4"
+      ]
+    },
+    "test-pyramid-distribution": {
+      "rules": [
+        "^(?:D9)$"
+      ],
+      "dimensions": [
+        "D9"
+      ]
+    },
+    "test-without-assertion": {
+      "rules": [
+        "^(?:D10)$"
+      ],
+      "dimensions": [
+        "D10"
+      ]
+    },
+    "skipped-test-without-reason": {
+      "rules": [
+        "^(?:D10)$"
+      ],
+      "dimensions": [
+        "D10"
+      ]
+    },
+    "excessive-mocking": {
+      "rules": [
+        "^(?:D10)$"
+      ],
+      "dimensions": [
+        "D10"
+      ]
+    },
+    "flaky-test": {
+      "rules": [
+        "^(?:D11)$"
+      ],
+      "dimensions": [
+        "D11"
+      ]
+    },
+    "domain-vs-controller-coverage": {
+      "rules": [
+        "^(?:P9)$"
+      ],
+      "dimensions": [
+        "P9"
+      ]
+    },
+    "executable-specifications": {
+      "rules": [
+        "^(?:P11)$"
+      ],
+      "dimensions": [
+        "P11"
+      ]
+    },
+    "ci-test-gate-integrity": {
+      "rules": [
+        "^(?:P12)$"
+      ],
+      "dimensions": [
+        "P12"
+      ]
+    },
+    "ci-build-and-test-pipeline": {
+      "rules": [
+        "^(?:P1)$"
+      ],
+      "dimensions": [
+        "P1"
+      ]
+    },
+    "observability": {
+      "rules": [
+        "^(?:P2)$"
+      ],
+      "dimensions": [
+        "P2"
+      ]
+    },
+    "deployment-rollback-safety": {
+      "rules": [
+        "^(?:P4)$"
+      ],
+      "dimensions": [
+        "P4"
+      ]
+    },
+    "disaster-recovery-evidence": {
+      "rules": [
+        "^(?:P5)$"
+      ],
+      "dimensions": [
+        "P5"
+      ]
+    },
+    "release-hygiene": {
+      "rules": [
+        "^(?:P6)$"
+      ],
+      "dimensions": [
+        "P6"
+      ]
+    },
+    "outbound-http-resilience": {
+      "rules": [
+        "^(?:P7)$"
+      ],
+      "dimensions": [
+        "P7"
+      ]
+    },
+    "versioned-schema-migrations": {
+      "rules": [
+        "^(?:P8)$"
+      ],
+      "dimensions": [
+        "P8"
+      ]
+    },
+    "library-api-versioning": {
+      "rules": [
+        "^(?:P10)$"
+      ],
+      "dimensions": [
+        "P10"
+      ]
+    },
+    "frontend-tooling-scripts": {
+      "rules": [
+        "^(?:R6)$"
+      ],
+      "dimensions": [
+        "R6"
+      ]
+    },
+    "benchmark-discipline": {
+      "rules": [
+        "^(?:PF1)$"
+      ],
+      "dimensions": [
+        "PF1"
+      ]
+    },
+    "readme-quality": {
+      "rules": [
+        "^(?:M1)$"
+      ],
+      "dimensions": [
+        "M1"
+      ]
+    },
+    "architecture-documentation": {
+      "rules": [
+        "^(?:M2)$"
+      ],
+      "dimensions": [
+        "M2"
+      ]
+    },
+    "documentation-quality": {
+      "rules": [
+        "^(?:D19)$"
+      ],
+      "dimensions": [
+        "D19"
+      ]
+    },
+    "adr-quality": {
+      "rules": [
+        "^(?:D20)$"
+      ],
+      "dimensions": [
+        "D20"
+      ]
+    },
+    "adr-conformance": {
+      "rules": [
+        "^(?:D25)$"
+      ],
+      "dimensions": [
+        "D25"
+      ]
+    },
+    "documentation-accuracy": {
+      "rules": [
+        "^(?:M4)$"
+      ],
+      "dimensions": [
+        "M4"
+      ]
+    },
+    "churn-complexity-hotspot": {
+      "rules": [
+        "^(?:D15)$"
+      ],
+      "dimensions": [
+        "D15"
+      ]
+    },
+    "knowledge-concentration": {
+      "rules": [
+        "^(?:D16)$"
+      ],
+      "dimensions": [
+        "D16"
+      ]
+    },
+    "knowledge-freshness": {
+      "rules": [
+        "^(?:D34)$"
+      ],
+      "dimensions": [
+        "D34"
+      ]
+    },
+    "missing-text-alternative": {
+      "rules": [
+        "^(?:AC1|AXR1)$"
+      ],
+      "dimensions": [
+        "AC1",
+        "AXR1"
+      ]
+    },
+    "form-control-without-label": {
+      "rules": [
+        "^(?:AC2|AXR1)$"
+      ],
+      "dimensions": [
+        "AC2",
+        "AXR1"
+      ]
+    },
+    "page-structure-violation": {
+      "rules": [
+        "^(?:AC3)$"
+      ],
+      "dimensions": [
+        "AC3"
+      ]
+    },
+    "non-keyboard-accessible-interaction": {
+      "rules": [
+        "^(?:AC4|AXR1)$"
+      ],
+      "dimensions": [
+        "AC4",
+        "AXR1"
+      ]
+    },
+    "invalid-aria-usage": {
+      "rules": [
+        "^(?:AC5)$"
+      ],
+      "dimensions": [
+        "AC5"
+      ]
+    },
+    "visual-and-motion-safety": {
+      "rules": [
+        "^(?:AC6|AXR1)$"
+      ],
+      "dimensions": [
+        "AC6",
+        "AXR1"
+      ]
+    },
+    "accessibility-checks-in-ci": {
+      "rules": [
+        "^(?:AC7)$"
+      ],
+      "dimensions": [
+        "AC7"
+      ]
+    },
+    "alt-text-quality": {
+      "rules": [
+        "^(?:LA2)$"
+      ],
+      "dimensions": [
+        "LA2"
+      ]
+    },
+    "link-and-button-text-quality": {
+      "rules": [
+        "^(?:LA5)$"
+      ],
+      "dimensions": [
+        "LA5"
+      ]
+    },
+    "heading-and-label-text-quality": {
+      "rules": [
+        "^(?:LA6)$"
+      ],
+      "dimensions": [
+        "LA6"
+      ]
+    },
+    "unauthenticated-reachable-endpoint": {
+      "rules": [
+        "^(?:AXA1)$"
+      ],
+      "dimensions": [
+        "AXA1"
+      ]
+    },
+    "reproducible-boot": {
+      "rules": [
+        "^(?:AXB1|AXB2)$"
+      ],
+      "dimensions": [
+        "AXB1",
+        "AXB2"
+      ]
+    },
+    "undocumented-api-endpoint": {
+      "rules": [
+        "^(?:AXO1)$"
+      ],
+      "dimensions": [
+        "AXO1"
+      ]
+    },
+    "third-party-data-flow": {
+      "rules": [
+        "^(?:AXP1)$"
+      ],
+      "dimensions": [
+        "AXP1"
+      ]
+    },
+    "unexpected-exposed-port": {
+      "rules": [
+        "^(?:AXS1)$"
+      ],
+      "dimensions": [
+        "AXS1"
+      ]
+    }
+  },
+  "ruleDimension": [
+    {
+      "rule": "^([A-Z]+[0-9]+)$",
+      "dimension": "$1"
+    }
+  ],
+  "x-messageDiscriminators": {
+    "hardcoded-credential": [
+      {
+        "dimension": "D13",
+        "messageRegex": "^Leaked secret: (?:aws\\-access\\-key|gcp\\-api\\-key|gcp\\-oauth\\-client\\-secret|supabase\\-secret\\-key|supabase\\-service\\-role\\-key|slack\\-token|github\\-token|jwt|high\\-entropy\\-secret|azure\\-devops\\-pat|http\\-cookie\\-credential|http\\-authorization\\-credential|credential\\-file):",
+        "source": "engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108 (title = \"Leaked secret: {SecretType}\"); SecretType vocabulary from engine/src/Core/Security/NativeSecretScanner.cs Rules (:84-131), ScanLines (:993-1060) and ScanAsync (:546-574), PrivateKeyBlobFile.cs:61, KeyStoreFile.cs:77"
+      },
+      {
+        "dimension": "D28",
+        "messageRegex": "^Secret: (?:generic-api-key|aws-access-token|aws-secret-key|github-pat|github-fine-grained-pat|slack-[a-z-]+|jwt|gcp-api-key|gcp-oauth-client-secret|supabase-secret-key|supabase-service-role-key|stripe-access-token|http-cookie-credential|http-authorization-credential|[a-z0-9-]+-(?:api-key|token|access-token)):",
+        "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266 (title = \"Secret: {gitleaks RuleID}\"); rule ids = gitleaks defaults (useDefault = true) + engine/rulesets/gitleaks/watchdog-gitleaks.toml"
+      }
+    ],
+    "hardcoded-password": [
+      {
+        "dimension": "D13",
+        "messageRegex": "^Leaked secret: (?:hardcoded\\-credential|http\\-basic\\-credential|password\\-hash\\-credential):",
+        "source": "engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108 (title = \"Leaked secret: {SecretType}\"); SecretType vocabulary from engine/src/Core/Security/NativeSecretScanner.cs Rules (:84-131), ScanLines (:993-1060) and ScanAsync (:546-574), PrivateKeyBlobFile.cs:61, KeyStoreFile.cs:77"
+      },
+      {
+        "dimension": "D28",
+        "messageRegex": "^Secret: (?:http-basic-credential|password-hash-credential):",
+        "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266 (title = \"Secret: {gitleaks RuleID}\"); rule ids = gitleaks defaults (useDefault = true) + engine/rulesets/gitleaks/watchdog-gitleaks.toml"
+      }
+    ],
+    "hardcoded-cryptographic-key": [
+      {
+        "dimension": "D13",
+        "messageRegex": "^Leaked secret: (?:signing\\-key|hardcoded\\-crypto\\-key|crypto\\-key\\-passphrase):",
+        "source": "engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108 (title = \"Leaked secret: {SecretType}\"); SecretType vocabulary from engine/src/Core/Security/NativeSecretScanner.cs Rules (:84-131), ScanLines (:993-1060) and ScanAsync (:546-574), PrivateKeyBlobFile.cs:61, KeyStoreFile.cs:77"
+      },
+      {
+        "dimension": "D28",
+        "messageRegex": "^Secret: (?:crypto-key-passphrase|hardcoded-crypto-key):",
+        "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266 (title = \"Secret: {gitleaks RuleID}\"); rule ids = gitleaks defaults (useDefault = true) + engine/rulesets/gitleaks/watchdog-gitleaks.toml"
+      }
+    ],
+    "committed-private-key": [
+      {
+        "dimension": "D13",
+        "messageRegex": "^Leaked secret: (?:private\\-key|private\\-key\\-blob|private\\-key\\-store):",
+        "source": "engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108 (title = \"Leaked secret: {SecretType}\"); SecretType vocabulary from engine/src/Core/Security/NativeSecretScanner.cs Rules (:84-131), ScanLines (:993-1060) and ScanAsync (:546-574), PrivateKeyBlobFile.cs:61, KeyStoreFile.cs:77"
+      },
+      {
+        "dimension": "D28",
+        "messageRegex": "^Secret: (?:private-key|private-key-blob|private-key-store):",
+        "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266 (title = \"Secret: {gitleaks RuleID}\"); rule ids = gitleaks defaults (useDefault = true) + engine/rulesets/gitleaks/watchdog-gitleaks.toml"
+      }
+    ],
+    "secret-in-version-history": [
+      {
+        "dimension": "D28",
+        "propertyPresent": "properties.commitSha",
+        "source": "engine/src/CodeHealth.Reporting/Sarif/SarifReportRenderer.cs:136-139 (commitSha stamped only on history-anchored findings)"
+      }
+    ],
+    "dependencies-not-locked": [
+      {
+        "dimension": "SC1",
+        "messageRegex": "^(?:NuGet|JavaScript|Go) dependencies are not locked:",
+        "source": "engine/src/Scanner/SupplyChain/SC1/SupplyChainHygieneAnalyzer.cs:505"
+      }
+    ]
+  }
+}

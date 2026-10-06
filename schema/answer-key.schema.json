@@ -56,7 +56,7 @@
           "$comment": "min <= max is checked by the validator."
         },
         "rationale": { "type": "string", "minLength": 1 },
-        "watchdog": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+        "scannerHints": { "type": "object", "$comment": "Informative only: scanner name -> rule ids expected to fire. The authoritative mapping is mappings/<scanner>.json in the harness.", "additionalProperties": { "type": "array", "items": { "type": "string", "minLength": 1 } } }
       },
       "dependentRequired": { "lines": ["file"] },
       "allOf": [

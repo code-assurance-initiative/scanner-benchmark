@@ -1,0 +1,1565 @@
+{
+  "version": "1.0",
+  "concepts": [
+    {
+      "id": "hardcoded-credential",
+      "title": "Hard-coded credential (API key, access token, service token)",
+      "cwe": "CWE-798",
+      "family": "security",
+      "kind": "finding",
+      "description": "A live-format credential that authenticates to a service (cloud key, VCS token, chat token, SaaS API key, bearer token, cookie/session credential) written as a literal in source, configuration, scripts or manifests."
+    },
+    {
+      "id": "hardcoded-password",
+      "title": "Hard-coded password",
+      "cwe": "CWE-259",
+      "family": "security",
+      "kind": "finding",
+      "description": "A password literal in source or configuration, including passwords embedded in connection strings and in user:password@host URIs."
+    },
+    {
+      "id": "hardcoded-cryptographic-key",
+      "title": "Hard-coded cryptographic key",
+      "cwe": "CWE-321",
+      "family": "security",
+      "kind": "finding",
+      "description": "A symmetric encryption key, IV, HMAC/JWT signing secret or key passphrase written as a literal and used by the program."
+    },
+    {
+      "id": "committed-private-key",
+      "title": "Committed private key material",
+      "cwe": "CWE-798",
+      "family": "security",
+      "kind": "finding",
+      "description": "An asymmetric private key (PEM block, keystore, PKCS#12/PFX, SSH key) committed to the repository."
+    },
+    {
+      "id": "secret-in-version-history",
+      "title": "Secret retained in version-control history",
+      "cwe": "CWE-540",
+      "family": "security",
+      "kind": "finding",
+      "description": "A credential that no longer exists in the working tree but remains readable in an earlier commit of the repository's history."
+    },
+    {
+      "id": "sql-injection",
+      "title": "SQL injection",
+      "cwe": "CWE-89",
+      "family": "security",
+      "kind": "finding",
+      "description": "Untrusted input concatenated or interpolated into a SQL statement instead of being bound as a parameter."
+    },
+    {
+      "id": "command-injection",
+      "title": "OS command injection",
+      "cwe": "CWE-78",
+      "family": "security",
+      "kind": "finding",
+      "description": "Untrusted input reaching a shell or process-start command line."
+    },
+    {
+      "id": "code-injection",
+      "title": "Code / template injection",
+      "cwe": "CWE-94",
+      "family": "security",
+      "kind": "finding",
+      "description": "Untrusted input evaluated as code or as a server-side template."
+    },
+    {
+      "id": "path-traversal",
+      "title": "Path traversal (incl. archive extraction 'zip slip')",
+      "cwe": "CWE-22",
+      "family": "security",
+      "kind": "finding",
+      "description": "A file path built from untrusted input (or an archive entry name) without canonicalisation and containment check."
+    },
+    {
+      "id": "xml-external-entity",
+      "title": "XML external entity processing",
+      "cwe": "CWE-611",
+      "family": "security",
+      "kind": "finding",
+      "description": "An XML parser configured (or defaulting) to resolve external entities / DTDs on untrusted input."
+    },
+    {
+      "id": "insecure-deserialization",
+      "title": "Deserialization of untrusted data",
+      "cwe": "CWE-502",
+      "family": "security",
+      "kind": "finding",
+      "description": "Use of a type-embedding serializer (BinaryFormatter, NetDataContractSerializer, LosFormatter, unsafe JSON type handling …) on untrusted input."
+    },
+    {
+      "id": "cross-site-scripting",
+      "title": "Cross-site scripting / unescaped markup output",
+      "cwe": "CWE-79",
+      "family": "security",
+      "kind": "finding",
+      "description": "Untrusted or document-derived text written into HTML/markup without encoding."
+    },
+    {
+      "id": "regex-denial-of-service",
+      "title": "Regular expression denial of service",
+      "cwe": "CWE-1333",
+      "family": "security",
+      "kind": "finding",
+      "description": "A backtracking regular expression applied to untrusted input with catastrophic patterns or without a match timeout."
+    },
+    {
+      "id": "ldap-injection",
+      "title": "LDAP injection",
+      "cwe": "CWE-90",
+      "family": "security",
+      "kind": "finding",
+      "description": "Untrusted input concatenated into an LDAP filter."
+    },
+    {
+      "id": "xpath-injection",
+      "title": "XPath injection",
+      "cwe": "CWE-643",
+      "family": "security",
+      "kind": "finding",
+      "description": "Untrusted input concatenated into an XPath expression."
+    },
+    {
+      "id": "server-side-request-forgery",
+      "title": "Server-side request forgery / bypassable address filter",
+      "cwe": "CWE-918",
+      "family": "security",
+      "kind": "finding",
+      "description": "An outbound request to a caller-chosen address, or an address allow/deny check that embedded-IPv4 encodings (IPv4-mapped/compatible IPv6, 6to4, NAT64) can bypass."
+    },
+    {
+      "id": "open-redirect",
+      "title": "Open redirect",
+      "cwe": "CWE-601",
+      "family": "security",
+      "kind": "finding",
+      "description": "A redirect to a URL taken from the request without validation."
+    },
+    {
+      "id": "weak-cryptographic-algorithm",
+      "title": "Broken or risky cryptographic algorithm or mode",
+      "cwe": "CWE-327",
+      "family": "security",
+      "kind": "finding",
+      "description": "Use of DES/3DES/RC4, ECB mode, weak RSA padding or comparable deprecated primitives."
+    },
+    {
+      "id": "weak-hash-algorithm",
+      "title": "Weak hash used for a security purpose",
+      "cwe": "CWE-328",
+      "family": "security",
+      "kind": "finding",
+      "description": "MD5/SHA-1 used where collision or preimage resistance matters (passwords, signatures, integrity)."
+    },
+    {
+      "id": "insecure-randomness",
+      "title": "Insecure randomness for security values",
+      "cwe": "CWE-338",
+      "family": "security",
+      "kind": "finding",
+      "description": "A non-cryptographic PRNG generating keys, tokens, salts or identifiers that must be unguessable."
+    },
+    {
+      "id": "missing-authorization",
+      "title": "Missing authorization on an endpoint",
+      "cwe": "CWE-862",
+      "family": "security",
+      "kind": "finding",
+      "description": "A state-changing or data-returning endpoint reachable without an authorization check."
+    },
+    {
+      "id": "mass-assignment",
+      "title": "Mass assignment",
+      "cwe": "CWE-915",
+      "family": "security",
+      "kind": "finding",
+      "description": "Binding request data directly onto a persistence/domain object so callers can set fields they must not control."
+    },
+    {
+      "id": "error-information-exposure",
+      "title": "Stack trace / error detail exposed to clients",
+      "cwe": "CWE-209",
+      "family": "security",
+      "kind": "finding",
+      "description": "Exception details or stack traces returned in responses."
+    },
+    {
+      "id": "improper-certificate-validation",
+      "title": "Improper certificate validation",
+      "cwe": "CWE-295",
+      "family": "security",
+      "kind": "finding",
+      "description": "TLS/X.509 validation disabled or replaced by a check that accepts invalid certificates."
+    },
+    {
+      "id": "token-signature-or-expiry-not-validated",
+      "title": "Security token signature or lifetime not validated",
+      "cwe": "CWE-347",
+      "family": "security",
+      "kind": "finding",
+      "description": "JWT/security-token validation that skips signature verification or expiry/lifetime validation."
+    },
+    {
+      "id": "sensitive-data-in-logs",
+      "title": "Sensitive or personal data written to logs",
+      "cwe": "CWE-532",
+      "family": "security",
+      "kind": "finding",
+      "description": "Personal data, credentials or tokens reaching a log or console sink."
+    },
+    {
+      "id": "sensitive-data-in-url",
+      "title": "Sensitive data in URL / query string",
+      "cwe": "CWE-598",
+      "family": "security",
+      "kind": "finding",
+      "description": "Personal data or secrets placed in a URL, path or query string."
+    },
+    {
+      "id": "sensitive-data-in-browser-storage",
+      "title": "Sensitive data in unprotected browser storage",
+      "cwe": "CWE-922",
+      "family": "security",
+      "kind": "finding",
+      "description": "Personal data or tokens persisted in localStorage/sessionStorage/IndexedDB or non-HttpOnly cookies."
+    },
+    {
+      "id": "unbounded-allocation-from-untrusted-length",
+      "title": "Allocation or read sized by an unvalidated length field",
+      "cwe": "CWE-789",
+      "family": "security",
+      "kind": "finding",
+      "description": "An integer length read from an untrusted stream/reader used for an allocation or bulk read without an upper bound."
+    },
+    {
+      "id": "uncontrolled-recursion",
+      "title": "Uncontrolled recursion over caller-supplied input",
+      "cwe": "CWE-674",
+      "family": "security",
+      "kind": "finding",
+      "description": "A recursive walk over a caller-supplied document (JSON/XML tree) with no depth limit."
+    },
+    {
+      "id": "ci-workflow-injection",
+      "title": "CI workflow expression / script injection",
+      "cwe": "CWE-78",
+      "family": "security",
+      "kind": "finding",
+      "description": "Attacker-controlled CI context (PR title, branch name, comment body) interpolated into a pipeline shell step."
+    },
+    {
+      "id": "ci-secret-exposure",
+      "title": "CI secret exposed to untrusted code",
+      "cwe": null,
+      "family": "security",
+      "kind": "finding",
+      "description": "Pipeline secrets made available to untrusted code: privileged triggers that build fork code, secrets passed to third-party steps or promoted to job-wide environment."
+    },
+    {
+      "id": "unpinned-ci-action",
+      "title": "Third-party CI action not pinned to an immutable reference",
+      "cwe": "CWE-829",
+      "family": "security",
+      "kind": "finding",
+      "description": "A CI step referencing a third-party action/orb/image by mutable tag or branch instead of a full commit digest."
+    },
+    {
+      "id": "download-without-integrity-check",
+      "title": "Remote code downloaded and executed without integrity check",
+      "cwe": "CWE-494",
+      "family": "security",
+      "kind": "finding",
+      "description": "curl|sh, Invoke-WebRequest|iex or an unverified installer download in build scripts, Dockerfiles or CI."
+    },
+    {
+      "id": "container-excessive-privilege",
+      "title": "Container runs with excessive privilege",
+      "cwe": "CWE-250",
+      "family": "security",
+      "kind": "finding",
+      "description": "Container/workload running as root, privileged, with added capabilities, host namespaces or a writable root filesystem."
+    },
+    {
+      "id": "container-missing-resource-limits",
+      "title": "Workload without resource limits",
+      "cwe": "CWE-770",
+      "family": "security",
+      "kind": "finding",
+      "description": "A container/pod specification without CPU/memory limits."
+    },
+    {
+      "id": "mutable-image-reference",
+      "title": "Container image referenced by mutable tag",
+      "cwe": null,
+      "family": "security",
+      "kind": "finding",
+      "description": "A base or runtime image referenced by ':latest' or another mutable tag instead of a pinned version/digest."
+    },
+    {
+      "id": "iac-misconfiguration",
+      "title": "Other infrastructure-as-code / container misconfiguration",
+      "cwe": null,
+      "family": "security",
+      "kind": "finding",
+      "description": "A misconfiguration in Dockerfile, Kubernetes, Helm, Terraform or CloudFormation not covered by a more specific concept (missing healthcheck, exposed admin port, public bucket …)."
+    },
+    {
+      "id": "vulnerable-dependency",
+      "title": "Dependency with a known vulnerability",
+      "cwe": "CWE-1395",
+      "family": "security",
+      "kind": "finding",
+      "description": "A declared or locked third-party package version affected by a published advisory (CVE/GHSA/OSV)."
+    },
+    {
+      "id": "malicious-dependency",
+      "title": "Known-malicious dependency",
+      "cwe": "CWE-506",
+      "family": "security",
+      "kind": "finding",
+      "description": "A dependency whose version is classified as malicious by a malicious-package feed."
+    },
+    {
+      "id": "end-of-life-platform",
+      "title": "End-of-life runtime or framework",
+      "cwe": "CWE-1104",
+      "family": "security",
+      "kind": "finding",
+      "description": "A pinned runtime (target framework, Node/Python version) or framework major past its vendor end-of-support date."
+    },
+    {
+      "id": "outdated-dependency",
+      "title": "Outdated dependency",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "finding",
+      "description": "A dependency several releases behind its latest version (staleness, not a known vulnerability)."
+    },
+    {
+      "id": "deprecated-dependency",
+      "title": "Deprecated dependency",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "finding",
+      "description": "A dependency its publisher has marked deprecated."
+    },
+    {
+      "id": "license-policy-violation",
+      "title": "Dependency license incompatible with policy",
+      "cwe": null,
+      "family": "compliance",
+      "kind": "finding",
+      "description": "A third-party package whose declared license is denied or copyleft-incompatible under the configured policy."
+    },
+    {
+      "id": "dependencies-not-locked",
+      "title": "Dependencies not locked",
+      "cwe": null,
+      "family": "security",
+      "kind": "posture",
+      "description": "An ecosystem in the repository resolves dependencies without a lockfile or central version pinning, so builds are not reproducible."
+    },
+    {
+      "id": "unused-dependency",
+      "title": "Declared dependency never used",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A package declared in a manifest that no source file imports."
+    },
+    {
+      "id": "undeclared-dependency",
+      "title": "Imported package not declared",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A package imported by source but declared in no manifest (works only transitively or by accident)."
+    },
+    {
+      "id": "misplaced-dev-dependency",
+      "title": "Development-only package declared as a production dependency",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "Type, test or build-only packages declared as runtime dependencies."
+    },
+    {
+      "id": "build-provenance-and-signing",
+      "title": "Build provenance, signing and SBOM",
+      "cwe": null,
+      "family": "security",
+      "kind": "posture",
+      "description": "Release pipeline generates provenance/attestations, signs artifacts and publishes an SBOM."
+    },
+    {
+      "id": "vulnerability-disclosure-policy",
+      "title": "Vulnerability disclosure policy present",
+      "cwe": null,
+      "family": "security",
+      "kind": "posture",
+      "description": "A SECURITY.md or security.txt with a reporting contact exists."
+    },
+    {
+      "id": "vulnerability-disclosure-policy-quality",
+      "title": "Vulnerability disclosure policy is a real process",
+      "cwe": null,
+      "family": "security",
+      "kind": "judged",
+      "description": "The disclosure policy states contact, reporting and handling expectations rather than being a stub."
+    },
+    {
+      "id": "security-response-headers",
+      "title": "Security response headers configured",
+      "cwe": null,
+      "family": "security",
+      "kind": "posture",
+      "description": "CSP, HSTS, X-Content-Type-Options, frame policy, Referrer-Policy configured by the application."
+    },
+    {
+      "id": "https-enforcement",
+      "title": "HTTPS enforced by the application",
+      "cwe": null,
+      "family": "security",
+      "kind": "posture",
+      "description": "HTTPS redirection / HSTS or an explicit TLS-terminating proxy configuration."
+    },
+    {
+      "id": "insecure-cookie-flags",
+      "title": "Cookie without Secure/HttpOnly/SameSite",
+      "cwe": "CWE-614",
+      "family": "security",
+      "kind": "finding",
+      "description": "An authentication or session cookie issued without the Secure flag (and/or HttpOnly / SameSite)."
+    },
+    {
+      "id": "inbound-input-validation",
+      "title": "Inbound request model validation",
+      "cwe": null,
+      "family": "security",
+      "kind": "posture",
+      "description": "Request models are validated (annotations, validators, schema) before use."
+    },
+    {
+      "id": "security-tooling-in-ci",
+      "title": "Security tooling gates changes",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "posture",
+      "description": "SAST, dependency-update automation and secret scanning run in CI on pull requests."
+    },
+    {
+      "id": "network-egress-policy",
+      "title": "Network egress restricted for workloads",
+      "cwe": null,
+      "family": "ops",
+      "kind": "posture",
+      "description": "Kubernetes NetworkPolicy/Cilium policy restricting workload egress."
+    },
+    {
+      "id": "workload-syscall-confinement",
+      "title": "Workload syscall / MAC confinement",
+      "cwe": null,
+      "family": "ops",
+      "kind": "posture",
+      "description": "seccomp profile (RuntimeDefault/Localhost) and AppArmor/SELinux on workloads."
+    },
+    {
+      "id": "runtime-threat-detection-and-admission",
+      "title": "Runtime threat detection and admission control",
+      "cwe": null,
+      "family": "ops",
+      "kind": "posture",
+      "description": "Falco/Tetragon runtime detection and Kyverno/Gatekeeper/PodSecurity admission policies."
+    },
+    {
+      "id": "data-encryption-controls",
+      "title": "Data protection / encryption controls",
+      "cwe": "CWE-311",
+      "family": "compliance",
+      "kind": "posture",
+      "description": "Sensitive data is encrypted at rest/in transit (column encryption, key vault, data-protection APIs, KDFs)."
+    },
+    {
+      "id": "authorization-enforcement",
+      "title": "Authorization enforcement posture",
+      "cwe": null,
+      "family": "compliance",
+      "kind": "posture",
+      "description": "Endpoints are protected by authorization attributes/policies or explicit guard checks."
+    },
+    {
+      "id": "audit-trail",
+      "title": "Audit trail of changes",
+      "cwe": "CWE-778",
+      "family": "compliance",
+      "kind": "posture",
+      "description": "Changes to business data are recorded in an immutable/interceptor-based audit trail."
+    },
+    {
+      "id": "data-retention-policy",
+      "title": "Data retention / TTL controls",
+      "cwe": null,
+      "family": "compliance",
+      "kind": "posture",
+      "description": "Personal data has a retention policy or TTL enforced in schema or jobs."
+    },
+    {
+      "id": "data-subject-rights",
+      "title": "Data-subject rights (erasure / export / consent)",
+      "cwe": null,
+      "family": "compliance",
+      "kind": "posture",
+      "description": "The system implements erasure, export and consent operations for personal data."
+    },
+    {
+      "id": "personal-data-inventory",
+      "title": "Personal-data fields handled",
+      "cwe": null,
+      "family": "compliance",
+      "kind": "judged",
+      "description": "Which source types carry genuine personal data (as opposed to fictional/test/config values)."
+    },
+    {
+      "id": "environment-separation",
+      "title": "Dev / test / prod configuration separation",
+      "cwe": null,
+      "family": "compliance",
+      "kind": "judged",
+      "description": "Environment configuration keeps development, test and production settings and secrets separate."
+    },
+    {
+      "id": "personal-data-in-event-store",
+      "title": "Personal data in an append-only event store",
+      "cwe": null,
+      "family": "compliance",
+      "kind": "judged",
+      "description": "Persisted events carry personal data that an immutable store cannot erase."
+    },
+    {
+      "id": "high-cyclomatic-complexity",
+      "title": "Function with high cyclomatic complexity",
+      "cwe": "CWE-1121",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A method/function whose decision-point count exceeds the threshold."
+    },
+    {
+      "id": "high-cognitive-complexity",
+      "title": "Function with high cognitive complexity",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A method/function hard to follow because of nesting and flow breaks (Sonar-style cognitive complexity)."
+    },
+    {
+      "id": "god-class",
+      "title": "Oversized class (god class)",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A class with too many lines or members that concentrates unrelated responsibilities."
+    },
+    {
+      "id": "oversized-source-file",
+      "title": "Oversized source file / component",
+      "cwe": "CWE-1080",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A source file or UI component exceeding the size threshold."
+    },
+    {
+      "id": "duplicated-code",
+      "title": "Duplicated code",
+      "cwe": "CWE-1041",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "Copy-pasted code blocks or identical long conditions that should be shared."
+    },
+    {
+      "id": "low-class-cohesion",
+      "title": "Low class cohesion (LCOM)",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "metric",
+      "description": "A class whose methods split into disconnected groups sharing no state or calls."
+    },
+    {
+      "id": "technical-debt-marker",
+      "title": "TODO / FIXME / HACK marker",
+      "cwe": "CWE-546",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A comment marking known unfinished or questionable work."
+    },
+    {
+      "id": "suppressed-diagnostic",
+      "title": "Suppressed compiler / analyzer diagnostic",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A pragma or attribute disabling a warning or analyzer rule."
+    },
+    {
+      "id": "commented-out-code",
+      "title": "Commented-out code",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "Blocks of code left in comments."
+    },
+    {
+      "id": "unused-code",
+      "title": "Unused code (dead symbols, unreachable files, unused exports)",
+      "cwe": "CWE-561",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "Types, members, files or exports that nothing references."
+    },
+    {
+      "id": "unreachable-code",
+      "title": "Unreachable branch or region",
+      "cwe": "CWE-561",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A branch, case label or conditional-compilation region that can never execute."
+    },
+    {
+      "id": "not-implemented-placeholder",
+      "title": "Not-implemented stub or placeholder in shipped code",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "NotImplementedException throws or placeholder literals in production code."
+    },
+    {
+      "id": "incomplete-implementation",
+      "title": "Incomplete implementation by code shape",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "Constant-returning stubs, async methods that never await, guards that cannot change the outcome, comparisons against NaN, skeleton types."
+    },
+    {
+      "id": "empty-catch-block",
+      "title": "Empty catch block (swallowed exception)",
+      "cwe": "CWE-1069",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A catch clause that discards the exception without handling or logging it."
+    },
+    {
+      "id": "pointless-catch-rethrow",
+      "title": "Catch that only rethrows",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A catch clause whose only statement rethrows, adding nothing."
+    },
+    {
+      "id": "blocking-on-async-code",
+      "title": "Blocking on asynchronous code (sync-over-async)",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": ".Wait()/.Result/.GetAwaiter().GetResult() or a blocking call inside an async function."
+    },
+    {
+      "id": "async-void-method",
+      "title": "async void outside event handlers",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "An async void method whose exceptions cannot be observed."
+    },
+    {
+      "id": "missing-cancellation-propagation",
+      "title": "Async operation without cancellation",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "An async method/function performing I/O that accepts and forwards no cancellation token/signal."
+    },
+    {
+      "id": "non-structured-log-message",
+      "title": "Log message built by string interpolation",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A logging call whose message template is an interpolated/concatenated string instead of a structured template with arguments."
+    },
+    {
+      "id": "nullable-analysis-disabled",
+      "title": "Null-safety analysis not enabled",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "posture",
+      "description": "Projects compile without nullable reference types / strict null checks."
+    },
+    {
+      "id": "null-forgiving-suppression",
+      "title": "Null-safety suppressed with the null-forgiving operator",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "The '!' operator (or equivalent non-null assertion) silencing null-safety analysis."
+    },
+    {
+      "id": "hand-rolled-structured-format-parsing",
+      "title": "Hand-rolled JSON/XML parsing",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "Regex or string slicing used to extract values from JSON/XML when a parser is available."
+    },
+    {
+      "id": "silent-error-fallback",
+      "title": "Failure path silently falls back to a constant",
+      "cwe": "CWE-390",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A parse/lookup failure returns a hard-coded default with no logging or signal to the caller."
+    },
+    {
+      "id": "js-interop-contract-mismatch",
+      "title": "JavaScript interop call to a missing function",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A string-named JS interop invocation that no referenced script defines."
+    },
+    {
+      "id": "redundant-condition-operand",
+      "title": "Subsumed operand in a boolean condition",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "An operand of an &&/|| chain implied by another operand, so it can never change the result."
+    },
+    {
+      "id": "undrained-child-process-stream",
+      "title": "Child process output stream never drained",
+      "cwe": "CWE-833",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A child process started with redirected stdout and stderr where one stream is never read, risking a pipe-buffer deadlock."
+    },
+    {
+      "id": "unbounded-truncation-loop",
+      "title": "Truncation loop without a lower bound",
+      "cwe": "CWE-835",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A loop that removes the last character of a string until a condition holds, with nothing stopping it at the empty string."
+    },
+    {
+      "id": "improper-resource-disposal",
+      "title": "Disposable resource ownership defect",
+      "cwe": "CWE-404",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A type that disposes a value it was handed, never releases one it created, or holds a pointless finalizer."
+    },
+    {
+      "id": "unrestored-process-global-state",
+      "title": "Process-global state not restored on failure",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "Working directory or environment variable changed and restored only on the success path, not in finally."
+    },
+    {
+      "id": "argument-guard-tests-wrong-condition",
+      "title": "Null guard that tests a non-null condition",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "An ArgumentNullException-style guard whose condition is true for a non-null argument (emptiness), or that dereferences it."
+    },
+    {
+      "id": "side-effect-in-conditional-guard",
+      "title": "Mutation inside a short-circuited guard",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A pattern/switch guard that mutates state in a position its own short-circuit can skip."
+    },
+    {
+      "id": "lock-release-state-mismatch",
+      "title": "Lock release guarded by inconsistent state",
+      "cwe": "CWE-667",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A finally that releases a synchronisation primitive based on a flag the method's own returns contradict."
+    },
+    {
+      "id": "unguarded-expensive-debug-logging",
+      "title": "Expensive argument evaluated for a disabled log level",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A debug/trace log call whose argument materialises a sequence or serializes data without a level check."
+    },
+    {
+      "id": "inert-configuration-option",
+      "title": "Configuration option that has no effect",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A constructor-injected option with a fallback that nothing reads, or whose fallback is duplicated elsewhere."
+    },
+    {
+      "id": "unsynchronized-callback-handoff",
+      "title": "Non-thread-safe collection handed across callbacks",
+      "cwe": "CWE-362",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A non-thread-safe collection shared between a callback and the waiting code without synchronisation."
+    },
+    {
+      "id": "collection-modified-during-enumeration",
+      "title": "Collection modified while being enumerated",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A foreach body that adds/removes on the collection it iterates."
+    },
+    {
+      "id": "index-access-outside-bounds-guard",
+      "title": "Index access outside its own emptiness guard",
+      "cwe": "CWE-129",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A condition that tests a collection/string for emptiness but indexes it on a branch that the test does not protect."
+    },
+    {
+      "id": "loop-decision-on-fixed-element",
+      "title": "Per-element decision taken from a fixed element",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "Inside a loop over elements, a condition that never mentions the loop variable guards an action indexed by it."
+    },
+    {
+      "id": "contradictory-support-guard",
+      "title": "Support check that admits what it should reject",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A negated disjunction whose operands disagree in polarity, so the guard accepts inputs it was written to reject."
+    },
+    {
+      "id": "test-only-api-in-production-code",
+      "title": "Test-only API exported from production code",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "Functions exported from a production module only for tests."
+    },
+    {
+      "id": "type-lookup-by-simple-name",
+      "title": "Type resolved by simple name across all loaded assemblies",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A First/Single over every type of every loaded assembly matched by name, which is ambiguous and slow."
+    },
+    {
+      "id": "missing-configure-await",
+      "title": "Library awaits without ConfigureAwait(false)",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "Library code that captures the synchronisation context on await."
+    },
+    {
+      "id": "allocation-awareness",
+      "title": "Allocation-aware API usage",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "metric",
+      "description": "Density of allocation-conscious APIs (spans, pools, value tasks, preallocation) in production code."
+    },
+    {
+      "id": "compiled-code-size",
+      "title": "Oversized compiled method bodies",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "metric",
+      "description": "Share of methods whose emitted IL/bytecode exceeds the size threshold."
+    },
+    {
+      "id": "untyped-javascript-share",
+      "title": "Untyped JavaScript share of the frontend",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "metric",
+      "description": "Share of frontend source written in plain JavaScript rather than TypeScript."
+    },
+    {
+      "id": "inconsistent-naming",
+      "title": "Inconsistent naming",
+      "cwe": null,
+      "family": "maturity",
+      "kind": "judged",
+      "description": "Identifiers that do not follow a consistent, descriptive naming convention."
+    },
+    {
+      "id": "low-value-comments",
+      "title": "Low-value or misleading comments",
+      "cwe": null,
+      "family": "maturity",
+      "kind": "judged",
+      "description": "Comments that restate code, are stale, or mislead."
+    },
+    {
+      "id": "module-dependency-cycle",
+      "title": "Circular dependency between modules/projects",
+      "cwe": "CWE-1047",
+      "family": "architecture",
+      "kind": "finding",
+      "description": "Projects, packages or modules that depend on each other in a cycle."
+    },
+    {
+      "id": "unstable-dependency",
+      "title": "Stable modules depending on volatile ones",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "metric",
+      "description": "A module many others depend on that itself has high instability (efferent coupling)."
+    },
+    {
+      "id": "architecture-rules-unenforced",
+      "title": "Architecture decisions not enforced",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "posture",
+      "description": "Checkable architecture decisions without an automated enforcement (architecture tests, analyzers)."
+    },
+    {
+      "id": "layer-dependency-violation",
+      "title": "Layer / boundary dependency violation",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "finding",
+      "description": "A dependency pointing the wrong way between layers (domain -> infrastructure, app -> web) or a deep import across a package boundary."
+    },
+    {
+      "id": "boundary-type-leakage",
+      "title": "Domain type leaking across a bounded-context boundary",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "finding",
+      "description": "Public surface of one context exposing another context's domain types instead of ids/contracts."
+    },
+    {
+      "id": "oversized-module",
+      "title": "Oversized project / module",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "metric",
+      "description": "A project exceeding size thresholds in lines, public types and namespaces."
+    },
+    {
+      "id": "call-indirection",
+      "title": "Excessive call indirection",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "metric",
+      "description": "Calls that hop through many interfaces/namespaces relative to the codebase size."
+    },
+    {
+      "id": "change-coupling",
+      "title": "Change coupling between files",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "metric",
+      "description": "Files that repeatedly change together in history without a structural dependency."
+    },
+    {
+      "id": "captive-dependency",
+      "title": "Captive dependency (lifetime mismatch)",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "finding",
+      "description": "A long-lived (singleton) service capturing a shorter-lived (scoped/transient) dependency."
+    },
+    {
+      "id": "unsynchronized-shared-state",
+      "title": "Unsynchronised mutable state in a shared singleton",
+      "cwe": "CWE-362",
+      "family": "architecture",
+      "kind": "finding",
+      "description": "A singleton service mutating fields without locking or atomic operations."
+    },
+    {
+      "id": "architecture-style-fit",
+      "title": "Architecture style fits the codebase",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "posture",
+      "description": "Detected architecture style (layered, clean, vertical slice, CQRS) and its fitness for the codebase size."
+    },
+    {
+      "id": "fat-interface",
+      "title": "Fat interface (interface segregation)",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "finding",
+      "description": "An interface declaring too many members for its consumers."
+    },
+    {
+      "id": "cross-slice-coupling",
+      "title": "Coupling between feature slices",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "finding",
+      "description": "A vertical feature slice referencing another slice's types."
+    },
+    {
+      "id": "production-depends-on-test-code",
+      "title": "Production project references test code",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "finding",
+      "description": "A production project/module referencing a test project or test framework."
+    },
+    {
+      "id": "query-with-side-effects",
+      "title": "Query handler with side effects (CQS violation)",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "finding",
+      "description": "A query handler that writes state or publishes events."
+    },
+    {
+      "id": "business-logic-share",
+      "title": "Business-logic share of production code",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "metric",
+      "description": "Share of production lines in domain/application roles versus infrastructure and glue."
+    },
+    {
+      "id": "solution-structure",
+      "title": "Solution / workspace structure",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "metric",
+      "description": "Project decomposition, shell projects and whether the solution builds."
+    },
+    {
+      "id": "internal-api-inconsistency",
+      "title": "Inconsistent internal API conventions",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "judged",
+      "description": "Public API surface that mixes conventions (naming, async, error handling, return shapes)."
+    },
+    {
+      "id": "folder-structure",
+      "title": "Folder and project structure conventions",
+      "cwe": null,
+      "family": "maturity",
+      "kind": "posture",
+      "description": "src/test separation and consistent root namespaces."
+    },
+    {
+      "id": "cross-aggregate-object-reference",
+      "title": "Aggregate holds an object reference to another aggregate",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "An aggregate field typed as another aggregate root instead of its id."
+    },
+    {
+      "id": "primitive-entity-identifier",
+      "title": "Entity identified by a raw primitive",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "Entity/event ids typed as Guid/int/string instead of strongly-typed id value types."
+    },
+    {
+      "id": "integration-event-leaks-domain-type",
+      "title": "Integration event exposes producer domain types",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "An integration event property typed with the producer's internal domain type or enum."
+    },
+    {
+      "id": "anemic-domain-model",
+      "title": "Anemic domain model",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "Domain entities with state but no behaviour that protects their invariants."
+    },
+    {
+      "id": "publicly-mutable-entity-state",
+      "title": "Entity state publicly mutable",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "Public setters or exposed mutable collections on domain entities."
+    },
+    {
+      "id": "domain-depends-on-infrastructure",
+      "title": "Domain layer depends on infrastructure",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "Domain types calling or exposing persistence, HTTP, messaging or cache types."
+    },
+    {
+      "id": "repository-for-non-aggregate",
+      "title": "Repository over a non-aggregate or leaking query handles",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "A repository for a non-root entity, or a repository interface returning IQueryable/DbSet-style live query handles."
+    },
+    {
+      "id": "primitive-obsession",
+      "title": "Primitive obsession (missing value object)",
+      "cwe": null,
+      "family": "domain",
+      "kind": "judged",
+      "description": "Recurring clusters of primitive parameters that should be a value object."
+    },
+    {
+      "id": "scattered-domain-rule",
+      "title": "Domain rule decided outside its owning type",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "The same predicate over a domain type's members evaluated in several other types."
+    },
+    {
+      "id": "multi-aggregate-transaction",
+      "title": "One operation mutates several aggregates",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "A single method writing more than one aggregate type through repositories."
+    },
+    {
+      "id": "constructible-invalid-entity",
+      "title": "Entity constructible in an invalid state",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "A public constructor taking raw primitives with no guard and no validating factory."
+    },
+    {
+      "id": "ambient-nondeterminism-in-domain",
+      "title": "Ambient clock/random read inside the domain",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "Domain code reading DateTime.Now, random generators or timers directly instead of receiving them."
+    },
+    {
+      "id": "synchronous-remote-call-in-event-handler",
+      "title": "Synchronous remote call inside an event handler",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "An event handler that performs HTTP/gRPC calls, coupling it temporally to another service."
+    },
+    {
+      "id": "command-with-multiple-handlers",
+      "title": "Command handled by more or fewer than one handler",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "A command message with zero or several handlers."
+    },
+    {
+      "id": "event-not-named-in-past-tense",
+      "title": "Event not named in the past tense",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "Domain/integration event names that do not describe something that happened."
+    },
+    {
+      "id": "dual-write-without-outbox",
+      "title": "Database write and message publish without an outbox",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "A handler that saves state and publishes a message with no transactional outbox."
+    },
+    {
+      "id": "non-idempotent-message-handler",
+      "title": "Non-idempotent message handler",
+      "cwe": null,
+      "family": "domain",
+      "kind": "judged",
+      "description": "A command/event consumer that mutates state without an idempotency guard."
+    },
+    {
+      "id": "nondeterministic-event-fold",
+      "title": "Non-deterministic event application",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "An event-sourcing Apply/When fold that reads the clock, random values, GUID generation or I/O."
+    },
+    {
+      "id": "mutable-persisted-event",
+      "title": "Persisted event is mutable",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "Events in the event store with public setters or mutable fields."
+    },
+    {
+      "id": "test-coverage",
+      "title": "Test coverage",
+      "cwe": null,
+      "family": "testing",
+      "kind": "metric",
+      "description": "Share of production code exercised by tests (measured line coverage, or static reachability from tests)."
+    },
+    {
+      "id": "test-pyramid-distribution",
+      "title": "Test distribution across levels",
+      "cwe": null,
+      "family": "testing",
+      "kind": "metric",
+      "description": "Balance of unit, integration, BDD and end-to-end tests."
+    },
+    {
+      "id": "test-without-assertion",
+      "title": "Test without an assertion",
+      "cwe": null,
+      "family": "testing",
+      "kind": "finding",
+      "description": "A test method that asserts nothing."
+    },
+    {
+      "id": "skipped-test-without-reason",
+      "title": "Skipped test without a structured reason",
+      "cwe": null,
+      "family": "testing",
+      "kind": "finding",
+      "description": "A skipped/ignored test without a documented, categorised reason."
+    },
+    {
+      "id": "excessive-mocking",
+      "title": "Test dominated by mocks",
+      "cwe": null,
+      "family": "testing",
+      "kind": "finding",
+      "description": "A test whose setup is mostly mocks, testing wiring rather than behaviour."
+    },
+    {
+      "id": "flaky-test",
+      "title": "Flaky (non-deterministic) test",
+      "cwe": null,
+      "family": "testing",
+      "kind": "finding",
+      "description": "A test that passes and fails across identical runs."
+    },
+    {
+      "id": "domain-vs-controller-coverage",
+      "title": "Domain versus controller test coverage",
+      "cwe": null,
+      "family": "testing",
+      "kind": "metric",
+      "description": "Ratio of test coverage on domain logic versus thin web/controller code."
+    },
+    {
+      "id": "executable-specifications",
+      "title": "Executable specifications (BDD)",
+      "cwe": null,
+      "family": "testing",
+      "kind": "posture",
+      "description": "Gherkin/BDD specifications wired to a runner."
+    },
+    {
+      "id": "ci-test-gate-integrity",
+      "title": "CI test gate honesty",
+      "cwe": null,
+      "family": "testing",
+      "kind": "posture",
+      "description": "CI test gates that run the whole suite before merge, gate coverage, and do not exclude suites by filter."
+    },
+    {
+      "id": "ci-build-and-test-pipeline",
+      "title": "CI pipeline builds and tests",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "posture",
+      "description": "A CI workflow exists and runs build and test stages."
+    },
+    {
+      "id": "observability",
+      "title": "Observability (structured logging, tracing, health checks)",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "posture",
+      "description": "Structured logging across runnable modules, telemetry and health endpoints."
+    },
+    {
+      "id": "deployment-rollback-safety",
+      "title": "Deployment and rollback safety",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "posture",
+      "description": "Deploy manifests with rolling updates, probes, approval gates and migration hooks."
+    },
+    {
+      "id": "disaster-recovery-evidence",
+      "title": "Disaster recovery and backup evidence",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "posture",
+      "description": "Backup, restore, RTO/RPO and persistence guarantees evidenced in IaC, manifests or docs."
+    },
+    {
+      "id": "release-hygiene",
+      "title": "Release hygiene (changelog, versioning)",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "posture",
+      "description": "A maintained changelog and version tags/properties."
+    },
+    {
+      "id": "outbound-http-resilience",
+      "title": "Outbound HTTP calls bounded by timeout/retry/breaker",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "posture",
+      "description": "Outbound HTTP clients configured with timeouts, retries or circuit breakers."
+    },
+    {
+      "id": "versioned-schema-migrations",
+      "title": "Versioned schema migrations",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "posture",
+      "description": "Database schema evolved by versioned migrations, not auto-created at runtime."
+    },
+    {
+      "id": "library-api-versioning",
+      "title": "Library public API and semantic versioning",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "posture",
+      "description": "A published library controls its public surface and declares semantic versions."
+    },
+    {
+      "id": "frontend-tooling-scripts",
+      "title": "Test/lint/typecheck scripts wired",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "posture",
+      "description": "package.json wires test, lint and typecheck scripts."
+    },
+    {
+      "id": "benchmark-discipline",
+      "title": "Performance benchmarks",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "posture",
+      "description": "Benchmarks exist (BenchmarkDotNet, tinybench …), track allocations and run in CI."
+    },
+    {
+      "id": "readme-quality",
+      "title": "README present and substantive",
+      "cwe": null,
+      "family": "maturity",
+      "kind": "posture",
+      "description": "A root README with getting-started, testing and architecture sections of reasonable depth."
+    },
+    {
+      "id": "architecture-documentation",
+      "title": "Architecture documentation and ADRs",
+      "cwe": null,
+      "family": "maturity",
+      "kind": "posture",
+      "description": "Architecture decision records and an architecture overview/diagram."
+    },
+    {
+      "id": "documentation-quality",
+      "title": "Documentation quality",
+      "cwe": null,
+      "family": "maturity",
+      "kind": "judged",
+      "description": "Clarity, completeness and usefulness of READMEs and architecture docs."
+    },
+    {
+      "id": "adr-quality",
+      "title": "ADR quality",
+      "cwe": null,
+      "family": "maturity",
+      "kind": "judged",
+      "description": "Decision records with context, decision, consequences and enforcement."
+    },
+    {
+      "id": "adr-conformance",
+      "title": "Code conforms to recorded decisions",
+      "cwe": null,
+      "family": "maturity",
+      "kind": "judged",
+      "description": "The codebase follows what its ADRs decided."
+    },
+    {
+      "id": "documentation-accuracy",
+      "title": "Documentation matches the code",
+      "cwe": null,
+      "family": "maturity",
+      "kind": "judged",
+      "description": "README/docs describe the projects and commands that actually exist."
+    },
+    {
+      "id": "churn-complexity-hotspot",
+      "title": "Churn x complexity hotspot",
+      "cwe": null,
+      "family": "maturity",
+      "kind": "metric",
+      "description": "Files that are both complex and frequently changed."
+    },
+    {
+      "id": "knowledge-concentration",
+      "title": "Knowledge concentration (bus factor)",
+      "cwe": null,
+      "family": "maturity",
+      "kind": "metric",
+      "description": "Living knowledge of key files concentrated in very few authors."
+    },
+    {
+      "id": "knowledge-freshness",
+      "title": "Orphaned knowledge (stale files)",
+      "cwe": null,
+      "family": "maturity",
+      "kind": "metric",
+      "description": "Files whose authors' knowledge has decayed below one focused commit's worth."
+    },
+    {
+      "id": "missing-text-alternative",
+      "title": "Missing text alternative",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "finding",
+      "description": "Images, image inputs, SVG images and video without alt text, title or captions (WCAG 1.1.1, 1.2.2)."
+    },
+    {
+      "id": "form-control-without-label",
+      "title": "Form control without accessible label",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "finding",
+      "description": "Inputs, selects, textareas and buttons without an associated label or accessible name (WCAG 1.3.1, 4.1.2)."
+    },
+    {
+      "id": "page-structure-violation",
+      "title": "Page structure / landmark violation",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "finding",
+      "description": "Missing lang/title/main landmark, skipped heading levels, zoom-disabling viewport, untitled iframe, meta refresh."
+    },
+    {
+      "id": "non-keyboard-accessible-interaction",
+      "title": "Interaction not keyboard accessible",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "finding",
+      "description": "Click handlers on non-interactive elements without role/tabindex/key handler, positive tabindex, href-less anchors (WCAG 2.1.1)."
+    },
+    {
+      "id": "invalid-aria-usage",
+      "title": "Invalid ARIA usage",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "finding",
+      "description": "Invalid/abstract roles, missing required ARIA state, aria-hidden on focusable elements (WCAG 4.1.2)."
+    },
+    {
+      "id": "visual-and-motion-safety",
+      "title": "Contrast, focus visibility and motion safety",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "finding",
+      "description": "Insufficient text contrast, removed focus outline, animation without prefers-reduced-motion guard."
+    },
+    {
+      "id": "accessibility-checks-in-ci",
+      "title": "Accessibility checks enforced",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "posture",
+      "description": "An accessibility lint rule set and automated accessibility assertions in tests/CI."
+    },
+    {
+      "id": "alt-text-quality",
+      "title": "Alt text is meaningful",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "judged",
+      "description": "Static alt text conveys the image's purpose rather than a filename or generic word."
+    },
+    {
+      "id": "link-and-button-text-quality",
+      "title": "Link and button text is descriptive",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "judged",
+      "description": "Link/button text conveys its purpose out of context (not 'click here')."
+    },
+    {
+      "id": "heading-and-label-text-quality",
+      "title": "Heading and label text is descriptive",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "judged",
+      "description": "Headings and labels describe their section/field rather than placeholders."
+    },
+    {
+      "id": "unauthenticated-reachable-endpoint",
+      "title": "Authenticated surface reachable without credentials",
+      "cwe": "CWE-306",
+      "family": "security",
+      "kind": "finding",
+      "description": "A page/API reachable with a session that also answers without any credentials."
+    },
+    {
+      "id": "reproducible-boot",
+      "title": "Application declares a reproducible boot",
+      "cwe": null,
+      "family": "ops",
+      "kind": "posture",
+      "description": "docker-compose / Aspire AppHost / Dockerfile allowing the app to be booted for runtime evidence."
+    },
+    {
+      "id": "undocumented-api-endpoint",
+      "title": "Served API differs from the committed API description",
+      "cwe": null,
+      "family": "security",
+      "kind": "finding",
+      "description": "Operations served by the running app that its committed OpenAPI document does not declare (or vice versa)."
+    },
+    {
+      "id": "third-party-data-flow",
+      "title": "Third-party data flows from the UI",
+      "cwe": null,
+      "family": "compliance",
+      "kind": "finding",
+      "description": "Third-party hosts (analytics, trackers) the rendered UI contacts."
+    },
+    {
+      "id": "unexpected-exposed-port",
+      "title": "Network port exposed beyond declaration",
+      "cwe": null,
+      "family": "ops",
+      "kind": "finding",
+      "description": "A published network binding not declared in the repository's own ports/expose configuration."
+    }
+  ]
+}

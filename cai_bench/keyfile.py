@@ -12,7 +12,7 @@ from .paths import norm, path_match
 LABELS = ("must-fire", "must-not-fire", "clean", "not-applicable", "score-band")
 SINGLE_CONCEPT_LABELS = ("must-fire", "must-not-fire", "not-applicable")
 TOP_KEYS = {"$schema", "schema", "schemaVersion", "repo", "keyVersion", "languages", "theme", "lineTolerance", "entries"}
-ENTRY_KEYS = {"id", "label", "concept", "concepts", "cwe", "file", "lines", "band", "rationale", "watchdog"}
+ENTRY_KEYS = {"id", "label", "concept", "concepts", "cwe", "file", "lines", "band", "rationale", "scannerHints"}
 CONCEPT_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 CWE_RE = re.compile(r"^CWE-[0-9]+$")
 REPO_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
@@ -95,8 +95,11 @@ def _check_entry(i, e):
             p.append(f"{where}: 'band' values must lie in 0..100 (got {b})")
         elif b[0] > b[1]:
             p.append(f"{where}: 'band' min {b[0]} is above max {b[1]}")
-    if "watchdog" in e and not (isinstance(e["watchdog"], list) and all(isinstance(x, str) and x for x in e["watchdog"])):
-        p.append(f"{where}: 'watchdog' must be an array of non-empty strings")
+    h = e.get("scannerHints")
+    if h is not None and not (isinstance(h, dict) and all(
+            isinstance(k, str) and k and isinstance(v, list) and all(isinstance(x, str) and x for x in v)
+            for k, v in h.items())):
+        p.append(f"{where}: 'scannerHints' must map scanner names to arrays of non-empty rule ids")
 
     if label in SINGLE_CONCEPT_LABELS:
         if "concept" not in e:

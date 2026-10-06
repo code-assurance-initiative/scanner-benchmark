@@ -34,7 +34,7 @@ The answer key holds LABELS; TP/FP/TN/FN are OUTCOMES of one scanner run against
       "file": "src/Billing/PaymentClient.cs",   // omitted = repository-level
       "lines": [14, 14],                 // omitted with a file = whole file
       "rationale": "…why this is (or is not) a defect, in one or two sentences…",
-      "watchdog": ["D13"]                // optional informative hint; the authoritative mapping is mappings/watchdog.json
+      "scannerHints": { "watchdog": ["D13"] }   // optional, informative; the authoritative mapping is mappings/<scanner>.json
     },
     { "id": "CLN-001", "label": "clean", "concepts": "*", "file": "src/Billing/Invoice.cs", "rationale": "…" },
     { "id": "NA-001", "label": "not-applicable", "concept": "sql-injection", "rationale": "no database access" },
@@ -64,6 +64,9 @@ Scanner-neutral concepts. `{ "version": "1.0", "concepts": [ { "id": "hardcoded-
   "ruleDimension": [ { "rule": "^(D\\d+)", "dimension": "$1" } ]  // ruleId → dimension for findings no concept claims
 }
 ```
+
+Note: bench repositories stay vendor-neutral, so they normally omit `scannerHints`; the harness mappings carry
+scanner knowledge.
 
 ## Matching (mirrors kennel tools/multilang/matching.py semantics)
 

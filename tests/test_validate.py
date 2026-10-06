@@ -18,7 +18,7 @@ class Valid(unittest.TestCase):
             self.assertEqual(problems(json.load(f)), [])
 
     def test_every_label_shape_is_accepted(self):
-        k = key(mf("A", "hardcoded-credential", PC, [1, 2], cwe="CWE-798", watchdog=["D13"]),
+        k = key(mf("A", "hardcoded-credential", PC, [1, 2], cwe="CWE-798", scannerHints={"any-scanner": ["D13"]}),
                 mnf("T", "hardcoded-credential", PC, [40, 40]),
                 clean("C1", "*", "src/Invoice.cs"), clean("C2", ["weak-hash"], "src/Hash.cs", [1, 9]),
                 na("N", "sql-injection"), band("B", "security-policy-present", 0, 100), lineTolerance=0)
@@ -109,6 +109,9 @@ class Invalid(unittest.TestCase):
 
     def test_not_applicable_contradicted(self):
         self.assertProblem(key(na("N", "weak-hash"), mf("A", "weak-hash", PC)), "N marks concept 'weak-hash'")
+
+    def test_scanner_hints_must_map_names_to_rule_lists(self):
+        self.assertProblem(key(mf("A", "hardcoded-credential", PC, [1, 2], scannerHints=["D13"])), "scannerHints")
 
 
 if __name__ == "__main__":
