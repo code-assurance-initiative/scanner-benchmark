@@ -1,4 +1,12 @@
 {
   "version": "1.0",
-  "repos": []
+  "repos": [
+    {
+      "repo": "code-assurance-initiative/bench-csharp-baseline-clean",
+      "tag": "v1.0.0",
+      "commit": "dfc1f39bf76d5c79f84e6d544e2300ab4e835151",
+      "keySha256": "b03513609f4cea6ce1dc439098576db967482702cb47018ed6946e415d973ef0",
+      "frozenAt": "2026-10-07"
+    }
+  ]
 }

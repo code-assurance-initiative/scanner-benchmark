@@ -1,0 +1,144 @@
+{
+  "repo": "code-assurance-initiative/bench-csharp-baseline-clean",
+  "tag": "v1.0.0",
+  "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc) + host --with-llm pass",
+  "scans": [
+    {
+      "iteration": 1,
+      "date": "2026-10-07",
+      "sarifSha256": "6cbd13d5aae1c64a579113bb4cf89b0cef7aa2da69598c2647c88f92f53a898b",
+      "outcomes": {
+        "tp": 0,
+        "fn": 0,
+        "fp": 2,
+        "tn": 144,
+        "trapFp": 1,
+        "trapTn": 0,
+        "results": 2,
+        "noise": 2,
+        "redundant": 0,
+        "uncovered": 2
+      },
+      "note": "contained"
+    },
+    {
+      "iteration": 2,
+      "date": "2026-10-07",
+      "sarifSha256": "83f5629c6fa1fc4db7b4e436071a748d6d697a9f3ef46b17025e8499041a1f68",
+      "outcomes": {
+        "tp": 0,
+        "fn": 0,
+        "fp": 1,
+        "tn": 145,
+        "trapFp": 1,
+        "trapTn": 0,
+        "results": 1,
+        "noise": 1,
+        "redundant": 0,
+        "uncovered": 2
+      },
+      "note": "contained; model-judged pass iter2-llm alongside"
+    },
+    {
+      "iteration": 3,
+      "date": "2026-10-07",
+      "sarifSha256": "83f5629c6fa1fc4db7b4e436071a748d6d697a9f3ef46b17025e8499041a1f68",
+      "outcomes": {
+        "tp": 0,
+        "fn": 0,
+        "fp": 1,
+        "tn": 145,
+        "trapFp": 1,
+        "trapTn": 0,
+        "results": 1,
+        "noise": 1,
+        "redundant": 0,
+        "uncovered": 2
+      },
+      "note": "contained, final; model-judged pass iter3-llm alongside"
+    }
+  ],
+  "verdicts": [
+    {
+      "ruleId": "D17",
+      "file": ".editorconfig",
+      "line": 37,
+      "message": "AnalyzerSeverityNone: CA2007 — this rule is switched off for every file the section matches, in every project under this directory, and the only record that it was ever switched off is this line: nothing at the sites it would have reported says so, so a reader of that code has no reason to look here, and code added years from now inherits the decision silently. Fix what the rule reports and delete the entry, or — where some sites really are legitimate — leave the rule on and suppress it at those sites with their reasons, so it keeps protecting the rest of the tree. If the rule is genuinely unwanted here, say why — on this line after the entry, or in the comment run directly above it: a comment that only repeats the rule's own title is read as no explanation at all and leaves this row in place.",
+      "class": "false-positive",
+      "reason": "Disproof: the reason for switching CA2007 off is on .editorconfig:36 (tests must not use ConfigureAwait(false), xUnit1030) and src/.editorconfig re-enables CA2007 as a warning for all production code. The finding claims no record of why exists.",
+      "action": "promoted to trap TRP-001 (suppressed-diagnostic, must-not-fire); code kept",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D36",
+      "file": null,
+      "line": null,
+      "message": "Dependency advisory scan runs only on code events: 1 workflow(s) run a dependency advisory scanner over the locked dependency set, and no workflow in the repository runs one on a `schedule:` (ci.yml:38 (on: pull_request, push)). An advisory is published against the versions ALREADY pinned in the lockfile, on the advisory database's clock, not the repository's: between two pushes the lockfile does not change and the scan does not run, so a new advisory against a shipped dependency stays invisible until the next commit happens to land. The control is in place and wired to the wrong clock. Add a `schedule:` trigger (a daily or weekly cron) to the workflow that runs the scanner, or a small dedicated workflow on a cron that runs the same command, so the pinned set is re-checked when the advisory database changes rather than when the code does.",
+      "class": "valid",
+      "reason": "The dependency advisory check ran only on push/PR, so an advisory published against an unchanged lock file would go unnoticed.",
+      "action": "repo fixed: weekly schedule on CI (32629ea)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D5",
+      "file": null,
+      "line": null,
+      "message": "Off the main sequence: Warehouse.Stock.Application: Warehouse.Stock.Application: abstractness 0.25, instability 0.00, distance 0.75 — zone of pain — concrete and depended on by 2 project(s), so it's rigid to change.",
+      "class": "opinion-not-fact",
+      "reason": "Main-sequence distance is a heuristic; a concrete application layer depended on by API and infrastructure is the intended shape of a small layered service.",
+      "action": "recorded as noise",
+      "iteration": 1
+    },
+    {
+      "ruleId": "P6",
+      "file": null,
+      "line": null,
+      "message": "Changelog looks stale/thin: The changelog this check read carries 2 versioned entries, against a bar of 3. Counted as either an `x.y.z` string or a version-shaped section heading (`## [1.2.0]`, `## V14.x.x`, `## Updates in 8.0.x`), whichever is the larger — so a log sectioned by minor series counts its sections, not its individual patch numbers. Entries recorded somewhere this check does not read — release notes generated at tag time from a generator config it did not recognise, or a log kept outside the repository — are not counted here, and this row is about what is re-findable in the tree rather than about how often you release.",
+      "class": "opinion-not-fact",
+      "reason": "Two versioned changelog entries for a service with two releases; inventing a third to clear a bar of 3 would falsify history.",
+      "action": "recorded as noise",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D19",
+      "file": null,
+      "line": null,
+      "message": "Documentation: no contributor guidance: The root README does not contain guidance for contributors, such as how to submit pull requests, coding standards, or the process for reporting issues. Add a 'Contributing' section to the root README.md with links to a CONTRIBUTING.md file or inline instructions on how to contribute to the project.",
+      "class": "valid",
+      "reason": "A public MIT repository with no contribution guidance at all.",
+      "action": "repo fixed: Contributing section in README.md (f55612f)",
+      "iteration": 2
+    },
+    {
+      "ruleId": "M4",
+      "file": null,
+      "line": null,
+      "message": "README/code drift: README claims the service is a 'small ASP.NET Core web API' and lists only 3 main projects in the Architecture section, but the evidence shows 5 projects total, including dedicated test projects which are significant components of the repository structure. — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+      "class": "false-positive",
+      "reason": "Disproof: README's Architecture section describes the three production projects; the two test projects are described under Testing. The model reading was unverified (the scanner says so) and absent from the identical pass one iteration earlier (non-deterministic).",
+      "action": "recorded as noise",
+      "iteration": 3
+    }
+  ],
+  "falseNegatives": [],
+  "scoreBands": [
+    {
+      "entryId": "BND-023",
+      "outcome": "out",
+      "score": 70,
+      "band": [
+        80,
+        100
+      ],
+      "class": "opinion-not-fact",
+      "note": "M2 wants 8 ADRs for its top tier; the repository records its 3 real decisions. Band set before the first scan and kept."
+    },
+    {
+      "note": "Model-judged: D19 90, D20 100, D21 100, D25 100, M4 90-100 across two passes (non-deterministic by up to 10 points); D22/D24 emitted no score. 17 bands unscored (abstentions on a single-author history, no deployment/outbound HTTP, lock-file row not emitted)."
+    }
+  ],
+  "observations": [
+    "A deliberately clean, idiomatic 1.1k-LoC service drew 3 deterministic rows (2 noise + 1 false positive on a documented suppression) and 2 model-judged rows (1 valid, 1 false positive).",
+    "The model-judged pass is not reproducible run-to-run: an identical tree produced a new M4 finding and moved M4 by 10 points."
+  ]
+}
