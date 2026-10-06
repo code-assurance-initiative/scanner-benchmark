@@ -12,7 +12,7 @@ measures, per concept and per scanner dimension:
 
 This repository holds the harness: the answer-key schema, the scanner-neutral concept taxonomy (CWE-anchored where a
 CWE exists), one mapping per scanner, the scoring CLI, the registry of frozen benchmark repositories, and recorded
-results. The fixed formats and the exact matching rules are in [`docs/CONTRACT.md`](docs/CONTRACT.md).
+results. The fixed formats and the exact matching rules are in [`docs/CONTRACT.md`](docs/CONTRACT.md) (contract 1.1).
 
 ## Labels and outcomes
 
@@ -85,7 +85,11 @@ ruleId, file, line) with its outcome — so a reader can audit every number.
 - Result paths may be relative, absolute or `file://` URIs; they are normalised and suffix-matched against the key's
   repo-relative paths. A result without a location is repository-level.
 - A result's concept comes from the scanner mapping: `mappings/<scanner>.json` maps each concept to regexes over the
-  SARIF `ruleId`. A scanner with no mapping file cannot be scored — write one first.
+  SARIF `ruleId`, narrowed where one rule id carries several concepts by regexes over the message text and by
+  required result properties. Scanner roll-up rows can be listed under `ignore` and are reported as `summary`, in no
+  metric. A scanner with no mapping file cannot be scored — write one first.
+- A result carrying SARIF `properties.commitSha` is a history finding; an entry with `commit` matches it by commit
+  in the same file, at any line.
 - `score-band` entries need `--scores`, a JSON object `{ "<concept or scanner dimension>": <0–100> }`. An entry with
   no score is reported `unscored`.
 - Results of concepts the key does not cover are reported as **uncovered** and never counted as noise. A second

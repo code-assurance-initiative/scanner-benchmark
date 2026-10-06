@@ -45,9 +45,11 @@ def _e(id, label, **kw):
     return e
 
 
-def res(rule, uri=None, line=None):
+def res(rule, uri=None, line=None, message=None, commit=None):
     """One SARIF result; no uri = repository-level (no locations)."""
-    r = {"ruleId": rule, "message": {"text": f"{rule} says so"}}
+    r = {"ruleId": rule, "message": {"text": message if message is not None else f"{rule} says so"}}
+    if commit is not None:
+        r["properties"] = {"commitSha": commit}
     if uri is not None:
         loc = {"artifactLocation": {"uri": uri}}
         if line is not None:
@@ -60,10 +62,10 @@ def sarif(*results):
     return {"version": "2.1.0", "runs": [{"tool": {"driver": {"name": "t"}}, "results": list(results)}]}
 
 
-def run(k, *results, scores=None, prefixes=()):
+def run(k, *results, scores=None, prefixes=(), mapping=None):
     """Score hand-made results against a hand-made key; returns the report."""
     doc = sarif(*results)
-    return score(json.loads(json.dumps(k)), read_results(doc, prefixes), Mapping(MAPPING_DOC), scores)
+    return score(json.loads(json.dumps(k)), read_results(doc, prefixes), Mapping(mapping or MAPPING_DOC), scores)
 
 
 def outcomes(report):

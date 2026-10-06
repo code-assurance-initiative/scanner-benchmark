@@ -85,20 +85,38 @@ D28_RULES = {
     "hardcoded-cryptographic-key": ["crypto-key-passphrase", "hardcoded-crypto-key"],
     "committed-private-key": ["private-key", "private-key-blob", "private-key-store"],
 }
-discriminators = OrderedDict()
+D13_SRC = "engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108 (title = \"Leaked secret: {SecretType}\"); SecretType vocabulary from engine/src/Core/Security/NativeSecretScanner.cs Rules (:84-131), ScanLines (:993-1060) and ScanAsync (:546-574), PrivateKeyBlobFile.cs:61, KeyStoreFile.cs:77. D13's own type `hardcoded-credential` is the password|passwd|pwd assignment rule (NativeSecretScanner.cs:231 CredentialAssignment), hence hardcoded-password"
+D28_SRC = "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266 (title = \"Secret: {gitleaks RuleID}\"); rule ids = gitleaks defaults (useDefault = true) + engine/rulesets/gitleaks/watchdog-gitleaks.toml; D28's own binary/config rules title \"{severity} secret: WD-SECRET-000N\" (engine/src/Scanner/Security/D28/Scanners: CommittedPrivateKeyBlobScan 0001, ConfigCredentialBindingScan 0002, PrivateKeyBlobHistoryScan 0003, CommittedKeyStoreScan 0004)"
+D29_SRC = "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,822 (title = \"{severity}: {semgrep check id after its last '.'}\"); check ids from engine/rulesets/semgrep/watchdog-sast.yml (native D29 checks carry no watchdog- prefix)"
+D31_SRC = "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:914 (title = \"{severity} IaC: {trivy id}\"); DS-0031 = secrets in ENV (engine/src/Scanner/Security/D31/Scanners/DockerfileShapeRuleFilter.cs:79)"
+S1_SRC = "engine/src/Scanner/Compliance/S1/S1Analyzer.cs:1007"
+SEV = r"^\w+"
+
+# Contract 1.1 discriminators: concept -> dimension -> [conditions]. A dimension listed here gets one rule object per
+# condition ({"rule": "^D$", "messages": [...]} / {"rule": "^D$", "properties": [...]}); the concept's other
+# dimensions keep the plain dimension-id rule.
+DISCRIM = OrderedDict()
 for cid, types in D13_TYPES.items():
-    discriminators.setdefault(cid, []).append(OrderedDict(
-        dimension="D13", messageRegex=r"^Leaked secret: (?:" + "|".join(re.escape(t) for t in types) + r"):",
-        source="engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108 (title = \"Leaked secret: {SecretType}\"); SecretType vocabulary from engine/src/Core/Security/NativeSecretScanner.cs Rules (:84-131), ScanLines (:993-1060) and ScanAsync (:546-574), PrivateKeyBlobFile.cs:61, KeyStoreFile.cs:77"))
+    DISCRIM.setdefault(cid, OrderedDict())["D13"] = [dict(messages=[r"^Leaked secret: (?:" + "|".join(re.escape(t) for t in types) + r"):"], source=D13_SRC)]
+D28_OWN = {"hardcoded-credential": ["0002"], "committed-private-key": ["0001", "0003", "0004"]}
 for cid, rules in D28_RULES.items():
-    discriminators.setdefault(cid, []).append(OrderedDict(
-        dimension="D28", messageRegex=r"^Secret: (?:" + "|".join(rules) + r"):",
-        source="engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266 (title = \"Secret: {gitleaks RuleID}\"); rule ids = gitleaks defaults (useDefault = true) + engine/rulesets/gitleaks/watchdog-gitleaks.toml"))
-discriminators["secret-in-version-history"] = [OrderedDict(
-    dimension="D28", propertyPresent="properties.commitSha",
-    source="engine/src/CodeHealth.Reporting/Sarif/SarifReportRenderer.cs:136-139 (commitSha stamped only on history-anchored findings)")]
-discriminators["dependencies-not-locked"] = [OrderedDict(dimension="SC1", messageRegex=r"^(?:NuGet|JavaScript|Go) dependencies are not locked:",
-    source="engine/src/Scanner/SupplyChain/SC1/SupplyChainHygieneAnalyzer.cs:505")]
+    msgs = [r"^Secret: (?:" + "|".join(rules) + r"):"]
+    if cid in D28_OWN:
+        msgs.append(SEV + r" secret: WD-SECRET-(?:" + "|".join(D28_OWN[cid]) + r"):")
+    DISCRIM.setdefault(cid, OrderedDict())["D28"] = [dict(messages=msgs, source=D28_SRC)]
+DISCRIM["hardcoded-credential"]["D29"] = [dict(messages=[SEV + r": (?:watchdog-)?static-cloud-credential-in-workflow:"], source=D29_SRC)]
+DISCRIM["hardcoded-cryptographic-key"]["D29"] = [dict(messages=[SEV + r": (?:watchdog-)?hardcoded-cookie-signing-secret(?:-[a-z]+)?:"], source=D29_SRC)]
+DISCRIM["hardcoded-password"]["D29"] = [dict(messages=[SEV + r": (?:watchdog-)?hardcoded-[a-z0-9-]*password[a-z0-9-]*:"], source=D29_SRC + "; no check id at rubric-2026.10.1 matches, so D29 currently evidences no hardcoded-password result")]
+DISCRIM["hardcoded-credential"]["D31"] = [dict(messages=[SEV + r" IaC: DS-0031:"], source=D31_SRC)]
+DISCRIM["hardcoded-cryptographic-key"]["S1"] = [dict(messages=[r"^Cryptographic key material is a compile-time constant"], source=S1_SRC)]
+DISCRIM["secret-in-version-history"] = OrderedDict(D28=[
+    dict(properties=["commitSha"], source="engine/src/CodeHealth.Reporting/Sarif/SarifReportRenderer.cs:136-139 (commitSha stamped only on history-anchored findings)"),
+    dict(messages=[SEV + r" secret: WD-SECRET-0003:"], source=D28_SRC + " (0003 walks the object database: a key blob deleted from the tree)")])
+DISCRIM["dependencies-not-locked"] = OrderedDict(SC1=[dict(messages=[r"^(?:NuGet|JavaScript|Go) dependencies are not locked:"],
+    source="engine/src/Scanner/SupplyChain/SC1/SupplyChainHygieneAnalyzer.cs:505")])
+FAMILY = {c: "hardcoded-secret" for c in ("hardcoded-credential", "hardcoded-password", "hardcoded-cryptographic-key", "committed-private-key")}
+IGNORE = [OrderedDict(rule=r"^D28$", message=r"^Rotate the exposed credentials",
+                      reason="D28's repository-level roll-up of its located history rows (engine/src/Scanner/Security/D28/SecretsHistoryAnalyzer.cs:392), not a separate finding")]
 
 mapping = OrderedDict()
 mapping["scanner"] = "watchdog"
@@ -108,16 +126,33 @@ mapping["notes"] = [
     "Hence every regex in this file is an exact, anchored match on dimension ids: ^(?:D13|D28)$. The contract's optional sub-rule form (^D13[/.:-]) never occurs and is not used.",
     "The sub-rule lives in the RESULT MESSAGE, not the ruleId: message.text = \"{Finding.Title}: {Finding.Detail}\" (SarifReportRenderer.cs:117). Title formats: D13 \"Leaked secret: {secret type}\" (engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108); D28 \"Secret: {gitleaks rule id}\" (engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266); D29 \"{severity}: {semgrep check id}\" (ScanParsers.cs:822-823); D31 \"{severity} IaC: {trivy id}\" (ScanParsers.cs:914). fingerprints.json carries the same title plus a `detector` field.",
     "Per-result CWE taxa are present on security results (SarifReportRenderer.cs:154-168), but D13 stamps the dimension-wide pair CWE-798+CWE-259 on every row regardless of secret type (SecretScanningAnalyzer.cs:44, SecurityCweMap.cs:36), so CWE cannot discriminate D13 concepts.",
-    "AMBIGUITY under contract v1: where one dimension maps to several concepts (D13, D28, D29, D31, S1, D17 …) the ruleId alone cannot tell which concept a result evidences, so a v1 matcher will offer the result to every concept the dimension maps to. The additive, non-contract field `x-messageDiscriminators` records the message-title regex (and history marker) that would disambiguate the secret dimensions; v1 consumers ignore it. Adopting it is a contract v2 decision.",
+    "Contract 1.1: where one dimension maps to several concepts the message decides. The secret concepts (D13, D28, D29, D31, S1), secret-in-version-history (D28: properties.commitSha, or WD-SECRET-0003) and dependencies-not-locked (SC1) carry per-rule `messages` / `properties` conditions, each with a `source` naming the engine line its title format comes from. Other multi-concept dimensions (D29's injection/crypto checks, D31's container checks, S1's posture cards, D17 …) are NOT yet discriminated: a result of theirs is still offered to every concept the dimension maps to — discriminate a concept before a benchmark repository scores it.",
+    "The four hardcoded-secret concepts form the family `hardcoded-secret`: a scanner that reports the right site under a sibling secret type (gitleaks generic-api-key on a planted password) is credited at plants and charged at traps (CONTRACT.md, Concept families).",
+    "D28's repository-level \"Rotate the exposed credentials\" row is a roll-up of its located rows and is listed under `ignore` (outcome summary, in no metric).",
     "Location: physicalLocation.artifactLocation.uri = Finding.FilePath (repo-relative) and region.startLine = LineNumber, with any non-positive or missing line written as 1 (SarifReportRenderer.cs:331-355). A file-level finding therefore matches only entries within lineTolerance of line 1; a repository-level finding has an empty locations array.",
     "Runtime cards (AX*1) and X31 are mapped for completeness although they are out of scope for v1 (see coverage/matrix.json).",
 ]
 mapping["concepts"] = OrderedDict()
 for cid in concept_ids:
     ds = by_concept[cid]
-    mapping["concepts"][cid] = OrderedDict(rules=[rule_for(ds)], dimensions=ds)
+    disc = DISCRIM.get(cid, {})
+    for did in disc:
+        assert did in ds, (cid, did, "discriminated dimension not mapped to the concept in dims.py")
+    plain = [d for d in ds if d not in disc]
+    rules = [rule_for(plain)] if plain else []
+    for did, conds in disc.items():
+        for cond in conds:
+            r = OrderedDict(rule=rule_for([did]))
+            for k in ("messages", "properties", "source"):
+                if k in cond:
+                    r[k] = cond[k]
+            rules.append(r)
+    spec = OrderedDict(rules=rules, dimensions=ds)
+    if cid in FAMILY:
+        spec["family"] = FAMILY[cid]
+    mapping["concepts"][cid] = spec
 mapping["ruleDimension"] = [OrderedDict(rule=r"^([A-Z]+[0-9]+)$", dimension="$1")]
-mapping["x-messageDiscriminators"] = discriminators
+mapping["ignore"] = IGNORE
 
 # ---------------- coverage/matrix.json ----------------
 def labels_for(kind, thematic, located=False):

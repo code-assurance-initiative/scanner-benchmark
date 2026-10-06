@@ -6,54 +6,163 @@
     "Hence every regex in this file is an exact, anchored match on dimension ids: ^(?:D13|D28)$. The contract's optional sub-rule form (^D13[/.:-]) never occurs and is not used.",
     "The sub-rule lives in the RESULT MESSAGE, not the ruleId: message.text = \"{Finding.Title}: {Finding.Detail}\" (SarifReportRenderer.cs:117). Title formats: D13 \"Leaked secret: {secret type}\" (engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108); D28 \"Secret: {gitleaks rule id}\" (engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266); D29 \"{severity}: {semgrep check id}\" (ScanParsers.cs:822-823); D31 \"{severity} IaC: {trivy id}\" (ScanParsers.cs:914). fingerprints.json carries the same title plus a `detector` field.",
     "Per-result CWE taxa are present on security results (SarifReportRenderer.cs:154-168), but D13 stamps the dimension-wide pair CWE-798+CWE-259 on every row regardless of secret type (SecretScanningAnalyzer.cs:44, SecurityCweMap.cs:36), so CWE cannot discriminate D13 concepts.",
-    "AMBIGUITY under contract v1: where one dimension maps to several concepts (D13, D28, D29, D31, S1, D17 …) the ruleId alone cannot tell which concept a result evidences, so a v1 matcher will offer the result to every concept the dimension maps to. The additive, non-contract field `x-messageDiscriminators` records the message-title regex (and history marker) that would disambiguate the secret dimensions; v1 consumers ignore it. Adopting it is a contract v2 decision.",
+    "Contract 1.1: where one dimension maps to several concepts the message decides. The secret concepts (D13, D28, D29, D31, S1), secret-in-version-history (D28: properties.commitSha, or WD-SECRET-0003) and dependencies-not-locked (SC1) carry per-rule `messages` / `properties` conditions, each with a `source` naming the engine line its title format comes from. Other multi-concept dimensions (D29's injection/crypto checks, D31's container checks, S1's posture cards, D17 …) are NOT yet discriminated: a result of theirs is still offered to every concept the dimension maps to — discriminate a concept before a benchmark repository scores it.",
+    "The four hardcoded-secret concepts form the family `hardcoded-secret`: a scanner that reports the right site under a sibling secret type (gitleaks generic-api-key on a planted password) is credited at plants and charged at traps (CONTRACT.md, Concept families).",
+    "D28's repository-level \"Rotate the exposed credentials\" row is a roll-up of its located rows and is listed under `ignore` (outcome summary, in no metric).",
     "Location: physicalLocation.artifactLocation.uri = Finding.FilePath (repo-relative) and region.startLine = LineNumber, with any non-positive or missing line written as 1 (SarifReportRenderer.cs:331-355). A file-level finding therefore matches only entries within lineTolerance of line 1; a repository-level finding has an empty locations array.",
     "Runtime cards (AX*1) and X31 are mapped for completeness although they are out of scope for v1 (see coverage/matrix.json)."
   ],
   "concepts": {
     "hardcoded-credential": {
       "rules": [
-        "^(?:D13|D28|D29|D31)$"
+        {
+          "rule": "^(?:D13)$",
+          "messages": [
+            "^Leaked secret: (?:aws\\-access\\-key|gcp\\-api\\-key|gcp\\-oauth\\-client\\-secret|supabase\\-secret\\-key|supabase\\-service\\-role\\-key|slack\\-token|github\\-token|jwt|high\\-entropy\\-secret|azure\\-devops\\-pat|http\\-cookie\\-credential|http\\-authorization\\-credential|credential\\-file):"
+          ],
+          "source": "engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108 (title = \"Leaked secret: {SecretType}\"); SecretType vocabulary from engine/src/Core/Security/NativeSecretScanner.cs Rules (:84-131), ScanLines (:993-1060) and ScanAsync (:546-574), PrivateKeyBlobFile.cs:61, KeyStoreFile.cs:77. D13's own type `hardcoded-credential` is the password|passwd|pwd assignment rule (NativeSecretScanner.cs:231 CredentialAssignment), hence hardcoded-password"
+        },
+        {
+          "rule": "^(?:D28)$",
+          "messages": [
+            "^Secret: (?:generic-api-key|aws-access-token|aws-secret-key|github-pat|github-fine-grained-pat|slack-[a-z-]+|jwt|gcp-api-key|gcp-oauth-client-secret|supabase-secret-key|supabase-service-role-key|stripe-access-token|http-cookie-credential|http-authorization-credential|[a-z0-9-]+-(?:api-key|token|access-token)):",
+            "^\\w+ secret: WD-SECRET-(?:0002):"
+          ],
+          "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266 (title = \"Secret: {gitleaks RuleID}\"); rule ids = gitleaks defaults (useDefault = true) + engine/rulesets/gitleaks/watchdog-gitleaks.toml; D28's own binary/config rules title \"{severity} secret: WD-SECRET-000N\" (engine/src/Scanner/Security/D28/Scanners: CommittedPrivateKeyBlobScan 0001, ConfigCredentialBindingScan 0002, PrivateKeyBlobHistoryScan 0003, CommittedKeyStoreScan 0004)"
+        },
+        {
+          "rule": "^(?:D29)$",
+          "messages": [
+            "^\\w+: (?:watchdog-)?static-cloud-credential-in-workflow:"
+          ],
+          "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,822 (title = \"{severity}: {semgrep check id after its last '.'}\"); check ids from engine/rulesets/semgrep/watchdog-sast.yml (native D29 checks carry no watchdog- prefix)"
+        },
+        {
+          "rule": "^(?:D31)$",
+          "messages": [
+            "^\\w+ IaC: DS-0031:"
+          ],
+          "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:914 (title = \"{severity} IaC: {trivy id}\"); DS-0031 = secrets in ENV (engine/src/Scanner/Security/D31/Scanners/DockerfileShapeRuleFilter.cs:79)"
+        }
       ],
       "dimensions": [
         "D13",
         "D28",
         "D29",
         "D31"
-      ]
+      ],
+      "family": "hardcoded-secret"
     },
     "hardcoded-password": {
       "rules": [
-        "^(?:D13|D28|D29)$"
+        {
+          "rule": "^(?:D13)$",
+          "messages": [
+            "^Leaked secret: (?:hardcoded\\-credential|http\\-basic\\-credential|password\\-hash\\-credential):"
+          ],
+          "source": "engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108 (title = \"Leaked secret: {SecretType}\"); SecretType vocabulary from engine/src/Core/Security/NativeSecretScanner.cs Rules (:84-131), ScanLines (:993-1060) and ScanAsync (:546-574), PrivateKeyBlobFile.cs:61, KeyStoreFile.cs:77. D13's own type `hardcoded-credential` is the password|passwd|pwd assignment rule (NativeSecretScanner.cs:231 CredentialAssignment), hence hardcoded-password"
+        },
+        {
+          "rule": "^(?:D28)$",
+          "messages": [
+            "^Secret: (?:http-basic-credential|password-hash-credential):"
+          ],
+          "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266 (title = \"Secret: {gitleaks RuleID}\"); rule ids = gitleaks defaults (useDefault = true) + engine/rulesets/gitleaks/watchdog-gitleaks.toml; D28's own binary/config rules title \"{severity} secret: WD-SECRET-000N\" (engine/src/Scanner/Security/D28/Scanners: CommittedPrivateKeyBlobScan 0001, ConfigCredentialBindingScan 0002, PrivateKeyBlobHistoryScan 0003, CommittedKeyStoreScan 0004)"
+        },
+        {
+          "rule": "^(?:D29)$",
+          "messages": [
+            "^\\w+: (?:watchdog-)?hardcoded-[a-z0-9-]*password[a-z0-9-]*:"
+          ],
+          "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,822 (title = \"{severity}: {semgrep check id after its last '.'}\"); check ids from engine/rulesets/semgrep/watchdog-sast.yml (native D29 checks carry no watchdog- prefix); no check id at rubric-2026.10.1 matches, so D29 currently evidences no hardcoded-password result"
+        }
       ],
       "dimensions": [
         "D13",
         "D28",
         "D29"
-      ]
+      ],
+      "family": "hardcoded-secret"
     },
     "hardcoded-cryptographic-key": {
       "rules": [
-        "^(?:D13|D28|D29)$"
+        {
+          "rule": "^(?:D13)$",
+          "messages": [
+            "^Leaked secret: (?:signing\\-key|hardcoded\\-crypto\\-key|crypto\\-key\\-passphrase):"
+          ],
+          "source": "engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108 (title = \"Leaked secret: {SecretType}\"); SecretType vocabulary from engine/src/Core/Security/NativeSecretScanner.cs Rules (:84-131), ScanLines (:993-1060) and ScanAsync (:546-574), PrivateKeyBlobFile.cs:61, KeyStoreFile.cs:77. D13's own type `hardcoded-credential` is the password|passwd|pwd assignment rule (NativeSecretScanner.cs:231 CredentialAssignment), hence hardcoded-password"
+        },
+        {
+          "rule": "^(?:D28)$",
+          "messages": [
+            "^Secret: (?:crypto-key-passphrase|hardcoded-crypto-key):"
+          ],
+          "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266 (title = \"Secret: {gitleaks RuleID}\"); rule ids = gitleaks defaults (useDefault = true) + engine/rulesets/gitleaks/watchdog-gitleaks.toml; D28's own binary/config rules title \"{severity} secret: WD-SECRET-000N\" (engine/src/Scanner/Security/D28/Scanners: CommittedPrivateKeyBlobScan 0001, ConfigCredentialBindingScan 0002, PrivateKeyBlobHistoryScan 0003, CommittedKeyStoreScan 0004)"
+        },
+        {
+          "rule": "^(?:D29)$",
+          "messages": [
+            "^\\w+: (?:watchdog-)?hardcoded-cookie-signing-secret(?:-[a-z]+)?:"
+          ],
+          "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,822 (title = \"{severity}: {semgrep check id after its last '.'}\"); check ids from engine/rulesets/semgrep/watchdog-sast.yml (native D29 checks carry no watchdog- prefix)"
+        },
+        {
+          "rule": "^(?:S1)$",
+          "messages": [
+            "^Cryptographic key material is a compile-time constant"
+          ],
+          "source": "engine/src/Scanner/Compliance/S1/S1Analyzer.cs:1007"
+        }
       ],
       "dimensions": [
         "D13",
         "D28",
-        "D29"
-      ]
+        "D29",
+        "S1"
+      ],
+      "family": "hardcoded-secret"
     },
     "committed-private-key": {
       "rules": [
-        "^(?:D13|D28)$"
+        {
+          "rule": "^(?:D13)$",
+          "messages": [
+            "^Leaked secret: (?:private\\-key|private\\-key\\-blob|private\\-key\\-store):"
+          ],
+          "source": "engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108 (title = \"Leaked secret: {SecretType}\"); SecretType vocabulary from engine/src/Core/Security/NativeSecretScanner.cs Rules (:84-131), ScanLines (:993-1060) and ScanAsync (:546-574), PrivateKeyBlobFile.cs:61, KeyStoreFile.cs:77. D13's own type `hardcoded-credential` is the password|passwd|pwd assignment rule (NativeSecretScanner.cs:231 CredentialAssignment), hence hardcoded-password"
+        },
+        {
+          "rule": "^(?:D28)$",
+          "messages": [
+            "^Secret: (?:private-key|private-key-blob|private-key-store):",
+            "^\\w+ secret: WD-SECRET-(?:0001|0003|0004):"
+          ],
+          "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266 (title = \"Secret: {gitleaks RuleID}\"); rule ids = gitleaks defaults (useDefault = true) + engine/rulesets/gitleaks/watchdog-gitleaks.toml; D28's own binary/config rules title \"{severity} secret: WD-SECRET-000N\" (engine/src/Scanner/Security/D28/Scanners: CommittedPrivateKeyBlobScan 0001, ConfigCredentialBindingScan 0002, PrivateKeyBlobHistoryScan 0003, CommittedKeyStoreScan 0004)"
+        }
       ],
       "dimensions": [
         "D13",
         "D28"
-      ]
+      ],
+      "family": "hardcoded-secret"
     },
     "secret-in-version-history": {
       "rules": [
-        "^(?:D28)$"
+        {
+          "rule": "^(?:D28)$",
+          "properties": [
+            "commitSha"
+          ],
+          "source": "engine/src/CodeHealth.Reporting/Sarif/SarifReportRenderer.cs:136-139 (commitSha stamped only on history-anchored findings)"
+        },
+        {
+          "rule": "^(?:D28)$",
+          "messages": [
+            "^\\w+ secret: WD-SECRET-0003:"
+          ],
+          "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266 (title = \"Secret: {gitleaks RuleID}\"); rule ids = gitleaks defaults (useDefault = true) + engine/rulesets/gitleaks/watchdog-gitleaks.toml; D28's own binary/config rules title \"{severity} secret: WD-SECRET-000N\" (engine/src/Scanner/Security/D28/Scanners: CommittedPrivateKeyBlobScan 0001, ConfigCredentialBindingScan 0002, PrivateKeyBlobHistoryScan 0003, CommittedKeyStoreScan 0004) (0003 walks the object database: a key blob deleted from the tree)"
+        }
       ],
       "dimensions": [
         "D28"
@@ -384,7 +493,13 @@
     },
     "dependencies-not-locked": {
       "rules": [
-        "^(?:SC1)$"
+        {
+          "rule": "^(?:SC1)$",
+          "messages": [
+            "^(?:NuGet|JavaScript|Go) dependencies are not locked:"
+          ],
+          "source": "engine/src/Scanner/SupplyChain/SC1/SupplyChainHygieneAnalyzer.cs:505"
+        }
       ],
       "dimensions": [
         "SC1"
@@ -1619,68 +1734,11 @@
       "dimension": "$1"
     }
   ],
-  "x-messageDiscriminators": {
-    "hardcoded-credential": [
-      {
-        "dimension": "D13",
-        "messageRegex": "^Leaked secret: (?:aws\\-access\\-key|gcp\\-api\\-key|gcp\\-oauth\\-client\\-secret|supabase\\-secret\\-key|supabase\\-service\\-role\\-key|slack\\-token|github\\-token|jwt|high\\-entropy\\-secret|azure\\-devops\\-pat|http\\-cookie\\-credential|http\\-authorization\\-credential|credential\\-file):",
-        "source": "engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108 (title = \"Leaked secret: {SecretType}\"); SecretType vocabulary from engine/src/Core/Security/NativeSecretScanner.cs Rules (:84-131), ScanLines (:993-1060) and ScanAsync (:546-574), PrivateKeyBlobFile.cs:61, KeyStoreFile.cs:77"
-      },
-      {
-        "dimension": "D28",
-        "messageRegex": "^Secret: (?:generic-api-key|aws-access-token|aws-secret-key|github-pat|github-fine-grained-pat|slack-[a-z-]+|jwt|gcp-api-key|gcp-oauth-client-secret|supabase-secret-key|supabase-service-role-key|stripe-access-token|http-cookie-credential|http-authorization-credential|[a-z0-9-]+-(?:api-key|token|access-token)):",
-        "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266 (title = \"Secret: {gitleaks RuleID}\"); rule ids = gitleaks defaults (useDefault = true) + engine/rulesets/gitleaks/watchdog-gitleaks.toml"
-      }
-    ],
-    "hardcoded-password": [
-      {
-        "dimension": "D13",
-        "messageRegex": "^Leaked secret: (?:hardcoded\\-credential|http\\-basic\\-credential|password\\-hash\\-credential):",
-        "source": "engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108 (title = \"Leaked secret: {SecretType}\"); SecretType vocabulary from engine/src/Core/Security/NativeSecretScanner.cs Rules (:84-131), ScanLines (:993-1060) and ScanAsync (:546-574), PrivateKeyBlobFile.cs:61, KeyStoreFile.cs:77"
-      },
-      {
-        "dimension": "D28",
-        "messageRegex": "^Secret: (?:http-basic-credential|password-hash-credential):",
-        "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266 (title = \"Secret: {gitleaks RuleID}\"); rule ids = gitleaks defaults (useDefault = true) + engine/rulesets/gitleaks/watchdog-gitleaks.toml"
-      }
-    ],
-    "hardcoded-cryptographic-key": [
-      {
-        "dimension": "D13",
-        "messageRegex": "^Leaked secret: (?:signing\\-key|hardcoded\\-crypto\\-key|crypto\\-key\\-passphrase):",
-        "source": "engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108 (title = \"Leaked secret: {SecretType}\"); SecretType vocabulary from engine/src/Core/Security/NativeSecretScanner.cs Rules (:84-131), ScanLines (:993-1060) and ScanAsync (:546-574), PrivateKeyBlobFile.cs:61, KeyStoreFile.cs:77"
-      },
-      {
-        "dimension": "D28",
-        "messageRegex": "^Secret: (?:crypto-key-passphrase|hardcoded-crypto-key):",
-        "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266 (title = \"Secret: {gitleaks RuleID}\"); rule ids = gitleaks defaults (useDefault = true) + engine/rulesets/gitleaks/watchdog-gitleaks.toml"
-      }
-    ],
-    "committed-private-key": [
-      {
-        "dimension": "D13",
-        "messageRegex": "^Leaked secret: (?:private\\-key|private\\-key\\-blob|private\\-key\\-store):",
-        "source": "engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108 (title = \"Leaked secret: {SecretType}\"); SecretType vocabulary from engine/src/Core/Security/NativeSecretScanner.cs Rules (:84-131), ScanLines (:993-1060) and ScanAsync (:546-574), PrivateKeyBlobFile.cs:61, KeyStoreFile.cs:77"
-      },
-      {
-        "dimension": "D28",
-        "messageRegex": "^Secret: (?:private-key|private-key-blob|private-key-store):",
-        "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266 (title = \"Secret: {gitleaks RuleID}\"); rule ids = gitleaks defaults (useDefault = true) + engine/rulesets/gitleaks/watchdog-gitleaks.toml"
-      }
-    ],
-    "secret-in-version-history": [
-      {
-        "dimension": "D28",
-        "propertyPresent": "properties.commitSha",
-        "source": "engine/src/CodeHealth.Reporting/Sarif/SarifReportRenderer.cs:136-139 (commitSha stamped only on history-anchored findings)"
-      }
-    ],
-    "dependencies-not-locked": [
-      {
-        "dimension": "SC1",
-        "messageRegex": "^(?:NuGet|JavaScript|Go) dependencies are not locked:",
-        "source": "engine/src/Scanner/SupplyChain/SC1/SupplyChainHygieneAnalyzer.cs:505"
-      }
-    ]
-  }
+  "ignore": [
+    {
+      "rule": "^D28$",
+      "message": "^Rotate the exposed credentials",
+      "reason": "D28's repository-level roll-up of its located history rows (engine/src/Scanner/Security/D28/SecretsHistoryAnalyzer.cs:392), not a separate finding"
+    }
+  ]
 }

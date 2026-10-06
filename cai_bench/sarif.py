@@ -40,7 +40,8 @@ def _location(result, run):
 
 def read_results(sarif, prefixes=()):
     """Every result in every run, in document order: dicts with index, run, resultIndex, ruleId, uri (as written),
-    file (normalised, or None), line (or None) and message."""
+    file (normalised, or None), line (or None), message, properties (the result's property bag) and commitSha (set
+    on a history finding: SARIF properties.commitSha)."""
     if not isinstance(sarif, dict) or not isinstance(sarif.get("runs"), list):
         raise SarifError("SARIF: expected a top-level object with a 'runs' array")
     out = []
@@ -52,10 +53,13 @@ def read_results(sarif, prefixes=()):
                 raise SarifError(f"SARIF: runs[{ri}].results[{xi}] is not an object")
             uri, line = _location(res, run)
             msg = res.get("message") or {}
+            props = res.get("properties") if isinstance(res.get("properties"), dict) else {}
+            sha = props.get("commitSha")
             out.append({
                 "index": len(out), "run": ri, "resultIndex": xi,
                 "ruleId": _rule_id(res, run), "uri": uri, "file": norm(uri, prefixes) if uri else None,
                 "line": line if uri else None,
                 "message": msg.get("text") if isinstance(msg, dict) else None,
+                "properties": props, "commitSha": sha if isinstance(sha, str) and sha else None,
             })
     return out

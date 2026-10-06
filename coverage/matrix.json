@@ -8523,7 +8523,8 @@
         "insecure-cookie-flags",
         "inbound-input-validation",
         "weak-cryptographic-algorithm",
-        "weak-hash-algorithm"
+        "weak-hash-algorithm",
+        "hardcoded-cryptographic-key"
       ],
       "requires": [],
       "status": "in-scope",

@@ -174,7 +174,7 @@ D = {
  "R10": dict(k="metric", c=["duplicated-code"], cs="no", ts="yes", lb="D4 clone algorithm over JS/TS tokens", r=[TH], loc=True),
  "R11": dict(k="finding", c=["layer-dependency-violation"], cs="no", ts="yes", lb="frontend layout + cross-package deep imports", r=[TH]),
  # ---- web security posture / supply chain ----
- "S1": dict(k="posture", c=["security-response-headers", "https-enforcement", "insecure-cookie-flags", "inbound-input-validation", "weak-cryptographic-algorithm", "weak-hash-algorithm"], cs="yes", ts="yes", lb="DimensionMethods: .NET arm, and JS/TS when the repo has no .NET source", r=[CI, TI]),
+ "S1": dict(k="posture", c=["security-response-headers", "https-enforcement", "insecure-cookie-flags", "inbound-input-validation", "weak-cryptographic-algorithm", "weak-hash-algorithm", "hardcoded-cryptographic-key"], cs="yes", ts="yes", lb="DimensionMethods: .NET arm, and JS/TS when the repo has no .NET source", r=[CI, TI]),
  "SC1": dict(k="posture", c=["dependencies-not-locked"], cs="yes", ts="yes", lb="language-neutral (manifests)", r=[CD, TD]),
  # ---- correctness (X) ----
  "X1": dict(k="finding", c=["blocking-on-async-code", "async-void-method"], cs="yes", ts="no", lb="assessed: Roslyn .Wait()/GetResult()/async void", r=[CH]),

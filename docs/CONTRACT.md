@@ -1,6 +1,19 @@
-# Harness contract (v1)
+# Harness contract (v1.1)
 
 The fixed interfaces between the parts of this harness. Change only with a version bump.
+
+## What changed in 1.1 (2026-10-07) — backward compatible
+
+A real scan showed that one scanner rule id can carry several concepts (a dimension-level ruleId covering secrets,
+dependency-bot configuration and injection alike), so a Dockerfile "no HEALTHCHECK" result was scored as
+hard-coded-credential noise. 1.1 adds, all optional — every valid 1.0 key and mapping means the same under 1.1:
+
+- **mapping** — per concept `messages` (message-text regexes) and `properties` (required SARIF result properties);
+  rule items may be objects carrying their own conditions; a mapping-level `ignore` list whose results are
+  `summary` rows (in no metric); `family` to group sibling concepts.
+- **answer key** — `schemaVersion` may be `"1.1"`; an entry may carry `commit` (pins a history finding to a commit).
+- **matching** — concept families (siblings match plants and traps after exact matches); `commit` entries.
+- **report** — each result carries `commitSha` (SARIF `properties.commitSha`) and, for a summary row, `ignoreReason`.
 
 ## Labels vs outcomes
 
@@ -19,7 +32,7 @@ The answer key holds LABELS; TP/FP/TN/FN are OUTCOMES of one scanner run against
 ```jsonc
 {
   "schema": "https://github.com/code-assurance-initiative/scanner-benchmark/schema/answer-key.schema.json",
-  "schemaVersion": "1.0",
+  "schemaVersion": "1.1",                // "1.0" or "1.1"
   "repo": "code-assurance-initiative/bench-csharp-security-secrets",
   "keyVersion": "1.0.0",                 // matches the frozen git tag v<keyVersion>
   "languages": ["csharp"],
@@ -33,6 +46,7 @@ The answer key holds LABELS; TP/FP/TN/FN are OUTCOMES of one scanner run against
       "cwe": "CWE-798",                  // optional; must equal the taxonomy's cwe when both exist
       "file": "src/Billing/PaymentClient.cs",   // omitted = repository-level
       "lines": [14, 14],                 // omitted with a file = whole file
+      // "commit": "e920ad5",            // 1.1, optional, must-fire/must-not-fire only, needs file: see Matching
       "rationale": "…why this is (or is not) a defect, in one or two sentences…",
       "scannerHints": { "watchdog": ["D13"] }   // optional, informative; the authoritative mapping is mappings/<scanner>.json
     },
@@ -57,13 +71,37 @@ Scanner-neutral concepts. `{ "version": "1.0", "concepts": [ { "id": "hardcoded-
   "version": "rubric-2026.10.1",
   "concepts": {
     "hardcoded-credential": {
-      "rules": ["^D13$", "^D13[/.:-]"],   // regexes over the SARIF result's ruleId
-      "dimensions": ["D13"]                 // the scanner's own grouping, for per-dimension reporting
+      "rules": [                            // a result belongs to the concept if ANY rule item accepts it
+        "^D13$",                            // a regex over the SARIF result's ruleId …
+        { "rule": "^D31$",                  // … or (1.1) an object whose own conditions replace the concept-level ones
+          "messages": ["^\\w+ IaC: DS-0031:"] }
+      ],
+      "messages": ["^Leaked secret: (?:aws-access-key|github-token):"],  // 1.1, optional, applies to string rules
+      "properties": ["commitSha"],          // 1.1, optional: these SARIF result properties must be present (non-null)
+      "family": "hardcoded-secret",         // 1.1, optional: sibling concepts (see Matching)
+      "dimensions": ["D13", "D31"]          // the scanner's own grouping, for per-dimension reporting
     }
   },
-  "ruleDimension": [ { "rule": "^(D\\d+)", "dimension": "$1" } ]  // ruleId → dimension for findings no concept claims
+  "ruleDimension": [ { "rule": "^(D\\d+)", "dimension": "$1" } ],  // ruleId → dimension
+  "ignore": [                               // 1.1, optional: scanner roll-up rows
+    { "rule": "^D28$", "message": "^Rotate the exposed credentials", "reason": "roll-up of the located rows" }
+  ]
 }
 ```
+
+A rule item accepts a result when its ruleId matches the rule regex, AND — if `messages` apply to it — at least one
+`messages` regex matches the result's `message.text` (case-insensitive search), AND — if `properties` apply — every
+named property is present in the result's `properties` bag. An object rule item's own `messages` / `properties`
+replace the concept-level ones for that item (one concept often spans several scanner rules whose messages have
+different formats); a string rule uses the concept-level ones. With neither, the ruleId alone decides (1.0).
+
+An `ignore` entry matches a result when every regex it gives matches (`rule` over the ruleId, `message` over the
+message text, case-insensitive); it needs at least one. Such a result is a `summary` row: listed in the report with
+its reason, never matched, and counted in no metric — not as a hit, not as noise, not as uncovered. Use it only for
+rows that restate other rows (roll-ups, totals), and give the reason.
+
+`family` here is a mapping-level grouping of concepts one scanner may confuse with each other (e.g. a credential
+reported under a sibling secret type). It is unrelated to the taxonomy's `family` field.
 
 Note: bench repositories stay vendor-neutral, so they normally omit `scannerHints`; the harness mappings carry
 scanner knowledge.
@@ -75,7 +113,23 @@ the entry's `file` (suffix-tolerant, `/`-normalised), and its startLine is withi
 repository-level entry matches any result of the concept that has no location or whose location is outside every
 located entry. One-to-one for `must-fire` (each entry consumes at most one result; extra results on the same site are
 `redundant`, counted once and not as noise). `clean` entries match any result whose location falls inside the region,
-for any concept listed (or any concept at all for `"*"`).
+for any concept listed (or any concept at all for `"*"`), with no line tolerance.
+
+Precedence when a result could match several entries: a `must-fire` it can consume (key order, located before
+repository-level) → `redundant` on an already-found plant → `must-not-fire` → `clean` → `not-applicable` → noise
+if one of its concepts is covered by the key → `uncovered`.
+
+**History entries (1.1).** An entry with `commit` matches a result whose SARIF `properties.commitSha` starts with
+`commit` (case-insensitive), in the same file (suffix rule), at **any** line: in a history finding the commit, not the
+line, is the site. A result without `commitSha` never matches such an entry.
+
+**Concept families (1.1).** If the mapping gives concepts the same `family`, a result of a *sibling* concept may
+match a `must-fire` or a `must-not-fire` entry on the entry's site — but only after every exact-concept match has been
+made, so a result of the entry's own concept is always preferred. The rule is symmetric so that it cannot flatter a
+scanner: a sibling at a plant is a TP, a sibling at a trap is caught in the trap (FP), and a sibling result that
+matches no entry is noise (the siblings of a covered concept count as covered). `clean` and `not-applicable` entries
+name their concepts explicitly and match them exactly. Without a declared family, concepts never stand in for each
+other (1.0).
 
 ## Metrics (per concept, and per scanner dimension via the mapping)
 
@@ -85,4 +139,5 @@ for any concept listed (or any concept at all for `"*"`).
   concept the key covers) / all results of covered concepts
 - score-band: in/out per entry (scores supplied separately as `{concept|dimension: score}` JSON)
 
-Results whose concept the key does not cover at all are reported as `uncovered`, never as noise.
+Results whose concept the key does not cover at all are reported as `uncovered`, never as noise. `summary` rows
+(mapping `ignore`) are in no metric. A metric with a zero denominator is reported as n/a, never as 0 or 100 %.

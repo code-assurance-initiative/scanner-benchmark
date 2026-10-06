@@ -12,7 +12,10 @@ from .paths import norm, path_match
 LABELS = ("must-fire", "must-not-fire", "clean", "not-applicable", "score-band")
 SINGLE_CONCEPT_LABELS = ("must-fire", "must-not-fire", "not-applicable")
 TOP_KEYS = {"$schema", "schema", "schemaVersion", "repo", "keyVersion", "languages", "theme", "lineTolerance", "entries"}
-ENTRY_KEYS = {"id", "label", "concept", "concepts", "cwe", "file", "lines", "band", "rationale", "scannerHints"}
+ENTRY_KEYS = {"id", "label", "concept", "concepts", "cwe", "file", "lines", "commit", "band", "rationale", "scannerHints"}
+SCHEMA_VERSIONS = ("1.0", "1.1")
+COMMIT_RE = re.compile(r"^[0-9a-fA-F]{7,40}$")
+COMMIT_LABELS = ("must-fire", "must-not-fire")
 CONCEPT_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 CWE_RE = re.compile(r"^CWE-[0-9]+$")
 REPO_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
@@ -87,6 +90,13 @@ def _check_entry(i, e):
             p.append(f"{where}: 'lines' start {ln[0]} is after end {ln[1]}")
         if "file" not in e:
             p.append(f"{where}: 'lines' requires 'file'")
+    if "commit" in e:
+        if not (isinstance(e["commit"], str) and COMMIT_RE.match(e["commit"])):
+            p.append(f"{where}: 'commit' must be a 7-40 character hex commit sha or prefix (got {e['commit']!r})")
+        if "file" not in e:
+            p.append(f"{where}: 'commit' requires 'file'")
+        if label in LABELS and label not in COMMIT_LABELS:
+            p.append(f"{where}: label '{label}' does not take 'commit'")
     if "band" in e:
         b = e["band"]
         if not (isinstance(b, list) and len(b) == 2 and all(_is_num(x) for x in b)):
@@ -175,8 +185,9 @@ def validate_key(key, taxonomy=None):
     for k in ("schemaVersion", "repo", "keyVersion", "entries"):
         if k not in key:
             p.append(f"answer key: '{k}' is required")
-    if "schemaVersion" in key and key["schemaVersion"] != "1.0":
-        p.append(f"answer key: 'schemaVersion' must be \"1.0\" (got {key['schemaVersion']!r})")
+    if "schemaVersion" in key and key["schemaVersion"] not in SCHEMA_VERSIONS:
+        p.append(f"answer key: 'schemaVersion' must be one of {', '.join(SCHEMA_VERSIONS)} "
+                 f"(got {key['schemaVersion']!r})")
     if "repo" in key and not (isinstance(key["repo"], str) and REPO_RE.match(key["repo"])):
         p.append(f"answer key: 'repo' must be owner/name (got {key['repo']!r})")
     if "keyVersion" in key and not (isinstance(key["keyVersion"], str) and SEMVER_RE.match(key["keyVersion"])):
