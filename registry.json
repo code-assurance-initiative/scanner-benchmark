@@ -401,7 +401,17 @@
       "methodSha256": "9e2f8cf1f879460da19a7e5dd1c99b96af06b6e31e3df657619b43768277a813",
       "quotaSha256": "6543d686ebb5bb76018b59083cd8804b7a286d4ddbd6a2b2ea6f16443f07f2b4",
       "committedAt": "2026-10-07T21:22:57+02:00",
-      "note": "method sealed; contents private until release"
+      "note": "method sealed; contents private until release",
+      "amendments": [
+        {
+          "n": 1,
+          "file": "docs/HOLDOUT-METHOD-AMENDMENT-1.md",
+          "commit": "04488cead040186feddd9b512e3bcbbe838d3dbb",
+          "sha256": "44f0c65057819effe717be5888b8b331be0dc0413bccc6c0f67d12b756bd6148",
+          "committedAt": "2026-10-07T23:00:58+02:00",
+          "note": "location equivalence (harness contract 1.5): file-scope concepts and clone-group sites; no key changes"
+        }
+      ]
     }
   ]
 }
