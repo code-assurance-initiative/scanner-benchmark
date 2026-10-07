@@ -127,7 +127,7 @@
    "ruleId": "D5",
    "file": null,
    "line": null,
-   "message": "Off the main sequence: Quellbrook.Orders.Contracts: Quellbrook.Orders.Contracts: abstractness 0.00, instability 0.00, distance 1.00 — the shape a shared-kernel / building-block library has BY DESIGN — concrete and widely depended-on is what makes it useful, and this dimension does not penalise it (the distance is reported for completeness, not as a defect). Worth a look only if it has grown past one coherent kernel into an everything-bucket.",
+   "message": "Off the main sequence: Quellbrook.Orders.Domain: Quellbrook.Orders.Domain: abstractness 0.19, instability 0.00, distance 0.81 — zone of pain — concrete and depended on by 1 project(s), so it's rigid to change.",
    "class": "opinion-not-fact",
    "reason": "A concrete domain layer depended on by the application layer is the intended shape (ADR 0002).",
    "action": "recorded as noise"
@@ -181,7 +181,7 @@
    "ruleId": "D39",
    "file": "src/Quellbrook.Orders.Infrastructure/Persistence/OrderRecordConfiguration.cs",
    "line": 10,
-   "message": "IL efficiency: 1 authored method(s) exceed the IL budget: 1 of 148 first-party methods compile to oversized IL bodies (> 250 instructions); worst: Quellbrook.Orders.Infrastructure.Persistence.OrderRecordConfiguration.Configure @ src/Quellbrook.Orders.Infrastructure/Persistence/OrderRecordConfiguration.cs:10, 363 IL instructions; that pulled this dimension to 9.9/10. These bodies are far past the JIT's inline budget, so splitting them does not make them inlinable — what moves the number is emitting less: collapsing LINQ chains and closures on hot paths, and interpolation built eagerly where it is only sometimes used.",
+   "message": "IL efficiency: 1 authored method(s) exceed the IL budget: 1 of 151 first-party methods compile to oversized IL bodies (> 250 instructions); worst: Quellbrook.Orders.Infrastructure.Persistence.OrderRecordConfiguration.Configure @ src/Quellbrook.Orders.Infrastructure/Persistence/OrderRecordConfiguration.cs:10, 407 IL instructions; that pulled this dimension to 9.9/10. These bodies are far past the JIT's inline budget, so splitting them does not make them inlinable — what moves the number is emitting less: collapsing LINQ chains and closures on hot paths, and interpolation built eagerly where it is only sometimes used.",
    "class": "opinion-not-fact",
    "reason": "The IL size of a flat EF Core fluent mapping grows with the number of columns, not with logic.",
    "action": "promoted to trap TRP-011"
@@ -361,7 +361,7 @@
    "ruleId": "X2",
    "file": null,
    "line": null,
-   "message": "Not all async methods take a CancellationToken: Only 12/13 async methods accept a CancellationToken, so in-flight work can't be stopped early when the caller gives up — whatever ends it in your host (shutdown signal, timeout, abandoned request, user cancel). Thread a token through the call chain and honour it at each await and loop; where a method genuinely cannot be interrupted, omitting it is a deliberate choice — judge against your hosting model.",
+   "message": "Not all async methods take a CancellationToken: Only 11/13 async methods accept a CancellationToken, so in-flight work can't be stopped early when the caller gives up — whatever ends it in your host (shutdown signal, timeout, abandoned request, user cancel). Thread a token through the call chain and honour it at each await and loop; where a method genuinely cannot be interrupted, omitting it is a deliberate choice — judge against your hosting model.",
    "class": "valid",
    "reason": "Location-less roll-up of the planted ORD-002 (and, since sprint 3, of a delegate-running helper that does no I/O itself); counted as a summary of the concept, not a hit.",
    "action": "kept: ORD-002 is planted"

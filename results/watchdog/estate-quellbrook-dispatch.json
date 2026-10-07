@@ -1,0 +1,1000 @@
+{
+ "repo": "code-assurance-initiative/estate-quellbrook-dispatch",
+ "tag": "v1.0.0",
+ "engineVersion": "rubric-2026.10.1 (pinned instrument kennel-wt-scanner-bench @ 6a05dfb6c)",
+ "keySha256": "b9da8f498f17ea3276a411076de44dfcadceafb870920dacc2a1c44673058e5e",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-07",
+   "sarifSha256": "fb858392191f2cbcee9bdd4ebc5394ce0611cce9b129efd3bce4eda18b6aa148",
+   "outcomes": {
+    "tp": 3,
+    "fn": 2,
+    "fp": 14,
+    "tn": 208,
+    "trapFp": 9,
+    "trapTn": 6,
+    "results": 28,
+    "noise": 25,
+    "redundant": 0,
+    "uncovered": 7
+   },
+   "note": "contained; first complete local history (before any push, before the sprint-3 fixes); scored with the frozen v1.0.0 key"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "65ea45c753b5b5c60d98de216ed9601e44862d6759507a4ee7590d456d528f3c",
+   "outcomes": {
+    "tp": 3,
+    "fn": 2,
+    "fp": 12,
+    "tn": 210,
+    "trapFp": 9,
+    "trapTn": 6,
+    "results": 24,
+    "noise": 21,
+    "redundant": 0,
+    "uncovered": 6
+   },
+   "note": "contained; local history with the sprint-3 fixes (0565e07); scored with the frozen v1.0.0 key"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "ea4f7e1e746763fb8065ee2d254412b598b67d4cac9364dcf96cbba4230af4e2",
+   "outcomes": {
+    "tp": 3,
+    "fn": 2,
+    "fp": 9,
+    "tn": 213,
+    "trapFp": 7,
+    "trapTn": 8,
+    "results": 20,
+    "noise": 17,
+    "redundant": 0,
+    "uncovered": 8
+   },
+   "note": "host, model-judged pass; 0565e07; the host has no container/IaC tools"
+  },
+  {
+   "iteration": 3,
+   "date": "2026-10-07",
+   "sarifSha256": "b91f074c8afbaca8f9706dd28f48df765d69674f0622809317453767473f5828",
+   "outcomes": {
+    "tp": 3,
+    "fn": 2,
+    "fp": 12,
+    "tn": 210,
+    "trapFp": 9,
+    "trapTn": 6,
+    "results": 24,
+    "noise": 21,
+    "redundant": 0,
+    "uncovered": 6
+   },
+   "note": "contained; pushed 52c3a16; identical results to iteration 2"
+  },
+  {
+   "iteration": 3,
+   "date": "2026-10-07",
+   "sarifSha256": "353a342621dbb466b3b568e90ef0a83231bc826d29109ab08d9a77563aaf36d4",
+   "outcomes": {
+    "tp": 3,
+    "fn": 2,
+    "fp": 9,
+    "tn": 213,
+    "trapFp": 7,
+    "trapTn": 8,
+    "results": 20,
+    "noise": 17,
+    "redundant": 0,
+    "uncovered": 6
+   },
+   "note": "host, model-judged pass; 52c3a16; M4 rows of iteration 2 did not recur"
+  },
+  {
+   "iteration": 4,
+   "date": "2026-10-07",
+   "sarifSha256": "6d4fa0bbb82f3e12d5e9b311b323b2e3879bf18ca3d1aef6ab10e1b4d8aaf55d",
+   "outcomes": {
+    "tp": 3,
+    "fn": 2,
+    "fp": 12,
+    "tn": 210,
+    "trapFp": 9,
+    "trapTn": 6,
+    "results": 24,
+    "noise": 21,
+    "redundant": 0,
+    "uncovered": 6
+   },
+   "note": "contained; c1a3995 (code identical to v1.0.0, which adds only the final journal entry); identical results to iteration 3"
+  },
+  {
+   "iteration": 4,
+   "date": "2026-10-07",
+   "sarifSha256": "8e28b2a074cd05b78263ccd70c86f8bd3cea27fef649c331482aee9e7569d33d",
+   "outcomes": {
+    "tp": 3,
+    "fn": 2,
+    "fp": 9,
+    "tn": 213,
+    "trapFp": 7,
+    "trapTn": 8,
+    "results": 20,
+    "noise": 17,
+    "redundant": 0,
+    "uncovered": 6
+   },
+   "note": "host, model-judged pass; c1a3995"
+  }
+ ],
+ "verdicts": [
+  {
+   "ruleId": "D1",
+   "file": "src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs",
+   "line": 16,
+   "message": "ExpressAssignmentPolicy.Choose (cyclomatic 20): ExpressAssignmentPolicy.Choose has cyclomatic complexity 20 (threshold 15). To reduce it, separate the cases: extract each independent branch into its own named function, and where the body has guards that only reject input, fold those into early returns at the top.",
+   "class": "valid",
+   "reason": "ExpressAssignmentPolicy.Choose, cyclomatic 20 (32 at v0.2.0).",
+   "action": "kept: plant DSP-001 (TP)"
+  },
+  {
+   "ruleId": "D2",
+   "file": "src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs",
+   "line": 16,
+   "message": "ExpressAssignmentPolicy.Choose (cognitive 26): ExpressAssignmentPolicy.Choose has cognitive complexity 26 (threshold 15). To reduce it, split the body into named stages: move each independent step or branch into its own named function so the body reads as a short sequence of named calls rather than one long body.",
+   "class": "valid",
+   "reason": "The same method, cognitive 26 (44 at v0.2.0).",
+   "action": "kept: plant DSP-002 (TP)"
+  },
+  {
+   "ruleId": "D15",
+   "file": "src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs",
+   "line": 16,
+   "message": "Hotspot: src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs: src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs changed 5 times in last 90 days, and the most complex body those changes touched has cyclomatic complexity 20 in ExpressAssignmentPolicy.Choose at line 16. 4 of those changes were fix/bug commits, so the churn is repair rather than feature work. Before the next change lands here, make sure the area it touches is under test, then split that area out of the file so the following change is smaller than this one — a file this often edited pays the complexity back every time. Counted over 2026-07-09..2026-10-07, the 90 days ending at the analysed commit. Reproduce with `git log --since='2026-07-09 14:54:09 +02:00' --until='2026-10-07 14:54:09 +02:00' --full-history --no-merges -- src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs`: merges are excluded because a merge re-states changes already counted at their own commits, and history is NOT path-simplified because a change that reached the file through a merged branch is still a change to it. That command counts raw commits and can read HIGHER than this row, which counts a cherry-picked re-land, and a revert together with the commit it undoes, once each — a difference of several commits on a file whose history was re-landed or reverted inside the window.",
+   "class": "valid",
+   "reason": "The express policy is the hotspot: changed in six commits of the last 90 days, most of them fixes, on cyclomatic 20.",
+   "action": "kept: plant DSP-005 (TP)"
+  },
+  {
+   "ruleId": "D4",
+   "file": "src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs",
+   "line": 43,
+   "message": "Duplicated block (23 lines × 2): src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs:43-65 | src/Quellbrook.Dispatch.Domain/Assignment/StandardAssignmentPolicy.cs:23-45 — the copies sit in sibling files of one directory, so a shared home is within easy reach: extract the block into a single shared function the call sites can all reach — a file they already depend on, or a new one alongside them — and call it from both call sites, so a change lands once. Note that the copies do not run to the end of the range shown: their LAST lines are different code, not the same code under different names — the matched region ends inside that line. Extract the lines above it, and read the last line of each site separately.",
+   "class": "valid",
+   "reason": "The copied capacity/shift/licence block is real; the reported window (43-65) starts at the preceding guard, five lines before the copied code (48-63), so the line rule does not match it.",
+   "action": "kept: plant DSP-003 (counted as a location-imprecision FN, file-level hit)"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Dispatch.Domain/Consignments/Events.cs",
+   "line": 6,
+   "message": "Event not named in past tense: ConsignmentOutForDelivery: `ConsignmentOutForDelivery` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "valid",
+   "reason": "ConsignmentOutForDelivery named a state, not something that happened.",
+   "action": "repository fixed in the scripted history: ConsignmentSentOutForDelivery(V1), routing key unchanged (sprint 3, 2026-08-31)"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Dispatch.Contracts/IntegrationEvents/ConsignmentOutForDeliveryV1.cs",
+   "line": 7,
+   "message": "Event not named in past tense: ConsignmentOutForDeliveryV1: `ConsignmentOutForDeliveryV1` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "valid",
+   "reason": "The contract record had the same non-past-tense name.",
+   "action": "repository fixed with the domain event (same commit)"
+  },
+  {
+   "ruleId": "ED5",
+   "file": "src/Quellbrook.Dispatch.Application/Routes/PlanRouteHandler.cs",
+   "line": 12,
+   "message": "Possible non-idempotent mutation (review): Routes.PlanRouteHandler.HandleAsync: `Routes.PlanRouteHandler.HandleAsync` mutates persistent state (a database save) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+   "class": "valid",
+   "reason": "Iteration 1: a double-submitted plan put the same driver on two routes. From iteration 2 on the row repeats although the handler now refuses a second route for a driver on a day (exists check + unique index): false-positive from then.",
+   "action": "repository fixed (one route per driver and day, sprint 3, 2026-09-03); the repeating row caught by trap TRP-014"
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Quellbrook.Dispatch.Infrastructure/Messaging/OrderEventsConsumer.cs",
+   "line": 1,
+   "message": "Low coverage: src/Quellbrook.Dispatch.Infrastructure/Messaging/OrderEventsConsumer.cs: 46.0% line coverage (23/50).",
+   "class": "valid",
+   "reason": "The consumer's queue setup was untested (46 %).",
+   "action": "repository fixed: consumer setup test (sprint 3)"
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Quellbrook.Dispatch.Domain/Common/DomainException.cs",
+   "line": 1,
+   "message": "Low coverage: src/Quellbrook.Dispatch.Domain/Common/DomainException.cs: 33.3% line coverage (3/9).",
+   "class": "valid",
+   "reason": "Unused standard constructors (33 %).",
+   "action": "repository fixed: one constructor (sprint 3)"
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Quellbrook.Dispatch.Domain/Consignments/DeliveryZones.cs",
+   "line": 10,
+   "message": "CRAP 31: DeliveryZones.ZoneFor: Cyclomatic 23 with 75.6% file coverage — too complex for how untested it is (CRAP = CC²·(1−cov)³ + CC; ≥30 needs tests or simplification).",
+   "class": "valid",
+   "reason": "CRAP 31: the twenty-arm zone table was only partly tested.",
+   "action": "repository fixed: every zone in the table test (sprint 3)"
+  },
+  {
+   "ruleId": "ED5",
+   "file": "src/Quellbrook.Dispatch.Application/Intake/OrderPlacedHandler.cs",
+   "line": 14,
+   "message": "Possible non-idempotent mutation (review): Intake.OrderPlacedHandler.HandleAsync: `Intake.OrderPlacedHandler.HandleAsync` mutates persistent state (a database save) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+   "class": "false-positive",
+   "reason": "The handler returns when a consignment for the order exists, and runs inside the inbox transaction that skips seen message ids.",
+   "action": "caught by trap TRP-002"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Dispatch.Api/Contracts/Requests.cs",
+   "line": 54,
+   "message": "Event not named in past tense: AssignConsignmentRequest: `AssignConsignmentRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request record or the validation-error collector of the API. The service's events are named in the past tense.",
+   "action": "caught by trap TRP-004"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Dispatch.Api/Contracts/Requests.cs",
+   "line": 6,
+   "message": "Event not named in past tense: RegisterDriverRequest: `RegisterDriverRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request record or the validation-error collector of the API. The service's events are named in the past tense.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Dispatch.Api/Contracts/Requests.cs",
+   "line": 20,
+   "message": "Event not named in past tense: RegisterVehicleRequest: `RegisterVehicleRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request record or the validation-error collector of the API. The service's events are named in the past tense.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Dispatch.Api/Contracts/Requests.cs",
+   "line": 37,
+   "message": "Event not named in past tense: PlanRouteRequest: `PlanRouteRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request record or the validation-error collector of the API. The service's events are named in the past tense.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Dispatch.Api/Contracts/Requests.cs",
+   "line": 64,
+   "message": "Event not named in past tense: RecordDeliveryRequest: `RecordDeliveryRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request record or the validation-error collector of the API. The service's events are named in the past tense.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Dispatch.Api/Contracts/RequestErrors.cs",
+   "line": 4,
+   "message": "Event not named in past tense: RequestErrors: `RequestErrors` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request record or the validation-error collector of the API. The service's events are named in the past tense.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "DM3",
+   "file": "src/Quellbrook.Dispatch.Api/Contracts/Requests.cs",
+   "line": 6,
+   "message": "Integration event couples to a producer-owned enum: RegisterDriverRequest.Licence: `RegisterDriverRequest.Licence` exposes `LicenceCategory`, a enum owned by the producer's domain assembly (`Quellbrook.Dispatch.Domain`) — carry the enum as a string/int instead.",
+   "class": "false-positive",
+   "reason": "False: the record is the HTTP request body of the service's own API, deserialised inside the service; it is not an integration event and couples nothing across a service boundary.",
+   "action": "promoted to trap TRP-013"
+  },
+  {
+   "ruleId": "DM3",
+   "file": "src/Quellbrook.Dispatch.Api/Contracts/Requests.cs",
+   "line": 20,
+   "message": "Integration event couples to a producer-owned enum: RegisterVehicleRequest.Kind: `RegisterVehicleRequest.Kind` exposes `VehicleKind`, a enum owned by the producer's domain assembly (`Quellbrook.Dispatch.Domain`) — carry the enum as a string/int instead.",
+   "class": "false-positive",
+   "reason": "False: the record is the HTTP request body of the service's own API, deserialised inside the service; it is not an integration event and couples nothing across a service boundary.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "DM3",
+   "file": "src/Quellbrook.Dispatch.Api/Contracts/Requests.cs",
+   "line": 64,
+   "message": "Integration event couples to a producer-owned enum: RecordDeliveryRequest.Proof: `RecordDeliveryRequest.Proof` exposes `DeliveryProof`, a enum owned by the producer's domain assembly (`Quellbrook.Dispatch.Domain`) — carry the enum as a string/int instead.",
+   "class": "false-positive",
+   "reason": "False: the record is the HTTP request body of the service's own API, deserialised inside the service; it is not an integration event and couples nothing across a service boundary.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "DM2",
+   "file": "src/Quellbrook.Dispatch.Domain/Consignments/Consignment.cs",
+   "line": 38,
+   "message": "Primitive id on a domain type: Consignment.OrderId: `Consignment.OrderId` is a raw `Guid` — give it a strongly-typed id: a dedicated single-field type wrapping the `Guid`, in whatever form your language spells that.",
+   "class": "opinion-not-fact",
+   "reason": "OrderId is the order service's identifier, a foreign reference carried as the Guid that service publishes; dispatch's own entities have typed ids.",
+   "action": "promoted to trap TRP-009"
+  },
+  {
+   "ruleId": "DM2",
+   "file": "src/Quellbrook.Dispatch.Domain/Consignments/Events.cs",
+   "line": 8,
+   "message": "Primitive id on a domain type: ConsignmentSentOutForDelivery.OrderId: `ConsignmentSentOutForDelivery.OrderId` is a raw `Guid` — give it a strongly-typed id: a dedicated single-field type wrapping the `Guid`, in whatever form your language spells that.",
+   "class": "opinion-not-fact",
+   "reason": "The same foreign order id inside the domain events.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "DM2",
+   "file": "src/Quellbrook.Dispatch.Domain/Consignments/Events.cs",
+   "line": 14,
+   "message": "Primitive id on a domain type: ConsignmentDelivered.OrderId: `ConsignmentDelivered.OrderId` is a raw `Guid` — give it a strongly-typed id: a dedicated single-field type wrapping the `Guid`, in whatever form your language spells that.",
+   "class": "opinion-not-fact",
+   "reason": "The same foreign order id inside the domain events.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D17",
+   "file": ".editorconfig",
+   "line": 37,
+   "message": "AnalyzerSeverityNone: CA2007 — this rule is switched off for every file the section matches, in every project under this directory, and the only record that it was ever switched off is this line: nothing at the sites it would have reported says so, so a reader of that code has no reason to look here, and code added years from now inherits the decision silently. Fix what the rule reports and delete the entry, or — where some sites really are legitimate — leave the rule on and suppress it at those sites with their reasons, so it keeps protecting the rest of the tree. If the rule is genuinely unwanted here, say why — on this line after the entry, or in the comment run directly above it: a comment that only repeats the rule's own title is read as no explanation at all and leaves this row in place.",
+   "class": "false-positive",
+   "reason": "CA2007 is off at the root for tests with the reason on line 36; src/.editorconfig turns it back on for production code.",
+   "action": "caught by trap TRP-007"
+  },
+  {
+   "ruleId": "D18",
+   "file": null,
+   "line": null,
+   "message": "Thin analysable surface across projects: 1 project(s) carry only a thin slice of real code (e.g. `Quellbrook.Dispatch.Contracts` with 14 significant line(s)). The mean analysable-surface weight is 87 %, lowering Solution Shape by about 1.03 point(s). Consolidate thin projects or grow them into substantial, well-scoped assemblies.",
+   "class": "opinion-not-fact",
+   "reason": "A thin contracts project is deliberate (published contracts versioned on their own).",
+   "action": "promoted to repository-level trap TRP-010"
+  },
+  {
+   "ruleId": "D31",
+   "file": "src/Quellbrook.Dispatch.Api/Dockerfile",
+   "line": 1,
+   "message": "Low IaC: DS-0026: No HEALTHCHECK defined. Add HEALTHCHECK instruction in your Dockerfile. Add HEALTHCHECK instruction in Dockerfile. Without one the runtime only knows whether the process is alive, not whether it is serving, so a wedged container is restarted by nobody. The step: add a `HEALTHCHECK` to the image that probes the service the way a client would — this image already declares `EXPOSE 8080`, so a request to `localhost:8080` on the service's own health or root route, exiting non-zero when it does not answer, is the probe — and give it an `--interval`, a `--timeout` and a `--start-period` long enough to cover startup. If the image ships no HTTP client, probe with whatever the runtime already has, or declare the check in the orchestrator instead and say so here.",
+   "class": "shape-irrelevant",
+   "reason": "No HEALTHCHECK on a Kubernetes-only image; probes are in the manifest.",
+   "action": "promoted to trap TRP-011"
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/deployment.yaml",
+   "line": 8,
+   "message": "Medium IaC: CKV_K8S_35: Prefer using secrets as files over secrets as environment variables",
+   "class": "opinion-not-fact",
+   "reason": "CKV_K8S_35 secrets as environment variables, from Secrets materialised by an ExternalSecret; reported at the Deployment's first line.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/deployment.yaml",
+   "line": 44,
+   "message": "Medium IaC: KSV-0125: Restrict container images to trusted registries. Container api in deployment quellbrook-dispatch (namespace: quellbrook-dispatch) uses an image from an untrusted registry. Use images from trusted registries.",
+   "class": "opinion-not-fact",
+   "reason": "KSV-0125 'untrusted registry' for the organisation's own ghcr.io.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D39",
+   "file": "src/Quellbrook.Dispatch.Domain/Consignments/DeliveryZones.cs",
+   "line": 12,
+   "message": "IL efficiency: 3 authored method(s) exceed the IL budget: 3 of 203 first-party methods compile to oversized IL bodies (> 250 instructions); worst: Quellbrook.Dispatch.Domain.Consignments.DeliveryZones.ZoneFor @ src/Quellbrook.Dispatch.Domain/Consignments/DeliveryZones.cs:12, 840 IL instructions; that pulled this dimension to 9.7/10. These bodies are far past the JIT's inline budget, so splitting them does not make them inlinable — what moves the number is emitting less: collapsing LINQ chains and closures on hot paths, and interpolation built eagerly where it is only sometimes used.",
+   "class": "opinion-not-fact",
+   "reason": "The IL size of a twenty-row lookup table.",
+   "action": "promoted to trap TRP-012"
+  },
+  {
+   "ruleId": "D5",
+   "file": null,
+   "line": null,
+   "message": "Off the main sequence: Quellbrook.Dispatch.Contracts: Quellbrook.Dispatch.Contracts: abstractness 0.00, instability 0.00, distance 1.00 — the shape a shared-kernel / building-block library has BY DESIGN — concrete and widely depended-on is what makes it useful, and this dimension does not penalise it (the distance is reported for completeness, not as a defect). Worth a look only if it has grown past one coherent kernel into an everything-bucket.",
+   "class": "opinion-not-fact",
+   "reason": "A contracts assembly is concrete and stable by design; the row says so itself.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D5",
+   "file": null,
+   "line": null,
+   "message": "Off the main sequence: Quellbrook.Dispatch.Domain: Quellbrook.Dispatch.Domain: abstractness 0.25, instability 0.00, distance 0.75 — zone of pain — concrete and depended on by 1 project(s), so it's rigid to change.",
+   "class": "opinion-not-fact",
+   "reason": "A concrete domain layer depended on by the application layer is the intended shape (ADR 0002).",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D41",
+   "file": null,
+   "line": null,
+   "message": "No AppArmor/SELinux confinement: Workloads declare no AppArmor or SELinux profile. A mandatory-access-control profile confines what a compromised container can touch on the host, complementing seccomp's syscall filter.",
+   "class": "opinion-not-fact",
+   "reason": "seccomp RuntimeDefault and dropped capabilities are set; AppArmor/SELinux is a further hardening step.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D42",
+   "file": null,
+   "line": null,
+   "message": "No runtime threat detection: No runtime threat-detection engine (Tetragon TracingPolicy / Falco) is committed. These observe process, file and network activity in-kernel and can alert or kill on malicious behaviour a static scan cannot catch.",
+   "class": "shape-irrelevant",
+   "reason": "Runtime threat detection is a cluster platform concern, not a service repository's.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "C1",
+   "file": null,
+   "line": null,
+   "message": "No data-protection/encryption: No data-protection or encryption usage (ASP.NET Data Protection, AES, column encryption, PBKDF2) was found — sensitive data at rest may be unprotected. If TDE/KMS/vault is delegated to infrastructure, ignore.",
+   "class": "opinion-not-fact",
+   "reason": "Encryption at rest is delegated to the managed database; the row says to ignore it then.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "C3",
+   "file": null,
+   "line": null,
+   "message": "Partial audit-trail evidence: An audit mechanism is present, but the trail is not yet complete — missing: an immutable audit-log / audit-trail type to write to, [Audited] per-entity coverage.",
+   "class": "opinion-not-fact",
+   "reason": "The service claims no audit trail; 'partial audit-trail evidence' reads an audit mechanism into timestamps.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D20",
+   "file": "docs/adr/0001-record-architecture-decisions.md",
+   "line": 1,
+   "message": "The ADR describes a meta-process for creating ADRs rather than making a specific architectural decision about the system's design, structure, or technology.: Refocus the ADR on a concrete architectural choice (e.g., 'Adopt ADRs for documentation' is a process decision, but it lacks specific constraints, alternatives considered, or impact on the codebase; alternatively, use this ADR to define the specific format/template for future ADRs).",
+   "class": "opinion-not-fact",
+   "reason": "A decision to record decisions is the conventional first ADR (Nygard); it has status, context, decision and consequences.",
+   "action": "promoted to trap TRP-015"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project requires .NET 10 SDK — searched for: `.NET 10 SDK`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The SDK is pinned in global.json and every project targets net10.0; the README's claim is true.",
+   "action": "recorded as noise (model pass, iteration 2 only)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project requires PostgreSQL 16 database — searched for: `PostgreSQL 16`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The PostgreSQL major is an operating requirement the code cannot show; nothing contradicts it.",
+   "action": "recorded as noise (model pass, iteration 2 only)"
+  }
+ ],
+ "falseNegatives": [
+  {
+   "entryId": "DSP-003",
+   "reason": "The capacity/shift/licence block copied from StandardAssignmentPolicy.cs:28-43 into ExpressAssignmentPolicy.cs:48-63 (sixteen identical lines). D4 reports the pair ('Duplicated block (23 lines × 2): ExpressAssignmentPolicy.cs:43-65 | StandardAssignmentPolicy.cs:23-45') but its window starts at the preceding guard, which matches only after identifiers are normalised; the result is located five lines before the copied code (outside ±3). File-level hit; location-imprecision FN."
+  },
+  {
+   "entryId": "DSP-004",
+   "reason": "DriverEndpoints.cs takes DispatchDbContext and queries drivers, vehicles and routes in the endpoint, the plainest contradiction of ADR 0002 ('endpoints never take the DispatchDbContext'). D25 judged the four ADRs '3 conform / 0 violate / 1 unverifiable' in every model pass, and D7 credits enforcement that does not exist (no architecture test, no analyzer)."
+  }
+ ],
+ "scoreBands": [
+  {
+   "entryId": "BND-001",
+   "outcome": "out",
+   "score": 96,
+   "band": [
+    40,
+    95
+   ],
+   "modelPass": {
+    "outcome": "out",
+    "score": 96
+   },
+   "note": "D1 scores 96 with one method at cyclomatic 20; the band's upper bound (95) was set for 'one method well above the threshold'. Kept."
+  },
+  {
+   "entryId": "BND-002",
+   "outcome": "in",
+   "score": 93,
+   "band": [
+    40,
+    95
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 93
+   }
+  },
+  {
+   "entryId": "BND-003",
+   "outcome": "out",
+   "score": 99,
+   "band": [
+    40,
+    95
+   ],
+   "modelPass": {
+    "outcome": "out",
+    "score": 99
+   },
+   "note": "D4 scores 99 with the one copied block. Kept."
+  },
+  {
+   "entryId": "BND-004",
+   "outcome": "out",
+   "score": 100,
+   "band": [
+    55,
+    95
+   ],
+   "modelPass": {
+    "outcome": "out",
+    "score": 100
+   },
+   "note": "D8 saturates at 100 (no low-coverage row remains after sprint 3); per-file rows carry the sprint-2 drop (7 rows at v0.2.0)."
+  },
+  {
+   "entryId": "BND-005",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-006",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-007",
+   "outcome": "in",
+   "score": 70,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 70
+   }
+  },
+  {
+   "entryId": "BND-008",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-009",
+   "outcome": "in",
+   "score": 80,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 80
+   }
+  },
+  {
+   "entryId": "BND-010",
+   "outcome": "in",
+   "score": 70,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 70
+   }
+  },
+  {
+   "entryId": "BND-011",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-012",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-013",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-014",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-015",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    40,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-016",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    40,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-017",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-018",
+   "outcome": "in",
+   "score": 80,
+   "band": [
+    10,
+    80
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 80
+   }
+  },
+  {
+   "entryId": "BND-019",
+   "outcome": "out",
+   "score": 80,
+   "band": [
+    0,
+    40
+   ],
+   "modelPass": {
+    "outcome": "out",
+    "score": 80
+   },
+   "note": "D42 80 with no runtime detection committed. Kept."
+  },
+  {
+   "entryId": "BND-020",
+   "outcome": "out",
+   "score": 97,
+   "band": [
+    20,
+    90
+   ],
+   "modelPass": {
+    "outcome": "out",
+    "score": 97
+   },
+   "note": "D15 97 with the hotspot reported: one hotspot costs little in the normalised score (as in bench-csharp-maturity-history). Kept."
+  },
+  {
+   "entryId": "BND-021",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    30,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-022",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-023",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-024",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 90
+   }
+  },
+  {
+   "entryId": "BND-025",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 80
+   }
+  },
+  {
+   "entryId": "BND-026",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    20,
+    85
+   ],
+   "modelPass": {
+    "outcome": "out",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-027",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-028",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-029",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 90
+   }
+  },
+  {
+   "entryId": "BND-030",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-031",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-032",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-033",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-034",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-035",
+   "outcome": "out",
+   "score": 100,
+   "band": [
+    0,
+    60
+   ],
+   "modelPass": {
+    "outcome": "out",
+    "score": 100
+   },
+   "note": "C4 100 although dispatch has no retention at all (it holds no contact data; band set low on purpose). Kept."
+  },
+  {
+   "entryId": "BND-036",
+   "outcome": "out",
+   "score": 75,
+   "band": [
+    0,
+    70
+   ],
+   "modelPass": {
+    "outcome": "out",
+    "score": 75
+   },
+   "note": "C3 75 'partial audit evidence' although no audit exists. Kept."
+  },
+  {
+   "entryId": "BND-037",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    0,
+    60
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-038",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    0,
+    60
+   ],
+   "modelPass": {
+    "outcome": "out",
+    "score": 100
+   },
+   "note": "D7 100: claims 2 ADRs analyzer-enforced and 1 test-enforced; none is. Kept."
+  }
+ ],
+ "observations": [
+  "This repository carries the estate's REGRESSION. Measured per release tag (contained scans of clones at v0.1.0, v0.2.0 and the final tree): D1 100 → 91 → 96 (Choose cyclomatic — → 32 → 20), D2 100 → 88 → 93 (cognitive — → 44 → 26), D15 100 → 94 → 97, D4 100 → 99 → 99, low-coverage rows 3 → 7 → 0. Worse in sprint 2, partly repaired in sprint 3, still worse than sprint 1 on complexity and duplication — the story the history tells.",
+  "Recall 3/5 on every pass: complexity (D1, D2) and the hotspot (D15) found on their lines; the copied block found five lines early; the ADR bypass missed by D25 in three model passes.",
+  "Trap resistance 9/15 contained, 8 of 15 in the model pass (TRP-015 is model-only, TRP-002/011/014 contained-only). ED3/DM3 read HTTP request records as events and integration events (8 rows); ED5 does not see an exists check that is not shaped like an inbox.",
+  "Valid incidental findings fixed in the scripted history before the first push: a non-past-tense event name, a non-idempotent route planning, three coverage gaps. One defect no scanner reported was fixed forward after the push: a consumer test that could stop the BackgroundService before it started (a race since .NET 10 runs ExecuteAsync on the thread pool).",
+  "The scripted history is reproducible (benchmark/history/build-history.sh, 33 patches, three tags verified); every sprint tag builds in locked mode with green tests (v0.2.0 with one skipped test, by design).",
+  "Correction to the frozen journal's last entry: the score bands out in the final passes are BND-001 (D1 96), BND-003 (D4 99), BND-004 (D8 100), BND-019 (D42 80), BND-020 (D15 97), BND-035 (C4 100), BND-036 (C3 75) and, in the model pass, BND-026 (D25 100) and BND-038 (D7 100); the list in the journal was written before the final scoring."
+ ]
+}
