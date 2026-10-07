@@ -37,6 +37,13 @@
       "commit": "f89620bdbd2260b8e2d4e1fa93fdca31fb9296d8",
       "keySha256": "96e3264c685890b4090e4e17973d1730967642719f6d3389293aa330fb16421e",
       "frozenAt": "2026-10-07"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-csharp-security-iac",
+      "tag": "v1.0.0",
+      "commit": "19d0cf36ab86f9422a1f696a193118c66af07000",
+      "keySha256": "bc73c82fa1d3650877efd03cd5bb2086bc805f1124f66fd3b1ee1fa83551cc8b",
+      "frozenAt": "2026-10-07"
     }
   ]
 }
