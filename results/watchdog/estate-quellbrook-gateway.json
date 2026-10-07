@@ -1,0 +1,754 @@
+{
+ "repo": "code-assurance-initiative/estate-quellbrook-gateway",
+ "tag": "v1.0.0",
+ "engineVersion": "rubric-2026.10.1 (pinned instrument kennel-wt-scanner-bench @ 6a05dfb6c)",
+ "keySha256": "cbcbc47dc7e54b4c7f32a5a7b9880851b41b980ac582517cc77616e0f5929701",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-07",
+   "sarifSha256": "33a09882e0bc71f4bc349fba1f8dd7c2a0456212bf12d126de67a3007c46675e",
+   "outcomes": {
+    "tp": 0,
+    "fn": 2,
+    "fp": 2,
+    "tn": 109,
+    "trapFp": 1,
+    "trapTn": 6,
+    "results": 3,
+    "noise": 3,
+    "redundant": 0,
+    "uncovered": 4
+   },
+   "note": "contained; first complete local history (ac27287, before any push, before the signing fix); scored with the frozen v1.0.0 key"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "f2055c5028bf572926dfe41b79949ae7f3bebeb3749c05efcd30e79983e887c4",
+   "outcomes": {
+    "tp": 0,
+    "fn": 2,
+    "fp": 2,
+    "tn": 109,
+    "trapFp": 1,
+    "trapTn": 6,
+    "results": 3,
+    "noise": 3,
+    "redundant": 0,
+    "uncovered": 3
+   },
+   "note": "contained; pushed 32afa8a (code identical to v1.0.0, which adds a trap and the final journal entry)"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "a65152f4a13d054170a39478e57c606940952b334fc16ee268086bb3a4fd7dad",
+   "outcomes": {
+    "tp": 0,
+    "fn": 2,
+    "fp": 1,
+    "tn": 110,
+    "trapFp": 1,
+    "trapTn": 6,
+    "results": 1,
+    "noise": 1,
+    "redundant": 0,
+    "uncovered": 32
+   },
+   "note": "host, model-judged pass; 32afa8a; the host has no IaC tools"
+  }
+ ],
+ "verdicts": [
+  {
+   "ruleId": "D36",
+   "file": null,
+   "line": null,
+   "message": "No artifact signing: No artifact signing found in CI — sign your released artifacts with whatever your ecosystem ships (`cosign sign` over the image digest your pipeline pushes, so a consumer can `cosign verify` what they pull, cosign/sigstore for container images) so consumers can verify what you built. What was searched, so you can tell an absence from a miss: this repository's CI files, the scripts they invoke and its own composite actions, its root build manifest and its release manifest, its release task runner if it has one, and its own release automation script — plus the trusted-publishing declarations that sign on the registry's side. A signature produced by a pipeline whose configuration is not in this repository, or by a signer whose name is none of the ones this check carries, is not seen here.",
+   "class": "valid",
+   "reason": "The release pushed the image with an unsigned BuildKit provenance; nothing a consumer could verify.",
+   "action": "repository fixed in the scripted history: signed build-provenance attestation pushed to the registry, verified by the deploy workflow (sprint 3, 2026-09-04)"
+  },
+  {
+   "ruleId": "D31",
+   "file": "Dockerfile",
+   "line": 1,
+   "message": "Low IaC: DS-0026: No HEALTHCHECK defined. Add HEALTHCHECK instruction in your Dockerfile. Add HEALTHCHECK instruction in Dockerfile. Without one the runtime only knows whether the process is alive, not whether it is serving, so a wedged container is restarted by nobody. The step: add a `HEALTHCHECK` to the image that probes the service the way a client would — this image already declares `EXPOSE 8080`, so a request to `localhost:8080` on the service's own health or root route, exiting non-zero when it does not answer, is the probe — and give it an `--interval`, a `--timeout` and a `--start-period` long enough to cover startup. If the image ships no HTTP client, probe with whatever the runtime already has, or declare the check in the orchestrator instead and say so here.",
+   "class": "shape-irrelevant",
+   "reason": "No HEALTHCHECK on a Kubernetes-only image; probes are in the manifest.",
+   "action": "promoted to trap TRP-006"
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/deployment.yaml",
+   "line": 8,
+   "message": "Medium IaC: CKV_K8S_35: Prefer using secrets as files over secrets as environment variables",
+   "class": "opinion-not-fact",
+   "reason": "CKV_K8S_35 secrets as environment variables, from a Secret materialised by an ExternalSecret; reported at the Deployment's first line.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/deployment.yaml",
+   "line": 43,
+   "message": "Medium IaC: KSV-0125: Restrict container images to trusted registries. Container gateway in deployment quellbrook-gateway (namespace: quellbrook-edge) uses an image from an untrusted registry. Use images from trusted registries.",
+   "class": "opinion-not-fact",
+   "reason": "KSV-0125 'untrusted registry' for the organisation's own ghcr.io.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D41",
+   "file": null,
+   "line": null,
+   "message": "No AppArmor/SELinux confinement: Workloads declare no AppArmor or SELinux profile. A mandatory-access-control profile confines what a compromised container can touch on the host, complementing seccomp's syscall filter.",
+   "class": "opinion-not-fact",
+   "reason": "seccomp RuntimeDefault and dropped capabilities are set; AppArmor/SELinux is a further hardening step.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D42",
+   "file": null,
+   "line": null,
+   "message": "No runtime threat detection: No runtime threat-detection engine (Tetragon TracingPolicy / Falco) is committed. These observe process, file and network activity in-kernel and can alert or kill on malicious behaviour a static scan cannot catch.",
+   "class": "shape-irrelevant",
+   "reason": "Runtime threat detection is a cluster platform concern.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "C2",
+   "file": null,
+   "line": null,
+   "message": "No named authorization policies: Authorization IS enforced here (by route guards, auth middleware or checks that refuse a caller) — this is NOT a claim that endpoints are unprotected. What's missing is a NAMED rule set: who may do what is encoded inline where it is checked, so the rules can't be listed, reviewed or tested apart from the code that applies them. Recommendation, not a defect.",
+   "class": "opinion-not-fact",
+   "reason": "The row itself says authorization is enforced; the scope pre-handlers per route are the named rule set (ADR 0002).",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D20",
+   "file": "docs/adr/0001-record-architecture-decisions.md",
+   "line": 1,
+   "message": "The ADR describes a process for creating ADRs rather than making a specific architectural decision about the system's design.: Refocus the ADR on a concrete architectural choice (e.g., 'Adopt API Gateway Pattern for Operator Console') and use the current content as background or process context.",
+   "class": "opinion-not-fact",
+   "reason": "A decision to record decisions is the conventional first ADR.",
+   "action": "promoted to trap TRP-007"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `node --env-file` for running — searched for: `--env-file`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "`--env-file` is a Node.js command-line option the README uses to run the gateway; no manifest or file name can show it.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `@fastify/type-provider-typebox` — searched for: `@fastify/type-provider-typebox`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The README does not mention @fastify/type-provider-typebox; the gateway does not use it. The model attributed a list of Fastify plugins to the README.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `@fastify/autoload` — searched for: `@fastify/autoload`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The README does not mention @fastify/autoload; the gateway does not use it. The model attributed a list of Fastify plugins to the README.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `@fastify/swagger` — searched for: `@fastify/swagger`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The README does not mention @fastify/swagger; the gateway does not use it. The model attributed a list of Fastify plugins to the README.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `@fastify/swagger-ui` — searched for: `@fastify/swagger-ui`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The README does not mention @fastify/swagger-ui; the gateway does not use it. The model attributed a list of Fastify plugins to the README.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `@fastify/under-pressure` — searched for: `@fastify/under-pressure`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The README does not mention @fastify/under-pressure; the gateway does not use it. The model attributed a list of Fastify plugins to the README.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `@fastify/static` — searched for: `@fastify/static`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The README does not mention @fastify/static; the gateway does not use it. The model attributed a list of Fastify plugins to the README.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `@fastify/view` — searched for: `@fastify/view`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The README does not mention @fastify/view; the gateway does not use it. The model attributed a list of Fastify plugins to the README.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `@fastify/cookie` — searched for: `@fastify/cookie`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The README does not mention @fastify/cookie; the gateway does not use it. The model attributed a list of Fastify plugins to the README.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `@fastify/csrf-protection` — searched for: `@fastify/csrf-protection`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The README does not mention @fastify/csrf-protection; the gateway does not use it. The model attributed a list of Fastify plugins to the README.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `@fastify/express` — searched for: `@fastify/express`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The README does not mention @fastify/express; the gateway does not use it. The model attributed a list of Fastify plugins to the README.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `@fastify/formbody` — searched for: `@fastify/formbody`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The README does not mention @fastify/formbody; the gateway does not use it. The model attributed a list of Fastify plugins to the README.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `@fastify/multipart` — searched for: `@fastify/multipart`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The README does not mention @fastify/multipart; the gateway does not use it. The model attributed a list of Fastify plugins to the README.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `@fastify/oauth2` — searched for: `@fastify/oauth2`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The README does not mention @fastify/oauth2; the gateway does not use it. The model attributed a list of Fastify plugins to the README.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `@fastify/passport` — searched for: `@fastify/passport`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The README does not mention @fastify/passport; the gateway does not use it. The model attributed a list of Fastify plugins to the README.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the project uses `@fastify/session` — searched for: `@fastify/session`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "The README does not mention @fastify/session; the gateway does not use it. The model attributed a list of Fastify plugins to the README.",
+   "action": "recorded as noise (model pass)"
+  }
+ ],
+ "falseNegatives": [
+  {
+   "entryId": "GW-001",
+   "reason": "GET /api/dispatch/drivers/available (dispatch-routes.ts:73-96) is registered without the authenticate and requireScope pre-handlers that every other /api route has; it calls dispatch with the gateway's service token and relays the driver roster to anonymous callers. No rule models route-level authorization in Fastify; C2 reports only the absence of 'named' policies and says authorization is enforced."
+  },
+  {
+   "entryId": "GW-002",
+   "reason": "upstream-client.ts:88-109 logs `request: { method, url, headers }` on every upstream failure; the headers include `authorization: Bearer <service token>`, which the pino redaction list (req.headers.authorization only) does not cover. The credential/personal-data-in-log rules do not read fields of a logged object (same blind spot as bench-ts-security-injection PII-001)."
+  }
+ ],
+ "scoreBands": [
+  {
+   "entryId": "BND-001",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-002",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-003",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-004",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-005",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    40,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-006",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-007",
+   "outcome": "in",
+   "score": 70,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 70
+   }
+  },
+  {
+   "entryId": "BND-008",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-009",
+   "outcome": "in",
+   "score": 80,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 80
+   }
+  },
+  {
+   "entryId": "BND-010",
+   "outcome": "in",
+   "score": 70,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 70
+   }
+  },
+  {
+   "entryId": "BND-011",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-012",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-013",
+   "outcome": "in",
+   "score": 80,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 80
+   }
+  },
+  {
+   "entryId": "BND-014",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-015",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    40,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-016",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    40,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-017",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-018",
+   "outcome": "in",
+   "score": 80,
+   "band": [
+    10,
+    80
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 80
+   }
+  },
+  {
+   "entryId": "BND-019",
+   "outcome": "out",
+   "score": 80,
+   "band": [
+    0,
+    40
+   ],
+   "modelPass": {
+    "outcome": "out",
+    "score": 80
+   }
+  },
+  {
+   "entryId": "BND-020",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-021",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    30,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-022",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-023",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-024",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 90
+   }
+  },
+  {
+   "entryId": "BND-025",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 60
+   }
+  },
+  {
+   "entryId": "BND-026",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-027",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 77
+   }
+  },
+  {
+   "entryId": "BND-028",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-029",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-030",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-031",
+   "outcome": "in",
+   "score": 70,
+   "band": [
+    40,
+    95
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 70
+   }
+  },
+  {
+   "entryId": "BND-032",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-033",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    90,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-034",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-035",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  }
+ ],
+ "observations": [
+  "Recall 0/2 on a Fastify BFF: neither the unauthenticated route nor the token in the failure log is seen; both are integration-level defects (authorization boundary, credential leak) that need route-registration and object-field analysis.",
+  "Trap resistance 6/7 contained (TRP-006 DS-0026 caught); in the model pass TRP-007 (D20 on ADR 0001) caught.",
+  "The model-judged M4 pass produced 29 false 'README/code drift' rows naming Fastify plugins the README never mentions (15 distinct, most twice) — the dominant noise on this repository, as on bench-ts-baseline-clean.",
+  "One valid finding fixed in the scripted history before the first push: unsigned release images (D36); the fix is part of the sprint-3 story and was applied to the web console too.",
+  "The scripted history is reproducible (24 patches, three tags verified); every sprint tag passes npm ci, format, lint, type-check and tests with coverage."
+ ]
+}
