@@ -343,3 +343,31 @@ UNMAPPED_CENSUS = {
     "autoplay-media-without-control": "AC1 reads autoplay only to decide whether a <video> needs captions (TextAlternativesAnalyzer.cs:165-200); no title concerns stopping or muting autoplaying media",
 }
 assert set(UNMAPPED_CENSUS) == set(UNMAPPED)
+
+# ---------------- contract 1.5: file-scope concepts (taxonomy `matchScope: "file"`) ----------------
+# A concept whose defect IS a whole class, file or module: reporting it at the file, at the class header or anywhere
+# else in the file is equally precise — the line span an answer key gives such a defect is a key-authoring convention,
+# not something a scanner can be more or less precise about. A result of the concept anywhere in an entry's file is on
+# the entry's site (one-to-one consumption unchanged). Concepts whose defect is a member, a statement, a dependency edge
+# or a repository-wide share stay site-scoped (long-method, unused-code, publicly-mutable-entity-state,
+# mutable-persisted-event, primitive-entity-identifier, test-without-assertion, excessive-mocking,
+# module-dependency-cycle — the cycle's site is the reference that closes it — compiled-code-size, allocation-awareness,
+# untyped-javascript-share, …).
+FILE_SCOPE = {
+    "god-class": "the defect is the class as a whole (its size and the responsibilities it concentrates)",
+    "oversized-source-file": "the defect is the file as a whole (its length)",
+    "low-class-cohesion": "the defect is the class as a whole (how its methods split into groups sharing no state)",
+    "fat-interface": "the defect is the interface as a whole (how many members it declares for its consumers)",
+    "anemic-domain-model": "the defect is the entity type as a whole (state with no behaviour protecting it)",
+    "churn-complexity-hotspot": "a per-file metric: the file is complex and frequently changed",
+    "knowledge-concentration": "a per-file metric over the file's history (living knowledge held by few authors)",
+    "knowledge-freshness": "a per-file metric over the file's history (decayed authorship)",
+    "change-coupling": "a per-file history metric: the file changes together with another without a structural link",
+    "oversized-module": "a whole-module metric: the module (project) exceeds size thresholds; its site is its project file",
+    "unstable-dependency": "a whole-module metric (instability of a much-depended-on module); its site is its project file",
+    "module-off-main-sequence": "a whole-module metric (abstractness vs instability); its site is its project file",
+}
+for _c in C:
+    if _c["id"] in FILE_SCOPE:
+        _c["matchScope"] = "file"
+assert set(FILE_SCOPE) <= {_c["id"] for _c in C}, set(FILE_SCOPE) - {_c["id"] for _c in C}

@@ -13,7 +13,7 @@ measures, per concept and per scanner dimension:
 
 This repository holds the harness: the answer-key schema, the scanner-neutral concept taxonomy (CWE-anchored where a
 CWE exists), one mapping per scanner, the scoring CLI, the registry of frozen benchmark units, and recorded
-results. The units themselves are in the training set. The fixed formats and the exact matching rules are in [`docs/CONTRACT.md`](docs/CONTRACT.md) (contract 1.4).
+results. The units themselves are in the training set. The fixed formats and the exact matching rules are in [`docs/CONTRACT.md`](docs/CONTRACT.md) (contract 1.5).
 
 ## Labels and outcomes
 
@@ -230,7 +230,7 @@ generation is a new set repository, never a rewrite of an old one — and **priv
 ## Layout
 
 ```
-docs/CONTRACT.md                   fixed formats, matching and metric semantics (v1.4)
+docs/CONTRACT.md                   fixed formats, matching and metric semantics (v1.5)
 schema/answer-key.schema.json      JSON Schema (draft 2020-12) for benchmark/answer-key.json
 taxonomy.json                      scanner-neutral concepts
 mappings/<scanner>.json            concept -> the scanner's rule ids and dimensions

@@ -17,6 +17,9 @@ Contract 1.4: a mapping-level `unmapped` list [{concept, reason}] names the taxo
 detects; each is in `concepts` with `rules: []` and `dimensions: []`, and a plant of it is scored an FN. A
 mapping-level `summaryOfConcept` list [{rule, message, reason}] declares the rows that summarise their concept across
 the repository without naming a site (see scoring.py).
+Contract 1.5: a mapping-level `sitesFromMessage` list [{rule, message?, concepts?, within?, patterns, source?}] reads
+the further sites a result names in its message (the other members of a clone group): each is an ADDITIONAL location
+of the result (see scoring.py).
 """
 import re
 
@@ -51,6 +54,10 @@ def _properties(spec, where):
     if not (isinstance(p, list) and p and all(isinstance(x, str) and x for x in p)):
         raise MappingError(f"mapping: {where}.properties must be a non-empty array of property names")
     return list(p)
+
+
+def _positive(text):
+    return int(text) if text and text.isdigit() and int(text) >= 1 else None
 
 
 class _Rule:
@@ -147,6 +154,37 @@ class Mapping:
             self.location_from_message.append((_rx(lm["rule"], f"{w}.rule"),
                                                _rx(lm["message"], f"{w}.message", re.IGNORECASE)
                                                if "message" in lm else None, pat))
+        self.sites_from_message = []  # 1.5: further sites of a result, named in its message
+        for i, sm in enumerate(doc.get("sitesFromMessage", []) or []):
+            w = f"sitesFromMessage[{i}]"
+            if not isinstance(sm, dict) or "rule" not in sm:
+                raise MappingError(f"mapping: {w} needs a 'rule' regex")
+            pats = sm.get("patterns")
+            if not isinstance(pats, list) or not pats:
+                raise MappingError(f"mapping: {w}.patterns must be a non-empty array of regexes")
+            compiled = []
+            for j, p in enumerate(pats):
+                rx = _rx(p, f"{w}.patterns[{j}]")
+                if "file" not in rx.groupindex:
+                    raise MappingError(f"mapping: {w}.patterns[{j}] needs a named group 'file' (and optionally 'line', "
+                                       f"'endLine')")
+                compiled.append(rx)
+            within = None
+            if "within" in sm:
+                within = _rx(sm["within"], f"{w}.within")
+                if "sites" not in within.groupindex:
+                    raise MappingError(f"mapping: {w}.within needs a named group 'sites'")
+            concepts = None
+            if "concepts" in sm:
+                concepts = sm["concepts"]
+                if not (isinstance(concepts, list) and concepts and all(isinstance(c, str) and c for c in concepts)):
+                    raise MappingError(f"mapping: {w}.concepts must be a non-empty array of concept ids")
+                unknown = [c for c in concepts if c not in self.concepts]
+                if unknown:
+                    raise MappingError(f"mapping: {w}.concepts names {unknown}, not concepts of the mapping")
+            self.sites_from_message.append((_rx(sm["rule"], f"{w}.rule"),
+                                            _rx(sm["message"], f"{w}.message", re.IGNORECASE) if "message" in sm
+                                            else None, set(concepts) if concepts else None, within, compiled))
         self.rule_dimension = []
         for i, rd in enumerate(doc.get("ruleDimension", []) or []):
             try:
@@ -214,6 +252,35 @@ class Mapping:
                 line = m.groupdict().get("line")
                 return m.group("file"), (int(line) if line and line.isdigit() and int(line) >= 1 else None)
         return None
+
+    def sites_in_message(self, rule_id, message, concepts):
+        """[(file, line or None, endLine or None)] — every site the message names per the `sitesFromMessage` entries
+        whose rule (and message) regexes match and whose `concepts` (if given) include one of the result's `concepts`,
+        in message order, without repeats. With `within`, the patterns search only its first match's `sites` group."""
+        if rule_id is None or not message:
+            return []
+        out = []
+        for rule, msg, cs, within, pats in self.sites_from_message:
+            if not rule.search(rule_id) or (msg is not None and not msg.search(message)):
+                continue
+            if cs is not None and not cs.intersection(concepts or ()):
+                continue
+            text = message
+            if within is not None:
+                m = within.search(message)
+                if not m or m.group("sites") is None:
+                    continue
+                text = m.group("sites")
+            for pat in pats:
+                for m in pat.finditer(text):
+                    if not m.group("file"):
+                        continue
+                    g = m.groupdict()
+                    line, end = (_positive(g.get("line")), _positive(g.get("endLine")))
+                    site = (m.group("file"), line, end if line is not None else None)
+                    if site not in out:
+                        out.append(site)
+        return out
 
     def family_of(self, concept):
         return self.families.get(concept)

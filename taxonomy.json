@@ -782,7 +782,8 @@
       "cwe": null,
       "family": "codehealth",
       "kind": "finding",
-      "description": "A class with too many lines or members that concentrates unrelated responsibilities."
+      "description": "A class with too many lines or members that concentrates unrelated responsibilities.",
+      "matchScope": "file"
     },
     {
       "id": "oversized-source-file",
@@ -790,7 +791,8 @@
       "cwe": "CWE-1080",
       "family": "codehealth",
       "kind": "finding",
-      "description": "A source file or UI component exceeding the size threshold."
+      "description": "A source file or UI component exceeding the size threshold.",
+      "matchScope": "file"
     },
     {
       "id": "long-method",
@@ -814,7 +816,8 @@
       "cwe": null,
       "family": "codehealth",
       "kind": "metric",
-      "description": "A class whose methods split into disconnected groups sharing no state or calls."
+      "description": "A class whose methods split into disconnected groups sharing no state or calls.",
+      "matchScope": "file"
     },
     {
       "id": "technical-debt-marker",
@@ -1198,7 +1201,8 @@
       "cwe": null,
       "family": "architecture",
       "kind": "metric",
-      "description": "A module many others depend on that itself has high instability (efferent coupling)."
+      "description": "A module many others depend on that itself has high instability (efferent coupling).",
+      "matchScope": "file"
     },
     {
       "id": "module-off-main-sequence",
@@ -1206,7 +1210,8 @@
       "cwe": null,
       "family": "architecture",
       "kind": "metric",
-      "description": "A module whose abstractness and instability are out of balance: concrete yet heavily depended on (rigid to change), or abstract yet unstable (likely unused), measured as the distance from A + I = 1."
+      "description": "A module whose abstractness and instability are out of balance: concrete yet heavily depended on (rigid to change), or abstract yet unstable (likely unused), measured as the distance from A + I = 1.",
+      "matchScope": "file"
     },
     {
       "id": "architecture-rules-unenforced",
@@ -1238,7 +1243,8 @@
       "cwe": null,
       "family": "architecture",
       "kind": "metric",
-      "description": "A project exceeding size thresholds in lines, public types and namespaces."
+      "description": "A project exceeding size thresholds in lines, public types and namespaces.",
+      "matchScope": "file"
     },
     {
       "id": "call-indirection",
@@ -1254,7 +1260,8 @@
       "cwe": null,
       "family": "architecture",
       "kind": "metric",
-      "description": "Files that repeatedly change together in history without a structural dependency."
+      "description": "Files that repeatedly change together in history without a structural dependency.",
+      "matchScope": "file"
     },
     {
       "id": "captive-dependency",
@@ -1286,7 +1293,8 @@
       "cwe": null,
       "family": "architecture",
       "kind": "finding",
-      "description": "An interface declaring too many members for its consumers."
+      "description": "An interface declaring too many members for its consumers.",
+      "matchScope": "file"
     },
     {
       "id": "cross-slice-coupling",
@@ -1374,7 +1382,8 @@
       "cwe": null,
       "family": "domain",
       "kind": "finding",
-      "description": "Domain entities with state but no behaviour that protects their invariants."
+      "description": "Domain entities with state but no behaviour that protects their invariants.",
+      "matchScope": "file"
     },
     {
       "id": "publicly-mutable-entity-state",
@@ -1710,7 +1719,8 @@
       "cwe": null,
       "family": "maturity",
       "kind": "metric",
-      "description": "Files that are both complex and frequently changed."
+      "description": "Files that are both complex and frequently changed.",
+      "matchScope": "file"
     },
     {
       "id": "knowledge-concentration",
@@ -1718,7 +1728,8 @@
       "cwe": null,
       "family": "maturity",
       "kind": "metric",
-      "description": "Living knowledge of key files concentrated in very few authors."
+      "description": "Living knowledge of key files concentrated in very few authors.",
+      "matchScope": "file"
     },
     {
       "id": "knowledge-freshness",
@@ -1726,7 +1737,8 @@
       "cwe": null,
       "family": "maturity",
       "kind": "metric",
-      "description": "Files whose authors' knowledge has decayed below one focused commit's worth."
+      "description": "Files whose authors' knowledge has decayed below one focused commit's worth.",
+      "matchScope": "file"
     },
     {
       "id": "missing-text-alternative",

@@ -1,6 +1,54 @@
-# Harness contract (v1.4)
+# Harness contract (v1.5)
 
 The fixed interfaces between the parts of this harness. Change only with a version bump.
+
+## What changed in 1.5 (2026-10-07) — location equivalence
+
+The answer-key format is unchanged; every 1.0–1.4 key and mapping stays valid. Two LOCATION-EQUIVALENCE rules change
+outcomes. Both are principled and scanner-neutral, and apply uniformly to every set (training and holdout alike); they
+were decided from location conventions observed while authoring a holdout unit, before any holdout headline was
+computed. `cai_bench` 1.4.0.
+
+- **file-scope concepts (CHANGES OUTCOMES, taxonomy).** A taxonomy concept may carry `"matchScope": "file"`: its defect
+  IS a whole class, file or module. Reporting such a defect at the file, at the class header or anywhere else in the
+  file is equally precise; the line span a key gives a whole class is a key-authoring convention, not something a
+  scanner can be more or less precise about. For an entry that NAMES such a concept and has a file, a result of the
+  concept anywhere in that file is on the entry's site — at a plant (TP), at a trap (caught), in a clean region that
+  lists the concept (clean FP); a `"*"` clean region does not name the concept and keeps its lines. Consumption stays
+  one-to-one: a second result in the file is `redundant`. A result on the entry's lines is preferred to one elsewhere
+  in the file (see Matching, "Location equivalence"). The concepts, with the reason each is file-scope
+  (`mappings/watchdog-build/concepts.py`, `FILE_SCOPE`):
+  `god-class`, `low-class-cohesion`, `fat-interface`, `anemic-domain-model` (the defect is the class, interface or
+  entity type as a whole), `oversized-source-file` (the file as a whole), `churn-complexity-hotspot`,
+  `knowledge-concentration`, `knowledge-freshness`, `change-coupling` (per-file metrics over the file's history), and
+  `oversized-module`, `unstable-dependency`, `module-off-main-sequence` (whole-module metrics, whose site is the
+  module's project file). Concepts whose defect is a member, a statement, a dependency edge or a repository-wide share
+  stay site-scoped (`long-method`, `unused-code`, `publicly-mutable-entity-state`, `mutable-persisted-event`,
+  `test-without-assertion`, `excessive-mocking`, `module-dependency-cycle` — the reference that closes the cycle is
+  its site — `compiled-code-size`, …).
+- **clone-group sites (CHANGES OUTCOMES, by mapping declaration only).** A duplication scanner may report a clone GROUP
+  as one result at one member and list the other members in its message. A mapping may declare how to read them
+  (`sitesFromMessage`, see the mapping section): every site parsed from the message is an ADDITIONAL location of the
+  result, and the result is on an entry's site when ANY of its locations is. A site that states its span (`endLine`)
+  covers an entry whose lines (± tolerance; a clean region exactly) the span overlaps. Consumption stays one-to-one: a
+  clone group listing two plants finds one of them (a second result is needed for the other); a listed member on a
+  trap is caught, in a clean region is a clean FP. The result's own location is preferred to a listed one. A SARIF
+  location is matched by its start line as before (`region.endLine` is not read): only a span a mapping declares is a
+  span.
+- **report.** Each result row carries `locationSource` `sarif` | `message` | `sitesFromMessage` | `none` — the source
+  of the location that DECIDED its outcome (`sitesFromMessage`: a listed site, given as `site`) — its parsed `sites`
+  (when any) and `matchScope: "file"` when the file scope decided. The summary's `locationSources` gains
+  `sitesFromMessage`; it carries `fileScopeMatches` and `resultsWithMessageSites`; the report carries `contract`.
+- **frozen measurements.** `cai_bench.scoring.score(..., contract="1.4")` scores without both rules, so a measurement
+  frozen under 1.4 re-scores exactly: `results/watchdog/baseline.py` re-scores the 2026-10-07 baseline that way, from
+  the mapping and matrix at its frozen commit. The 1.5 effect on that training set is its own file
+  (`results/watchdog/rescore-harness-1.5.json`, addendum in `BASELINE-2026-10-07.md`).
+
+Watchdog mapping changes shipped with 1.5: `sitesFromMessage` for D4 (`{path}:{start}-{end} | …`, spans), R10
+(`{path}:{line} · …`, the "+N more site(s) not listed" tail is not a site; the "Duplication concentrated across N
+sibling directories" row names directories and yields none) and X10 (`in N files — {path}, {path}.`, files without a
+line), all for `duplicated-code` (the only duplication concept). Census in `mappings/watchdog-build/discrim.py`,
+`SITES_FROM_MESSAGE`.
 
 ## What changed in 1.4 (2026-10-07)
 
@@ -152,8 +200,11 @@ The answer key holds LABELS; TP/FP/TN/FN are OUTCOMES of one scanner run against
 
 Scanner-neutral concepts. `{ "version": "1.0", "concepts": [ { "id": "hardcoded-credential", "title": "…",
 "cwe": "CWE-798" | null, "family": "security|codehealth|architecture|domain|testing|readiness|maturity|frontend|ops|compliance|ai",
-"kind": "finding|posture|metric|judged", "description": "…", "parent": "…" } ] }`. Ids are kebab-case and never reused
+"kind": "finding|posture|metric|judged", "description": "…", "parent": "…", "matchScope": "file" } ] }`. Ids are kebab-case and never reused
 (so an id is never removed either: a concept that turns out too coarse becomes an umbrella).
+
+`matchScope` (1.5, optional) is `"file"` for a concept whose defect is a whole class, file or module (see Matching,
+"Location equivalence"); absent, the entry's lines decide. No other value is valid.
 
 `parent` (1.3, optional) names the UMBRELLA concept this one refines (one level deep). The umbrella stays a concept: as a
 concept of its own it denotes what none of its children names (its residue), and an answer-key entry written against it
@@ -198,6 +249,14 @@ keeps its meaning (see Matching, "Umbrella concepts"). New keys name the precise
   "ignore": [                               // 1.1, optional: scanner roll-up rows
     { "rule": "^D28$", "message": "^Rotate the exposed credentials", "reason": "roll-up of the located rows" }
   ],
+  "sitesFromMessage": [                     // 1.5, optional: further sites a result names (clone-group members)
+    { "rule": "^D4$",                       // regex over the ruleId (required)
+      "message": "^Duplicated",             // optional regex over the message (case-insensitive search)
+      "concepts": ["duplicated-code"],      // optional: only results of these concepts
+      "within": "^[^:]*\\): (?P<sites>.*?)(?: — |$)",  // optional: search only this match's `sites` group
+      "patterns": ["(?:^|\\s\\|\\s)(?P<file>[^\\s|]+):(?P<line>\\d+)(?:-(?P<endLine>\\d+))?"],  // `file` required
+      "source": "…" }                       // informational
+  ],
   "locationFromMessage": [                  // 1.3, optional: sites named only in the message
     { "rule": "^D36$",                      // regex over the ruleId (required)
       "message": "^Secret passed as",       // optional regex over the message (case-insensitive search)
@@ -218,6 +277,14 @@ matches whole-file entries and file-level recall, never a lined entry. A result 
 relocated. This is scanner-specific knowledge and deliberately generous: a scanner that names a location only in prose
 is given the benefit of that location, and the report says so (`locationSource: "message"`, `summary.locationSources`)
 so a reader can tell such matches from located ones. A message that names several sites gives the first one.
+
+`sitesFromMessage` (1.5) entries apply to every result (located or not) of a mapped concept: each entry whose `rule`
+(and `message`, and `concepts` if given) match reads its `patterns` over the message — or, with `within`, over the
+`sites` group of `within`'s first match, so a site quoted again in remediation prose is not read twice — with every
+match a site: the `file` group (normalised; matched by the suffix rule, like every site read out of a message), the
+`line` group when it is a positive integer, the `endLine` group as the end of a stated span. Sites are kept in message
+order without repeats; the result's own location restated without a span is not a site. Use it for scanners that
+report a group (a clone group) as one result and list its members, and give the source of the message format.
 
 A rule item accepts a result when its ruleId matches the rule regex, AND — if `messages` apply to it — at least one
 `messages` regex matches the result's `message.text` (case-insensitive search), AND — if `properties` apply — every
@@ -278,7 +345,8 @@ scanner knowledge.
 ## Matching (mirrors kennel tools/multilang/matching.py semantics)
 
 A SARIF result matches a located entry iff its ruleId matches one of the entry concept's `rules`, its path names the
-entry's `file` (see "Paths" below), and its startLine is within `lineTolerance` of `lines`. A
+entry's `file` (see "Paths" below), and its startLine is within `lineTolerance` of `lines` (1.5: or anywhere in the file
+for a file-scope concept, or at a further site its message names — see "Location equivalence"). A
 repository-level entry matches any result of the concept that has no location or whose location is outside every
 located entry. One-to-one for `must-fire` (each entry consumes at most one result; extra results on the same site are
 `redundant`, counted once and not as noise). `clean` entries match any result whose location falls inside the region,
@@ -302,6 +370,17 @@ repository-relative (`pathMatch: exact`) names the entry's file only when the tw
 be made repository-relative, and every result located from its message (often a basename), falls back to the suffix
 rule (`pathMatch: suffix`): the paths are equal or either is a `/`-boundary suffix of the other. Before 1.4 every path
 used the suffix rule, so a plant at the root `.nvmrc` was found by a result on `tools/manifest-export/.nvmrc`.
+
+**Location equivalence (1.5).** A result has one or more LOCATIONS: its own (SARIF, or read from its message by
+`locationFromMessage`) and the further sites its message names (`sitesFromMessage`). A located entry's site is its
+file and lines, except that for an entry naming a file-scope concept (taxonomy `matchScope: "file"`) — a plant's or
+trap's own concept, a concept a clean region lists, never through `"*"` — and a result of that concept, it is the whole
+file. A result is on the site when any of its locations is. In every matching pass (see "Subjects") the locations are
+tried strongest first: the result's own location on the entry's lines; then its own location anywhere in the entry's
+file (file-scope); then a listed site (on the lines, or anywhere in the file for a file-scope concept). So a result ON a
+plant takes it before one elsewhere in the file, and a plant is found by the result reported at it before a result
+that merely lists it. Whether a result lies outside every located entry of its concept (repository-level matching) is
+decided with all of its locations. File-level recall counts a listed site in the plant's file.
 
 **Subjects (1.2).** An entry with a `subject` matches, besides the results on its site (as above), a result of its
 concept (exactly, or as a family sibling where families apply) that has **no location or a location in a dependency

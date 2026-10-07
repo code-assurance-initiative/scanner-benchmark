@@ -6,7 +6,7 @@ from collections import OrderedDict, defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from concepts import C, UNMAPPED, UNMAPPED_CENSUS
+from concepts import C, FILE_SCOPE, UNMAPPED, UNMAPPED_CENSUS
 from dims import D, PHASE, CB, TB, CS, SCORE_DIMS
 
 KENNEL = os.environ.get("WATCHDOG_SOURCE", "/home/jimmy/RiderProjects/kennel.canine.dev")  # the Watchdog engine checkout (read only)
@@ -85,7 +85,7 @@ def rule_for(ds):
 
 # Contract 1.1 discriminators (discrim.py): every multi-concept dimension decides its concept by message title.
 # DISCRIM: concept -> dimension -> [condition]; a dimension listed for a concept gets one rule object per condition.
-from discrim import SPEC, FAMILY, IGNORE, LOCATION_FROM_MESSAGE, PRECISE_PARENT, SUMMARY_OF_CONCEPT
+from discrim import SPEC, FAMILY, IGNORE, LOCATION_FROM_MESSAGE, PRECISE_PARENT, SITES_FROM_MESSAGE, SUMMARY_OF_CONCEPT
 for cid, par in PRECISE_PARENT.items():  # discrim.py's D31 split and the taxonomy agree on every umbrella
     assert next(c for c in C if c["id"] == cid).get("parent") == par, (cid, par)
 DISCRIM = OrderedDict()
@@ -125,6 +125,7 @@ mapping["notes"] = [
     "Sub-rule ids are not unique in one place: two different D31 rules share WD-K8S-0004 (engine/src/Scanner/Security/D31/Scanners/AutomountedServiceAccountTokenScan.cs:73 and UnresolvableImageReferenceScan.cs:56); the detail decides (\"This pod spec/template sets …\" -> automounted-service-account-token, the unsubstituted image placeholder -> iac-misconfiguration). WD-COMPOSE-0003 likewise carries host namespaces and privileged: true (host-namespace-sharing / privileged-container by detail).",
     "Contract 1.3 umbrellas: container-excessive-privilege and iac-misconfiguration are the `parent` of precise concepts (container-runs-as-root, privileged-container, host-namespace-sharing, host-path-mount, container-privilege-escalation-allowed, container-excess-capabilities, container-writable-root-filesystem, container-confinement-profile-unset, container-security-context-missing; missing-health-probes, missing-image-healthcheck, automounted-service-account-token, overly-permissive-rbac, image-not-from-allowed-registry, container-missing-resource-requests). Each result still lands on ONE concept; an entry naming an umbrella also matches its children's results, so keys written before the split keep their meaning, while an entry naming a precise concept is matched only by that concept. The children partition the umbrella's pre-split D31 ids (asserted in discrim.py); the umbrella keeps the residue no precise concept names.",
     "Contract 1.3 `locationFromMessage`: D36's workflow rows have no SARIF location but name their first site in the detail (\"release.yml:7\", or for secret argv rows the workflow path only); a location-less D36 result is given that site. The scanner named the location only in prose and is given the benefit of it; the report counts such results (summary.locationSources, result locationSource = message).",
+    "Contract 1.5 `sitesFromMessage`: D4, R10 and X10 report a clone group as ONE row located at its first member and list every member in the message (D4 \"{path}:{start}-{end} | …\", R10 \"{path}:{line} · …\", X10 \"in N files — {path}, {path}.\"); each listed member is an additional location of the row (result locationSource = sitesFromMessage when a listed member decided). Contract 1.5 file-scope concepts are a TAXONOMY property (matchScope), not mapping knowledge.",
     "Contract 1.2 `scoreDimensions`: a concept whose finding dimensions include one whose score does not measure it (D12 or D36 for dependencies-not-locked, D36 for security-tooling-in-ci, R2 for high-cognitive-complexity, X10 for duplicated-code) names the dimensions a score-band entry takes its score from (curated in mappings/watchdog-build/dims.py SCORE_DIMS); other concepts look up all of `dimensions`.",
     "D28's repository-level \"Rotate the exposed credentials\" row is a roll-up of its located rows and is listed under `ignore` (outcome summary, in no metric).",
     "Contract 1.4 `unmapped`: taxonomy concepts no Watchdog rule detects (census in mappings/watchdog-build/concepts.py UNMAPPED_CENSUS) are mapped with no rule and no dimension; a plant of one is a Watchdog FN — a real defect it cannot see. `summaryOfConcept`: X2/PF3/X5 ratio rows that summarise a located concept over the repository without a site (their per-site rows are Info, never in SARIF); they find no located plant and are not noise. Family `untrusted-data-executed`: insecure-deserialization + code-injection. AC6 is split: focus-outline-removed and motion-without-reduced-motion are children of the umbrella visual-and-motion-safety, which keeps the contrast rows.",
@@ -170,6 +171,10 @@ for sm in SUMMARY_OF_CONCEPT:
 mapping["summaryOfConcept"] = SUMMARY_OF_CONCEPT
 mapping["ignore"] = IGNORE
 mapping["locationFromMessage"] = LOCATION_FROM_MESSAGE
+for sm in SITES_FROM_MESSAGE:  # contract 1.5: only duplication concepts take clone-group sites
+    assert set(sm["concepts"]) <= {"duplicated-code"}, sm
+    assert all(set(by_concept[c]) >= {sm["rule"].strip("^$")} for c in sm["concepts"]), sm
+mapping["sitesFromMessage"] = SITES_FROM_MESSAGE
 mapping["offConcept"] = OFF
 mapping["unevidenced"] = UNEVIDENCED
 

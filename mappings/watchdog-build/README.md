@@ -39,3 +39,10 @@ holding this repository); planned labels from `dims.py` remain only for reposito
 frozen yet. `build.py` prints the frozen coverage gaps per language.
 
     WATCHDOG_SOURCE=/path/to/engine-checkout BENCH_SET_DIR=/path/to/training-set-2026 python3 mappings/watchdog-build/build.py
+
+Contract 1.5 additions. `concepts.py` `FILE_SCOPE` (concept -> why its defect is a whole class, file or module) sets
+the taxonomy's `"matchScope": "file"` — a taxonomy property, read by the scorer from `taxonomy.json`, not mapping
+knowledge. `discrim.py` `SITES_FROM_MESSAGE` becomes the mapping's `sitesFromMessage`: the clone-group site lists of
+D4, R10 and X10 rows (census and engine source in the table); `build.py` allows it for duplication concepts only.
+The engine checkout must be at the mapping's rubric (`rubric-2026.10.1`): the frozen mapping and matrix reproduce from
+the catalog snapshot of kennel `7730bae242^` with the other inputs at `162b41f657`.

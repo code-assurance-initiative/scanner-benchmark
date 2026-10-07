@@ -46,7 +46,7 @@ class LocationFromMessage(unittest.TestCase):
         self.assertEqual(outcomes(r), [(0, "tp", "TOK")])
         row = r["results"][0]
         self.assertEqual((row["file"], row["line"], row["locationSource"]), ("release.yml", 7, "message"))
-        self.assertEqual(r["summary"]["locationSources"], {"sarif": 0, "message": 1, "none": 0})
+        self.assertEqual(r["summary"]["locationSources"], {"sarif": 0, "message": 1, "sitesFromMessage": 0, "none": 0})
 
     def test_without_the_mapping_entry_the_same_row_stays_location_less(self):
         doc = copy.deepcopy(LOC)
@@ -55,7 +55,7 @@ class LocationFromMessage(unittest.TestCase):
                   mapping=doc)
         self.assertEqual(outcomes(r), [(0, "unmatched-fp", None)])
         self.assertEqual(r["results"][0]["locationSource"], "none")
-        self.assertEqual(r["summary"]["locationSources"], {"sarif": 0, "message": 0, "none": 1})
+        self.assertEqual(r["summary"]["locationSources"], {"sarif": 0, "message": 0, "sitesFromMessage": 0, "none": 1})
 
     def test_a_sarif_location_is_never_replaced(self):
         # a scanner that DID locate the row (here at line 1) keeps its location: the message is not a second chance

@@ -52,12 +52,25 @@ Paths (contract 1.4): a result path made repository-relative (paths.repo_relativ
 configured prefixes, a built-in checkout root, or the checkout directory named after the key's repo) is compared with
 an entry's path EXACTLY; one that cannot be, and every site read out of a message, falls back to the suffix rule
 (`pathMatch`: exact | suffix).
+
+Location equivalence (contract 1.5). File-scope concepts: a concept whose taxonomy `matchScope` is "file" (its defect
+IS a whole class, file or module) matches an entry that names it anywhere in the entry's file — plants, traps and
+clean regions that list it alike, never through a "*" region; consumption and redundancy stay one-to-one. Clone-group
+sites: the mapping's `sitesFromMessage` gives a result the further sites its message names (the other members of a
+clone group) as ADDITIONAL locations, and the result is on an entry's site when ANY of its locations is. Matching
+prefers the stronger location in every pass: the result's own location on the entry's lines, then (file-scope) its
+own location anywhere in the file, then a message site. Each result row says which location decided
+(`locationSource`: sarif | message | sitesFromMessage | none, and `site`) and whether the file scope did
+(`matchScope: "file"`). `score(..., contract="1.4")` scores without either rule (a frozen 1.4 measurement re-scores
+exactly).
 """
 import re
 
+from . import CONTRACT_VERSION
 from .keyfile import entry_concepts, line_tolerance
 from .mapping import UNMAPPED
-from .paths import norm, repo_relative, same_file
+from .paths import norm, path_match, repo_relative, same_file
+from .taxonomy import file_scope_concepts
 
 NOISE = ("trap-fp", "clean-fp", "na-fp", "unmatched-fp")
 NO_RULE = "(no scanner rule)"  # by_dimension row: entries whose concept no dimension of the scanner maps
@@ -71,9 +84,10 @@ def _applies(entry, concept):
     return cs == STAR or concept in cs
 
 
-def _covers(entry, result, tol):
-    """The result's location lies on the entry's (located) site. `clean` regions are exact; plants/traps take ±tol;
-    an entry pinned to a commit takes any line of its file in that commit."""
+def _covers(entry, result, tol, whole_file=False):
+    """The result's location (or one site of it: any dict with file, line, pathExact, commitSha) lies on the entry's
+    (located) site. `clean` regions are exact; plants/traps take ±tol; an entry pinned to a commit takes any line of its
+    file in that commit; with `whole_file` (contract 1.5, a file-scope concept) any line of the entry's file."""
     if result["file"] is None:
         return False
     if not same_file(result, entry["_file"]):
@@ -81,12 +95,14 @@ def _covers(entry, result, tol):
     if "commit" in entry:
         sha = result.get("commitSha")
         return bool(sha) and sha.lower().startswith(entry["commit"].lower())
-    if "lines" not in entry:
+    if "lines" not in entry or whole_file:
         return True
     if result["line"] is None:
         return False
     lo, hi = entry["lines"]
     t = 0 if entry["label"] == "clean" else tol
+    if result.get("endLine"):  # contract 1.5: a message site stating its span covers the entry when the two overlap
+        return result["line"] <= hi + t and max(result["endLine"], result["line"]) >= lo - t
     return lo - t <= result["line"] <= hi + t
 
 
@@ -165,12 +181,21 @@ def _result_concepts_for(entry, result, family_of=None):
     return [c for c in _mc(result) if fam is not None and family_of(c) == fam] if fam else []
 
 
+# Location levels of matching (contract 1.5), strongest first: the result's own location on the entry's lines; then
+# also anywhere in the entry's file for a file-scope concept; then also every further site its message names.
+SITE, FILE_SCOPE, MESSAGE_SITES = 0, 1, 2
+
+
 class Matcher:
-    def __init__(self, entries, results, tol, mapping=None):
+    def __init__(self, entries, results, tol, mapping=None, file_scope=frozenset()):
         self.entries = [dict(e, _file=norm(e["file"])) if "file" in e else dict(e, _file=None)
                         for e in entries if e["label"] != "score-band"]
         self.results = results
         self.tol = tol
+        self.file_scope = frozenset(file_scope)
+        self.levels = ([SITE] + ([FILE_SCOPE] if self.file_scope else [])
+                       + ([MESSAGE_SITES] if any(r.get("sites") for r in results) else []))
+        self.widest = self.levels[-1]
         self.family_of = mapping.family_of if mapping is not None else (lambda c: None)
         self.located = [e for e in self.entries if e["_file"] is not None]
         self.subjected = [e for e in self.entries if e.get("subject")]
@@ -184,11 +209,38 @@ class Matcher:
             covered.update(c for c, f in mapping.families.items() if f in fams)
         self.covered = covered
 
-    def _outside_located(self, result, concepts):
-        """The result lies outside every located entry of (one of) its concepts."""
-        return any(not any(_covers(L, result, self.tol) for L in self.located if _applies(L, c)) for c in concepts)
+    def _file_scoped(self, entry, concepts):
+        """Contract 1.5: the entry's site is its whole file for these result concepts — the entry NAMES a file-scope
+        concept (a plant's or trap's own concept, a clean region's listed one; never a "*" region) that the result
+        counts as, or (family pass) the plant's or trap's own concept is file-scope."""
+        if not self.file_scope or entry_concepts(entry) == STAR:
+            return False
+        if entry["label"] in FAMILY_LABELS and entry["concept"] in self.file_scope:
+            return True
+        return any(c in self.file_scope for c in concepts)
 
-    def matches(self, entry, result, family=False, subject=False):
+    def covering(self, entry, result, concepts, level=None):
+        """(location, scope) by which the result lies on the located entry's site at `level` (default: the widest):
+        location is the result itself or one of its message sites, scope "site" or "file"; None when it does not."""
+        level = self.widest if level is None else level
+        whole = level >= FILE_SCOPE and self._file_scoped(entry, concepts)
+        for loc in [result] + (result.get("sites") or [] if level >= MESSAGE_SITES else []):
+            if _covers(entry, loc, self.tol):
+                return loc, "site"
+            if whole and _covers(entry, loc, self.tol, whole_file=True):
+                return loc, "file"
+        return None
+
+    def _on_located(self, result, c):
+        return any(self.covering(L, result, [c]) for L in self.located if _applies(L, c))
+
+    def _outside_located(self, result, concepts):
+        """The result lies outside every located entry of (one of) its concepts (at the widest level)."""
+        return any(not self._on_located(result, c) for c in concepts)
+
+    def matches(self, entry, result, family=False, subject=False, level=None):
+        """Falsy when the result does not match the entry; else (location, scope) for a located site match (see
+        `covering`), True for any other."""
         concepts = _result_concepts_for(entry, result, self.family_of if family else None)
         if not concepts:
             return False
@@ -200,14 +252,21 @@ class Matcher:
                 return False
             return True
         if entry["_file"] is not None:
-            return _covers(entry, result, self.tol)
+            return self.covering(entry, result, concepts, level)
         if entry.get("subject"):
             return False  # a repository-level entry with a subject matches only by its subject
         # repository-level: the result is outside every located entry of (one of) its concepts, and names the subject
         # of no subject entry of that concept (that entry, not the repository, is its site)
-        return any(not any(_covers(L, result, self.tol) for L in self.located if _applies(L, c))
+        return any(not self._on_located(result, c)
                    and not any(_subject_hit(S, result) for S in self.subjected if _applies(S, c))
                    for c in concepts)
+
+    def _passes(self):
+        """(family, subject, level) in the order matching tries them: the PASSES, each located one at every location
+        level, strongest first (a subject pass does not depend on the location level)."""
+        for family, subject in PASSES:
+            for level in ([self.widest] if subject else self.levels):
+                yield family, subject, level
 
     def run(self):
         """{"entries": {id: outcome}, "results": [outcome]} — see the module docstring for the outcome names."""
@@ -217,8 +276,14 @@ class Matcher:
                 res_out[i] = {"outcome": "summary", "entryId": None, "concept": None}
         ent_out = {}
 
-        def claim(i, outcome, entry, concept):
+        def claim(i, outcome, entry, concept, how=None):
             res_out[i] = {"outcome": outcome, "entryId": entry["id"] if entry else None, "concept": concept}
+            if isinstance(how, tuple):  # contract 1.5: which location of the result decided, and at what scope
+                loc, scope = how
+                if loc is not self.results[i]:
+                    res_out[i]["site"] = {k: loc[k] for k in ("file", "line", "endLine")}
+                if scope == "file":
+                    res_out[i]["scope"] = "file"
 
         def concept_for(entry, r):
             if entry["label"] in FAMILY_LABELS:
@@ -226,39 +291,44 @@ class Matcher:
             return _result_concepts_for(entry, r)[0]
 
         def first(group, r):
-            """The first entry of `group` matching r in the strongest pass that matches any (see PASSES)."""
-            for family, subject in PASSES:
-                e = next((e for e in group if self.matches(e, r, family, subject)), None)
-                if e:
-                    return e
-            return None
+            """(entry, how): the first entry of `group` matching r in the strongest pass that matches any."""
+            for family, subject, level in self._passes():
+                for e in group:
+                    how = self.matches(e, r, family, subject, level)
+                    if how:
+                        return e, how
+            return None, None
 
         mf = [e for e in self.entries if e["label"] == "must-fire"]
         mf = [e for e in mf if e["_file"]] + [e for e in mf if not e["_file"]]
         for e in mf:
             ent_out[e["id"]] = {"outcome": "FN", "results": [], "redundant": [], "fileLevel": False}
-        for family, subject in PASSES:
+        for family, subject, level in self._passes():
             for e in mf:
                 if ent_out[e["id"]]["outcome"] == "TP":
                     continue
-                hit = next((i for i, r in enumerate(self.results)
-                            if res_out[i] is None and self.matches(e, r, family, subject)), None)
-                if hit is not None:
-                    claim(hit, "tp", e, e["concept"])
-                    ent_out[e["id"]] = {"outcome": "TP", "results": [hit], "redundant": [], "fileLevel": True}
+                for i, r in enumerate(self.results):
+                    if res_out[i] is not None:
+                        continue
+                    how = self.matches(e, r, family, subject, level)
+                    if how:
+                        claim(i, "tp", e, e["concept"], how)
+                        ent_out[e["id"]] = {"outcome": "TP", "results": [i], "redundant": [], "fileLevel": True}
+                        break
         for e in mf:
             if ent_out[e["id"]]["outcome"] != "TP" and e["_file"] is not None:
                 ent_out[e["id"]]["fileLevel"] = any(
                     res_out[i] is None or res_out[i]["outcome"] != "summary"
                     for i, r in enumerate(self.results)
-                    if r["file"] is not None and same_file(r, e["_file"])
+                    if any(loc["file"] is not None and same_file(loc, e["_file"])
+                           for loc in [r] + (r.get("sites") or []))
                     and (_result_concepts_for(e, r) or _result_concepts_for(e, r, self.family_of)))
         hit_mf = [e for e in mf if ent_out[e["id"]]["outcome"] == "TP"]
         for i, r in enumerate(self.results):
             if res_out[i] is None:
-                e = first(hit_mf, r)
+                e, how = first(hit_mf, r)
                 if e:
-                    claim(i, "redundant", e, e["concept"])
+                    claim(i, "redundant", e, e["concept"], how)
                     ent_out[e["id"]]["redundant"].append(i)
 
         for label, outcome in (("must-not-fire", "trap-fp"), ("clean", "clean-fp"), ("not-applicable", "na-fp")):
@@ -268,9 +338,9 @@ class Matcher:
                 ent_out[e["id"]] = {"outcome": "TN", "results": [], "redundant": []}
             for i, r in enumerate(self.results):
                 if res_out[i] is None:
-                    e = first(group, r)
+                    e, how = first(group, r)
                     if e:
-                        claim(i, outcome, e, concept_for(e, r))
+                        claim(i, outcome, e, concept_for(e, r), how)
                         ent_out[e["id"]]["outcome"] = "FP"
                         ent_out[e["id"]]["results"].append(i)
 
@@ -380,7 +450,7 @@ def by_concept(matcher, out):
     return {k: finish(v) for k, v in sorted(rows.items(), key=lambda kv: (kv[0] in (STAR, UNMAPPED), kv[0]))}
 
 
-def by_dimension(entries, results, mapping, tol):
+def by_dimension(entries, results, mapping, tol, file_scope=frozenset()):
     """Per scanner dimension, matching re-run within the dimension: only its own results against the entries whose
     concept maps to it (and every `"*"` clean region), so a hit by one dimension is never credited to another."""
     dims = []
@@ -404,7 +474,7 @@ def by_dimension(entries, results, mapping, tol):
             if cs == STAR or any(d in mapping.dimensions_of_concept(c) for c in cs):
                 ents.append(e)
         rs = [r for r in results if r["dimension"] == d]
-        m = Matcher(ents, rs, tol, mapping)
+        m = Matcher(ents, rs, tol, mapping, file_scope)
         rows[d] = totals(m, m.run())
     # contract 1.4: plants and traps of a concept no dimension of the scanner maps (a must-fire there is an FN)
     ruleless = [e for e in entries if e["label"] in ("must-fire", "must-not-fire")
@@ -444,8 +514,20 @@ def score_bands(entries, scores, mapping):
 
 # --- the whole run --------------------------------------------------------------------------------------------------
 
-def score(key, results, mapping, scores=None):
-    """Score `results` (from sarif.read_results) against `key` under `mapping`. Returns the full report dict."""
+CONTRACTS = ("1.4", "1.5")
+
+
+def score(key, results, mapping, scores=None, contract=None, taxonomy=None):
+    """Score `results` (from sarif.read_results) against `key` under `mapping`. Returns the full report dict.
+
+    `contract` (default: the current one) "1.4" scores without the 1.5 location-equivalence rules, so a measurement
+    frozen under 1.4 re-scores exactly. `taxonomy` (a parsed taxonomy.json) overrides the harness's own for the
+    file-scope concepts."""
+    contract = contract or CONTRACT_VERSION
+    if contract not in CONTRACTS:
+        raise ValueError(f"score: contract {contract!r} is not one of {CONTRACTS}")
+    equivalence = contract != "1.4"
+    file_scope = file_scope_concepts(taxonomy) if equivalence else frozenset()
     tol = line_tolerance(key)
     entries = key["entries"]
     repo_name = (key.get("repo") or "").rsplit("/", 1)[-1] or None
@@ -470,8 +552,26 @@ def score(key, results, mapping, scores=None):
             if exact:
                 r["file"], r["pathExact"] = f, True
         r["pathMatch"] = None if r["file"] is None else ("exact" if r.get("pathExact") else "suffix")
-    m = Matcher(entries, results, tol, mapping)
+        r.pop("sites", None)
+        if equivalence and not r["ignoreReason"] and r["concepts"]:
+            sites = []  # contract 1.5: further sites named in the message, matched like message locations (suffix)
+            for f, line, end in mapping.sites_in_message(r["ruleId"], r.get("message"), r["concepts"]):
+                f = norm(f)
+                if f is None or (r["file"] is not None and line == r["line"] and path_match(f, r["file"])
+                                 and end is None):
+                    continue  # the result's own location, restated (kept when the message adds its span)
+                sites.append({"file": f, "line": line, "endLine": end, "pathExact": False,
+                              "commitSha": r.get("commitSha")})
+            if sites:
+                r["sites"] = sites
+    m = Matcher(entries, results, tol, mapping, file_scope)
     out = m.run()
+    for r, o in zip(results, out["results"]):
+        r.pop("site", None), r.pop("matchScope", None)
+        if o.get("site"):
+            r["locationSource"], r["site"] = "sitesFromMessage", o["site"]
+        if o.get("scope"):
+            r["matchScope"] = o["scope"]
 
     entry_rows = []
     for e in m.entries:
@@ -492,21 +592,29 @@ def score(key, results, mapping, scores=None):
 
     result_rows = []
     for r, o in zip(results, out["results"]):
-        result_rows.append({**_brief(r), "message": r["message"], "concepts": r["concepts"],
-                            "dimension": r["dimension"], "outcome": o["outcome"], "entryId": o["entryId"],
-                            "attributedConcept": o["concept"], "ignoreReason": r.get("ignoreReason")})
+        row = {**_brief(r), "message": r["message"], "concepts": r["concepts"],
+               "dimension": r["dimension"], "outcome": o["outcome"], "entryId": o["entryId"],
+               "attributedConcept": o["concept"], "ignoreReason": r.get("ignoreReason")}
+        if r.get("sites"):
+            row["sites"] = [{k: x[k] for k in ("file", "line", "endLine")} for x in r["sites"]]
+        result_rows.append(row)
 
     soc = [{"index": r["index"], "ruleId": r["ruleId"], "concept": o["concept"], "message": r["message"],
             "plants": o["plants"], "reason": r["summaryOf"]} for r, o in zip(results, out["results"]) if o["outcome"] == "summary-of-concept"]
     bands = score_bands(entries, scores or {}, mapping)
     summary = totals(m, out)
-    summary["locationSources"] = {k: sum(r["locationSource"] == k for r in results) for k in ("sarif", "message", "none")}
+    summary["locationSources"] = {k: sum(r["locationSource"] == k for r in results)
+                                  for k in ("sarif", "message") + (("sitesFromMessage",) if equivalence else ()) + ("none",)}
+    if equivalence:
+        summary["fileScopeMatches"] = sum(r.get("matchScope") == "file" for r in results)
+        summary["resultsWithMessageSites"] = sum(bool(r.get("sites")) for r in results)
     summary["pathMatches"] = {k: sum(r.get("pathMatch") == k for r in results) for k in ("exact", "suffix")}
     return {
         "lineTolerance": tol,
         "summary": summary,
         "concepts": by_concept(m, out),
-        "dimensions": by_dimension(entries, results, mapping, tol),
+        "dimensions": by_dimension(entries, results, mapping, tol, file_scope),
+        "contract": contract,
         "scoreBands": bands,
         "unmappedConcepts": unmapped_concepts(entries, mapping),
         "summaryOfConcept": soc,
@@ -526,10 +634,15 @@ def unmapped_concepts(entries, mapping):
 
 
 def _brief(r):
-    return {"index": r["index"], "run": r["run"], "resultIndex": r["resultIndex"], "ruleId": r["ruleId"],
-            "file": r["file"], "line": r["line"], "locationSource": r.get("locationSource"),
-            "pathMatch": r.get("pathMatch"),
-            "commitSha": r.get("commitSha")}
+    b = {"index": r["index"], "run": r["run"], "resultIndex": r["resultIndex"], "ruleId": r["ruleId"],
+         "file": r["file"], "line": r["line"], "locationSource": r.get("locationSource"),
+         "pathMatch": r.get("pathMatch"),
+         "commitSha": r.get("commitSha")}
+    if r.get("site"):  # contract 1.5: the message site that decided the outcome
+        b["site"] = r["site"]
+    if r.get("matchScope"):
+        b["matchScope"] = r["matchScope"]
+    return b
 
 
 # --- text rendering -------------------------------------------------------------------------------------------------
@@ -562,6 +675,12 @@ def render(report):
     if ls.get("message"):
         parts += [f"{ls['message']} result(s) located from the message (mapping `locationFromMessage`): the scanner "
                   f"named the site only in prose and is given the benefit of that location."]
+    if ls.get("sitesFromMessage"):
+        parts += [f"{ls['sitesFromMessage']} result(s) matched at a further site their message names (mapping "
+                  f"`sitesFromMessage`, contract 1.5): a clone group reported at one member, found at another."]
+    if report["summary"].get("fileScopeMatches"):
+        parts += [f"{report['summary']['fileScopeMatches']} result(s) matched by file-scope (contract 1.5): a "
+                  f"class-, file- or module-level concept reported elsewhere in the entry's file."]
     if report["scoreBands"]:
         parts += ["", "score bands:"]
         for b in report["scoreBands"]:

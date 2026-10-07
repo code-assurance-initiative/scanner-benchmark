@@ -12,6 +12,8 @@ Standard library only (and the in-repository `cai_bench` package). Inputs:
 - results/watchdog/summarise.py        the curated false-negative mechanism of every FN (FN_MECHANISMS)
 - coverage/matrix.json                 dimension names, lenses, scope, evaluator and which keys label each dimension
 - mappings/watchdog.json               concept -> dimension
+                                       (both read from git at FROZEN_INPUTS_COMMIT: the baseline is a frozen measurement,
+                                       re-scored under contract 1.4 — FROZEN_CONTRACT — whatever the current mapping holds)
 - the authoring workspace (default: the directory holding scanner-benchmark/):
     <repo>/                            legacy: a clone of every benchmark repository. The key is read at the
                                        registered tag (sha256 checked) from the first source that has it: --units-dir
@@ -54,6 +56,21 @@ sys.path.insert(0, os.path.join(ROOT, "mappings"))
 from watchdog_scores import scores as scorecard_scores  # noqa: E402
 
 DATE = "2026-10-07"
+FROZEN_CONTRACT = "1.4"  # the contract the baseline was measured under (final-scores.json harness.contract)
+# The mapping and coverage matrix the baseline was frozen with, read from git at this commit (the last one before
+# contract 1.5): later mapping changes (1.5 `sitesFromMessage`, notes) are not part of the frozen measurement.
+FROZEN_INPUTS_COMMIT = "e0605ca6b85f560255345e4bebd82a4a83b58036"
+FROZEN_INPUTS = ("mappings/watchdog.json", "coverage/matrix.json")
+
+
+def frozen_input(rel):
+    """The bytes of a frozen input (FROZEN_INPUTS) at FROZEN_INPUTS_COMMIT."""
+    import subprocess
+    p = subprocess.run(["git", "-C", ROOT, "show", f"{FROZEN_INPUTS_COMMIT}:{rel}"], capture_output=True)
+    if p.returncode != 0:
+        raise SystemExit(f"cannot read {rel} at the frozen commit {FROZEN_INPUTS_COMMIT[:9]} (a git checkout of "
+                         f"scanner-benchmark with its history is needed): {p.stderr.decode(errors='replace').strip()}")
+    return p.stdout
 OUT = os.path.join(HERE, f"baseline-{DATE}.json")
 LANG_LABEL = {"csharp": "C#", "typescript": "TS"}
 NOISE_KINDS = ("trap-fp", "clean-fp", "na-fp", "unmatched-fp")
@@ -170,7 +187,9 @@ def rescore(repo, workspace, mapping, units_dir=None, set_dir=None):
     sarif = load(sarif_path)
     scores = scorecard_scores(load(os.path.join(scan, "scorecard.json")))
     results = read_results(sarif, ())
-    report = score(key, results, mapping, scores)
+    # the baseline is a measurement frozen under contract 1.4: re-scored without the 1.5 location-equivalence rules
+    # (file-scope concepts, clone-group sites), so it reproduces exactly; the 1.5 effect is the addendum's rescore
+    report = score(key, results, mapping, scores, contract=FROZEN_CONTRACT)
     for k in ("tp", "fn", "trapFp", "trapTn", "results", "noise", "redundant", "uncovered", "fileLevelTp"):
         if report["summary"][k] != repo["summary"][k]:
             raise SystemExit(f"{name}: re-score {k}={report['summary'][k]} != final-scores {repo['summary'][k]}")
@@ -323,8 +342,9 @@ def nondeterminism(workspace, llm_dims):
 def build(a):
     final = load(os.path.join(HERE, "final-scores.json"))
     summary = load(os.path.join(HERE, "SUMMARY.json"))
-    matrix = load(os.path.join(ROOT, "coverage", "matrix.json"))
-    mapping_doc = load(os.path.join(ROOT, "mappings", "watchdog.json"))
+    frozen = {rel: frozen_input(rel) for rel in FROZEN_INPUTS}
+    matrix = json.loads(frozen["coverage/matrix.json"])
+    mapping_doc = json.loads(frozen["mappings/watchdog.json"])
     mapping = Mapping(mapping_doc)
     rows = {r["id"]: r for r in matrix["rows"]}
     lens_order, lens_labels = [], {}
@@ -333,8 +353,15 @@ def build(a):
             lens_order.append(r["lens"])
             lens_labels[r["lens"]] = r["lensLabel"]
     catalog_note = "not checked (catalog not found)"
+    if final["harness"]["contract"] != FROZEN_CONTRACT:
+        raise SystemExit(f"final-scores.json was scored under contract {final['harness']['contract']}, the baseline "
+                         f"is frozen under {FROZEN_CONTRACT}")
     if a.catalog and os.path.exists(a.catalog):
         cat = load(a.catalog)
+        if cat["rubricVersion"] != mapping.version:
+            raise SystemExit(f"{a.catalog} is {cat['rubricVersion']}, the baseline's mapping is {mapping.version}: pass "
+                             f"--catalog with the {mapping.version} snapshot (e.g. `git -C <kennel> show "
+                             f"<commit>:engine/rubrics/rubric-catalog-snapshot.json > /tmp/catalog.json`)")
         cat_lens = {d["id"]: d["lens"] for d in cat["dimensions"]}
         diff = sorted(d for d in set(cat_lens) | set(rows) if cat_lens.get(d) != (rows.get(d) or {}).get("lens"))
         if diff:
@@ -514,8 +541,8 @@ def build(a):
         "harness": final["harness"], "mapping": final["mapping"],
         "inputs": {"final-scores.json": sha256_file(os.path.join(HERE, "final-scores.json")),
                    "SUMMARY.json": sha256_file(os.path.join(HERE, "SUMMARY.json")),
-                   "mappings/watchdog.json": sha256_file(os.path.join(ROOT, "mappings", "watchdog.json")),
-                   "coverage/matrix.json": sha256_file(os.path.join(ROOT, "coverage", "matrix.json")),
+                   "mappings/watchdog.json": sha256_bytes(frozen["mappings/watchdog.json"]),
+                   "coverage/matrix.json": sha256_bytes(frozen["coverage/matrix.json"]),
                    "catalog": catalog_note},
         "definitions": {
             "dimension": "sum over repositories of the harness's per-dimension rows (matching re-run within the "

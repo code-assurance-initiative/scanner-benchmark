@@ -1061,3 +1061,31 @@ LOCATION_FROM_MESSAGE = [
     OrderedDict(rule=r"^D36$", pattern=r"(?<![\w./-])(?P<file>[\w./-]+\.(?:ya?ml|toml|json)):(?P<line>\d+)\b",
                 source=D36_SITE_SRC),
 ]
+
+# Contract 1.5 `sitesFromMessage`: Watchdog reports a clone GROUP as one row located at its first member and lists every
+# member in the message ("{path}:{start}-{end} | {path}:{start}-{end} — remediation" for D4, "{path}:{line} · {path}:{line}
+# [· +N more site(s) not listed] — remediation" for R10, "in N files — {path}, {path}. It is one line" for X10). Each
+# listed member becomes an ADDITIONAL location of the row, so a plant at the second copy is found by the row reported at
+# the first. `within` confines the patterns to the site list, so a site quoted again in the remediation prose (D4:
+# "at `{path}:{line}` it does not close everything it opens") is not read twice. The census is every D4/R10/X10 row of
+# the local report.sarif files under cai-bench/_scans (142 SARIF files): D4 "Duplicated block (N lines × N)" 63,
+# "(N–N lines × N)" 7, "Edited copy of a member" 2; R10 "Duplicated block (N lines × N locations)" 53, "with local
+# edits" 21, "Duplication concentrated across N sibling directories" 16 (names directories, not sites: no site is read);
+# X10 "Duplicated predicate" 20.
+_SITE_LIST = r"^[^:]*\): (?P<sites>.*?)(?: — |$)"
+SITES_FROM_MESSAGE = [
+    OrderedDict(rule=r"^D4$", concepts=["duplicated-code"], within=_SITE_LIST,
+                patterns=[r"(?:^|\s\|\s)(?P<file>[^\s|]+):(?P<line>\d+)(?:[-–](?P<endLine>\d+))?(?=\s|$)"],
+                source="engine/src/Scanner/CodeShape/D4/CodeShape/DuplicationAnalyzer.cs:5560,5572,5584-5585 (titles); "
+                       "detail \"{path}:{start}-{end} | {path}:{start}-{end} — …\" (census of _scans/**/report.sarif)"),
+    OrderedDict(rule=r"^R10$", concepts=["duplicated-code"], within=_SITE_LIST,
+                patterns=[r"(?:^|\s·\s)(?P<file>[^\s·]+):(?P<line>\d+)(?=\s|$)"],
+                source="engine/src/Scanner/Frontend/R10/FrontendDuplicationAnalysis.cs:745-760 (string.Join(\" · \", "
+                       "{FilePath}:{StartLine}) [+ \" · +N more site(s) not listed\"] + \" — \" + remediation)"),
+    OrderedDict(rule=r"^X10$", message=r"^Duplicated predicate:", concepts=["duplicated-code"],
+                within=r" in \d+ files — (?P<sites>.*?)\. It is one line",
+                patterns=[r"(?:^|,\s)(?P<file>[^\s,]+)"],
+                source="engine/src/Scanner/Defects/X10/StringContractSmellAnalyzer.cs:369-371 (\"… appears "
+                       "character-identically in {n} files — {string.Join(\", \", files.Take(4))}. It is one line, …\"): "
+                       "files, no line"),
+]
