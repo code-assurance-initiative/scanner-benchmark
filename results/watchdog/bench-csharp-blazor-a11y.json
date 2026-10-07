@@ -1,0 +1,373 @@
+{
+ "repo": "code-assurance-initiative/bench-csharp-blazor-a11y",
+ "tag": "v1.0.0",
+ "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc); host model passes on the same engine build",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-07",
+   "sarifSha256": "326496a5ff04e4d452757adb36f53d073994e5f397e81c89cb5220d37bac3864",
+   "outcomes": {
+    "tp": 16,
+    "fn": 9,
+    "fp": 1,
+    "tn": 154,
+    "trapFp": 1,
+    "trapTn": 20,
+    "results": 18,
+    "noise": 2,
+    "redundant": 0,
+    "uncovered": 11,
+    "summaryOfConcept": 0
+   },
+   "note": "contained, repo at 6c61ed5 (key at 6c61ed5)"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "40dbe71e111e926a968014d8f59344b163104516c42d7286500ac297b6712908",
+   "outcomes": {
+    "tp": 16,
+    "fn": 9,
+    "fp": 2,
+    "tn": 155,
+    "trapFp": 2,
+    "trapTn": 19,
+    "results": 18,
+    "noise": 2,
+    "redundant": 0,
+    "uncovered": 7,
+    "summaryOfConcept": 0
+   },
+   "note": "contained, repo at 2e8a00e (admin page-model tests, bookings-page cancellation, TRP-015 whole file)"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "3793f224c88d6fd647bb2d620cc90f37aff5dfbae3121d0b22cc668e878dfecf",
+   "outcomes": {
+    "tp": 16,
+    "fn": 9,
+    "fp": 2,
+    "tn": 155,
+    "trapFp": 2,
+    "trapTn": 19,
+    "results": 18,
+    "noise": 2,
+    "redundant": 0,
+    "uncovered": 7,
+    "summaryOfConcept": 0
+   },
+   "note": "host --with-llm, default configuration, repo at 2e8a00e; one D20 row on ADR 0002 judged valid and fixed (5e74f77)"
+  },
+  {
+   "iteration": 3,
+   "date": "2026-10-07",
+   "sarifSha256": "40dbe71e111e926a968014d8f59344b163104516c42d7286500ac297b6712908",
+   "outcomes": {
+    "tp": 16,
+    "fn": 9,
+    "fp": 2,
+    "tn": 155,
+    "trapFp": 2,
+    "trapTn": 19,
+    "results": 18,
+    "noise": 2,
+    "redundant": 0,
+    "uncovered": 7,
+    "summaryOfConcept": 0
+   },
+   "note": "contained, repo at 5e74f77 (key before TRP-022)"
+  },
+  {
+   "iteration": 3,
+   "date": "2026-10-07",
+   "sarifSha256": "9bf6bc77f4661660f7c31ebbd8493279175b80a57b7bca6cccbbca332d053ea2",
+   "outcomes": {
+    "tp": 16,
+    "fn": 9,
+    "fp": 2,
+    "tn": 156,
+    "trapFp": 2,
+    "trapTn": 20,
+    "results": 18,
+    "noise": 2,
+    "redundant": 0,
+    "uncovered": 6,
+    "summaryOfConcept": 0
+   },
+   "note": "host --with-llm, default configuration, repo at 5e74f77; outcomes re-scored against the frozen key (code unchanged since)"
+  },
+  {
+   "iteration": 3,
+   "date": "2026-10-07",
+   "sarifSha256": "df6d90a13b8bbe249cd4fddaa88bf76938f751d81806f8ede19e54bb99b308df",
+   "configuration": {
+    "label": "wcag-2.2",
+    "env": {
+     "CODEHEALTH_COMPLIANCE_FRAMEWORKS": "wcag-2.2"
+    }
+   },
+   "outcomes": {
+    "tp": 18,
+    "fn": 7,
+    "fp": 3,
+    "tn": 155,
+    "trapFp": 3,
+    "trapTn": 19,
+    "results": 21,
+    "noise": 3,
+    "redundant": 0,
+    "uncovered": 6,
+    "summaryOfConcept": 0
+   },
+   "note": "host --with-llm with CODEHEALTH_COMPLIANCE_FRAMEWORKS=wcag-2.2 (NOT the default configuration; secondary, excluded from headline numbers), repo at 5e74f77; outcomes re-scored against the frozen key (the LA6 row on ConfirmDialog.razor:5 is the promoted trap TRP-022)"
+  },
+  {
+   "iteration": 4,
+   "date": "2026-10-07",
+   "sarifSha256": "40dbe71e111e926a968014d8f59344b163104516c42d7286500ac297b6712908",
+   "outcomes": {
+    "tp": 16,
+    "fn": 9,
+    "fp": 2,
+    "tn": 156,
+    "trapFp": 2,
+    "trapTn": 20,
+    "results": 18,
+    "noise": 2,
+    "redundant": 0,
+    "uncovered": 7,
+    "summaryOfConcept": 0
+   },
+   "note": "contained, final, repo at 12ec46a (tag v1.0.0 = 12ec46a + journal entry only); results identical to iteration 3",
+   "tag": "v1.0.0"
+  }
+ ],
+ "verdicts": [
+  {
+   "ruleId": "AC6",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/Home.razor.css",
+   "line": 23,
+   "message": "Low contrast colour pair in CSS (3.8:1): `.hero-title` sets color: #ffffff on background-color: #2f8f9d — 3.8:1, below the 4.5:1 WCAG AA minimum for normal text. Darken or lighten one of them.",
+   "class": "false-positive",
+   "reason": "TRP-009. The same rule (.hero-title, Home.razor.css:23-32) sets font-size: 2.25rem and font-weight: 700 (36px bold) — large text, for which WCAG 1.4.3 AA requires 3:1; #ffffff on #2f8f9d is 3.8:1. The check applies the 4.5:1 normal-text bar without reading the size declared in the rule.",
+   "action": "Recorded as noise; trap TRP-009 caught in every iteration."
+  },
+  {
+   "ruleId": "AC3",
+   "file": "src/HarbourLane.Bookings.Web/Pages/Admin/EditRoom.cshtml",
+   "line": 7,
+   "message": "Routed page without a <PageTitle>: A route with no <PageTitle> gives no name in the tab, history or screen-reader page list — the host's <HeadOutlet /> projects whatever title the routed component supplies, and this one supplies none. Add a <PageTitle> to this component (a literal <title> in the host document would be overwritten by the outlet).",
+   "class": "false-positive",
+   "reason": "The file is a Razor Page (@page \"{id:guid}\" at line 1), not a Blazor routed component; <PageTitle> has no effect there. Its document title is _AdminLayout.cshtml:6 <title>@ViewData[\"Title\"] · Staff area · Harbour Lane</title>, and the page sets ViewData[\"Title\"] at line 4. The check treats any Razor file whose @page directive carries a quoted route template as a Blazor route.",
+   "action": "Recorded as noise. Iteration 1: fell off TRP-015 (draft key named the @page line; the scanner reports the first element, line 7); TRP-015 widened to the whole file (the claim is about the page). Trap caught from iteration 2 on."
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/HarbourLane.Bookings.Web/Pages/Admin/EditRoom.cshtml.cs",
+   "line": 1,
+   "message": "Low coverage: src/HarbourLane.Bookings.Web/Pages/Admin/EditRoom.cshtml.cs: 0.0% line coverage (0/31).",
+   "class": "valid",
+   "reason": "Accurate: no test exercised the staff-area page models (EditRoom, Index, Notice).",
+   "action": "Repository fixed in f9eecf9 (page-model unit tests). Gone from iteration 2."
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/HarbourLane.Bookings.Web/Pages/Admin/Index.cshtml.cs",
+   "line": 1,
+   "message": "Low coverage: src/HarbourLane.Bookings.Web/Pages/Admin/Index.cshtml.cs: 0.0% line coverage (0/6).",
+   "class": "valid",
+   "reason": "Same as the EditRoom row: untested page model.",
+   "action": "Fixed by the same commit; gone from iteration 2."
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/HarbourLane.Bookings.Web/Pages/Admin/Notice.cshtml.cs",
+   "line": 1,
+   "message": "Low coverage: src/HarbourLane.Bookings.Web/Pages/Admin/Notice.cshtml.cs: 0.0% line coverage (0/10).",
+   "class": "valid",
+   "reason": "Same as the EditRoom row: untested page model.",
+   "action": "Fixed by the same commit; gone from iteration 2."
+  },
+  {
+   "ruleId": "X2",
+   "file": null,
+   "line": null,
+   "message": "Not all async methods take a CancellationToken: Only 14/15 async methods accept a CancellationToken, so in-flight work can't be stopped early when the caller gives up — whatever ends it in your host (shutdown signal, timeout, abandoned request, user cancel). Thread a token through the call chain and honour it at each await and loop; where a method genuinely cannot be interrupted, omitting it is a deliberate choice — judge against your hosting model.",
+   "class": "valid",
+   "reason": "Accurate: the bookings page's LoadAsync (named in the scorecard detail) took no token, and the page passed CancellationToken.None to every call, so leaving the page did not stop its work.",
+   "action": "Repository fixed in c7ed45b: the component owns a CancellationTokenSource cancelled on dispose. BA-021 moved from line 52 to 54 (same call). Gone from iteration 2."
+  },
+  {
+   "ruleId": "D5",
+   "file": null,
+   "line": null,
+   "message": "Off the main sequence: HarbourLane.Bookings.Core: HarbourLane.Bookings.Core: abstractness 0.14, instability 0.00, distance 0.86 — zone of pain — concrete and depended on by 1 project(s), so it's rigid to change.",
+   "class": "opinion-not-fact",
+   "reason": "The distance is computed correctly, but a concrete core library depended on by its host is the intended shape of a two-project application (ADR 0001); 'zone of pain … rigid to change' goes beyond what the heuristic supports.",
+   "action": "Recorded as noise; recurs unchanged in every iteration."
+  },
+  {
+   "ruleId": "D17",
+   "file": ".editorconfig",
+   "line": 37,
+   "message": "AnalyzerSeverityNone: CA2007 — this rule is switched off for every file the section matches, in every project under this directory, and the only record that it was ever switched off is this line: nothing at the sites it would have reported says so, so a reader of that code has no reason to look here, and code added years from now inherits the decision silently. Fix what the rule reports and delete the entry, or — where some sites really are legitimate — leave the rule on and suppress it at those sites with their reasons, so it keeps protecting the rest of the tree. If the rule is genuinely unwanted here, say why — on this line after the entry, or in the comment run directly above it: a comment that only repeats the rule's own title is read as no explanation at all and leaves this row in place.",
+   "class": "false-positive",
+   "reason": "The reason is in the comment run directly above the entry (tests must not use ConfigureAwait(false), xUnit1030; Blazor components and the wrappers they await must resume on the renderer's context), and the Core library switches the rule back on in src/HarbourLane.Bookings.Core/.editorconfig. While reviewing this row the comment (copied from the shared scaffolding) was found to name a src/.editorconfig this repository does not have; it was rewritten to be accurate. The row persists with the accurate comment (line 39 from iteration 2).",
+   "action": "Recorded as noise; comment corrected in 9d6d1c2, row unchanged."
+  },
+  {
+   "ruleId": "D17",
+   "file": "tests/.editorconfig",
+   "line": 3,
+   "message": "AnalyzerSeverityNone: CA1707 — this rule is switched off for every file the section matches, in every project under this directory, and the only record that it was ever switched off is this line: nothing at the sites it would have reported says so, so a reader of that code has no reason to look here, and code added years from now inherits the decision silently. Fix what the rule reports and delete the entry, or — where some sites really are legitimate — leave the rule on and suppress it at those sites with their reasons, so it keeps protecting the rest of the tree. If the rule is genuinely unwanted here, say why — on this line after the entry, or in the comment run directly above it: a comment that only repeats the rule's own title is read as no explanation at all and leaves this row in place.",
+   "class": "false-positive",
+   "reason": "The comment directly above the entry gives the reason: test names are sentences (underscores separate words).",
+   "action": "Recorded as noise; recurs unchanged."
+  },
+  {
+   "ruleId": "D17",
+   "file": "src/HarbourLane.Bookings.Web/Components/Money.cs",
+   "line": 5,
+   "message": "Dead code: Money: NamedType Money — Roslyn's SymbolFinder walked every project the solution loads, including HarbourLane.Bookings.Web, and found no reference to it. That walk cannot see three kinds of caller, so check them before removing it: code outside the solution file (a solution is a curated list, not the repository — a sibling test tree with its own .sln is invisible), a call resolved by reflection or dependency injection from the symbol's name, and any project the workspace could not load. This is 'no caller found by this walk', not a verdict that the symbol is unused.",
+   "class": "false-positive",
+   "reason": "Money.PerHour is called from RoomCard.razor:9 and RoomDetail.razor:16; the reference walk did not include the Razor-generated component code. Reported in contained scans only (absent from the host passes).",
+   "action": "Recorded as noise."
+  },
+  {
+   "ruleId": "P2",
+   "file": null,
+   "line": null,
+   "message": "Logging is not universal: Only 1/2 service-like projects use logging (pure contract/DTO projects are excluded — they have nothing to log). Of those 2, 1 ship a process this repository operates; the rest are libraries their consumer hosts, where the logging decision belongs to the host.",
+   "class": "opinion-not-fact",
+   "reason": "The count is right, but the row itself says the second project is a library whose host makes the logging decision — and the host logs (AdminLog, framework logging).",
+   "action": "Recorded as noise; recurs unchanged."
+  },
+  {
+   "ruleId": "P6",
+   "file": null,
+   "line": null,
+   "message": "Changelog looks stale/thin: The changelog this check read carries 2 versioned entries, against a bar of 3. Counted as either an `x.y.z` string or a version-shaped section heading (`## [1.2.0]`, `## V14.x.x`, `## Updates in 8.0.x`), whichever is the larger — so a log sectioned by minor series counts its sections, not its individual patch numbers. Entries recorded somewhere this check does not read — release notes generated at tag time from a generator config it did not recognise, or a log kept outside the repository — are not counted here, and this row is about what is re-findable in the tree rather than about how often you release.",
+   "class": "opinion-not-fact",
+   "reason": "Two version-shaped strings is accurate; a project at its first release has one release to log, so 'stale/thin' is a conclusion the count does not support.",
+   "action": "Recorded as noise; recurs unchanged."
+  },
+  {
+   "ruleId": "X7",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/MyBookings.razor.cs",
+   "line": 75,
+   "message": "Silent fallback default on parse failure: `RoomName` falls back to `\"Room\"` when `_rooms.TryGetValue(booking.RoomId, out var room)` is false, with no log or throw — a malformed value silently becomes that default. Log the input or fail validation. If that constant is the correct answer to the test rather than a stand-in for a value that could not be read, this is not a silent default: say so in a comment on the member and the row stops firing.",
+   "class": "false-positive",
+   "reason": "Nothing is parsed: RoomName looks a booking's RoomId (a Guid from the booking store) up in a dictionary of the catalogue's rooms, which are never removed; the 'Room' fallback is a display default in a list, not a malformed value swallowed. Line 75 in iteration 1, 78 after the cancellation fix (same code).",
+   "action": "Recorded as noise."
+  },
+  {
+   "ruleId": "D20",
+   "file": "docs/adr/0002-javascript-interop-through-typed-wrappers.md",
+   "line": 1,
+   "message": "The ADR does not explicitly state the trade-off regarding developer experience or code verbosity, which is a primary consequence of introducing wrapper classes instead of direct IJSRuntime calls.: Add a bullet point under Consequences explaining that while runtime errors are caught at build time, developers must now write and maintain additional wrapper code for each JavaScript function, increasing initial development effort.",
+   "class": "valid",
+   "reason": "Accurate: ADR 0002's consequences listed only what the wrappers buy, not their cost.",
+   "action": "Repository fixed in 5e74f77 (a consequence bullet stating the cost and when the decision would be revisited). D20 100 and no row in iteration 3."
+  },
+  {
+   "ruleId": "LA6",
+   "file": "src/HarbourLane.Bookings.Web/Components/Shared/ConfirmDialog.razor",
+   "line": 5,
+   "message": "Weak heading/label text: src/HarbourLane.Bookings.Web/Components/Shared/ConfirmDialog.razor:5: The heading/label at src/HarbourLane.Bookings.Web/Components/Shared/ConfirmDialog.razor:5 reads \"@Title\", which may not describe its section or field. Use text that names what it labels (WCAG 2.4.6).",
+   "class": "false-positive",
+   "reason": "Secondary configuration (framework on). The heading renders the component's Title parameter; its only caller (MyBookings.razor) passes 'Cancel this booking?'. The judge was shown the Razor expression '@Title', not the text a user hears.",
+   "action": "Recorded as noise; promoted to trap TRP-022 (heading-and-label-text-quality) at ConfirmDialog.razor:5. No code change."
+  }
+ ],
+ "falseNegatives": [
+  {
+   "entryId": "BA-010",
+   "reason": "Hand-rolled modal at ConfirmDialog.razor:3-12 — <div role=\"dialog\"> over a backdrop with no aria-modal, no focus move, containment, Escape or focus return (verified: the component has no focus or key handling). Concept modal-focus-not-managed is unmapped for this scanner."
+  },
+  {
+   "entryId": "BA-013",
+   "reason": "Autoplaying, looping, muted hero <video> with no controls (Home.razor:6-7), verified. AC1 correctly treats it as captions-free (TRP-002 held); no rule checks auto-starting motion in media (concept unmapped)."
+  },
+  {
+   "entryId": "BA-015",
+   "reason": "ToastHost.razor.css:10-43 declares animation: toast-slide-in with no prefers-reduced-motion query anywhere in the repository (no global reset). AC6 reads .css files for contrast only; its motion check reads <style> blocks — the <style>-block twin BA-014 was found."
+  },
+  {
+   "entryId": "BA-017",
+   "reason": "NavMenu.razor.css:27-29 `.nav-list ::deep a:focus { outline: none; }` (specificity above the global :focus-visible ring, so keyboard focus on the nav links is invisible), verified. AC6's outline check reads only <style> blocks and inline styles — the <style>-block twin BA-016 was found."
+  },
+  {
+   "entryId": "BA-018",
+   "reason": "Book.razor:55-58 — the attendees error <p> has no id, the input no aria-describedby/aria-invalid, no live region (the other fields of the form are associated; TRP-019 held). Concept form-error-not-associated is unmapped."
+  },
+  {
+   "entryId": "BA-019",
+   "reason": "RoomDetail.razor:36 casts Room.DescriptionHtml to MarkupString; the description is free HTML typed by staff in EditRoom.cshtml and stored verbatim by InMemoryRoomCatalog.UpdateAsync (no sanitisation on save or render) — stored XSS. Neither X24 nor D29 reported it; the sanitised twin TRP-016 was correctly left alone."
+  },
+  {
+   "entryId": "BA-023",
+   "reason": "Model-judged (LA2), not composed in the default configuration. Secondary configuration (wcag-2.2): found on its line."
+  },
+  {
+   "entryId": "BA-024",
+   "reason": "Model-judged (LA5), not composed in the default configuration. Secondary configuration (wcag-2.2): found on its line."
+  },
+  {
+   "entryId": "BA-025",
+   "reason": "EditRoom.cshtml:25 <label asp-for=\"Input.HourlyRate\">Value</label> — the label names nothing about the field. Not composed by default; with the framework on LA6 ran (98) and did not report it: a false negative of the judge."
+  }
+ ],
+ "scoreBands": [
+  {
+   "entryId": "BND-001",
+   "outcome": "out",
+   "score": 40,
+   "band": [
+    0,
+    20
+   ],
+   "class": "opinion-not-fact",
+   "note": "AC7 reports rung 0 ('No accessibility enforcement found', the BA-022 hit) on a scale whose floor puts rung 0 at 4/10. Band set from intent before the first scan and kept."
+  },
+  {
+   "entryId": "BND-002",
+   "outcome": "unscored",
+   "band": [
+    50,
+    90
+   ],
+   "note": "LA2 not composed in the default configuration. wcag-2.2 configuration: 75 (3 of 4 static alts meaningful, the intended ratio) -> in."
+  },
+  {
+   "entryId": "BND-003",
+   "outcome": "unscored",
+   "band": [
+    70,
+    100
+   ],
+   "note": "LA5 not composed in the default configuration. wcag-2.2 configuration: 97 -> in."
+  },
+  {
+   "entryId": "BND-004",
+   "outcome": "unscored",
+   "band": [
+    70,
+    100
+   ],
+   "note": "LA6 not composed in the default configuration. wcag-2.2 configuration: 98 -> in (the one row it raised is the TRP-022 false positive; BA-025 was not raised)."
+  }
+ ],
+ "observations": [
+  "Razor/CSHTML markup is read well by AC1-AC5: every located plant was found on its element's start line in .razor and .cshtml files alike (img without alt, video without captions, icon-only button, placeholder-only input, <html> without lang in a Razor Pages layout, h1->h3, @onclick on a div, tabindex=\"1\", href=\"#\" with @onclick, role=switch without aria-checked). All Razor-shaped traps of those dimensions held: decorative alt=\"\", muted control-less video, aria-label icon button, visually-hidden label, role=checkbox+tabindex=0+@onkeydown chips, fragment skip link, native button styled as link, parameter-bound aria-checked, aria-hidden svg in a named button, a component <h3> under the page's <h2>.",
+  "AC3 reads a Razor Page with a quoted route template (@page \"{id:guid}\") as a Blazor routed component and asks it for a <PageTitle> (TRP-015 caught) — the title comes from the Razor Pages layout's <title> and ViewData.",
+  "AC6 is strong on literal colour pairs in .css and scoped .razor.css files but ignores the font size declared in the same rule (TRP-009, large text). Its motion and focus-outline checks read only <style> blocks and inline styles: the two <style>-block plants (BA-014, BA-016) were found, their .razor.css twins (BA-015, BA-017) were not. The disabled-control contrast exemption (TRP-010) and the programmatic-focus heading (TRP-012) were left alone.",
+  "X8 resolved both string-named interop plants (a .razor @code block and a .razor.cs code-behind) on the literal's line, and left alone a browser API (navigator.clipboard.writeText) and a function on an imported module. No repository-level 'string-typed boundary' row reached SARIF.",
+  "No rule fired on a MarkupString cast of stored, unsanitised staff HTML (BA-019); the sanitised twin was correctly silent.",
+  "No dimension checks modal focus management, auto-starting media or form-error association (concepts unmapped): BA-010, BA-013, BA-018 are FNs by construction.",
+  "LA2/LA5/LA6 run only with the WCAG / EN 301 549 compliance framework configured; with it on (secondary configuration), the weak-alt and vague-link plants were found on their lines and all three bands landed in range, but the 'Value' label (BA-025) was not reported and a parameter-bound heading ('@Title') was (TRP-022).",
+  "The model passes were stable where repeated: D19 80, D21/D24/D25/M4 100 in iterations 2 and 3; D20 moved 90 -> 100 only because ADR 0002 was fixed.",
+  "Contained scans were taken on a tree without bin/, obj/ and TestResults/ (git clean -xdf before each scan) so the scanned tree equals a clone. The contained and host passes differ by one row: the D17 dead-code row for Money appears only in contained mode."
+ ]
+}
