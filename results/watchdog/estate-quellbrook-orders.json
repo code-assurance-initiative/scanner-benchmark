@@ -1,0 +1,895 @@
+{
+ "repo": "code-assurance-initiative/estate-quellbrook-orders",
+ "tag": "v1.0.0",
+ "engineVersion": "rubric-2026.10.1 (pinned instrument kennel-wt-scanner-bench @ 6a05dfb6c)",
+ "keySha256": "356f0e66cb77419f3980c79b2ea5af20e0f41fc80beb4915893d2475035ba347",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-07",
+   "sarifSha256": "9ab28a0dcae2694a5dd0fb44f099a8fe3ebbfc8694cf4fb3cbdc298dd8c238e7",
+   "outcomes": {
+    "tp": 0,
+    "fn": 2,
+    "fp": 14,
+    "tn": 186,
+    "trapFp": 5,
+    "trapTn": 7,
+    "results": 23,
+    "noise": 23,
+    "redundant": 0,
+    "uncovered": 5
+   },
+   "note": "contained; first complete local history (before any push, before the sprint-3 fixes); scored with the frozen v1.0.0 key"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "13dab36a48a003a3f35b366b7df7cbb35a4961676ca253e59de933223ce0a599",
+   "outcomes": {
+    "tp": 0,
+    "fn": 2,
+    "fp": 11,
+    "tn": 189,
+    "trapFp": 6,
+    "trapTn": 6,
+    "results": 20,
+    "noise": 20,
+    "redundant": 0,
+    "uncovered": 5
+   },
+   "note": "contained; local history with the sprint-3 fixes (ef5a40b); scored with the frozen v1.0.0 key"
+  },
+  {
+   "iteration": 3,
+   "date": "2026-10-07",
+   "sarifSha256": "13dab36a48a003a3f35b366b7df7cbb35a4961676ca253e59de933223ce0a599",
+   "outcomes": {
+    "tp": 0,
+    "fn": 2,
+    "fp": 11,
+    "tn": 189,
+    "trapFp": 6,
+    "trapTn": 6,
+    "results": 20,
+    "noise": 20,
+    "redundant": 0,
+    "uncovered": 5
+   },
+   "note": "contained; pushed e8eaa11 (code identical to v1.0.0, which adds only the final journal entry); byte-identical SARIF to iteration 2"
+  },
+  {
+   "iteration": 3,
+   "date": "2026-10-07",
+   "sarifSha256": "0b81b5935d39e66e69ec593dd497e627c047a9553f819644cf78f11722928300",
+   "outcomes": {
+    "tp": 0,
+    "fn": 2,
+    "fp": 9,
+    "tn": 191,
+    "trapFp": 5,
+    "trapTn": 7,
+    "results": 17,
+    "noise": 17,
+    "redundant": 0,
+    "uncovered": 6
+   },
+   "note": "host, model-judged pass; e8eaa11; the host has no container/IaC tools, so the D31 rows are absent"
+  }
+ ],
+ "verdicts": [
+  {
+   "ruleId": "D4",
+   "file": "src/Quellbrook.Orders.Api/Endpoints/OrderEndpoints.cs",
+   "line": 30,
+   "message": "Duplicated block (14 lines × 2): src/Quellbrook.Orders.Api/Endpoints/OrderEndpoints.cs:30-43 | src/Quellbrook.Orders.Api/Endpoints/OrderEndpoints.cs:55-68 — both copies are in the same file, so extract the block into one function there and call it from each site — the copies drift apart the first time only one of them is edited. Read the line range as the matched WINDOW rather than a finished unit: at `src/Quellbrook.Orders.Api/Endpoints/OrderEndpoints.cs:30` it does not close everything it opens, so those exact lines cannot be lifted as they stand — widen the region to the smallest complete statement or declaration that contains it, and extract that. Note that the copies do not run to the end of the range shown: their LAST lines are different code, not the same code under different names — the matched region ends inside that line. Extract the lines above it, and read the last line of each site separately.",
+   "class": "valid",
+   "reason": "PlaceAsync and CancelAsync repeated the same 14-line operator-header / validation / handler / result path.",
+   "action": "repository fixed in the scripted history before the first push: EndpointResults.ForOperatorAsync (commit 54343fd, sprint 3)"
+  },
+  {
+   "ruleId": "ED5",
+   "file": "src/Quellbrook.Orders.Application/PlaceOrder/PlaceOrderHandler.cs",
+   "line": 12,
+   "message": "Possible non-idempotent mutation (review): PlaceOrder.PlaceOrderHandler.HandleAsync: `PlaceOrder.PlaceOrderHandler.HandleAsync` mutates persistent state (a database save) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+   "class": "valid",
+   "reason": "POST /orders had no idempotency guard; a gateway timeout during a submission makes the console retry it and place a second order.",
+   "action": "repository fixed: optional Idempotency-Key stored with the order (unique) and checked first (commit 54343fd)"
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Quellbrook.Orders.Infrastructure/Messaging/RabbitMqConnectionProvider.cs",
+   "line": 1,
+   "message": "Low coverage: src/Quellbrook.Orders.Infrastructure/Messaging/RabbitMqConnectionProvider.cs: 0.0% line coverage (0/33).",
+   "class": "valid",
+   "reason": "The connection provider had no tests (0 %).",
+   "action": "repository fixed: provider takes IConnectionFactory; tests for reuse and reconnection (commit e85ab7c)"
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Quellbrook.Orders.Domain/Common/DomainException.cs",
+   "line": 1,
+   "message": "Low coverage: src/Quellbrook.Orders.Domain/Common/DomainException.cs: 33.3% line coverage (3/9).",
+   "class": "valid",
+   "reason": "Two of three constructors were never used (33 % coverage).",
+   "action": "repository fixed: the one constructor in use (commit 6a10da2)"
+  },
+  {
+   "ruleId": "D5",
+   "file": null,
+   "line": null,
+   "message": "Off the main sequence: Quellbrook.Orders.Contracts: Quellbrook.Orders.Contracts: abstractness 0.00, instability 0.00, distance 1.00 — the shape a shared-kernel / building-block library has BY DESIGN — concrete and widely depended-on is what makes it useful, and this dimension does not penalise it (the distance is reported for completeness, not as a defect). Worth a look only if it has grown past one coherent kernel into an everything-bucket.",
+   "class": "opinion-not-fact",
+   "reason": "A contracts assembly is concrete and stable by design; the row itself says it does not penalise the shape.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D5",
+   "file": null,
+   "line": null,
+   "message": "Off the main sequence: Quellbrook.Orders.Contracts: Quellbrook.Orders.Contracts: abstractness 0.00, instability 0.00, distance 1.00 — the shape a shared-kernel / building-block library has BY DESIGN — concrete and widely depended-on is what makes it useful, and this dimension does not penalise it (the distance is reported for completeness, not as a defect). Worth a look only if it has grown past one coherent kernel into an everything-bucket.",
+   "class": "opinion-not-fact",
+   "reason": "A concrete domain layer depended on by the application layer is the intended shape (ADR 0002).",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D17",
+   "file": ".editorconfig",
+   "line": 37,
+   "message": "AnalyzerSeverityNone: CA2007 — this rule is switched off for every file the section matches, in every project under this directory, and the only record that it was ever switched off is this line: nothing at the sites it would have reported says so, so a reader of that code has no reason to look here, and code added years from now inherits the decision silently. Fix what the rule reports and delete the entry, or — where some sites really are legitimate — leave the rule on and suppress it at those sites with their reasons, so it keeps protecting the rest of the tree. If the rule is genuinely unwanted here, say why — on this line after the entry, or in the comment run directly above it: a comment that only repeats the rule's own title is read as no explanation at all and leaves this row in place.",
+   "class": "false-positive",
+   "reason": "CA2007 is off at the root for tests with the reason on line 36, and src/.editorconfig turns it back on for all production code.",
+   "action": "caught by trap TRP-007"
+  },
+  {
+   "ruleId": "D18",
+   "file": null,
+   "line": null,
+   "message": "Thin analysable surface across projects: 1 project(s) carry only a thin slice of real code (e.g. `Quellbrook.Orders.Contracts` with 20 significant line(s)). The mean analysable-surface weight is 89 %, lowering Solution Shape by about 0.86 point(s). Consolidate thin projects or grow them into substantial, well-scoped assemblies.",
+   "class": "opinion-not-fact",
+   "reason": "The thin Contracts project is deliberate: published contracts versioned on their own, unable to reference the domain (ADR 0002, ADR 0004).",
+   "action": "promoted to repository-level trap TRP-009"
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/deployment.yaml",
+   "line": 8,
+   "message": "Medium IaC: CKV_K8S_35: Prefer using secrets as files over secrets as environment variables",
+   "class": "opinion-not-fact",
+   "reason": "CKV_K8S_35 secrets as environment variables: the values come from Kubernetes Secrets materialised by an ExternalSecret; files would be marginally better, env vars are a common accepted choice. Reported at the Deployment's first line, not the env block.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/deployment.yaml",
+   "line": 44,
+   "message": "Medium IaC: KSV-0125: Restrict container images to trusted registries. Container api in deployment quellbrook-orders (namespace: quellbrook-orders) uses an image from an untrusted registry. Use images from trusted registries.",
+   "class": "opinion-not-fact",
+   "reason": "KSV-0125 'untrusted registry' for the organisation's own ghcr.io namespace; no allow-list is configured to judge against.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D31",
+   "file": "src/Quellbrook.Orders.Api/Dockerfile",
+   "line": 1,
+   "message": "Low IaC: DS-0026: No HEALTHCHECK defined. Add HEALTHCHECK instruction in your Dockerfile. Add HEALTHCHECK instruction in Dockerfile. Without one the runtime only knows whether the process is alive, not whether it is serving, so a wedged container is restarted by nobody. The step: add a `HEALTHCHECK` to the image that probes the service the way a client would — this image already declares `EXPOSE 8080`, so a request to `localhost:8080` on the service's own health or root route, exiting non-zero when it does not answer, is the probe — and give it an `--interval`, a `--timeout` and a `--start-period` long enough to cover startup. If the image ships no HTTP client, probe with whatever the runtime already has, or declare the check in the orchestrator instead and say so here.",
+   "class": "shape-irrelevant",
+   "reason": "DS-0026 no HEALTHCHECK on an image that runs only on Kubernetes, which ignores it; probes are in the manifest.",
+   "action": "promoted to trap TRP-010"
+  },
+  {
+   "ruleId": "D39",
+   "file": "src/Quellbrook.Orders.Infrastructure/Persistence/OrderRecordConfiguration.cs",
+   "line": 10,
+   "message": "IL efficiency: 1 authored method(s) exceed the IL budget: 1 of 148 first-party methods compile to oversized IL bodies (> 250 instructions); worst: Quellbrook.Orders.Infrastructure.Persistence.OrderRecordConfiguration.Configure @ src/Quellbrook.Orders.Infrastructure/Persistence/OrderRecordConfiguration.cs:10, 363 IL instructions; that pulled this dimension to 9.9/10. These bodies are far past the JIT's inline budget, so splitting them does not make them inlinable — what moves the number is emitting less: collapsing LINQ chains and closures on hot paths, and interpolation built eagerly where it is only sometimes used.",
+   "class": "opinion-not-fact",
+   "reason": "The IL size of a flat EF Core fluent mapping grows with the number of columns, not with logic.",
+   "action": "promoted to trap TRP-011"
+  },
+  {
+   "ruleId": "D41",
+   "file": null,
+   "line": null,
+   "message": "No AppArmor/SELinux confinement: Workloads declare no AppArmor or SELinux profile. A mandatory-access-control profile confines what a compromised container can touch on the host, complementing seccomp's syscall filter.",
+   "class": "opinion-not-fact",
+   "reason": "seccomp RuntimeDefault and dropped capabilities are set; AppArmor/SELinux profiles are a hardening step, not a defect.",
+   "action": "recorded as noise (band BND-018)"
+  },
+  {
+   "ruleId": "D42",
+   "file": null,
+   "line": null,
+   "message": "No runtime threat detection: No runtime threat-detection engine (Tetragon TracingPolicy / Falco) is committed. These observe process, file and network activity in-kernel and can alert or kill on malicious behaviour a static scan cannot catch.",
+   "class": "shape-irrelevant",
+   "reason": "Runtime threat detection (Falco/Tetragon) is a cluster platform concern, not something a service repository commits.",
+   "action": "recorded as noise (band BND-019)"
+  },
+  {
+   "ruleId": "C1",
+   "file": null,
+   "line": null,
+   "message": "No data-protection/encryption: No data-protection or encryption usage (ASP.NET Data Protection, AES, column encryption, PBKDF2) was found — sensitive data at rest may be unprotected. If TDE/KMS/vault is delegated to infrastructure, ignore.",
+   "class": "opinion-not-fact",
+   "reason": "Encryption at rest is delegated to the managed database and broker (docs/privacy.md); the row itself says to ignore it then.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Orders.Api/Contracts/PlaceOrderRequest.cs",
+   "line": 5,
+   "message": "Event not named in past tense: PlaceOrderRequest: `PlaceOrderRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request/response record, a validation-error collector or a nested record of the published contract. The service's events are OrderPlaced/OrderCancelled (past tense).",
+   "action": "recorded as noise; PlaceOrderRequest is trap TRP-002"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Orders.Api/Contracts/PlaceOrderRequest.cs",
+   "line": 53,
+   "message": "Event not named in past tense: ConsigneeRequest: `ConsigneeRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request/response record, a validation-error collector or a nested record of the published contract. The service's events are OrderPlaced/OrderCancelled (past tense).",
+   "action": "recorded as noise; PlaceOrderRequest is trap TRP-002"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Orders.Api/Contracts/PlaceOrderRequest.cs",
+   "line": 77,
+   "message": "Event not named in past tense: ParcelRequest: `ParcelRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request/response record, a validation-error collector or a nested record of the published contract. The service's events are OrderPlaced/OrderCancelled (past tense).",
+   "action": "recorded as noise; PlaceOrderRequest is trap TRP-002"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Orders.Api/Contracts/PlaceOrderRequest.cs",
+   "line": 54,
+   "message": "Event not named in past tense: ConsigneeRequest: `ConsigneeRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request/response record, a validation-error collector or a nested record of the published contract. The service's events are OrderPlaced/OrderCancelled (past tense).",
+   "action": "recorded as noise; PlaceOrderRequest is trap TRP-002"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Orders.Api/Contracts/PlaceOrderRequest.cs",
+   "line": 78,
+   "message": "Event not named in past tense: ParcelRequest: `ParcelRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request/response record, a validation-error collector or a nested record of the published contract. The service's events are OrderPlaced/OrderCancelled (past tense).",
+   "action": "recorded as noise; PlaceOrderRequest is trap TRP-002"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Orders.Api/Contracts/CancelOrderRequest.cs",
+   "line": 3,
+   "message": "Event not named in past tense: CancelOrderRequest: `CancelOrderRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request/response record, a validation-error collector or a nested record of the published contract. The service's events are OrderPlaced/OrderCancelled (past tense).",
+   "action": "recorded as noise; PlaceOrderRequest is trap TRP-002"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Orders.Api/Contracts/OrderResponse.cs",
+   "line": 6,
+   "message": "Event not named in past tense: OrderResponse: `OrderResponse` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request/response record, a validation-error collector or a nested record of the published contract. The service's events are OrderPlaced/OrderCancelled (past tense).",
+   "action": "recorded as noise; PlaceOrderRequest is trap TRP-002"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Orders.Api/Contracts/OrderResponse.cs",
+   "line": 52,
+   "message": "Event not named in past tense: ConsigneeResponse: `ConsigneeResponse` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request/response record, a validation-error collector or a nested record of the published contract. The service's events are OrderPlaced/OrderCancelled (past tense).",
+   "action": "recorded as noise; PlaceOrderRequest is trap TRP-002"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Orders.Api/Contracts/OrderResponse.cs",
+   "line": 62,
+   "message": "Event not named in past tense: ParcelResponse: `ParcelResponse` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request/response record, a validation-error collector or a nested record of the published contract. The service's events are OrderPlaced/OrderCancelled (past tense).",
+   "action": "recorded as noise; PlaceOrderRequest is trap TRP-002"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Orders.Api/Contracts/OrderResponse.cs",
+   "line": 64,
+   "message": "Event not named in past tense: CancellationResponse: `CancellationResponse` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request/response record, a validation-error collector or a nested record of the published contract. The service's events are OrderPlaced/OrderCancelled (past tense).",
+   "action": "recorded as noise; PlaceOrderRequest is trap TRP-002"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Orders.Api/Contracts/RequestErrors.cs",
+   "line": 4,
+   "message": "Event not named in past tense: RequestErrors: `RequestErrors` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request/response record, a validation-error collector or a nested record of the published contract. The service's events are OrderPlaced/OrderCancelled (past tense).",
+   "action": "recorded as noise; PlaceOrderRequest is trap TRP-002"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Orders.Contracts/IntegrationEvents/OrderPlacedV1.cs",
+   "line": 18,
+   "message": "Event not named in past tense: ConsigneeV1: `ConsigneeV1` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request/response record, a validation-error collector or a nested record of the published contract. The service's events are OrderPlaced/OrderCancelled (past tense).",
+   "action": "recorded as noise; PlaceOrderRequest is trap TRP-002"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Orders.Contracts/IntegrationEvents/OrderPlacedV1.cs",
+   "line": 20,
+   "message": "Event not named in past tense: AddressV1: `AddressV1` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request/response record, a validation-error collector or a nested record of the published contract. The service's events are OrderPlaced/OrderCancelled (past tense).",
+   "action": "recorded as noise; PlaceOrderRequest is trap TRP-002"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Orders.Contracts/IntegrationEvents/OrderPlacedV1.cs",
+   "line": 22,
+   "message": "Event not named in past tense: ContactV1: `ContactV1` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request/response record, a validation-error collector or a nested record of the published contract. The service's events are OrderPlaced/OrderCancelled (past tense).",
+   "action": "recorded as noise; PlaceOrderRequest is trap TRP-002"
+  },
+  {
+   "ruleId": "ED3",
+   "file": "src/Quellbrook.Orders.Contracts/IntegrationEvents/OrderPlacedV1.cs",
+   "line": 24,
+   "message": "Event not named in past tense: ParcelV1: `ParcelV1` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+   "class": "false-positive",
+   "reason": "Not an event: an HTTP request/response record, a validation-error collector or a nested record of the published contract. The service's events are OrderPlaced/OrderCancelled (past tense).",
+   "action": "recorded as noise; PlaceOrderRequest is trap TRP-002"
+  },
+  {
+   "ruleId": "DM2",
+   "file": "src/Quellbrook.Orders.Domain/Orders/Order.cs",
+   "line": 57,
+   "message": "Primitive id on a domain type: Order.RequestKey: `Order.RequestKey` is a raw `String` — give it a strongly-typed id: a dedicated single-field type wrapping the `String`, in whatever form your language spells that.",
+   "class": "false-positive",
+   "reason": "Order.RequestKey is the caller's opaque idempotency key, not an identifier of the order or of any domain object.",
+   "action": "promoted to trap TRP-012"
+  },
+  {
+   "ruleId": "X2",
+   "file": null,
+   "line": null,
+   "message": "Not all async methods take a CancellationToken: Only 12/13 async methods accept a CancellationToken, so in-flight work can't be stopped early when the caller gives up — whatever ends it in your host (shutdown signal, timeout, abandoned request, user cancel). Thread a token through the call chain and honour it at each await and loop; where a method genuinely cannot be interrupted, omitting it is a deliberate choice — judge against your hosting model.",
+   "class": "valid",
+   "reason": "Location-less roll-up of the planted ORD-002 (and, since sprint 3, of a delegate-running helper that does no I/O itself); counted as a summary of the concept, not a hit.",
+   "action": "kept: ORD-002 is planted"
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "Inconsistent casing for address line parameters. The parameter `line2` in `OrdersApiFactory.CreateClient` uses lowercase, while `Line1` and `Line2` in other contexts (parameters and properties) use PascalCase. Additionally, `Line1` is used as a parameter name in `PlaceOrderHandler.HandleAsync` (PascalCase) but `line2` is used in `OrdersApiFactory.CreateClient` (camelCase).: Standardize parameter names to match the property names they represent (PascalCase: `Line1`, `Line2`) or consistently use camelCase if that is the project convention for parameters. Given the properties are PascalCase, parameters should likely be `line1`/`line2` (camelCase) or `Line1`/`Line2` (PascalCase) consistently across all methods. The mix of `Line1` and `line2` is the inconsistency. (symbols: Parameter: string? Line1, Parameter: string Line1, Property: public string Quellbrook.Orders.Domain.Orders.Address.Line1, Property: public string? Quellbrook.Orders.Domain.Orders.Address.Line2, Parameter: string? Line2, Parameter: string? line2)",
+   "class": "false-positive",
+   "reason": "Claims a parameter `line2` in OrdersApiFactory.CreateClient, which has no such parameter; the PascalCase names it contrasts are positional record parameters, PascalCase by C# convention.",
+   "action": "recorded as noise (model-judged pass)"
+  }
+ ],
+ "falseNegatives": [
+  {
+   "entryId": "ORD-001",
+   "reason": "Parcel.WeightGrams and Parcel.Dimensions (Parcel.cs:15,17) have public setters on an entity inside the Order aggregate, so a placed order's parcels can be changed past the aggregate's limits without an event. DM5 scored 100 and raised nothing (Parcel has no Id property; the lens may not treat it as an entity)."
+  },
+  {
+   "entryId": "ORD-002",
+   "reason": "OrderQueries.ListAsync performs two database round-trips and takes no CancellationToken (CA2016 would reject the accept-but-not-forward shape at build time, so this is the shape that ships). Only the location-less X2 roll-up 'Only 11/13 async methods accept a CancellationToken' reports it; the per-method row is Info level and absent from SARIF."
+  }
+ ],
+ "scoreBands": [
+  {
+   "entryId": "BND-001",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-002",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-003",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-004",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-005",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-006",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-007",
+   "outcome": "in",
+   "score": 70,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 70
+   }
+  },
+  {
+   "entryId": "BND-008",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-009",
+   "outcome": "in",
+   "score": 80,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 80
+   }
+  },
+  {
+   "entryId": "BND-010",
+   "outcome": "in",
+   "score": 70,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 70
+   }
+  },
+  {
+   "entryId": "BND-011",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-012",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-013",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-014",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-015",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    40,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-016",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    40,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-017",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-018",
+   "outcome": "in",
+   "score": 80,
+   "band": [
+    10,
+    80
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 80
+   }
+  },
+  {
+   "entryId": "BND-019",
+   "outcome": "out",
+   "score": 80,
+   "band": [
+    0,
+    40
+   ],
+   "modelPass": {
+    "outcome": "out",
+    "score": 80
+   },
+   "note": "D42 scores 80 with no runtime detection or admission control committed. Band kept."
+  },
+  {
+   "entryId": "BND-020",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-021",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    30,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-022",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-023",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-024",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 90
+   }
+  },
+  {
+   "entryId": "BND-025",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-026",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-027",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-028",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 90
+   }
+  },
+  {
+   "entryId": "BND-029",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-030",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-031",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-032",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-033",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-034",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-035",
+   "outcome": "out",
+   "score": 100,
+   "band": [
+    0,
+    60
+   ],
+   "modelPass": {
+    "outcome": "out",
+    "score": 100
+   },
+   "note": "C4 credits the outbox purge as retention of personal data; the orders themselves are kept indefinitely (docs/privacy.md). Band set before the scan, kept."
+  },
+  {
+   "entryId": "BND-036",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    10,
+    80
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-037",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    0,
+    50
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-038",
+   "outcome": "in",
+   "score": 30,
+   "band": [
+    0,
+    70
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 30
+   }
+  }
+ ],
+ "observations": [
+  "Integration-level key over a C# DDD service with a transactional outbox, scripted over three sprints (26 commits, tags v0.1.0..v0.3.0). Recall 0/2: both plants are real and were missed (DM5 on a non-root entity without an Id; X2 per-site rows never reach SARIF).",
+  "Trap resistance 6/12. Caught: ED3 on an HTTP request record (as in other repositories), D17 on the documented CA2007 root suppression, D18 on a deliberate contracts project, DS-0026 on a Kubernetes-only image, D39 on an EF fluent mapping, DM2 on an idempotency key.",
+  "ED3 reads every record in an Api/Contracts folder and the nested records of a published contract as events: 13 false positives in one small service.",
+  "Four valid incidental findings were fixed in the scripted history before the first push (D4 duplicated endpoint path, ED5 non-idempotent POST, two D8 coverage gaps); they appear in the story as sprint-3 commits.",
+  "The scripted history is reproducible: benchmark/history/build-history.sh re-applies 26 patches on the key-first commit and verifies the final commit id and the three sprint tags; every sprint tag builds in locked mode with green tests.",
+  "Design note recorded for the coordinator: the services sit behind a service mesh (mutual TLS by the sidecar), so https-enforcement is labelled not-applicable with its reason; S1 scored 100 and raised nothing about it."
+ ]
+}
