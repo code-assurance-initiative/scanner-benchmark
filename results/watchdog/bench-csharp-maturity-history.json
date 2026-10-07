@@ -1,0 +1,513 @@
+{
+  "repo": "code-assurance-initiative/bench-csharp-maturity-history",
+  "tag": "v1.0.0",
+  "engineVersion": "rubric-2026.10.1 (pinned instrument kennel-wt-scanner-bench @ 6a05dfb6c)",
+  "scans": [
+    {
+      "iteration": 1,
+      "date": "2026-10-07",
+      "sarifSha256": "b7ecd89eb3e1e58c16569e84d023fb541d9a254c4cfa8976607b737e09a92e38",
+      "outcomes": {
+        "tp": 3,
+        "fn": 4,
+        "fp": 1,
+        "tn": 259,
+        "trapFp": 1,
+        "trapTn": 9,
+        "results": 5,
+        "noise": 2,
+        "redundant": 0,
+        "uncovered": 22
+      },
+      "note": "contained; repository commit 8cd110c (local, before the first push); all scans scored with the frozen v1.0.0 key"
+    },
+    {
+      "iteration": 1,
+      "date": "2026-10-07",
+      "sarifSha256": "ab016ae0ac3b74282f2c540064cc5b0c99f979c02e5ce826be276db0d83a9502",
+      "outcomes": {
+        "tp": 4,
+        "fn": 3,
+        "fp": 1,
+        "tn": 259,
+        "trapFp": 1,
+        "trapTn": 9,
+        "results": 6,
+        "noise": 2,
+        "redundant": 0,
+        "uncovered": 23
+      },
+      "note": "host, model-judged pass 1; repository commit 8cd110c; all scans scored with the frozen v1.0.0 key"
+    },
+    {
+      "iteration": 1,
+      "date": "2026-10-07",
+      "sarifSha256": "ab016ae0ac3b74282f2c540064cc5b0c99f979c02e5ce826be276db0d83a9502",
+      "outcomes": {
+        "tp": 4,
+        "fn": 3,
+        "fp": 1,
+        "tn": 259,
+        "trapFp": 1,
+        "trapTn": 9,
+        "results": 6,
+        "noise": 2,
+        "redundant": 0,
+        "uncovered": 23
+      },
+      "note": "host, model-judged pass 2; identical to pass 1 (same results, same scores); all scans scored with the frozen v1.0.0 key"
+    },
+    {
+      "iteration": 2,
+      "date": "2026-10-07",
+      "sarifSha256": "ad92c420ab6d921ef100f740bf652d0677defd1c10740cef1f9718c7ed911ac2",
+      "outcomes": {
+        "tp": 3,
+        "fn": 4,
+        "fp": 1,
+        "tn": 259,
+        "trapFp": 1,
+        "trapTn": 9,
+        "results": 5,
+        "noise": 2,
+        "redundant": 0,
+        "uncovered": 22
+      },
+      "note": "contained; repository commit 88d9d05; all scans scored with the frozen v1.0.0 key"
+    },
+    {
+      "iteration": 2,
+      "date": "2026-10-07",
+      "sarifSha256": "b6dc933500acf2d829b56205c8cf81cac80fc3923bcafd623d1d4770fd4af70d",
+      "outcomes": {
+        "tp": 5,
+        "fn": 2,
+        "fp": 1,
+        "tn": 259,
+        "trapFp": 1,
+        "trapTn": 9,
+        "results": 8,
+        "noise": 2,
+        "redundant": 1,
+        "uncovered": 23
+      },
+      "note": "host, model-judged; repository commit 88d9d05 (code identical to v1.0.0, which adds only the final journal entry); all scans scored with the frozen v1.0.0 key"
+    }
+  ],
+  "verdicts": [
+    {
+      "ruleId": "D1",
+      "file": "src/ClinicScheduling.Domain/Availability/SlotFinder.cs",
+      "line": 11,
+      "message": "SlotFinder.FindOpenSlots (cyclomatic 25): SlotFinder.FindOpenSlots has cyclomatic complexity 25 (threshold 15). To reduce it, separate the cases: extract each independent branch into its own named function, and where the body has guards that only reject input, fold those into early returns at the top.",
+      "class": "valid",
+      "reason": "The complexity half of the planted hotspot HOT-001 (FindOpenSlots, cyclomatic 25).",
+      "action": "kept: inherent to plant HOT-001"
+    },
+    {
+      "ruleId": "D2",
+      "file": "src/ClinicScheduling.Domain/Availability/SlotFinder.cs",
+      "line": 11,
+      "message": "SlotFinder.FindOpenSlots (cognitive 50): SlotFinder.FindOpenSlots has cognitive complexity 50 (threshold 15). To reduce it, split the body into named stages: move each independent step or branch into its own named function so the body reads as a short sequence of named calls rather than one long body.",
+      "class": "valid",
+      "reason": "Cognitive complexity of the planted hotspot method.",
+      "action": "kept: inherent to plant HOT-001"
+    },
+    {
+      "ruleId": "D4",
+      "file": "src/ClinicScheduling.Api/Contracts/AppointmentResponse.cs",
+      "line": 44,
+      "message": "Duplicated block (8 lines × 2): src/ClinicScheduling.Api/Contracts/AppointmentResponse.cs:44-51 | src/ClinicScheduling.Infrastructure/PatientPortal/PortalAppointmentFeed.cs:53-60 — the copies span different directories, so extracting a shared function means choosing where it lives: put it somewhere both call sites can already reach — a location they all depend on today, or a new shared one if there is none — and call it from each site; until then, every change has to be made twice.",
+      "class": "valid",
+      "reason": "The duplicated status/reason code tables are real; they are the shared wire vocabulary that makes CPL-001 co-change.",
+      "action": "kept: material of plant CPL-001; candidate duplicated-code label for a later key version"
+    },
+    {
+      "ruleId": "D4",
+      "file": "src/ClinicScheduling.Api/Contracts/AppointmentResponse.cs",
+      "line": 53,
+      "message": "Duplicated block (8 lines × 2): src/ClinicScheduling.Api/Contracts/AppointmentResponse.cs:53-60 | src/ClinicScheduling.Infrastructure/PatientPortal/PortalAppointmentFeed.cs:62-69 — the copies span different directories, so extracting a shared function means choosing where it lives: put it somewhere both call sites can already reach — a location they all depend on today, or a new shared one if there is none — and call it from each site; until then, every change has to be made twice.",
+      "class": "valid",
+      "reason": "The duplicated status/reason code tables are real; they are the shared wire vocabulary that makes CPL-001 co-change.",
+      "action": "kept: material of plant CPL-001; candidate duplicated-code label for a later key version"
+    },
+    {
+      "ruleId": "D5",
+      "file": null,
+      "line": null,
+      "message": "Off the main sequence: ClinicScheduling.Domain: ClinicScheduling.Domain: abstractness 0.08, instability 0.00, distance 0.92 — zone of pain — concrete and depended on by 1 project(s), so it's rigid to change.",
+      "class": "opinion-not-fact",
+      "reason": "A concrete domain layer depended on by the application layer is the intended layered shape (ADR 0002); the zone-of-pain reading is a heuristic.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "D16",
+      "file": null,
+      "line": null,
+      "message": "Further sole-owners (lower concentration): 1 other contributor(s) are each the sole owner of a small amount of code below the off-boarding threshold — folded into the bus-factor score and metrics (2 single-owned of 12 analysed files in total, counted over production source files of roughly 2,400 bytes or more, excluding vendored, generated and example/demo trees and test files identified by path convention, largest first; 12 of the 69 production source files in this repository met that bar). They are anonymized user #2 (1 file(s)) — spread or document their files in the same way, at lower priority than the named off-boarding risks above.",
+      "class": "false-positive",
+      "reason": "The single folded sole-owner file is IcsCalendarWriter.cs, the leaf-utility trap TRP-007 (single author, RFC 5545-specified, fully tested, depended on by one endpoint). The row names no file, so the harness counts it as noise rather than as a caught trap.",
+      "action": "recorded as noise (trap TRP-007 in substance)"
+    },
+    {
+      "ruleId": "D17",
+      "file": ".editorconfig",
+      "line": 37,
+      "message": "AnalyzerSeverityNone: CA2007 — this rule is switched off for every file the section matches, in every project under this directory, and the only record that it was ever switched off is this line: nothing at the sites it would have reported says so, so a reader of that code has no reason to look here, and code added years from now inherits the decision silently. Fix what the rule reports and delete the entry, or — where some sites really are legitimate — leave the rule on and suppress it at those sites with their reasons, so it keeps protecting the rest of the tree. If the rule is genuinely unwanted here, say why — on this line after the entry, or in the comment run directly above it: a comment that only repeats the rule's own title is read as no explanation at all and leaves this row in place.",
+      "class": "false-positive",
+      "reason": ".editorconfig:36 states the reason (tests must not use ConfigureAwait(false), xUnit1030) and src/.editorconfig re-enables CA2007 for all production code.",
+      "action": "promoted to trap TRP-010"
+    },
+    {
+      "ruleId": "D39",
+      "file": "src/ClinicScheduling.Domain/Availability/SlotFinder.cs",
+      "line": 17,
+      "message": "IL efficiency: 1 authored method(s) exceed the IL budget: 1 of 174 first-party methods compile to oversized IL bodies (> 250 instructions); worst: ClinicScheduling.Domain.Availability.SlotFinder.FindOpenSlots @ src/ClinicScheduling.Domain/Availability/SlotFinder.cs:17, 363 IL instructions; that pulled this dimension to 9.9/10. These bodies are far past the JIT's inline budget, so splitting them does not make them inlinable — what moves the number is emitting less: collapsing LINQ chains and closures on hot paths, and interpolation built eagerly where it is only sometimes used.",
+      "class": "valid",
+      "reason": "Oversized IL body of the planted hotspot method.",
+      "action": "kept: inherent to plant HOT-001"
+    },
+    {
+      "ruleId": "DM2",
+      "file": "src/ClinicScheduling.Domain/Appointments/Appointment.cs",
+      "line": 29,
+      "message": "Primitive id on a domain type: Appointment.PatientId: `Appointment.PatientId` is a raw `Guid` — give it a strongly-typed id: a dedicated single-field type wrapping the `Guid`, in whatever form your language spells that.",
+      "class": "opinion-not-fact",
+      "reason": "Strongly typed ids are a style choice; the service records a layered (not DDD) design.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "DM2",
+      "file": "src/ClinicScheduling.Domain/Appointments/Appointment.cs",
+      "line": 31,
+      "message": "Primitive id on a domain type: Appointment.PractitionerId: `Appointment.PractitionerId` is a raw `Guid` — give it a strongly-typed id: a dedicated single-field type wrapping the `Guid`, in whatever form your language spells that.",
+      "class": "opinion-not-fact",
+      "reason": "Strongly typed ids are a style choice; the service records a layered (not DDD) design.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "DM2",
+      "file": "src/ClinicScheduling.Domain/Appointments/Appointment.cs",
+      "line": 33,
+      "message": "Primitive id on a domain type: Appointment.ClinicId: `Appointment.ClinicId` is a raw `Guid` — give it a strongly-typed id: a dedicated single-field type wrapping the `Guid`, in whatever form your language spells that.",
+      "class": "opinion-not-fact",
+      "reason": "Strongly typed ids are a style choice; the service records a layered (not DDD) design.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "DM2",
+      "file": "src/ClinicScheduling.Domain/Appointments/Appointment.cs",
+      "line": 40,
+      "message": "Primitive id on a domain type: Appointment.SeriesId: `Appointment.SeriesId` is a raw `Guid` — give it a strongly-typed id: a dedicated single-field type wrapping the `Guid`, in whatever form your language spells that.",
+      "class": "opinion-not-fact",
+      "reason": "Strongly typed ids are a style choice; the service records a layered (not DDD) design.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "DM3",
+      "file": "src/ClinicScheduling.Api/Contracts/BookSeriesRequest.cs",
+      "line": 8,
+      "message": "Integration event couples to a producer-owned domain type: BookSeriesRequest.ParsedRule: `BookSeriesRequest.ParsedRule` exposes `RecurrenceRule`, a domain type owned by the producer's domain assembly (`ClinicScheduling.Domain`) — carry the id as its primitive value instead.",
+      "class": "false-positive",
+      "reason": "BookSeriesRequest/CancelAppointmentRequest are HTTP request models with parsing helpers; the service publishes no integration events.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "DM3",
+      "file": "src/ClinicScheduling.Api/Contracts/CancelAppointmentRequest.cs",
+      "line": 15,
+      "message": "Integration event couples to a producer-owned enum: CancelAppointmentRequest.ParsedReason: `CancelAppointmentRequest.ParsedReason` exposes `CancellationReason`, a enum owned by the producer's domain assembly (`ClinicScheduling.Domain`) — carry the enum as a string/int instead.",
+      "class": "false-positive",
+      "reason": "BookSeriesRequest/CancelAppointmentRequest are HTTP request models with parsing helpers; the service publishes no integration events.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/ClinicScheduling.Api/Contracts/AppointmentResponse.cs",
+      "line": 7,
+      "message": "Event not named in past tense: AppointmentResponse: `AppointmentResponse` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "Request/response records are not events; the service has no events.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/ClinicScheduling.Api/Contracts/BookAppointmentRequest.cs",
+      "line": 3,
+      "message": "Event not named in past tense: BookAppointmentRequest: `BookAppointmentRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "Request/response records are not events; the service has no events.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/ClinicScheduling.Api/Contracts/BookSeriesRequest.cs",
+      "line": 5,
+      "message": "Event not named in past tense: BookSeriesRequest: `BookSeriesRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "Request/response records are not events; the service has no events.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/ClinicScheduling.Api/Contracts/CancelAppointmentRequest.cs",
+      "line": 5,
+      "message": "Event not named in past tense: CancelAppointmentRequest: `CancelAppointmentRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "Request/response records are not events; the service has no events.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/ClinicScheduling.Api/Contracts/CancellationResponse.cs",
+      "line": 5,
+      "message": "Event not named in past tense: CancellationResponse: `CancellationResponse` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "Request/response records are not events; the service has no events.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/ClinicScheduling.Api/Contracts/RequestErrors.cs",
+      "line": 4,
+      "message": "Event not named in past tense: RequestErrors: `RequestErrors` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "Request/response records are not events; the service has no events.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/ClinicScheduling.Api/Contracts/RescheduleAppointmentRequest.cs",
+      "line": 3,
+      "message": "Event not named in past tense: RescheduleAppointmentRequest: `RescheduleAppointmentRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "Request/response records are not events; the service has no events.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/ClinicScheduling.Api/Contracts/ScheduleRequest.cs",
+      "line": 3,
+      "message": "Event not named in past tense: WeeklyHoursRequest: `WeeklyHoursRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "Request/response records are not events; the service has no events.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/ClinicScheduling.Api/Contracts/ScheduleRequest.cs",
+      "line": 6,
+      "message": "Event not named in past tense: ScheduleRequest: `ScheduleRequest` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "Request/response records are not events; the service has no events.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/ClinicScheduling.Api/Contracts/SlotResponse.cs",
+      "line": 5,
+      "message": "Event not named in past tense: SlotResponse: `SlotResponse` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "Request/response records are not events; the service has no events.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "D21",
+      "file": null,
+      "line": null,
+      "message": "The concept of the 'No Show' fee is named inconsistently. The policy class exposes a constant/string named `NoShow`, while the configuration options class exposes the same concept as `NoShowFee`. This creates ambiguity about whether `NoShow` is the fee amount, a reason code, or a flag, whereas `NoShowFee` is explicit.: Rename `CancellationPolicy.NoShow` to `NoShowFee` to align with `CancellationPolicyOptions.NoShowFee`, or rename `NoShowFee` to `NoShow` if the domain strictly uses 'NoShow' as the canonical term for the fee amount. (symbols: ClinicScheduling.Domain.Policies.CancellationPolicy.NoShow, ClinicScheduling.Domain.Policies.CancellationPolicyOptions.NoShowFee)",
+      "class": "opinion-not-fact",
+      "reason": "NoShow is a decision code (like LateCancellation), NoShowFee an amount: different concepts, consistently named.",
+      "action": "recorded as noise"
+    },
+    {
+      "ruleId": "M4",
+      "file": null,
+      "line": null,
+      "message": "README/code drift: README describes a 'Waitlist' module with specific endpoints and logic, but the evidence shows no corresponding project or directory structure for a dedicated Waitlist component (it is likely missing or merged into another project not named as such in the evidence). — searched for: `Waitlist module`, `POST /api/waitlist`, `GET /api/waitlist/{practitionerId}`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+      "class": "redundant",
+      "reason": "Second M4 row about the same stale README section as the TP row (DOC-001).",
+      "action": "counted once"
+    }
+  ],
+  "falseNegatives": [
+    {
+      "entryId": "CPL-001",
+      "reason": "AppointmentResponse.cs (Api) and PortalAppointmentFeed.cs (Infrastructure) co-change in 9 commits of at most five files (12 and 11 revisions, 82 %) and neither names a type of the other. D35 reports no pair (score 100): its explained-pair filter treats the declared Api -> Infrastructure ProjectReference as the explanation, although no file of the pair uses the other."
+    },
+    {
+      "entryId": "REL-001",
+      "reason": "CHANGELOG.md stops at 0.4.0 while v0.5.0 and v0.6.0 are tagged and <Version> is 0.6.0. P6 scores 100: it checks that a changelog and version tags exist, not that they agree."
+    }
+  ],
+  "scoreBands": [
+    {
+      "entryId": "BND-001",
+      "outcome": "out",
+      "score": 94,
+      "band": [
+        40,
+        85
+      ],
+      "modelPass": {
+        "outcome": "out",
+        "score": 94
+      },
+      "note": "D15 normalises hotspot risk by all churn in the window; one dominant, fix-heavy hotspot costs 0.6 points. Band set before the scan, kept (opinion-not-fact)."
+    },
+    {
+      "entryId": "BND-002",
+      "outcome": "in",
+      "score": 83,
+      "band": [
+        50,
+        90
+      ],
+      "modelPass": {
+        "outcome": "in",
+        "score": 83
+      }
+    },
+    {
+      "entryId": "BND-003",
+      "outcome": "in",
+      "score": 75,
+      "band": [
+        50,
+        90
+      ],
+      "modelPass": {
+        "outcome": "in",
+        "score": 75
+      }
+    },
+    {
+      "entryId": "BND-004",
+      "outcome": "out",
+      "score": 100,
+      "band": [
+        40,
+        90
+      ],
+      "modelPass": {
+        "outcome": "out",
+        "score": 100
+      },
+      "note": "Follows the CPL-001 false negative."
+    },
+    {
+      "entryId": "BND-005",
+      "outcome": "in",
+      "score": 80,
+      "band": [
+        70,
+        100
+      ],
+      "modelPass": {
+        "outcome": "in",
+        "score": 80
+      }
+    },
+    {
+      "entryId": "BND-006",
+      "outcome": "in",
+      "score": 70,
+      "band": [
+        70,
+        100
+      ],
+      "modelPass": {
+        "outcome": "in",
+        "score": 70
+      }
+    },
+    {
+      "entryId": "BND-007",
+      "outcome": "unscored",
+      "score": null,
+      "band": [
+        50,
+        95
+      ],
+      "modelPass": {
+        "outcome": "in",
+        "score": 90
+      }
+    },
+    {
+      "entryId": "BND-008",
+      "outcome": "unscored",
+      "score": null,
+      "band": [
+        60,
+        100
+      ],
+      "modelPass": {
+        "outcome": "in",
+        "score": 98
+      }
+    },
+    {
+      "entryId": "BND-009",
+      "outcome": "unscored",
+      "score": null,
+      "band": [
+        30,
+        85
+      ],
+      "modelPass": {
+        "outcome": "in",
+        "score": 67
+      }
+    },
+    {
+      "entryId": "BND-010",
+      "outcome": "unscored",
+      "score": null,
+      "band": [
+        20,
+        80
+      ],
+      "modelPass": {
+        "outcome": "in",
+        "score": 60
+      },
+      "note": "Model pass 1 and 2 of iteration 1: 100 (drift items dropped because the key named the module; key fixed); iteration 2: 60."
+    },
+    {
+      "entryId": "BND-011",
+      "outcome": "out",
+      "score": 100,
+      "band": [
+        30,
+        80
+      ],
+      "modelPass": {
+        "outcome": "out",
+        "score": 100
+      },
+      "note": "Follows the REL-001 false negative."
+    },
+    {
+      "entryId": "BND-012",
+      "outcome": "in",
+      "score": 100,
+      "band": [
+        80,
+        100
+      ],
+      "modelPass": {
+        "outcome": "in",
+        "score": 100
+      }
+    }
+  ],
+  "observations": [
+    "Recall 5/7 in the model-judged pass (3/7 contained: the ADR and README plants need the model evaluators); trap resistance 9/10 (TRP-010, the documented CA2007 suppression, caught).",
+    "All four git-mining plants that the scanner can see were found precisely: the hotspot (D15, with its fix share), the core silo (D16, naming the file), the stale module (D34, naming both files) - only the hidden coupling was missed, by an explained-pair filter that accepts any declared project reference as the explanation.",
+    "No git-mining trap fired: the large generated holiday table is excluded from D15/D16/D34, the text catalogue and the frequently changed simple policy are not hotspots, the test file is not paired. The leaf-utility silo trap is counted into D16's score and named (as an anonymous count) in a fold row.",
+    "Benchmark artefact found and fixed in iteration 1: M4 drops a model-reported drift item when the missing term occurs in any .json file, and the answer key itself named the removed module. Answer keys of other repositories may contaminate M4 the same way; the coordinator may want a harness-wide rule that key prose avoid plant vocabulary, or a scan-time exclusion of benchmark/.",
+    "The two model-judged passes of iteration 1 were identical (no non-determinism observed in this repository).",
+    "The scripted history is reproducible: benchmark/history/build-history.sh re-applies 120 patches and verifies the final commit id and six release-tag targets; every release tag builds in locked mode with green tests."
+  ]
+}
