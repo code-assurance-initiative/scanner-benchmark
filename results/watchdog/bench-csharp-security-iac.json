@@ -1,6 +1,6 @@
 {
   "repo": "code-assurance-initiative/bench-csharp-security-iac",
-  "tag": "v1.1.0",
+  "tag": "v1.2.0",
   "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc)",
   "scans": [
     {
@@ -82,6 +82,32 @@
         "fileLevelRecall": 0.8947368421052632
       },
       "note": "FINAL re-score with the final harness (cai_bench 1.3.1, contract 1.4, scanner-benchmark 9885617) of the final contained default-configuration scan (iter2, results-file iteration 2 (re-scored)) against the key at v1.1.0 (sha256 7fc4112abbb6… = registry). Outcomes identical to the recorded final contained scan."
+    },
+    {
+      "iteration": "v1.2-iter1",
+      "date": "2026-10-07",
+      "tag": "v1.2.0",
+      "harness": "cai_bench at scanner-benchmark 46803cf",
+      "sarifSha256": "350821524b3c28e17286b6a20f0b9d07871c29673e28b9e909b1485e8b18a8b8",
+      "outcomes": {
+        "tp": 15,
+        "fn": 4,
+        "fp": 3,
+        "tn": 104,
+        "trapFp": 2,
+        "trapTn": 18,
+        "results": 84,
+        "noise": 60,
+        "redundant": 9,
+        "uncovered": 8,
+        "summaryOfConcept": 0,
+        "fileLevelTp": 18,
+        "recall": 0.7894736842105263,
+        "trapResistance": 0.9,
+        "noiseRate": 0.7142857142857143,
+        "fileLevelRecall": 0.9473684210526315
+      },
+      "note": "Contained default-configuration re-scan (same engine 6a05dfb6c, rubric-2026.10.1, same tool versions) of v1.2.0 after the IAC-017 plant defect was corrected (pr-preview.yml line 34 was invalid YAML; now quoted, no line moved). 93 results = iteration 2's 92 unchanged plus D29 pull-request-target-code-checkout at pr-preview.yml:16, the expected IAC-017 hit. Only outcome change vs iteration 2 re-scored on the same harness and key v1.2.0: IAC-017 FN -> TP. Key v1.2.0 sha256 66d02bd775e26fef5b4a77668823770afa4146c043ecb6c2d57e493bf516e036."
     }
   ],
   "verdicts": [
@@ -761,15 +787,26 @@
     },
     {
       "entryId": "IAC-015",
-      "reason": "permissions: write-all (release.yml:7) is reported by D36 'Workflow token grant is wider than its jobs use' with the site in the message but no SARIF location, so it cannot match a located entry."
+      "reason": "permissions: write-all (release.yml:7) is reported by D36 'Workflow token grant is wider than its jobs use' with the site in the message but no SARIF location, so it cannot match a located entry.",
+      "status": "matched under harness 1.3",
+      "note": "From the harness-1.3 re-score on, the D36 row is matched through the location named in its message (locationSource: message); TP in every scan scored since, including v1.2-iter1."
     },
     {
       "entryId": "IAC-017",
-      "reason": "pull_request_target that checks out github.event.pull_request.head.sha and docker-builds it with the registry token in env: neither pull-request-target-code-checkout nor any custom rule fired."
+      "reason": "pull_request_target that checks out github.event.pull_request.head.sha and docker-builds it with the registry token in env: neither pull-request-target-code-checkout nor any custom rule fired.",
+      "status": "withdrawn",
+      "withdrawnReason": "Plant defect, corrected in v1.2.0: line 34 of .github/workflows/pr-preview.yml was invalid YAML (an unquoted plain scalar containing ': '), so neither GitHub, actionlint nor the scanner's semgrep could parse the file and the plant was invisible to every parser. The iteration-2 FN verdict was a judging error. With the line quoted (shell text unchanged), pull-request-target-code-checkout fires at line 16 and IAC-017 scores TP (scan v1.2-iter1)."
     },
     {
       "entryId": "IAC-018",
-      "reason": "kubectl --token \"${{ secrets.KUBE_DEPLOY_TOKEN }}\" (deploy.yml:33-34): D36 'Secret passed as a command-line argument' reports it without a SARIF location; semgrep watchdog-secret-interpolated-into-run reports it at line 32 but the mapping assigns that rule to ci-secret-exposure."
+      "reason": "kubectl --token \"${{ secrets.KUBE_DEPLOY_TOKEN }}\" (deploy.yml:33-34): D36 'Secret passed as a command-line argument' reports it without a SARIF location; semgrep watchdog-secret-interpolated-into-run reports it at line 32 but the mapping assigns that rule to ci-secret-exposure.",
+      "status": "matched under harness 1.3",
+      "note": "From the harness-1.3 re-score on, semgrep watchdog-secret-interpolated-into-run at deploy.yml:32 matches through the corrected secret-in-process-arguments mapping (within line tolerance of 33-34); TP in every scan scored since, including v1.2-iter1."
+    },
+    {
+      "entryId": "IAC-010",
+      "reason": "Missing liveness/readiness probes on the reminder worker container (deployment.yaml:24-41): checkov CKV_K8S_8/CKV_K8S_9 report it, but at line 1 of the document, outside the tolerance. Under the coarse v1.0.0 concept it was scored TP via an unrelated registry-allow-list row on the container line; with the precise concept (key v1.1.0+) it is an FN by location. Found at file level.",
+      "since": "v1.1.0"
     }
   ],
   "scoreBands": [
@@ -847,6 +884,7 @@
     "No rule for Ingress TLS and no firing for pull_request_target + head checkout + build: both are clean misses on high-impact plants.",
     "All 20 traps that probe a located site were left alone (digest pins with 'latest' in a comment, numeric USER, emptyDir, anchor/merge-key probes, ExternalSecret, SealedSecret ciphertext, pull_request_target without checkout, env-passed secrets, SHA-pinned first-party actions). The two caught traps are both 'no HEALTHCHECK' on Kubernetes-only images.",
     "Engine bug already noted by the coordinator still applies: WD-K8S-0004 is the automount rule here (IAC-011).",
-    "v1.1.0 / harness 1.3: IAC-010 missing probes is a true FN (probe rows are reported at line 1); IAC-015 and IAC-018 are found via message-named locations / the corrected secret-in-process-arguments mapping."
+    "v1.1.0 / harness 1.3: IAC-010 missing probes is a true FN (probe rows are reported at line 1); IAC-015 and IAC-018 are found via message-named locations / the corrected secret-in-process-arguments mapping.",
+    "v1.2.0 correction: the earlier observation that nothing fired for pull_request_target + head checkout + build was wrong about the scanner. The plant's workflow file was invalid YAML (pr-preview.yml:34) and no parser could read it; once valid, pull-request-target-code-checkout reports it at line 16. Remaining FNs at v1.2.0: IAC-004, IAC-006, IAC-010 (all Kubernetes rows located at line 1 / the spec rather than the site) and IAC-013 (no Ingress-TLS rule)."
   ]
 }
