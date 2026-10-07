@@ -1,0 +1,536 @@
+{
+ "repo": "code-assurance-initiative/bench-csharp-security-injection",
+ "tag": "v1.0.0",
+ "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-07",
+   "sarifSha256": "807c05115e59b166b113742cb7cc71d3e761f9c38c15ec7b0d07255e7b53be1d",
+   "outcomes": {
+    "tp": 10,
+    "fn": 10,
+    "fp": 4,
+    "tn": 114,
+    "trapFp": 4,
+    "trapTn": 19,
+    "results": 17,
+    "noise": 5,
+    "redundant": 2,
+    "uncovered": 35
+   },
+   "note": "repo commit ebf8cf2; re-scored with the v1.0.0 key and the discriminating mapping (scanner-benchmark 9e01ee5)"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "9a2f74b5e2fc30660832e88171060cb61ed8c8ff1a63524dfb5d15a731e552e5",
+   "outcomes": {
+    "tp": 10,
+    "fn": 10,
+    "fp": 4,
+    "tn": 114,
+    "trapFp": 4,
+    "trapTn": 19,
+    "results": 17,
+    "noise": 5,
+    "redundant": 2,
+    "uncovered": 14
+   },
+   "note": "final; repo commit b355223 (code identical to v1.0.0 f89620b, which adds only the journal)"
+  }
+ ],
+ "verdicts": [
+  {
+   "ruleId": "X14",
+   "file": "src/ReportDesk.Api/Feeds/FeedAddressPolicy.cs",
+   "line": 15,
+   "message": "IP classification is bypassable through an IPv4-in-IPv6 embedding: This method unwraps IPv4-MAPPED IPv6 (`IsIPv4MappedToIPv6`, line 17) and then rejects `10.0.0.0/8` on its IPv4 path — but the IPv6 branch at line 15 classifies the address as written, and IPv4 reaches IPv6 through three MORE embeddings this method never mentions: IPv4-compatible (`::a.b.c.d`), 6to4 (`2002::/16`) and NAT64 (`64:ff9b::/96`). So `::10.0.0.1`, `2002:0a00:0001::` and `64:ff9b::10.0.0.0` all name a host inside `10.0.0.0/8` — the range this same method declares non-public — and all reach the IPv6 branch un-unwrapped, taking the opposite verdict. Unwrap every embedding to its IPv4 form before classifying, or reject any IPv6 address carrying an embedded IPv4 outright.",
+   "class": "false-positive",
+   "reason": "TRP-008. Disproof: FeedAddressPolicy.cs lines 17-20 return false for every IPv6 address that is not IPv4-mapped, so ::10.0.0.1, 2002:0a00:0001:: and 64:ff9b::10.0.0.0 receive the same (non-public) verdict as 10.0.0.1. The detector keys on the absence of embedding-prefix tokens, not on a branch that rejects all other IPv6.",
+   "action": "recorded as noise; site already trap TRP-008",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D29",
+   "file": "src/ReportDesk.Api/Metadata/MetadataSectionReader.cs",
+   "line": 14,
+   "message": "Medium: xpath-injection: XPath queries are constructed dynamically on user-controlled input. This vulnerability in code could lead to an XPath Injection exploitation. This is a semgrep security-AUDIT rule: it reports that a sensitive construct is present, not that it is exploitable here. Confirm whether this site handles untrusted input or is reachable across a trust boundary — and apply the change where it is; where the construct is required by the platform or protocol it calls into, and carries no untrusted data (a syscall/FFI shim, a build- or debug-gated tool, a fixed local surface), record the review and leave the code as it is.",
+   "class": "false-positive",
+   "reason": "TRP-010. Disproof: line 13 calls XmlConvert.VerifyNCName(section), which throws for any value containing '/', '[', quotes, parentheses or whitespace; the concatenated value can only name one child element. The rule has no sanitiser for it.",
+   "action": "recorded as noise; site already trap TRP-010",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D32",
+   "file": "src/ReportDesk.Api/Delivery/SubscriberDirectoryClient.cs",
+   "line": 17,
+   "message": "Medium: watchdog-personal-data-in-url: Personal data appears to be placed in a URL or query string. URLs are recorded in server and proxy access logs, browser history and outbound Referer headers, so the value escapes the system's own retention controls. Move it to a request body or use an opaque identifier.",
+   "class": "false-positive",
+   "reason": "TRP-020. Disproof: `email=` carries the literal \"true\"/\"false\" (local `flag`); the subscription is addressed by an opaque GUID. No personal data is in the URL.",
+   "action": "recorded as noise; site already trap TRP-020",
+   "iteration": 1
+  },
+  {
+   "ruleId": "S1",
+   "file": "src/ReportDesk.Api/Delivery/SubscriberDirectoryClient.cs",
+   "line": 17,
+   "message": "Request payload sent in the URL query string: `PutAsync` sends a `null` body, so the whole request travels in the URL — including the interpolated `email` query parameter. Query strings are written verbatim to the server's and every intermediary's access logs, and to `Referer` headers; a request BODY is not, and HTTPS does not change that because the log line is written by whatever terminated the TLS.",
+   "class": "false-positive",
+   "reason": "TRP-020, same logical finding as the D32 row at this site (collapsed, one verdict): the implied harm (personal data in the query string) is untrue; the `email` parameter is a boolean channel switch.",
+   "action": "recorded as noise; site already trap TRP-020",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D17",
+   "file": ".editorconfig",
+   "line": 37,
+   "message": "AnalyzerSeverityNone: CA2007 — this rule is switched off for every file the section matches, in every project under this directory, and the only record that it was ever switched off is this line: nothing at the sites it would have reported says so, so a reader of that code has no reason to look here, and code added years from now inherits the decision silently. Fix what the rule reports and delete the entry, or — where some sites really are legitimate — leave the rule on and suppress it at those sites with their reasons, so it keeps protecting the rest of the tree. If the rule is genuinely unwanted here, say why — on this line after the entry, or in the comment run directly above it: a comment that only repeats the rule's own title is read as no explanation at all and leaves this row in place.",
+   "class": "false-positive",
+   "reason": "The reason is on line 36 (tests must not use ConfigureAwait(false), xUnit1030) and src/.editorconfig re-enables CA2007 as a warning for all production code. Same finding as in bench-csharp-baseline-clean.",
+   "action": "promoted to trap TRP-023 (suppressed-diagnostic)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "S1",
+   "file": "src/ReportDesk.Api/Shares/ShareLink.cs",
+   "line": 4,
+   "message": "Password hashing without a KDF: Identifier 'PasswordHash' looks like a password-hash field/property, but no KDF (PBKDF2 / Argon2 / BCrypt / PasswordHasher) was found anywhere in the source — so passwords aren't protected by a salted key-derivation function (whether a fast/plain hash, or a client-hashed value stored and compared verbatim). Password storage needs a salted KDF and a constant-time compare.",
+   "class": "valid",
+   "reason": "True: share-link passwords are stored as unsalted MD5 and no KDF exists. It is the planted HASH-001 defect, reported at the PasswordHash property instead of the hasher (SharePasswordHasher.cs:12), under concept insufficient-password-hashing.",
+   "action": "nothing to fix (planted); scored uncovered; HASH-001 remains a false negative of the weak-hash checks; key kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "C1",
+   "file": null,
+   "line": null,
+   "message": "No data-protection/encryption: No data-protection or encryption usage (ASP.NET Data Protection, AES, column encryption, PBKDF2) was found — sensitive data at rest may be unprotected. If TDE/KMS/vault is delegated to infrastructure, ignore.",
+   "class": "valid",
+   "reason": "True: nothing is encrypted at rest. This is the deliberate posture measured by BND-002 (band 10-50, scored 30).",
+   "action": "kept (designed posture)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "X6",
+   "file": "src/ReportDesk.Api/Controllers/ImportsController.cs",
+   "line": 55,
+   "message": "Hand-rolled JSON/XML parsing via regex: A regex whose pattern encodes JSON/XML syntax is parsing a structured format by hand — malformed or differently-typed content (e.g. `\"amount\": \"5\"` as a string) silently mis-parses instead of failing validation. This project already references a real parser; use it here too.",
+   "class": "valid",
+   "reason": "Uncertain resolves to valid: the import preview scraped <title> out of arbitrary HTML with a regex.",
+   "action": "repo fixed (76abc20): preview returns status, content type, size and Last-Modified; no body parsing. SSRF-001 unchanged",
+   "iteration": 1
+  },
+  {
+   "ruleId": "X7",
+   "file": "src/ReportDesk.Api/Previews/DocumentCardRenderer.cs",
+   "line": 23,
+   "message": "Silent fallback default on parse failure: `RenderFooter` falls back to `0` when `int.TryParse(text, NumberStyles.None, CultureInfo.InvariantCulture, out var pars…` is false, with no log or throw — a malformed value silently becomes that default. Log the input or fail validation. If that constant is the correct answer to the test rather than a stand-in for a value that could not be read, this is not a silent default: say so in a comment on the member and the row stops firing.",
+   "class": "valid",
+   "reason": "True: an unparseable page count was rendered as '0 pages', a false statement on the card.",
+   "action": "repo fixed (c9d1feb): footer omitted when the count is unknown; TRP-014 unchanged",
+   "iteration": 1
+  },
+  {
+   "ruleId": "P7",
+   "file": null,
+   "line": null,
+   "message": "Outbound HTTP without resilience: The app makes outbound HTTP calls but no resilience handler was detected (Polly / AddStandardResilienceHandler / circuit-breaker). A slow or failing dependency will cascade — add timeouts, retries with back-off, and a circuit breaker.",
+   "class": "valid",
+   "reason": "True for the partner-feed and CRM clients: timeouts only, no retry/back-off/circuit breaker.",
+   "action": "repo fixed (ee4eb31): standard resilience handler on those two clients; webhooks/imports stay single attempts (ADR 0003)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "C4",
+   "file": null,
+   "line": null,
+   "message": "Partial data-retention evidence: A retention mechanism is present, but the data-lifecycle is not yet complete — missing: an expiry limit — a declared maximum age / TTL after which the data is no longer kept, a scheduled purge / cleanup job (PurgeOlderThan / CleanupJob).",
+   "class": "valid",
+   "reason": "True at the time: expired share links (with their password hashes) were never deleted.",
+   "action": "repo fixed (ee4eb31): ShareLinkCleanupJob purges expired links every six hours; retention documented",
+   "iteration": 1
+  },
+  {
+   "ruleId": "C4",
+   "file": null,
+   "line": null,
+   "message": "Partial data-retention evidence: A retention mechanism is present, but the data-lifecycle is not yet complete — missing: an expiry limit — a declared maximum age / TTL after which the data is no longer kept.",
+   "class": "false-positive",
+   "reason": "Disproof: share links have a declared maximum age (CreateShareRequest.ValidDays, [Range(1, 30)], stored as expires_at) and ShareLinkCleanupJob deletes them after it; subscriber rows live as long as the subscription (docs/architecture.md). The detector looks for TTL-shaped identifiers.",
+   "action": "recorded as noise; code kept (adding a TTL-named identifier would be appeasement)",
+   "iteration": 2
+  },
+  {
+   "ruleId": "D4",
+   "file": "src/ReportDesk.Api/Feeds/FeedAddressPolicy.cs",
+   "line": 13,
+   "message": "Edited copy of a member (13 corresponding lines): src/ReportDesk.Api/Feeds/FeedAddressPolicy.cs:13-39 | src/ReportDesk.Api/Webhooks/CallbackAddressPolicy.cs:13-39 — These two members are one piece of code written twice and then edited apart: 13 consecutive lines correspond almost exactly, broken only by small local edits. Most of that correspondence is NOT reported as duplicated blocks below — the edits cut it into fragments and only the largest of them clear the block floor, so the rows below understate it. The repair is at the members' grain — factor the shared implementation into one the two call with their differences as parameters or as an injected step, or, where the difference is systematic (an extra return value, one transport against another), generate one from the other. Left alone, the next edit has to be made twice and the two will drift further apart.",
+   "class": "valid",
+   "reason": "Accurate: FeedAddressPolicy and CallbackAddressPolicy share their IPv4 range check. But the two members are the trap/plant pair TRP-008/SSRF-002; factoring the ranges into a helper would remove the shape that makes them comparable and hide the trap from the address-classification detector.",
+   "action": "not fixed (deliberate plant/trap pair); recorded for the coordinator",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D4",
+   "file": "src/ReportDesk.Api/Feeds/FeedAddressPolicy.cs",
+   "line": 27,
+   "message": "Duplicated block (13 lines × 2): src/ReportDesk.Api/Feeds/FeedAddressPolicy.cs:27-39 | src/ReportDesk.Api/Webhooks/CallbackAddressPolicy.cs:27-39 — the copies span different directories, so extracting a shared function means choosing where it lives: put it somewhere both call sites can already reach — a location they all depend on today, or a new shared one if there is none — and call it from each site; until then, every change has to be made twice. Read the line range as the matched WINDOW rather than a finished unit: at `src/ReportDesk.Api/Feeds/FeedAddressPolicy.cs:27` it runs out through the closing brace of the declaration holding it — the window is that declaration's tail, not a fragment that begins part-way through something, so those exact lines cannot be lifted as they stand — widen the region to the smallest complete statement or declaration that contains it, and extract that. The matched lines also transfer control out of the body holding them, which cannot survive a move into a called unit unchanged: have the extracted unit return that decision and let each site act on it.",
+   "class": "redundant",
+   "reason": "Restates the 'edited copy of a member' row for the same pair; one remediation clears both.",
+   "action": "recorded; counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D1",
+   "file": "src/ReportDesk.Api/Feeds/FeedAddressPolicy.cs",
+   "line": 12,
+   "message": "FeedAddressPolicy.IsPublicIPv4Destination (cyclomatic 17): FeedAddressPolicy.IsPublicIPv4Destination has cyclomatic complexity 17 (threshold 15). To reduce it, name the conditions: bind each compound test to a well-named local or a small predicate function, so the body reads as a sequence of named decisions rather than a chain of operators.",
+   "class": "opinion-not-fact",
+   "reason": "Cyclomatic 17 is counted correctly, but the method is one flat disjunction of eight independent range tests with no nesting; the threshold verdict overstates a maintainability cost.",
+   "action": "recorded as noise; code kept (part of trap TRP-008)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Webhooks/WebhookDispatcher.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Webhooks/WebhookDispatcher.cs: 0.0% line coverage (0/11).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Shares/ShareStore.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Shares/ShareStore.cs: 0.0% line coverage (0/22).",
+   "class": "valid",
+   "reason": "Accurate: the adapter only runs against live PostgreSQL, LDAP or SMTP (or needs a type without a public constructor, or EF DateTimeOffset ordering SQLite cannot run).",
+   "action": "not fixed: the benchmark forbids networked tests; recorded",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Search/DocumentSearchRepository.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Search/DocumentSearchRepository.cs: 0.0% line coverage (0/17).",
+   "class": "valid",
+   "reason": "Accurate: the adapter only runs against live PostgreSQL, LDAP or SMTP (or needs a type without a public constructor, or EF DateTimeOffset ordering SQLite cannot run).",
+   "action": "not fixed: the benchmark forbids networked tests; recorded",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/SavedSearches/SavedSearchStore.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/SavedSearches/SavedSearchStore.cs: 0.0% line coverage (0/23).",
+   "class": "valid",
+   "reason": "Accurate: the adapter only runs against live PostgreSQL, LDAP or SMTP (or needs a type without a public constructor, or EF DateTimeOffset ordering SQLite cannot run).",
+   "action": "not fixed: the benchmark forbids networked tests; recorded",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Reports/ReportRepository.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Reports/ReportRepository.cs: 0.0% line coverage (0/12).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Reports/ReportsDbContext.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Reports/ReportsDbContext.cs: 0.0% line coverage (0/10).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Reports/ScheduleRepository.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Reports/ScheduleRepository.cs: 0.0% line coverage (0/9).",
+   "class": "valid",
+   "reason": "Accurate: the adapter only runs against live PostgreSQL, LDAP or SMTP (or needs a type without a public constructor, or EF DateTimeOffset ordering SQLite cannot run).",
+   "action": "not fixed: the benchmark forbids networked tests; recorded",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Reports/SubscriberStore.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Reports/SubscriberStore.cs: 0.0% line coverage (0/8).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/People/LdapSearcher.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/People/LdapSearcher.cs: 0.0% line coverage (0/14).",
+   "class": "valid",
+   "reason": "Accurate: the adapter only runs against live PostgreSQL, LDAP or SMTP (or needs a type without a public constructor, or EF DateTimeOffset ordering SQLite cannot run).",
+   "action": "not fixed: the benchmark forbids networked tests; recorded",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/People/OwnerDirectory.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/People/OwnerDirectory.cs: 9.1% line coverage (1/11).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/People/PeopleEntries.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/People/PeopleEntries.cs: 0.0% line coverage (0/6).",
+   "class": "valid",
+   "reason": "Accurate: the adapter only runs against live PostgreSQL, LDAP or SMTP (or needs a type without a public constructor, or EF DateTimeOffset ordering SQLite cannot run).",
+   "action": "not fixed: the benchmark forbids networked tests; recorded",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Http/GuardedConnect.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Http/GuardedConnect.cs: 0.0% line coverage (0/26).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Feeds/FeedNotAllowedException.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Feeds/FeedNotAllowedException.cs: 33.3% line coverage (3/9).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Documents/DocumentRepository.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Documents/DocumentRepository.cs: 25.8% line coverage (8/31).",
+   "class": "valid",
+   "reason": "Accurate: the adapter only runs against live PostgreSQL, LDAP or SMTP (or needs a type without a public constructor, or EF DateTimeOffset ordering SQLite cannot run).",
+   "action": "not fixed: the benchmark forbids networked tests; recorded",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Delivery/SmtpMailTransport.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Delivery/SmtpMailTransport.cs: 0.0% line coverage (0/10).",
+   "class": "valid",
+   "reason": "Accurate: the adapter only runs against live PostgreSQL, LDAP or SMTP (or needs a type without a public constructor, or EF DateTimeOffset ordering SQLite cannot run).",
+   "action": "not fixed: the benchmark forbids networked tests; recorded",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Delivery/SubscriberDirectoryClient.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Delivery/SubscriberDirectoryClient.cs: 30.0% line coverage (3/10).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Conversion/ConversionFailedException.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Conversion/ConversionFailedException.cs: 0.0% line coverage (0/9).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Conversion/DocumentConverter.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Conversion/DocumentConverter.cs: 0.0% line coverage (0/30).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Conversion/ThumbnailRenderer.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Conversion/ThumbnailRenderer.cs: 0.0% line coverage (0/23).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Controllers/AttachmentsController.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Controllers/AttachmentsController.cs: 0.0% line coverage (0/5).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Controllers/FeedsController.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Controllers/FeedsController.cs: 0.0% line coverage (0/10).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Controllers/ImportsController.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Controllers/ImportsController.cs: 0.0% line coverage (0/23).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Controllers/MetadataController.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Controllers/MetadataController.cs: 22.0% line coverage (9/41).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Controllers/ReportsController.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Controllers/ReportsController.cs: 0.0% line coverage (0/38).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Controllers/WebhooksController.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Controllers/WebhooksController.cs: 0.0% line coverage (0/9).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ReportDesk.Api/Attachments/AttachmentStore.cs",
+   "line": 1,
+   "message": "Low coverage: src/ReportDesk.Api/Attachments/AttachmentStore.cs: 0.0% line coverage (0/9).",
+   "class": "valid",
+   "reason": "Accurate: the file had no or little test coverage.",
+   "action": "repo fixed (08e1c45): covered by unit/integration tests without a network",
+   "iteration": 1
+  }
+ ],
+ "falseNegatives": [
+  {
+   "entryId": "SQL-001",
+   "reason": "Search term interpolated into a quoted ILIKE literal of a Dapper query. The baked csharp-sqli rule only knows SqlCommand/CommandText sinks; Dapper's QueryAsync is not a sink."
+  },
+  {
+   "entryId": "SQL-002",
+   "reason": "Owner interpolated into a string passed to EF Core FromSqlRaw. No baked C# rule covers FromSqlRaw."
+  },
+  {
+   "entryId": "CMD-001",
+   "reason": "Caller-chosen export format spliced into `/bin/sh -c` Arguments. The process-start rule only taints values read from the request in the same method; here the value arrives as a service parameter."
+  },
+  {
+   "entryId": "SSRF-001",
+   "reason": "HttpClient.GetAsync of a [FromQuery] string in a controller action. The SSRF rule's sources are Request.Query[...] etc. only; model-bound parameters are not sources."
+  },
+  {
+   "entryId": "DESER-001",
+   "reason": "Newtonsoft TypeNameHandling.All on uploaded files into a model with object values. No baked C# rule for Newtonsoft type handling."
+  },
+  {
+   "entryId": "XSS-001",
+   "reason": "Raw query parameter echoed into a text/html ContentResult. No C# reflected-XSS rule; X24 needs a System.Xml/OpenXml source."
+  },
+  {
+   "entryId": "REDIR-001",
+   "reason": "Redirect(returnUrl) with no check. No C# open-redirect rule in the baked packs."
+  },
+  {
+   "entryId": "REDOS-001",
+   "reason": "Caller-supplied pattern compiled with no match timeout. The registry regular-expression-dos rule is not in the baked packs for C#."
+  },
+  {
+   "entryId": "HASH-001",
+   "reason": "Unsalted MD5 for share-link passwords via MD5.HashData. S1's weak-hash arm only counts MD5.Create()/new MD5; no D29 weak-hash rule is baked. The same defect was reported by S1 as 'Password hashing without a KDF' at ShareLink.cs:4 (concept insufficient-password-hashing), outside the plant's location."
+  },
+  {
+   "entryId": "PII-001",
+   "reason": "Subscriber e-mail address passed to a source-generated [LoggerMessage] method. The personal-data-in-log rule matches only calls named log/info/LogInformation etc.; source-generated logging (what the .NET analyzers require, CA1848) is invisible to it."
+  }
+ ],
+ "scoreBands": [
+  {
+   "entryId": "BND-001",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ]
+  },
+  {
+   "entryId": "BND-002",
+   "outcome": "in",
+   "score": 30,
+   "band": [
+    10,
+    50
+   ]
+  },
+  {
+   "entryId": "BND-003",
+   "outcome": "in",
+   "score": 40,
+   "band": [
+    30,
+    70
+   ]
+  },
+  {
+   "note": "No model-judged bands in this repository, so no --with-llm pass was run. Scores identical in both iterations."
+  }
+ ],
+ "observations": [
+  "Recall 10/20 (50%). Every hit is a syntactic sink with the tainted value in the same method (CommandText, Path.Combine->File.Read*, XPath Select, LDAP Filter, XmlUrlResolver) or a structural X-card (X14, X15, X17, X24). Every miss is a plant whose sink or source the baked rules do not model: Dapper/EF raw SQL, model-bound request values, Newtonsoft type handling, reflected HTML, redirects, regex without timeout, source-generated logging.",
+  "Trap resistance 19/23. The four caught traps are each a missing sanitiser model: XmlConvert.VerifyNCName for XPath, a boolean 'email=' flag for the URL rule (two dimensions on one site), a classifier that rejects all native IPv6 for X14, and a commented severity override for D17.",
+  "S1 found the MD5 password plant by a different route (password-hash field with no KDF in the repo) and at a different site; weak-hash-algorithm and insufficient-password-hashing could be declared a mapping family so such a sibling at the plant site counts, though here the site differs as well.",
+  "Harness/authoring note: D4 flags the deliberate plant/trap pair (two address classifiers) as duplication; deduplicating would hide the trap, so the finding is recorded valid-but-kept. The coordinator may want a rule for look-alike pairs.",
+  "A Dependabot PR (Dapper 2.1.89) fails CI in this repository; not part of the frozen tag."
+ ]
+}
