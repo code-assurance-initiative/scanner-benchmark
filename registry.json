@@ -30,6 +30,13 @@
       "frozenAt": "2026-10-07",
       "supersedes": "v1.0.0",
       "change": "subjects added (contract 1.2); code unchanged"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-csharp-security-injection",
+      "tag": "v1.0.0",
+      "commit": "f89620bdbd2260b8e2d4e1fa93fdca31fb9296d8",
+      "keySha256": "96e3264c685890b4090e4e17973d1730967642719f6d3389293aa330fb16421e",
+      "frozenAt": "2026-10-07"
     }
   ]
 }
