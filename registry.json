@@ -124,6 +124,13 @@
       "commit": "b856dbfb1bc9fa4e1ceae18851616532015a4f18",
       "keySha256": "2a6eff790a82e65d28f82dbe4ed4fc12b61d46014f876269b16aa221ed4f7f89",
       "frozenAt": "2026-10-07"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-ts-security-dependencies",
+      "tag": "v1.0.0",
+      "commit": "3e4041bbcc2be928fed8e4cbe0702ca1c51c6901",
+      "keySha256": "6fad2c534391f9dd7057258fee67df0fce5eb72fa58d759e0ac573e89cf211bd",
+      "frozenAt": "2026-10-07"
     }
   ]
 }
