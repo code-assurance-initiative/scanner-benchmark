@@ -142,6 +142,88 @@
    },
    "note": "contained, final, repo at 12ec46a (tag v1.0.0 = 12ec46a + journal entry only); results identical to iteration 3",
    "tag": "v1.0.0"
+  },
+  {
+   "iteration": "final-llm",
+   "date": "2026-10-07",
+   "tag": "v1.0.0",
+   "sarifSha256": "9bf6bc77f4661660f7c31ebbd8493279175b80a57b7bca6cccbbca332d053ea2",
+   "outcomes": {
+    "tp": 16,
+    "fn": 9,
+    "fp": 2,
+    "tn": 156,
+    "trapFp": 2,
+    "trapTn": 20,
+    "results": 18,
+    "noise": 2,
+    "redundant": 0,
+    "uncovered": 6,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 16,
+    "recall": 0.64,
+    "trapResistance": 0.9090909090909091,
+    "noiseRate": 0.1111111111111111,
+    "fileLevelRecall": 0.64,
+    "locationSources": {
+     "sarif": 20,
+     "message": 0,
+     "none": 4
+    },
+    "pathMatches": {
+     "exact": 20,
+     "suffix": 0
+    }
+   },
+   "configuration": {
+    "mode": "host --with-llm",
+    "note": "re-run with the TS/JS sidecar repaired; earlier host passes lacked the TS/JS code model"
+   },
+   "note": "freestanding clone of v1.0.0 (fc40907) at _frozen/v1.0.0-blazor/bench-csharp-blazor-a11y; TypeScript/JavaScript sidecar ran (no SidecarModelFailures, ProductionSourceUnmodelled false; the earlier host passes had SidecarModelFailures TypeScript/JavaScript 'exited', ERR_MODULE_NOT_FOUND, over the three wwwroot/js files). SARIF byte-identical to the iteration-3 default host pass (9bf6bc77…, 18 results, no new row, none gone), so nothing new to judge. Only score change: D19 80 -> 90 (model-judged documentation quality; no band reads D19). Bands unchanged: BND-001 AC7 40 out, BND-002..004 unscored in the default configuration."
+  },
+  {
+   "iteration": "final-llm-wcag",
+   "date": "2026-10-07",
+   "tag": "v1.0.0",
+   "sarifSha256": "df6d90a13b8bbe249cd4fddaa88bf76938f751d81806f8ede19e54bb99b308df",
+   "outcomes": {
+    "tp": 18,
+    "fn": 7,
+    "fp": 3,
+    "tn": 155,
+    "trapFp": 3,
+    "trapTn": 19,
+    "results": 21,
+    "noise": 3,
+    "redundant": 0,
+    "uncovered": 6,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 18,
+    "recall": 0.72,
+    "trapResistance": 0.8636363636363636,
+    "noiseRate": 0.14285714285714285,
+    "fileLevelRecall": 0.72,
+    "locationSources": {
+     "sarif": 23,
+     "message": 0,
+     "none": 4
+    },
+    "pathMatches": {
+     "exact": 23,
+     "suffix": 0
+    }
+   },
+   "configuration": {
+    "mode": "host --with-llm",
+    "note": "re-run with the TS/JS sidecar repaired; earlier host passes lacked the TS/JS code model",
+    "label": "wcag-2.2",
+    "env": {
+     "CODEHEALTH_COMPLIANCE_FRAMEWORKS": "wcag-2.2"
+    }
+   },
+   "note": "freestanding clone of v1.0.0 (fc40907) at _frozen/v1.0.0-blazor/bench-csharp-blazor-a11y; TypeScript/JavaScript sidecar ran (no SidecarModelFailures, ProductionSourceUnmodelled false; the earlier host passes had SidecarModelFailures TypeScript/JavaScript 'exited', ERR_MODULE_NOT_FOUND, over the three wwwroot/js files). NOT the default configuration (secondary, excluded from headline numbers). SARIF byte-identical to the iteration-3 WCAG pass (df6d90a1…, 21 results, no new row, none gone). LA2 75 in, LA5 97 in, LA6 98 in — identical to iteration 3; BA-025 still not raised by LA6 (judge FN); TRP-022 still caught. Only score change: D19 80 -> 90."
   }
  ],
  "verdicts": [
@@ -368,6 +450,7 @@
   "No dimension checks modal focus management, auto-starting media or form-error association (concepts unmapped): BA-010, BA-013, BA-018 are FNs by construction.",
   "LA2/LA5/LA6 run only with the WCAG / EN 301 549 compliance framework configured; with it on (secondary configuration), the weak-alt and vague-link plants were found on their lines and all three bands landed in range, but the 'Value' label (BA-025) was not reported and a parameter-bound heading ('@Title') was (TRP-022).",
   "The model passes were stable where repeated: D19 80, D21/D24/D25/M4 100 in iterations 2 and 3; D20 moved 90 -> 100 only because ADR 0002 was fixed.",
-  "Contained scans were taken on a tree without bin/, obj/ and TestResults/ (git clean -xdf before each scan) so the scanned tree equals a clone. The contained and host passes differ by one row: the D17 dead-code row for Money appears only in contained mode."
+  "Contained scans were taken on a tree without bin/, obj/ and TestResults/ (git clean -xdf before each scan) so the scanned tree equals a clone. The contained and host passes differ by one row: the D17 dead-code row for Money appears only in contained mode.",
+  "Final host passes at v1.0.0 with the TS/JS sidecar repaired (default and wcag-2.2): both SARIFs are byte-identical to the iteration-3 host passes, so the missing TS/JS code model had affected no result row of this repository; the only measured change is D19 80 -> 90, which is model-judged variance. No valid-after-freeze finding."
  ]
 }
