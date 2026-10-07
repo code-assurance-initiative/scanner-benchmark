@@ -131,6 +131,13 @@
       "commit": "3e4041bbcc2be928fed8e4cbe0702ca1c51c6901",
       "keySha256": "6fad2c534391f9dd7057258fee67df0fce5eb72fa58d759e0ac573e89cf211bd",
       "frozenAt": "2026-10-07"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-ts-codehealth",
+      "tag": "v1.0.0",
+      "commit": "69cd17343214889488146e7b5bdd3e7b93abefed",
+      "keySha256": "142bcbd5752e8eaadbf1ec9b27e0dcc8d3d08031495b26d248ade88bca211604",
+      "frozenAt": "2026-10-07"
     }
   ]
 }
