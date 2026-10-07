@@ -187,6 +187,20 @@
         "D29"
       ]
     },
+    "nosql-injection": {
+      "rules": [
+        {
+          "rule": "^(?:D29)$",
+          "messages": [
+            "^\\w+: (?:(?:watchdog-)?value\\-interpolated\\-into\\-predicate\\-format\\-swift|dynamodb\\-filter\\-injection|dynamodb\\-request\\-object):"
+          ],
+          "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = \"{severity}: {semgrep check_id after its last '.'}\"); check ids enumerated from the analyzer image's baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; CWE-943 by each rule's own metadata (NoSQL filter / request object built from the event or request; NSPredicate format string)"
+        }
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
     "command-injection": {
       "rules": [
         {
@@ -534,6 +548,20 @@
       "dimensions": [
         "D29",
         "S1"
+      ]
+    },
+    "prototype-pollution": {
+      "rules": [
+        {
+          "rule": "^(?:D29)$",
+          "messages": [
+            "^\\w+: (?:(?:watchdog-)?prototype\\-lookup\\-request\\-key\\-js):"
+          ],
+          "source": "engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = \"{severity}: {semgrep check_id after its last '.'}\"); check ids enumerated from the analyzer image's baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; engine/rulesets/semgrep/watchdog-sast.yml watchdog-prototype-lookup-request-key-js: a request value used as a bracket-lookup key, CWE-1321 by its own metadata"
+        }
+      ],
+      "dimensions": [
+        "D29"
       ]
     },
     "log-injection": {
@@ -3176,8 +3204,8 @@
     },
     {
       "rule": "^(?:D29)$",
-      "message": "^\\w+: (?:(?:watchdog-)?value\\-interpolated\\-into\\-predicate\\-format\\-swift|dynamodb\\-filter\\-injection|dynamodb\\-request\\-object|http\\-response\\-splitting|insecure\\-use\\-printf\\-fn|csv\\-writer\\-injection|request\\-data\\-write|header\\-injection|twiml\\-injection):",
-      "source": "header / CSV / TwiML / NoSQL / predicate-format injection - no matching injection concept (CWE-113/1236/91/943/134; log injection is the log-injection concept); engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = \"{severity}: {semgrep check_id after its last '.'}\"); check ids enumerated from the analyzer image's baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61"
+      "message": "^\\w+: (?:http\\-response\\-splitting|insecure\\-use\\-printf\\-fn|csv\\-writer\\-injection|request\\-data\\-write|header\\-injection|twiml\\-injection):",
+      "source": "header / CSV / TwiML / printf-format injection - no matching injection concept (CWE-113/1236/91/134; log injection is the log-injection concept, NoSQL and predicate-format injection the nosql-injection concept); engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = \"{severity}: {semgrep check_id after its last '.'}\"); check ids enumerated from the analyzer image's baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61"
     },
     {
       "rule": "^(?:D29)$",
@@ -3196,8 +3224,8 @@
     },
     {
       "rule": "^(?:D29)$",
-      "message": "^\\w+: (?:(?:watchdog-)?module\\-specifier\\-built\\-from\\-environment\\-ts|(?:watchdog-)?prototype\\-lookup\\-request\\-key\\-js|dynamic\\-httptrace\\-clienttrace|tainted\\-object\\-instantiation|ldap\\-entry\\-poisoning|extract\\-user\\-data|reflect\\-makefunc):",
-      "source": "unsafe reflection / dynamic dispatch / prototype key lookup (CWE-470/913/1321) - not evaluation of code; engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = \"{severity}: {semgrep check_id after its last '.'}\"); check ids enumerated from the analyzer image's baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61"
+      "message": "^\\w+: (?:(?:watchdog-)?module\\-specifier\\-built\\-from\\-environment\\-ts|dynamic\\-httptrace\\-clienttrace|tainted\\-object\\-instantiation|ldap\\-entry\\-poisoning|extract\\-user\\-data|reflect\\-makefunc):",
+      "source": "unsafe reflection / dynamic dispatch (CWE-470/913) - not evaluation of code; the prototype key lookup is the prototype-pollution concept; engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = \"{severity}: {semgrep check_id after its last '.'}\"); check ids enumerated from the analyzer image's baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61"
     },
     {
       "rule": "^(?:D29)$",

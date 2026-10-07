@@ -18,6 +18,8 @@ c("secret-in-version-history", "Secret retained in version-control history", "CW
   "A credential that no longer exists in the working tree but remains readable in an earlier commit of the repository's history.")
 # ---------------- security: injection & SAST ----------------
 c("sql-injection", "SQL injection", "CWE-89", "security", "finding", "Untrusted input concatenated or interpolated into a SQL statement instead of being bound as a parameter.")
+c("nosql-injection", "NoSQL / data-query logic injection", "CWE-943", "security", "finding",
+  "Untrusted input placed into the query logic of a non-SQL data store (a MongoDB filter that accepts operator objects such as $ne or $where from a request body, a DynamoDB filter expression, an NSPredicate format string) so the caller changes what the query matches.")
 c("command-injection", "OS command injection", "CWE-78", "security", "finding", "Untrusted input reaching a shell or process-start command line.")
 c("code-injection", "Code / template injection", "CWE-94", "security", "finding", "Untrusted input evaluated as code or as a server-side template.")
 c("path-traversal", "Path traversal (incl. archive extraction 'zip slip')", "CWE-22", "security", "finding", "A file path built from untrusted input (or an archive entry name) without canonicalisation and containment check.")
@@ -41,6 +43,8 @@ c("mass-assignment", "Mass assignment", "CWE-915", "security", "finding", "Bindi
 c("error-information-exposure", "Stack trace / error detail exposed to clients", "CWE-209", "security", "finding", "Exception details or stack traces returned in responses.")
 c("improper-certificate-validation", "Improper certificate validation", "CWE-295", "security", "finding", "TLS/X.509 validation disabled or replaced by a check that accepts invalid certificates.")
 c("token-signature-or-expiry-not-validated", "Security token signature or lifetime not validated", "CWE-347", "security", "finding", "JWT/security-token validation that skips signature verification or expiry/lifetime validation.")
+c("prototype-pollution", "Prototype pollution", "CWE-1321", "security", "finding",
+  "A request-controlled property key (`__proto__`, `constructor`, `prototype`) used to write through, or look up on, a plain object, so the caller modifies Object.prototype for the whole process (deep merge or path assignment of a request body) or reaches inherited members where an own entry was expected.")
 c("log-injection", "Log injection / log forging", "CWE-117", "security", "finding",
   "Untrusted input written to a log without neutralising line breaks or other control characters, so an attacker can forge or split log entries and mislead whoever reads the log.")
 c("sensitive-data-in-logs", "Sensitive or personal data written to logs", "CWE-532", "security", "finding", "Personal data, credentials or tokens reaching a log or console sink.")

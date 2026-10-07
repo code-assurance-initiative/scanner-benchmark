@@ -50,6 +50,14 @@
       "description": "Untrusted input concatenated or interpolated into a SQL statement instead of being bound as a parameter."
     },
     {
+      "id": "nosql-injection",
+      "title": "NoSQL / data-query logic injection",
+      "cwe": "CWE-943",
+      "family": "security",
+      "kind": "finding",
+      "description": "Untrusted input placed into the query logic of a non-SQL data store (a MongoDB filter that accepts operator objects such as $ne or $where from a request body, a DynamoDB filter expression, an NSPredicate format string) so the caller changes what the query matches."
+    },
+    {
       "id": "command-injection",
       "title": "OS command injection",
       "cwe": "CWE-78",
@@ -216,6 +224,14 @@
       "family": "security",
       "kind": "finding",
       "description": "JWT/security-token validation that skips signature verification or expiry/lifetime validation."
+    },
+    {
+      "id": "prototype-pollution",
+      "title": "Prototype pollution",
+      "cwe": "CWE-1321",
+      "family": "security",
+      "kind": "finding",
+      "description": "A request-controlled property key (`__proto__`, `constructor`, `prototype`) used to write through, or look up on, a plain object, so the caller modifies Object.prototype for the whole process (deep merge or path assignment of a request body) or reaches inherited members where an own entry was expected."
     },
     {
       "id": "log-injection",

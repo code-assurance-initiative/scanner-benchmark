@@ -1989,6 +1989,7 @@
       },
       "concepts": [
         "sql-injection",
+        "nosql-injection",
         "command-injection",
         "code-injection",
         "path-traversal",
@@ -2033,6 +2034,7 @@
         "dependency-release-cooldown-missing",
         "sensitive-data-in-token-payload",
         "log-injection",
+        "prototype-pollution",
         "container-security-context-missing",
         "host-path-mount",
         "container-privilege-escalation-allowed",
