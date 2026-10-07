@@ -1,0 +1,683 @@
+{
+ "repo": "code-assurance-initiative/bench-ts-readiness",
+ "tag": "v1.0.0",
+ "commit": "1c9ad0a6f5d8bf686d64a2fd278336b234f02192",
+ "engineVersion": "kennel main 6a05dfb6c (kennel-wt-scanner-bench), rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-07",
+   "sarifSha256": "3d7b7da38ca4c5b15e311b22cfcb57bbd7583b7d138c6e006ca4dc588984a660",
+   "outcomes": {
+    "tp": 3,
+    "fn": 14,
+    "fp": 15,
+    "tn": 181,
+    "trapFp": 3,
+    "trapTn": 18,
+    "results": 26,
+    "noise": 23,
+    "redundant": 0,
+    "uncovered": 0
+   },
+   "note": "contained; repository commit 148ebe7"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "11afb83ac35097bd8704074faac1676e734bb2b1df0046f66d788c0caa0676ff",
+   "outcomes": {
+    "tp": 3,
+    "fn": 14,
+    "fp": 17,
+    "tn": 194,
+    "trapFp": 14,
+    "trapTn": 21,
+    "results": 21,
+    "noise": 18,
+    "redundant": 0,
+    "uncovered": 0
+   },
+   "note": "contained, final; repository commit 0606450 (tag v1.0.0 = 0606450 + journal entry only). No model-judged band in the key, so no host --with-llm pass."
+  }
+ ],
+ "verdicts": [
+  {
+   "ruleId": "D29",
+   "file": "apps/tracking-service/src/http/routes/parcels.ts",
+   "line": 56,
+   "message": "Low: unknown-value-in-redirect: It looks like 'body' is read from user input and it is used to as a redirect. Ensure 'body' is not externally controlled, otherwise this is an open redirect. This is a semgrep security-AUDIT rule: it reports that a sensitive construct is present, not that it is exploitable here. Confirm whether this site handles untrusted input or is reachable across a trust boundary — and apply the change where it is; where the construct is required by the platform or protocol it calls into, and carries no untrusted data (a syscall/FFI shim, a build- or debug-gated tool, a fixed local surface), record the review and leave the code as it is.",
+   "class": "false-positive",
+   "reason": "Disproof: parcels.ts:56 calls service.redirect(), which moves a PARCEL to a pickup point (a database update in ParcelStore.redirect); the handler ends with res.status(204).end() and sets no Location header, so no user input reaches an HTTP redirect.",
+   "action": "promoted to trap TRP-022",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/api.yaml",
+   "line": 8,
+   "message": "Medium IaC: CKV_K8S_35: Prefer using secrets as files over secrets as environment variables",
+   "class": "opinion-not-fact",
+   "reason": "Secrets reach the containers as secretKeyRef environment variables; the service reads validated configuration from the environment and never logs it. Files instead of variables is a hardening preference, not a misconfiguration. Reported at the resource start, outside the env block.",
+   "action": "promoted to traps TRP-023..025 (at the secretKeyRef blocks; the reported line stays outside them: clean-region FP with imprecise location)",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/migrate-job.yaml",
+   "line": 2,
+   "message": "Medium IaC: CKV_K8S_35: Prefer using secrets as files over secrets as environment variables",
+   "class": "opinion-not-fact",
+   "reason": "Secrets reach the containers as secretKeyRef environment variables; the service reads validated configuration from the environment and never logs it. Files instead of variables is a hardening preference, not a misconfiguration. Reported at the resource start, outside the env block.",
+   "action": "promoted to traps TRP-023..025 (at the secretKeyRef blocks; the reported line stays outside them: clean-region FP with imprecise location)",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/worker.yaml",
+   "line": 8,
+   "message": "Medium IaC: CKV_K8S_35: Prefer using secrets as files over secrets as environment variables",
+   "class": "opinion-not-fact",
+   "reason": "Secrets reach the containers as secretKeyRef environment variables; the service reads validated configuration from the environment and never logs it. Files instead of variables is a hardening preference, not a misconfiguration. Reported at the resource start, outside the env block.",
+   "action": "promoted to traps TRP-023..025 (at the secretKeyRef blocks; the reported line stays outside them: clean-region FP with imprecise location)",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/api.yaml",
+   "line": 41,
+   "message": "Medium IaC: KSV-0125: Restrict container images to trusted registries. Container api in deployment parcel-tracking-api (namespace: parcel-tracking) uses an image from an untrusted registry. Use images from trusted registries.",
+   "class": "opinion-not-fact",
+   "reason": "The image is the team's own, in its organisation's GitHub container registry, pinned by digest and admitted only by digest by the namespace admission policy; 'untrusted registry' has no factual basis beyond an unconfigured allow-list.",
+   "action": "promoted to traps TRP-026..028",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/migrate-job.yaml",
+   "line": 27,
+   "message": "Medium IaC: KSV-0125: Restrict container images to trusted registries. Container migrate in job parcel-tracking-migrate (namespace: parcel-tracking) uses an image from an untrusted registry. Use images from trusted registries.",
+   "class": "opinion-not-fact",
+   "reason": "The image is the team's own, in its organisation's GitHub container registry, pinned by digest and admitted only by digest by the namespace admission policy; 'untrusted registry' has no factual basis beyond an unconfigured allow-list.",
+   "action": "promoted to traps TRP-026..028",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/worker.yaml",
+   "line": 40,
+   "message": "Medium IaC: KSV-0125: Restrict container images to trusted registries. Container worker in deployment parcel-tracking-worker (namespace: parcel-tracking) uses an image from an untrusted registry. Use images from trusted registries.",
+   "class": "opinion-not-fact",
+   "reason": "The image is the team's own, in its organisation's GitHub container registry, pinned by digest and admitted only by digest by the namespace admission policy; 'untrusted registry' has no factual basis beyond an unconfigured allow-list.",
+   "action": "promoted to traps TRP-026..028",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/migrate-job.yaml",
+   "line": 2,
+   "message": "Medium IaC: CKV_K8S_31: Ensure that the seccomp profile is set to docker/default or runtime/default",
+   "class": "redundant",
+   "reason": "The same missing seccomp profile on the migration Job that KSV-0104 reports at line 27 (TP on CNF-001), reported again by a second tool at the resource start.",
+   "action": "recorded, counted once",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "D31",
+   "file": "Dockerfile",
+   "line": 1,
+   "message": "Low IaC: DS-0026: No HEALTHCHECK defined. Add HEALTHCHECK instruction in your Dockerfile. Add HEALTHCHECK instruction in Dockerfile. Without one the runtime only knows whether the process is alive, not whether it is serving, so a wedged container is restarted by nobody. The step: add a `HEALTHCHECK` to the image that probes the service the way a client would — this image already declares `EXPOSE 8080`, so a request to `localhost:8080` on the service's own health or root route, exiting non-zero when it does not answer, is the probe — and give it an `--interval`, a `--timeout` and a `--start-period` long enough to cover startup. If the image ships no HTTP client, probe with whatever the runtime already has, or declare the check in the orchestrator instead and say so here.",
+   "class": "shape-irrelevant",
+   "reason": "The image runs only on Kubernetes, which ignores HEALTHCHECK; liveness and readiness probes are declared in both Deployments.",
+   "action": "caught by trap TRP-020 (in the key from the start)",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "D36",
+   "file": null,
+   "line": null,
+   "message": "Release publish has no approval gate: 1 workflow(s) publish a package to a registry with no point at which a person is asked to approve the run (release-packages.yml:53). Reached by a release tag any person or credential with write access to the repository can create — the filter selects release tags, so it is not reached by any tag at all, but it is reached by anyone who can push one of that shape. In every case the run is started by ONE actor with write access, acting alone — pushing a tag or clicking Run workflow is a deliberate act, but deliberate is not the same control as approved, and merging a pull request is not even deliberate. An `environment:` is the only Actions mechanism that can require a SECOND, named person. Each of these workflows also injects at least one long-lived named credential that every job in it can read — often, but not always, the registry key itself. What makes this worth the gate is that the artifact is not recallable: once a version is accepted by a public registry it has been fetched, cached by mirrors and pinned into other people's lockfiles within minutes, and the registries that matter refuse a re-upload of that version with different content, so a mistaken or hostile publish is corrected only by shipping another version and asking everyone downstream to move. Give the publishing job an `environment:` and configure that environment with required reviewers, then hold the registry credential on the environment rather than leaving it readable by every job in the repository — that is what turns the publish into an action a named person takes. Where the pipeline can use the registry's OIDC trusted publishing instead (`id-token: write`), that removes the standing credential altogether.",
+   "class": "valid",
+   "reason": "True: release-packages.yml published to npm on any matching tag push with no approval step; anyone able to push a tag could publish.",
+   "action": "repository fixed (d1efb26): the publish job runs in the 'npm' environment with required reviewers",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "D41",
+   "file": null,
+   "line": null,
+   "message": "No AppArmor/SELinux confinement: Workloads declare no AppArmor or SELinux profile. A mandatory-access-control profile confines what a compromised container can touch on the host, complementing seccomp's syscall filter.",
+   "class": "opinion-not-fact",
+   "reason": "Measurement true (no explicit AppArmor/SELinux profile), conclusion beyond it: the runtime's default AppArmor profile applies without a manifest opting in, restricted Pod Security does not require an explicit one, and both Deployments set RuntimeDefault seccomp.",
+   "action": "caught by trap TRP-013 (in the key from the start)",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "D42",
+   "file": null,
+   "line": null,
+   "message": "No runtime threat detection: No runtime threat-detection engine (Tetragon TracingPolicy / Falco) is committed. These observe process, file and network activity in-kernel and can alert or kill on malicious behaviour a static scan cannot catch.",
+   "class": "shape-irrelevant",
+   "reason": "Falco/Tetragon are installed by whoever operates the cluster; an application repository does not ship runtime threat detection.",
+   "action": "caught by trap TRP-014 (in the key from the start)",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "C2",
+   "file": null,
+   "line": null,
+   "message": "No named authorization policies: Authorization IS enforced here (by route guards, auth middleware or checks that refuse a caller) — this is NOT a claim that endpoints are unprotected. What's missing is a NAMED rule set: who may do what is encoded inline where it is checked, so the rules can't be listed, reviewed or tested apart from the code that applies them. Recommendation, not a defect.",
+   "class": "false-positive",
+   "reason": "Disproof: src/http/auth.ts names the scopes once (Scopes.readParcels, Scopes.writeParcels) and every guarded route declares its scope at registration with requireScope(Scopes.x) (src/http/routes/parcels.ts) - named policies in the TypeScript idiom.",
+   "action": "promoted to repository-level trap TRP-035",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "R10",
+   "file": "apps/tracking-service/src/worker/poller.ts",
+   "line": 23,
+   "message": "Duplicated block with local edits (15 matched lines × 2 locations): apps/tracking-service/src/worker/poller.ts:23 · apps/tracking-service/src/worker/webhook-dispatcher.ts:23 — the two spans are one implementation copied and then locally edited — 74 tokens are still identical, in the same order in both files, with only local edits between them. The copies have already begun to drift, which is this row's finding: an edit made to one and not the other changes behaviour silently. Diff the two spans first to learn what genuinely differs, then extract the shared core into one module both sites use, passing the differences in as parameters — or, if one copy exists only because the other could not be imported from its context, make one of them the single source the other is generated or re-exported from. If one copy is no longer reachable, delete it rather than letting it shadow the live one.",
+   "class": "valid",
+   "reason": "True: CarrierPoller.run and WebhookDispatcher.run were one loop copied (await round; sleep until aborted).",
+   "action": "repository fixed (050f405): repeatUntilAborted in worker/retry.ts",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "R10",
+   "file": "apps/tracking-service/src/api/server.ts",
+   "line": 13,
+   "message": "Duplicated block (11 lines × 2 locations): apps/tracking-service/src/api/server.ts:13 · apps/tracking-service/src/worker/worker.ts:20 — the 2 copies are spread across 2 files, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+   "class": "valid",
+   "reason": "True (minor): the database seam, stop signal and listen sequence of runApi and runWorker were copied.",
+   "action": "repository fixed (050f405): src/process.ts",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "R11",
+   "file": "apps/tracking-service/features/steps/webhook-steps.ts",
+   "line": 4,
+   "message": "Boundary violation [package:relative-cross-package]: apps/tracking-service/features/steps/webhook-steps.ts:4 reaches into another package with a relative path (../../../../packages/webhooks/src/index.js) — import the package by name instead.",
+   "class": "valid",
+   "reason": "True: the step definitions reached into packages/webhooks/src by a relative path instead of importing the published package by name.",
+   "action": "repository fixed (d1efb26): imported by package name, mapped to its sources for vitest and tsx, declared as a devDependency",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "R11",
+   "file": "apps/tracking-service/features/steps/webhook-steps.ts",
+   "line": 8,
+   "message": "Boundary violation [package:test-suite-dependency]: apps/tracking-service/features/steps/webhook-steps.ts:8 imports apps/tracking-service/tests/support/database.ts, a module inside the test suite — test helpers carry no compatibility contract and are maintained for the suite, not as an API, so production code that depends on one is coupled to a module nobody keeps stable. Move the shared helper into a source directory both layers may depend on.",
+   "class": "false-positive",
+   "reason": "Disproof: features/steps/webhook-steps.ts is a cucumber step definition - test code - importing the shared test database helper; no production module depends on test code (production src/ imports nothing from tests/ or features/, enforced by an ESLint rule).",
+   "action": "promoted to trap TRP-030",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "R11",
+   "file": "apps/tracking-service/features/support/world.ts",
+   "line": 5,
+   "message": "Boundary violation [package:test-suite-dependency]: apps/tracking-service/features/support/world.ts:5 imports apps/tracking-service/tests/support/database.ts, a module inside the test suite — test helpers carry no compatibility contract and are maintained for the suite, not as an API, so production code that depends on one is coupled to a module nobody keeps stable. Move the shared helper into a source directory both layers may depend on.",
+   "class": "false-positive",
+   "reason": "As above for features/support/world.ts (the cucumber world).",
+   "action": "promoted to trap TRP-029",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "R11",
+   "file": "apps/tracking-service/tests/integration/webhook-dispatch.test.ts",
+   "line": 7,
+   "message": "Boundary violation [package:test-cross-package-internals]: apps/tracking-service/tests/integration/webhook-dispatch.test.ts:7 reaches past another workspace package's public entry into its internals with a relative path (../../../../packages/webhooks/src/index.js) — the test is coupled to a file layout that package makes no promise about, so a refactor behind its entry point breaks the suite. Import the package by name instead.",
+   "class": "valid",
+   "reason": "True: the integration test reached into another workspace package's sources by relative path.",
+   "action": "repository fixed (d1efb26), as for the step definitions",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "R7",
+   "file": "apps/tracking-service/features/steps/webhook-steps.ts",
+   "line": 1,
+   "message": "Dead file (~86 LoC): no import path from any entry point (5 application, 5 tooling, 66 test roots considered), and no other file in the scanned tree imports it — nothing in-repo names this module at all, which is the strongest form of this claim the import graph can make",
+   "class": "false-positive",
+   "reason": "Disproof: cucumber-js loads apps/tracking-service/cucumber.mjs by name and the step and support files through its 'import' globs (features/support/**/*.ts, features/steps/**/*.ts); both profiles run them in CI (npm run test:bdd, test:bdd:webhooks). Runner-loaded files are not dead because nothing imports them.",
+   "action": "promoted to trap TRP-033",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "R7",
+   "file": "apps/tracking-service/features/steps/parcel-steps.ts",
+   "line": 1,
+   "message": "Dead file (~59 LoC): no import path from any entry point (5 application, 5 tooling, 66 test roots considered), and no other file in the scanned tree imports it — nothing in-repo names this module at all, which is the strongest form of this claim the import graph can make",
+   "class": "false-positive",
+   "reason": "Disproof: cucumber-js loads apps/tracking-service/cucumber.mjs by name and the step and support files through its 'import' globs (features/support/**/*.ts, features/steps/**/*.ts); both profiles run them in CI (npm run test:bdd, test:bdd:webhooks). Runner-loaded files are not dead because nothing imports them.",
+   "action": "promoted to trap TRP-032",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "R7",
+   "file": "apps/tracking-service/features/support/world.ts",
+   "line": 1,
+   "message": "Dead file (~26 LoC): no import path from any entry point (5 application, 5 tooling, 66 test roots considered), but 2 in-repo import(s) from 2 other file(s) do name it (apps/tracking-service/features/steps/parcel-steps.ts, apps/tracking-service/features/steps/webhook-steps.ts) — every one of those referrers is itself unreachable, so this file is dead only as a member of that cluster: if any referrer is in fact alive, this row falls with it",
+   "class": "false-positive",
+   "reason": "Disproof: cucumber-js loads apps/tracking-service/cucumber.mjs by name and the step and support files through its 'import' globs (features/support/**/*.ts, features/steps/**/*.ts); both profiles run them in CI (npm run test:bdd, test:bdd:webhooks). Runner-loaded files are not dead because nothing imports them.",
+   "action": "promoted to trap TRP-034",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "R7",
+   "file": "apps/tracking-service/cucumber.mjs",
+   "line": 1,
+   "message": "Dead file (~17 LoC): no import path from any entry point (5 application, 5 tooling, 66 test roots considered), and no other file in the scanned tree imports it — nothing in-repo names this module at all, which is the strongest form of this claim the import graph can make",
+   "class": "false-positive",
+   "reason": "Disproof: cucumber-js loads apps/tracking-service/cucumber.mjs by name and the step and support files through its 'import' globs (features/support/**/*.ts, features/steps/**/*.ts); both profiles run them in CI (npm run test:bdd, test:bdd:webhooks). Runner-loaded files are not dead because nothing imports them.",
+   "action": "promoted to trap TRP-031",
+   "iterations": [
+    1,
+    2
+   ]
+  }
+ ],
+ "falseNegatives": [
+  {
+   "entryId": "FLK-001",
+   "reason": "Real (proven: deterministic reproduction and 9 failures in 2,000,000 iterations, one per second boundary): the expected expiry is computed from a second clock read. D11 re-ran the vitest suite three times (93 tests, 0 flaky); a flake of order 1e-4 per run cannot be expected to show in three runs, and no static rule reads TypeScript tests for uncontrolled clock reads."
+  },
+  {
+   "entryId": "FLK-002",
+   "reason": "Real (proven: 2 of 30 full-suite runs failed on a busy machine, 10 of 15 with added CPU load): a fixed sleep against a real-timer poller. D11's three re-runs all passed; the fixed-sleep rule (D10) reads C# only."
+  },
+  {
+   "entryId": "MIG-001",
+   "reason": "The worker creates its delivery-log table at start-up with knex's schema builder. P8 scores 100 once any versioned migration history exists and has no knex auto-create rule (only TypeORM synchronize and Sequelize sync for JavaScript)."
+  },
+  {
+   "entryId": "LIB-001",
+   "reason": "A breaking change (removed method, renamed field) released as minor 2.3.0. P10 on npm only checks that a semver version is declared; it does not compare changelog content with the version bump."
+  },
+  {
+   "entryId": "LIB-002",
+   "reason": "The webhooks package has no exports map and no files allow-list. P10 does not read exports/files and does not measure TypeScript surface."
+  },
+  {
+   "entryId": "BDD-001",
+   "reason": "A feature no cucumber profile loads (2 undefined scenarios in a dry run). P11 counts .feature files and scores 100 with any; it does not check that a runner loads them."
+  },
+  {
+   "entryId": "EGR-001",
+   "reason": "The migration Job may reach 0.0.0.0/0 on every port. D40 is a repository-wide switch: any NetworkPolicy plus the word 'egress' scores 100."
+  },
+  {
+   "entryId": "ADM-001",
+   "reason": "Pod Security Admission labels for warn and audit only; nothing enforced. D42 credits any admission token (the namespaced image-digest policy) and does not read PSA modes."
+  },
+  {
+   "entryId": "RDY-001",
+   "reason": "Bare fetch for webhook POSTs. P7 reported 'no outbound HTTP usage detected': the clients call an injected fetchImpl, which the TypeScript arm does not recognise as fetch."
+  },
+  {
+   "entryId": "RDY-002",
+   "reason": "pollOnce takes the AbortSignal and drops it at the carrier call. X2 abstained: no named async function calls fetch literally (injected fetchImpl), and a function that mentions a signal parameter counts as compliant anyway."
+  },
+  {
+   "entryId": "RDY-003",
+   "reason": "Anonymous merchant statistics route. C2 is repository-wide (one guarded route credits all) and never itemises routes."
+  },
+  {
+   "entryId": "RDY-004",
+   "reason": "The redirect body is force-asserted to its type. unchecked-any-external-data is unmapped for this scanner, and S1 does not assess server-side validation for TypeScript."
+  },
+  {
+   "entryId": "RDY-005",
+   "reason": "console.log/console.error for delivery outcomes. P2 neither credits nor flags console output in a module that also logs through pino."
+  },
+  {
+   "entryId": "RDY-006",
+   "reason": "Empty catch in the carrier readiness check. The swallowed-exception check (X3) has no TypeScript arm."
+  }
+ ],
+ "scoreBands": [
+  {
+   "id": "BND-001",
+   "concept": "network-egress-policy",
+   "band": [
+    50,
+    85
+   ],
+   "scores": [
+    {
+     "source": "D40",
+     "score": 100
+    }
+   ],
+   "outcome": "out"
+  },
+  {
+   "id": "BND-002",
+   "concept": "workload-syscall-confinement",
+   "band": [
+    50,
+    85
+   ],
+   "scores": [
+    {
+     "source": "D41",
+     "score": 80
+    }
+   ],
+   "outcome": "in"
+  },
+  {
+   "id": "BND-003",
+   "concept": "runtime-threat-detection-and-admission",
+   "band": [
+    30,
+    70
+   ],
+   "scores": [
+    {
+     "source": "D42",
+     "score": 80
+    }
+   ],
+   "outcome": "out"
+  },
+  {
+   "id": "BND-004",
+   "concept": "versioned-schema-migrations",
+   "band": [
+    30,
+    70
+   ],
+   "scores": [
+    {
+     "source": "P8",
+     "score": 100
+    }
+   ],
+   "outcome": "out"
+  },
+  {
+   "id": "BND-005",
+   "concept": "library-api-versioning",
+   "band": [
+    30,
+    70
+   ],
+   "scores": [
+    {
+     "source": "P10",
+     "score": 100
+    }
+   ],
+   "outcome": "out"
+  },
+  {
+   "id": "BND-006",
+   "concept": "executable-specifications",
+   "band": [
+    50,
+    90
+   ],
+   "scores": [
+    {
+     "source": "P11",
+     "score": 100
+    }
+   ],
+   "outcome": "out"
+  },
+  {
+   "id": "BND-007",
+   "concept": "ci-build-and-test-pipeline",
+   "band": [
+    80,
+    100
+   ],
+   "scores": [
+    {
+     "source": "P1",
+     "score": 100
+    }
+   ],
+   "outcome": "in"
+  },
+  {
+   "id": "BND-008",
+   "concept": "ci-test-gate-integrity",
+   "band": [
+    70,
+    100
+   ],
+   "scores": [],
+   "outcome": "unscored"
+  },
+  {
+   "id": "BND-009",
+   "concept": "observability",
+   "band": [
+    50,
+    90
+   ],
+   "scores": [
+    {
+     "source": "P2",
+     "score": 80
+    }
+   ],
+   "outcome": "in"
+  },
+  {
+   "id": "BND-010",
+   "concept": "outbound-http-resilience",
+   "band": [
+    30,
+    70
+   ],
+   "scores": [],
+   "outcome": "unscored"
+  },
+  {
+   "id": "BND-011",
+   "concept": "authorization-enforcement",
+   "band": [
+    40,
+    80
+   ],
+   "scores": [
+    {
+     "source": "C2",
+     "score": 70
+    }
+   ],
+   "outcome": "in"
+  },
+  {
+   "id": "BND-012",
+   "concept": "inbound-input-validation",
+   "band": [
+    50,
+    90
+   ],
+   "scores": [],
+   "outcome": "unscored"
+  },
+  {
+   "id": "BND-013",
+   "concept": "security-response-headers",
+   "band": [
+    70,
+    100
+   ],
+   "scores": [],
+   "outcome": "unscored"
+  },
+  {
+   "id": "BND-014",
+   "concept": "dependencies-not-locked",
+   "band": [
+    80,
+    100
+   ],
+   "scores": [],
+   "outcome": "unscored"
+  },
+  {
+   "id": "BND-015",
+   "concept": "security-tooling-in-ci",
+   "band": [
+    60,
+    100
+   ],
+   "scores": [
+    {
+     "source": "P3",
+     "score": 70
+    }
+   ],
+   "outcome": "in"
+  },
+  {
+   "id": "BND-016",
+   "concept": "vulnerability-disclosure-policy",
+   "band": [
+    80,
+    100
+   ],
+   "scores": [
+    {
+     "source": "D37",
+     "score": 100
+    }
+   ],
+   "outcome": "in"
+  },
+  {
+   "id": "BND-017",
+   "concept": "release-hygiene",
+   "band": [
+    50,
+    90
+   ],
+   "scores": [
+    {
+     "source": "P6",
+     "score": 50
+    }
+   ],
+   "outcome": "in"
+  },
+  {
+   "id": "BND-018",
+   "concept": "deployment-rollback-safety",
+   "band": [
+    50,
+    100
+   ],
+   "scores": [
+    {
+     "source": "P4",
+     "score": 100
+    }
+   ],
+   "outcome": "in"
+  },
+  {
+   "id": "BND-019",
+   "concept": "build-provenance-and-signing",
+   "band": [
+    50,
+    100
+   ],
+   "scores": [
+    {
+     "source": "D36",
+     "score": 100
+    }
+   ],
+   "outcome": "in"
+  },
+  {
+   "id": "BND-020",
+   "concept": "test-coverage",
+   "band": [
+    70,
+    100
+   ],
+   "scores": [
+    {
+     "source": "D8",
+     "score": 100
+    }
+   ],
+   "outcome": "in"
+  }
+ ],
+ "observations": [
+  "Recall 3/17: the scanner found the three plants whose detectors are per-site checks - the migration Job's missing seccomp profile (D31 KSV-0104), the interpolated log message (X4) and the subsumed 'DLV' operand (X9, the first TypeScript X9 hit in the benchmark).",
+  "The gap rows this repository was built for are all measured now, and the scanner's TypeScript reach on them is thin: D11 re-ran the suite 3x and saw no flake (both flaky plants are real and rare - three runs cannot see them), and D40, D42, P8, P10 and P11 are repository-wide switches that score 100 (or 80) the moment one good site exists, so each planted gap beside a good site is invisible and five bands sit out.",
+  "A recurring TypeScript blind spot: P7 and X2 abstained with 'no outbound HTTP usage' because both HTTP clients call an injected fetch (fetchImpl = options.fetch ?? fetch), the idiomatic testable form.",
+  "Noise came from two families: k8s opinions (secrets as env vars, untrusted registry for the team's own digest-pinned images, AppArmor, Falco, HEALTHCHECK on a Kubernetes-only image) and a cucumber blind spot - R7 calls runner-loaded configuration and step files dead and R11 calls specifications 'production code' importing a test helper.",
+  "Trap resistance 18/21 in iteration 1 (the three traps keyed before any scan: AppArmor, Falco, HEALTHCHECK) and 21/35 at the frozen key after promoting the iteration-1 noise.",
+  "Harness: the key validator compares paths by suffix while contract 1.4 scoring compares them exactly, so the root CHANGELOG.md and package.json had to leave library-api-versioning out of their clean certificates (same-named package files hold plants). Coordinator may want the validator on exact paths."
+ ]
+}
