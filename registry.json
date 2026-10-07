@@ -204,6 +204,46 @@
       "commit": "1c9ad0a6f5d8bf686d64a2fd278336b234f02192",
       "keySha256": "166acf1fb645c488927ab58d16bff5b2059fb90168b83ca24fa01bd00eae85e9",
       "frozenAt": "2026-10-07"
+    },
+    {
+      "repo": "code-assurance-initiative/estate-quellbrook-gateway",
+      "tag": "v1.0.0",
+      "commit": "796a7489bd12f2655e6f3858d9d65a6b56c8b2b8",
+      "keySha256": "cbcbc47dc7e54b4c7f32a5a7b9880851b41b980ac582517cc77616e0f5929701",
+      "frozenAt": "2026-10-07",
+      "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0"
+    },
+    {
+      "repo": "code-assurance-initiative/estate-quellbrook-orders",
+      "tag": "v1.0.0",
+      "commit": "227ea390af526080dcc4748095abff75de5087b4",
+      "keySha256": "356f0e66cb77419f3980c79b2ea5af20e0f41fc80beb4915893d2475035ba347",
+      "frozenAt": "2026-10-07",
+      "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0"
+    },
+    {
+      "repo": "code-assurance-initiative/estate-quellbrook-dispatch",
+      "tag": "v1.0.0",
+      "commit": "4c68f6cd2fe39038ad0464222e7453e81bd8d068",
+      "keySha256": "b9da8f498f17ea3276a411076de44dfcadceafb870920dacc2a1c44673058e5e",
+      "frozenAt": "2026-10-07",
+      "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0"
+    },
+    {
+      "repo": "code-assurance-initiative/estate-quellbrook-notifier",
+      "tag": "v1.0.0",
+      "commit": "cfab2803fb3dbb8b68bb87ea668f2f26aa506cdd",
+      "keySha256": "b4dabc406c3f50b150c188abd9014db0deab3c225a3b90cec0429a249e054e3c",
+      "frozenAt": "2026-10-07",
+      "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0"
+    },
+    {
+      "repo": "code-assurance-initiative/estate-quellbrook-web",
+      "tag": "v1.0.0",
+      "commit": "1828570ee65908f5d8cd8846b09536746831a809",
+      "keySha256": "1971775473ee8d41824669768c7ba8c8721f3e85d204bf67f4d8a89950fa3e35",
+      "frozenAt": "2026-10-07",
+      "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0"
     }
   ]
 }
