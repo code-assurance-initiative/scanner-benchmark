@@ -1,0 +1,271 @@
+{
+  "repo": "code-assurance-initiative/bench-ts-security-dependencies",
+  "tag": "v1.0.0",
+  "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc)",
+  "scans": [
+    {
+      "iteration": 1,
+      "date": "2026-10-07",
+      "sarifSha256": "c1363128cfa3ae610f81a76adb490fc3090372d69549e7ba74cf55d3363c4aa8",
+      "outcomes": {
+        "tp": 6,
+        "fn": 7,
+        "fp": 1,
+        "tn": 90,
+        "trapFp": 0,
+        "trapTn": 12,
+        "results": 7,
+        "noise": 1,
+        "redundant": 0,
+        "uncovered": 2,
+        "summaryRows": 0,
+        "fileLevelTp": 6,
+        "recall": 0.46153846153846156,
+        "trapResistance": 1.0,
+        "noiseRate": 0.14285714285714285,
+        "fileLevelRecall": 0.46153846153846156
+      },
+      "note": "contained, repo commit 66c4126, scored against the key of that commit (before TRP-013/014)"
+    },
+    {
+      "iteration": 2,
+      "date": "2026-10-07",
+      "sarifSha256": "c1363128cfa3ae610f81a76adb490fc3090372d69549e7ba74cf55d3363c4aa8",
+      "outcomes": {
+        "tp": 6,
+        "fn": 7,
+        "fp": 3,
+        "tn": 90,
+        "trapFp": 2,
+        "trapTn": 12,
+        "results": 9,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 0,
+        "summaryRows": 0,
+        "fileLevelTp": 6,
+        "recall": 0.46153846153846156,
+        "trapResistance": 0.8571428571428571,
+        "noiseRate": 0.3333333333333333,
+        "fileLevelRecall": 0.46153846153846156
+      },
+      "note": "contained, repo commit 3c0b6fb, final (code identical at v1.0.0 3e4041b apart from the journal); SARIF byte-identical to iteration 1"
+    }
+  ],
+  "judgedOutcomes": {
+    "note": "Harness outcome plus one hand judgement: MIS-001 is found at an evidence location (the importing test file), which the harness scores as a clean-region FP.",
+    "tp": [
+      "VUL-001",
+      "VUL-002",
+      "VUL-003",
+      "VUL-004",
+      "VUL-005",
+      "LIC-001",
+      "MIS-001"
+    ],
+    "fn": [
+      "DPR-001",
+      "DPR-002",
+      "OUT-001",
+      "EOL-001",
+      "UNU-001",
+      "UND-001"
+    ],
+    "trapFp": [
+      "TRP-013",
+      "TRP-014"
+    ],
+    "trapTn": [
+      "TRP-001",
+      "TRP-002",
+      "TRP-003",
+      "TRP-004",
+      "TRP-005",
+      "TRP-006",
+      "TRP-007",
+      "TRP-008",
+      "TRP-009",
+      "TRP-010",
+      "TRP-011",
+      "TRP-012"
+    ],
+    "recall": "7/13",
+    "trapResistance": "12/14"
+  },
+  "verdicts": [
+    {
+      "ruleId": "D14",
+      "file": null,
+      "line": null,
+      "message": "Banned license: mupdf: `mupdf` 1.28.1 is published on registry.npmjs.org under `AGPL-3.0-or-later`, which this policy bans, and it is a PRODUCTION dependency this repository's committed lockfile resolves — so it is installed by everything that depends on this repository, not just by its build toolchain. A package offering SEVERAL licences is a choice and is only charged when every one of them is banned. Replace the package, or record an accepted exception.",
+      "class": "valid",
+      "reason": "LIC-001: mupdf 1.28.1 is AGPL-3.0-or-later, a production dependency of a proprietary product installed at customer sites; forbidden by docs/adr/0002. Expected hit (location-less, matched by subject).",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "LIC-001"
+    },
+    {
+      "ruleId": "D30",
+      "file": "tools/manifest-export/package-lock.json",
+      "line": 1,
+      "message": "Critical CVE: GHSA-xvch-5gv4-984h: minimist 1.2.5: GHSA-xvch-5gv4-984h — upgrade to 1.2.6. Also reported as CVE-2021-44906.",
+      "class": "valid",
+      "reason": "VUL-003: minimist 1.2.5, GHSA-xvch-5gv4-984h, in the tool's lock file. Expected hit (manifest-located, matched by subject).",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "VUL-003"
+    },
+    {
+      "ruleId": "D30",
+      "file": "package-lock.json",
+      "line": 1,
+      "message": "High CVE: GHSA-3g43-6gmg-66jw: axios 0.21.1: GHSA-3g43-6gmg-66jw — upgrade to 0.31.1. This is 1 of 24 advisories with a published fix this scan raises against axios 0.21.1, and their fixed versions do not agree — anything below 0.33.0 still leaves at least one of them open. Take this package to 0.33.0 or later: that is the floor for the package, not this row's target alone. Also reported as CVE-2026-44495. This one row stands for the 24 advisories this scan raises against axios 0.21.1: GHSA-3g43-6gmg-66jw, GHSA-3p68-rc4w-qgx5 (also CVE-2025-62718), GHSA-43fc-jf86-j433 (also CVE-2026-25639), GHSA-5c9x-8gcm-mpgx (also CVE-2026-42034), GHSA-62hf-57xw-28j9 (also CVE-2026-42039), GHSA-6chq-wfr3-2hj9 (also CVE-2026-42035), GHSA-7q8q-rj6j-mhjq, GHSA-898c-q2cr-xwhg (also CVE-2026-44490), GHSA-cph5-m8f7-6c5x (also CVE-2021-3749), GHSA-fvcv-3m26-pcqx (also CVE-2026-40175), GHSA-hfxv-24rg-xrqf (also CVE-2026-44496), GHSA-j5f8-grm9-p9fc (also CVE-2026-44486), GHSA-jr5f-v2jv-69x6 (also CVE-2025-27152), GHSA-m7pr-hjqh-92cm (also CVE-2026-42038), GHSA-mmx7-hfxf-jppx, GHSA-p92q-9vqr-4j8v (also CVE-2026-44487), GHSA-pf86-5x62-jrwf (also CVE-2026-42033), GHSA-pjwm-pj3p-43mv (also CVE-2026-44492), GHSA-pmwg-cvhr-8vh7 (also CVE-2026-42043), GHSA-vf2m-468p-8v99 (also CVE-2026-42036), GHSA-w9j2-pvgh-6h63 (also CVE-2026-42041), GHSA-wf5p-g6vw-rhxx (also CVE-2023-45857), GHSA-xhjh-pmcv-23jw (also CVE-2026-42040), GHSA-xx6v-rp6x-q39c (also CVE-2026-42042).",
+      "class": "valid",
+      "reason": "VUL-002: axios 0.21.1, 24 advisories (one row stands for all). Expected hit.",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "VUL-002"
+    },
+    {
+      "ruleId": "D30",
+      "file": "package-lock.json",
+      "line": 1,
+      "message": "High CVE: GHSA-8cf7-32gw-wr33: jsonwebtoken 8.5.1: GHSA-8cf7-32gw-wr33 — upgrade to 9.0.0. Also reported as CVE-2022-23539. This one row stands for the 3 advisories this scan raises against jsonwebtoken 8.5.1: GHSA-8cf7-32gw-wr33, GHSA-hjrf-2m68-5959 (also CVE-2022-23541), GHSA-qwph-4952-7xr6 (also CVE-2022-23540).",
+      "class": "valid",
+      "reason": "VUL-001: jsonwebtoken 8.5.1, GHSA-8cf7-32gw-wr33 / -hjrf-2m68-5959 / -qwph-4952-7xr6. Expected hit.",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "VUL-001"
+    },
+    {
+      "ruleId": "D30",
+      "file": "package-lock.json",
+      "line": 1,
+      "message": "High CVE: GHSA-ph9p-34f9-6g65: tmp 0.2.3: GHSA-ph9p-34f9-6g65 — upgrade to 0.2.6. This is 1 of 2 advisories with a published fix this scan raises against tmp 0.2.3, and their fixed versions do not agree — anything below 0.2.6 still leaves at least one of them open. Take this package to 0.2.6 or later: that is the floor for the package, not this row's target alone. This one row stands for the 2 advisories this scan raises against tmp 0.2.3: GHSA-52f5-9888-hmc6, GHSA-ph9p-34f9-6g65.",
+      "class": "valid",
+      "reason": "VUL-005: tmp 0.2.3 (devDependency, test-only), GHSA-52f5-9888-hmc6 / GHSA-ph9p-34f9-6g65. Expected hit; the scanner does not exclude development dependencies.",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "VUL-005"
+    },
+    {
+      "ruleId": "D30",
+      "file": "package-lock.json",
+      "line": 1,
+      "message": "Medium CVE: GHSA-vcc3-ghjq-m6fr: decode-uri-component 0.2.2: GHSA-vcc3-ghjq-m6fr — decode-uri-component is not declared in this repo's manifests: it is pulled in transitively by query-string 7.1.3, which reaches this repo only through @googlemaps/google-maps-services-js 3.4.2, the dependency your own manifest declares at `3.4.2` (the entry you can move), so upgrade the dependency that requires it (and an `overrides` pin to 0.5.0 is not the offer it looks like: every dependent resolving this copy — query-string 7.1.3 (`^0.2.2`) — declares a range that excludes 0.5.0, so the pin overrides their declaration rather than satisfying it. Upgrading those dependents is the move their own maintainers support).",
+      "class": "valid",
+      "reason": "VUL-004: transitive decode-uri-component 0.2.2 via query-string 7.1.3 via @googlemaps/google-maps-services-js 3.4.2, GHSA-vcc3-ghjq-m6fr; the row names the path correctly. Expected hit.",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "VUL-004"
+    },
+    {
+      "ruleId": "C2",
+      "file": null,
+      "line": null,
+      "message": "No named authorization policies: Authorization IS enforced here (by route guards, auth middleware or checks that refuse a caller) — this is NOT a claim that endpoints are unprotected. What's missing is a NAMED rule set: who may do what is encoded inline where it is checked, so the rules can't be listed, reviewed or tested apart from the code that applies them. Recommendation, not a defect.",
+      "class": "false-positive",
+      "reason": "Disproof: src/http/require-terminal.ts names the three scopes (Scopes), every /api route declares its scope with requireScope(Scopes.x) at registration (src/http/routes/run-routes.ts, label-routes.ts), and depot confinement is one function (ownRun); the README lists the scope per endpoint. The rules can be listed and reviewed apart from the handlers. Same finding as bench-ts-baseline-clean.",
+      "action": "promoted to trap TRP-014 (authorization-enforcement, repository level); code kept",
+      "iteration": 1,
+      "entryId": "TRP-014"
+    },
+    {
+      "ruleId": "R8",
+      "file": "tests/unit/geocoder.test.ts",
+      "line": 1,
+      "message": "Test-only dependency 'nock' in production deps: Only test files import it — move it to devDependencies.",
+      "class": "valid",
+      "reason": "MIS-001: nock is declared under dependencies and imported only by tests. True and the expected detection, but located at the importing test file (evidence) rather than at the package.json declaration (the site a reviewer edits), so the harness scores it against CLN-065 (clean) instead of MIS-001. Judged a hit.",
+      "action": "none (planted); recorded as a location limitation",
+      "iteration": 1,
+      "entryId": "MIS-001"
+    },
+    {
+      "ruleId": "X5",
+      "file": null,
+      "line": null,
+      "message": "Strict null checking is not enabled everywhere the repository type-checks: 0/2 of this repository's type-checking configuration(s) turn on strict null checking (`\"strict\": true`, or `\"strictNullChecks\": true`). A configuration that states neither is counted as OFF, because off is tsc's own default; a solution-style one whose `\"files\"` is empty and whose `\"references\"` point at other projects is in neither number, because it checks no source itself. Where it is off, `string` admits `null` and `undefined`: passing a value that is null compiles silently and throws on the first property access.",
+      "class": "false-positive",
+      "reason": "Disproof: tsconfig.json extends @tsconfig/node22, whose tsconfig.json sets \"strict\": true, and tsconfig.build.json extends tsconfig.json; `tsc --showConfig` prints \"strict\": true for both. The rule does not resolve `extends`.",
+      "action": "promoted to trap TRP-013 (nullable-analysis-disabled, repository level); code kept",
+      "iteration": 1,
+      "entryId": "TRP-013"
+    }
+  ],
+  "falseNegatives": [
+    {
+      "entryId": "DPR-001",
+      "reason": "string-similarity 4.0.4 is deprecated on registry.npmjs.org (every version) and the npm 10 lock file records the deprecation; the npm arm of D12 does not grade deprecation at all (its narrative says so). Plant re-verified: no advisory."
+    },
+    {
+      "entryId": "DPR-002",
+      "reason": "Transitive crypto-js 4.2.0 (via @googlemaps/url-signature) is deprecated (\"no longer maintained\"), recorded in the lock file; not graded (same cause as DPR-001)."
+    },
+    {
+      "entryId": "OUT-001",
+      "reason": "date-fns 1.30.1 (2018) vs 4.4.0: measured (findings.md \"date-fns is pinned at 1.30.1; registry.npmjs.org publishes 4.4.0\") but emitted at Info level, which never reaches SARIF — same reporting-layer FN as the C# twin."
+    },
+    {
+      "entryId": "EOL-001",
+      "reason": "tools/manifest-export declares engines.node \"16.x\" (Node.js 16 EOL 2023-09-11). D44 reads only a root .nvmrc for Node.js and never engines.node or a second package (1 platform declaration read, 0 EOL)."
+    },
+    {
+      "entryId": "UNU-001",
+      "reason": "uuid 14.0.2 is under dependencies and imported by no file (ids come from crypto.randomUUID); R8 reported 0 unused."
+    },
+    {
+      "entryId": "UND-001",
+      "reason": "src/scheduling/cutoff.ts:1 imports ms at run time and no package.json declares ms (only @types/ms, which is types); R8 reported 0 unlisted — most likely the @types package is taken as the declaration."
+    }
+  ],
+  "scoreBands": [
+    {
+      "entryId": "BND-001",
+      "concept": "dependencies-not-locked",
+      "band": [
+        80,
+        100
+      ],
+      "score": null,
+      "inBand": null,
+      "note": "SC1 publishes no score; unscored."
+    },
+    {
+      "entryId": "BND-002",
+      "concept": "build-provenance-and-signing",
+      "band": [
+        30,
+        100
+      ],
+      "score": null,
+      "inBand": null,
+      "note": "D36 withheld; unscored."
+    },
+    {
+      "entryId": "BND-003",
+      "concept": "outdated-dependency",
+      "band": [
+        30,
+        85
+      ],
+      "score": {
+        "D12": 98,
+        "R5": 93
+      },
+      "inBand": false,
+      "note": "The scanner grades direct production npm dependencies at 0.05 per stale package; three of seventeen a major or more behind reads as near-perfect freshness. opinion-not-fact on the scale; band set before the scan and kept."
+    }
+  ],
+  "observations": [
+    "D30 found every vulnerable plant, direct, transitive (with the correct path to the declaring dependency) and test-only, and left both patched look-alikes (lodash 4.18.1; jws 3.2.3 forced by overrides under jsonwebtoken ^3.2.2) alone.",
+    "D30 locates npm rows at line 1 of the lock file; they score only through contract-1.2 subjects. Located at the package entry they would match by line.",
+    "D14 graded licences correctly in both directions: the AGPL plant fired; the dual licence (MIT OR GPL-3.0-or-later, jszip) and the Unlicense (tweetnacl) were not charged — unlike the C# twin, where the NuGet arm bans by substring.",
+    "D12 (npm) grades neither deprecation nor anything below direct production dependencies, and its outdated rows are Info (not in SARIF): DPR-001, DPR-002, OUT-001 are invisible in machine output.",
+    "D44 reads Node.js only from a root .nvmrc; engines.node pins and second packages are not read (EOL-001 FN). The root .nvmrc 22 trap was correctly not charged.",
+    "R8 found the test-only production dependency but located it at the importing test file; it missed an unused production dependency (uuid) and an import of an undeclared runtime package whose @types package is declared (ms).",
+    "X5 does not resolve tsconfig `extends` (TRP-013); C2 repeats the baseline false positive on scope-guarded routes (TRP-014).",
+    "D43: no plant by design (a malicious npm package cannot be installed); trap TRP-005 (@tsconfig/node22) left alone.",
+    "Repository built with no Dependabot (as the C# twin): an update bot would rewrite the frozen plants and an ignore list would itself be a finding."
+  ]
+}
