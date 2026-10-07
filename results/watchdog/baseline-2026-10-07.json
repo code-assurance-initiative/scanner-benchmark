@@ -25,7 +25,7 @@
   "final-scores.json": "48549240918865f5e0ffead7f734f9b9a69972ae2171bbaae7775e2f0f9aff89",
   "SUMMARY.json": "dd1190bb2f5aa007492665d9a8065289b0881ab82599bc2cf9c8f546682e7f69",
   "mappings/watchdog.json": "195b1f740329c48d0b8b1d9e394ffe3c88f63c9e5958078d89f7b171f5eec13d",
-  "coverage/matrix.json": "dff63de8df478d8a6e41c020937a8b8d45cf011b896d95ef00e86c2c146324ee",
+  "coverage/matrix.json": "14288a33e732c1315bd76f1a25ee35027c31bf1acc39c2a7d7a34eacd9e30e40",
   "catalog": "rubric-2026.10.1: 165 dimensions, lenses identical to coverage/matrix.json"
  },
  "definitions": {
@@ -2704,28 +2704,36 @@
      "id": "A11Y-014",
      "concept": "motion-without-reduced-motion",
      "file": "src/styles/loading.css",
-     "mechanism": "a11y-css-not-read"
+     "mechanism": "a11y-css-not-read",
+     "backlogId": "019fdcf7-c913-7f14-ad22-745b1bfc4843",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-ts-frontend-a11y",
      "id": "A11Y-015",
      "concept": "focus-outline-removed",
      "file": "src/styles/search.css",
-     "mechanism": "a11y-css-not-read"
+     "mechanism": "a11y-css-not-read",
+     "backlogId": "019fdcf7-c913-7f14-ad22-745b1bfc4843",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-csharp-blazor-a11y",
      "id": "BA-015",
      "concept": "motion-without-reduced-motion",
      "file": "src/HarbourLane.Bookings.Web/Components/Shared/ToastHost.razor.css",
-     "mechanism": "a11y-css-not-read"
+     "mechanism": "a11y-css-not-read",
+     "backlogId": "019fdcf7-c913-7f14-ad22-745b1bfc4843",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-csharp-blazor-a11y",
      "id": "BA-017",
      "concept": "focus-outline-removed",
      "file": "src/HarbourLane.Bookings.Web/Components/Layout/NavMenu.razor.css",
-     "mechanism": "a11y-css-not-read"
+     "mechanism": "a11y-css-not-read",
+     "backlogId": "019fdcf7-c913-7f14-ad22-745b1bfc4843",
+     "backlogKind": "amended"
     }
    ],
    "noiseBacklog": [
@@ -3174,7 +3182,9 @@
      "id": "CYC-001",
      "concept": "module-dependency-cycle",
      "file": "src/FleetOps.Infrastructure/Email/ReminderMailer.cs",
-     "mechanism": "structural-population-too-narrow"
+     "mechanism": "structural-population-too-narrow",
+     "backlogId": "01a11750-dbbf-7d55-b670-ccfe8b9219d4",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -3694,7 +3704,9 @@
      "id": "AX8-001",
      "concept": "production-depends-on-test-code",
      "file": "src/Fx.Conversion.Api/Fx.Conversion.Api.csproj",
-     "mechanism": "structural-population-too-narrow"
+     "mechanism": "structural-population-too-narrow",
+     "backlogId": "01a11751-94e4-7bff-a8ba-3ab5d0d4a88b",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -4245,7 +4257,9 @@
      "id": "RDY-010",
      "concept": "security-response-headers",
      "file": "src/ParcelTracking.Api/Hosting/ApiPipeline.cs",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174a-7056-707a-b6ed-0e16b3f4df60",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -6334,7 +6348,9 @@
      "id": "A11Y-017",
      "concept": "oversized-source-file",
      "file": "src/features/loans/LoansPage.tsx",
-     "mechanism": "info-level-never-in-sarif"
+     "mechanism": "info-level-never-in-sarif",
+     "backlogId": "01a11752-5a3b-79d7-a22d-f0aa1fc2b1a7",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -6449,7 +6465,9 @@
      "id": "DSP-003",
      "concept": "duplicated-code",
      "file": "src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs",
-     "mechanism": "location-imprecision"
+     "mechanism": "location-imprecision",
+     "backlogId": "01a11753-e396-7e16-b4ef-4e6d19a4ed51",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -6644,14 +6662,18 @@
      "id": "SDP-001",
      "concept": "unstable-dependency",
      "file": "src/FleetOps.ServiceDefaults/FleetOps.ServiceDefaults.csproj",
-     "mechanism": "structural-population-too-narrow"
+     "mechanism": "structural-population-too-narrow",
+     "backlogId": "01a11750-ba26-7467-b111-467515fd8e67",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-architecture",
      "id": "CYC-001",
      "concept": "module-dependency-cycle",
      "file": "src/FleetOps.Infrastructure/Email/ReminderMailer.cs",
-     "mechanism": "structural-population-too-narrow"
+     "mechanism": "structural-population-too-narrow",
+     "backlogId": "01a11750-dbbf-7d55-b670-ccfe8b9219d4",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -6980,14 +7002,18 @@
      "id": "CYC-001",
      "concept": "module-dependency-cycle",
      "file": "src/FleetOps.Infrastructure/Email/ReminderMailer.cs",
-     "mechanism": "structural-population-too-narrow"
+     "mechanism": "structural-population-too-narrow",
+     "backlogId": "01a11750-dbbf-7d55-b670-ccfe8b9219d4",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-architecture",
      "id": "ARU-001",
      "concept": "architecture-rules-unenforced",
      "file": "docs/adr/0003-vertical-slices.md",
-     "mechanism": "adr-and-doc-conformance"
+     "mechanism": "adr-and-doc-conformance",
+     "backlogId": "01a11755-5360-7f01-8dcd-25fa733c9846",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -7630,56 +7656,72 @@
      "id": "TQ-002",
      "concept": "test-without-assertion",
      "file": "tests/Fx.Conversion.UnitTests/Allocation/AllocatorTests.cs",
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "01a1174c-b123-720a-80c7-a8d01f89e90a",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-tests",
      "id": "TQ-006",
      "concept": "flaky-test",
      "file": "tests/Fx.Conversion.UnitTests/Rates/RateTableTests.cs",
-     "mechanism": "flaky-test-detection"
+     "mechanism": "flaky-test-detection",
+     "backlogId": "01a11755-c993-744e-b96f-f191a1c81532",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-tests",
      "id": "TQ-007",
      "concept": "excessive-mocking",
      "file": "tests/Fx.Conversion.UnitTests/Quotes/QuoteServiceTests.cs",
-     "mechanism": "no-rule-for-concept"
+     "mechanism": "no-rule-for-concept",
+     "backlogId": "01a11749-edee-78d1-87d6-b219620338cd",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-045",
      "concept": "test-without-assertion",
      "file": "tests/unit/label-service.test.ts",
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "01a1174c-cc04-7e12-b1ef-ef6cc1965293",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-047",
      "concept": "test-failure-swallowed",
      "file": "tests/unit/carrier-adapters.test.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174c-3211-7372-bb93-0b18b68f7936",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-048",
      "concept": "excessive-mocking",
      "file": "tests/unit/quote-routes.test.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a11749-edee-78d1-87d6-b219620338cd",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-readiness",
      "id": "FLK-001",
      "concept": "flaky-test",
      "file": "apps/tracking-service/tests/unit/share-links.test.ts",
-     "mechanism": "flaky-test-detection"
+     "mechanism": "flaky-test-detection",
+     "backlogId": "01a11755-c993-744e-b96f-f191a1c81532",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-readiness",
      "id": "FLK-002",
      "concept": "flaky-test",
      "file": "apps/tracking-service/tests/integration/poller.test.ts",
-     "mechanism": "flaky-test-detection"
+     "mechanism": "flaky-test-detection",
+     "backlogId": "01a11755-ea2a-7ad8-b996-a6c77d48e949",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -7790,21 +7832,27 @@
      "id": "TQ-006",
      "concept": "flaky-test",
      "file": "tests/Fx.Conversion.UnitTests/Rates/RateTableTests.cs",
-     "mechanism": "flaky-test-detection"
+     "mechanism": "flaky-test-detection",
+     "backlogId": "01a11755-c993-744e-b96f-f191a1c81532",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-readiness",
      "id": "FLK-001",
      "concept": "flaky-test",
      "file": "apps/tracking-service/tests/unit/share-links.test.ts",
-     "mechanism": "flaky-test-detection"
+     "mechanism": "flaky-test-detection",
+     "backlogId": "01a11755-c993-744e-b96f-f191a1c81532",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-readiness",
      "id": "FLK-002",
      "concept": "flaky-test",
      "file": "apps/tracking-service/tests/integration/poller.test.ts",
-     "mechanism": "flaky-test-detection"
+     "mechanism": "flaky-test-detection",
+     "backlogId": "01a11755-ea2a-7ad8-b996-a6c77d48e949",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -7910,28 +7958,36 @@
      "id": "DEP-006",
      "concept": "outdated-dependency",
      "file": "Directory.Packages.props",
-     "mechanism": "info-level-never-in-sarif"
+     "mechanism": "info-level-never-in-sarif",
+     "backlogId": "01a11752-004d-76f2-9274-30441bed56cb",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-dependencies",
      "id": "DPR-001",
      "concept": "deprecated-dependency",
      "file": "package.json",
-     "mechanism": "dependency-hygiene-arm"
+     "mechanism": "dependency-hygiene-arm",
+     "backlogId": "019fdcf7-c9c3-723c-8916-1cac2dd90802",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-ts-security-dependencies",
      "id": "DPR-002",
      "concept": "deprecated-dependency",
      "file": "package-lock.json",
-     "mechanism": "dependency-hygiene-arm"
+     "mechanism": "dependency-hygiene-arm",
+     "backlogId": "019fdcf7-c9c3-723c-8916-1cac2dd90802",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-ts-security-dependencies",
      "id": "OUT-001",
      "concept": "outdated-dependency",
      "file": "package.json",
-     "mechanism": "info-level-never-in-sarif"
+     "mechanism": "info-level-never-in-sarif",
+     "backlogId": "01a11752-004d-76f2-9274-30441bed56cb",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -8085,70 +8141,90 @@
      "id": "SEC-005",
      "concept": "hardcoded-password",
      "file": "src/DocumentExport.Api/Persistence/AuditStoreSettings.cs",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-e610-7e11-a74c-22c5668865ca",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-secrets",
      "id": "SEC-006",
      "concept": "hardcoded-password",
      "file": "src/DocumentExport.Api/appsettings.Production.json",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-e610-7e11-a74c-22c5668865ca",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-secrets",
      "id": "SEC-007",
      "concept": "hardcoded-password",
      "file": "src/DocumentExport.Api/appsettings.Development.json",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-e610-7e11-a74c-22c5668865ca",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-secrets",
      "id": "SEC-013",
      "concept": "hardcoded-credential",
      "file": "src/DocumentExport.Api/Notifications/DeliveryNotifier.cs",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-5d36-71fd-bf30-319ff7b64b4d",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-secrets",
      "id": "SEC-014",
      "concept": "hardcoded-password",
      "file": "deploy/migrate.sh",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-f63b-72e4-9f29-a7ea6601a027",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-004",
      "concept": "hardcoded-password",
      "file": "src/db/pool.ts",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-f63b-72e4-9f29-a7ea6601a027",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-005",
      "concept": "hardcoded-password",
      "file": ".env",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-f63b-72e4-9f29-a7ea6601a027",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-006",
      "concept": "hardcoded-cryptographic-key",
      "file": ".env.production",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-942e-7533-8770-468bc94d6bf8",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-014",
      "concept": "hardcoded-credential",
      "file": "requests/transcoder.http",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-5d36-71fd-bf30-319ff7b64b4d",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-016",
      "concept": "hardcoded-cryptographic-key",
      "file": "web/vite.config.ts",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-b14f-7235-82b7-06bf43215ebe",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -8818,77 +8894,99 @@
      "id": "CH-049",
      "concept": "suppressed-diagnostic",
      "file": "src/Shipping.Rates.Core/Shipping.Rates.Core.csproj",
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "01a1174c-9419-77b0-9e0e-75f903e42854",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-010",
      "concept": "suppressed-diagnostic",
      "file": "src/application/labels/label-service.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a04709-f970-777a-bda2-5004c0b4fb27",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-012",
      "concept": "suppressed-diagnostic",
      "file": "eslint.config.js",
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "01a1174c-9419-77b0-9e0e-75f903e42854",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-013",
      "concept": "commented-out-code",
      "file": "src/application/labels/label-service.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-7ad5-7d6f-ac35-400b18a318df",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-014",
      "concept": "empty-catch-block",
      "file": "src/application/labels/label-service.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-bc07-7713-b13e-28b992a47b23",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-015",
      "concept": "unused-code",
      "file": "src/application/labels/label-service.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-dfe7-7444-b917-5007ef2fc185",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-016",
      "concept": "unused-code",
      "file": "src/domain/value-objects/tracking-number.ts",
-     "mechanism": "info-level-never-in-sarif"
+     "mechanism": "info-level-never-in-sarif",
+     "backlogId": "01a11752-38ec-762c-a51e-5bec9ef95873",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-018",
      "concept": "obsolete-symbol-still-used",
      "file": "src/application/labels/label-service.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-fa42-703b-9d31-9bfe7761d3f4",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-049",
      "concept": "unused-code",
      "file": "src/infrastructure/rates/rate-card-cache.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-dfe7-7444-b917-5007ef2fc185",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-050",
      "concept": "unused-code",
      "file": "src/infrastructure/rates/rate-card-cache.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-dfe7-7444-b917-5007ef2fc185",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-readiness",
      "id": "RDY-006",
      "concept": "empty-catch-block",
      "file": "apps/tracking-service/src/health/carrier-health.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-bc07-7713-b13e-28b992a47b23",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -10245,14 +10343,18 @@
      "id": "ADR-001",
      "concept": "adr-conformance",
      "file": "docs/adr/0004-minimal-api-endpoints.md",
-     "mechanism": "adr-and-doc-conformance"
+     "mechanism": "adr-and-doc-conformance",
+     "backlogId": "01a11755-7d60-7d5b-9936-b33c70373d3f",
+     "backlogKind": "new"
     },
     {
      "repo": "estate-quellbrook-dispatch",
      "id": "DSP-004",
      "concept": "adr-conformance",
      "file": "docs/adr/0002-endpoints-call-application-handlers.md",
-     "mechanism": "adr-and-doc-conformance"
+     "mechanism": "adr-and-doc-conformance",
+     "backlogId": "01a11755-7d60-7d5b-9936-b33c70373d3f",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -10584,7 +10686,9 @@
      "id": "IND-001",
      "concept": "call-indirection",
      "file": "src/FleetOps.Application/Facades/WorkOrderFacade.cs",
-     "mechanism": "structural-population-too-narrow"
+     "mechanism": "structural-population-too-narrow",
+     "backlogId": "01a11750-f95e-7558-bf15-7dffea6b0052",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -10738,77 +10842,99 @@
      "id": "SEC-005",
      "concept": "hardcoded-password",
      "file": "src/DocumentExport.Api/Persistence/AuditStoreSettings.cs",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-e610-7e11-a74c-22c5668865ca",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-secrets",
      "id": "SEC-006",
      "concept": "hardcoded-password",
      "file": "src/DocumentExport.Api/appsettings.Production.json",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-e610-7e11-a74c-22c5668865ca",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-secrets",
      "id": "SEC-007",
      "concept": "hardcoded-password",
      "file": "src/DocumentExport.Api/appsettings.Development.json",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-e610-7e11-a74c-22c5668865ca",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-secrets",
      "id": "SEC-013",
      "concept": "hardcoded-credential",
      "file": "src/DocumentExport.Api/Notifications/DeliveryNotifier.cs",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-5d36-71fd-bf30-319ff7b64b4d",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-secrets",
      "id": "SEC-014",
      "concept": "hardcoded-password",
      "file": "deploy/migrate.sh",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-f63b-72e4-9f29-a7ea6601a027",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-secrets",
      "id": "SEC-017",
      "concept": "secret-in-version-history",
      "file": "src/DocumentExport.Api/appsettings.Staging.json",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-e610-7e11-a74c-22c5668865ca",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-004",
      "concept": "hardcoded-password",
      "file": "src/db/pool.ts",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-f63b-72e4-9f29-a7ea6601a027",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-005",
      "concept": "hardcoded-password",
      "file": ".env",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-f63b-72e4-9f29-a7ea6601a027",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-006",
      "concept": "hardcoded-cryptographic-key",
      "file": ".env.production",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-942e-7533-8770-468bc94d6bf8",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-014",
      "concept": "hardcoded-credential",
      "file": "requests/transcoder.http",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-5d36-71fd-bf30-319ff7b64b4d",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-016",
      "concept": "hardcoded-cryptographic-key",
      "file": "web/vite.config.ts",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-b14f-7235-82b7-06bf43215ebe",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -10967,329 +11093,423 @@
      "id": "SEC-005",
      "concept": "hardcoded-password",
      "file": "src/DocumentExport.Api/Persistence/AuditStoreSettings.cs",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-e610-7e11-a74c-22c5668865ca",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-secrets",
      "id": "SEC-006",
      "concept": "hardcoded-password",
      "file": "src/DocumentExport.Api/appsettings.Production.json",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-e610-7e11-a74c-22c5668865ca",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-secrets",
      "id": "SEC-007",
      "concept": "hardcoded-password",
      "file": "src/DocumentExport.Api/appsettings.Development.json",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-e610-7e11-a74c-22c5668865ca",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-secrets",
      "id": "SEC-013",
      "concept": "hardcoded-credential",
      "file": "src/DocumentExport.Api/Notifications/DeliveryNotifier.cs",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-5d36-71fd-bf30-319ff7b64b4d",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-secrets",
      "id": "SEC-014",
      "concept": "hardcoded-password",
      "file": "deploy/migrate.sh",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-f63b-72e4-9f29-a7ea6601a027",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-injection",
      "id": "SQL-001",
      "concept": "sql-injection",
      "file": "src/ReportDesk.Api/Search/DocumentSearchRepository.cs",
-     "mechanism": "injection-sink-without-rule"
+     "mechanism": "injection-sink-without-rule",
+     "backlogId": "01a1174f-7052-78b4-9594-e764a255255c",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-injection",
      "id": "SQL-002",
      "concept": "sql-injection",
      "file": "src/ReportDesk.Api/Reports/ReportRepository.cs",
-     "mechanism": "injection-sink-without-rule"
+     "mechanism": "injection-sink-without-rule",
+     "backlogId": "01a1174f-7052-78b4-9594-e764a255255c",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-injection",
      "id": "CMD-001",
      "concept": "command-injection",
      "file": "src/ReportDesk.Api/Conversion/DocumentConverter.cs",
-     "mechanism": "injection-taint-in-handler-only"
+     "mechanism": "injection-taint-in-handler-only",
+     "backlogId": "01a1174e-cdcb-7361-a24b-54cee6fcc4ca",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-injection",
      "id": "SSRF-001",
      "concept": "server-side-request-forgery",
      "file": "src/ReportDesk.Api/Controllers/ImportsController.cs",
-     "mechanism": "injection-taint-in-handler-only"
+     "mechanism": "injection-taint-in-handler-only",
+     "backlogId": "01a1174e-ed42-74d7-96be-24720231f4b9",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-injection",
      "id": "DESER-001",
      "concept": "insecure-deserialization",
      "file": "src/ReportDesk.Api/SavedSearches/SavedSearchSerializer.cs",
-     "mechanism": "injection-sink-without-rule"
+     "mechanism": "injection-sink-without-rule",
+     "backlogId": "01a1174f-8f8a-75e6-9959-3f7f527fe742",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-injection",
      "id": "XSS-001",
      "concept": "cross-site-scripting",
      "file": "src/ReportDesk.Api/Controllers/SearchWidgetController.cs",
-     "mechanism": "injection-sink-without-rule"
+     "mechanism": "injection-sink-without-rule",
+     "backlogId": "01a1174f-b96d-737d-8df3-7d35ce99327e",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-injection",
      "id": "REDIR-001",
      "concept": "open-redirect",
      "file": "src/ReportDesk.Api/Controllers/ReportsController.cs",
-     "mechanism": "injection-sink-without-rule"
+     "mechanism": "injection-sink-without-rule",
+     "backlogId": "01a1174f-d4f7-7740-971a-b85038a925b8",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-injection",
      "id": "REDOS-001",
      "concept": "regex-denial-of-service",
      "file": "src/ReportDesk.Api/Search/HighlightService.cs",
-     "mechanism": "injection-sink-without-rule"
+     "mechanism": "injection-sink-without-rule",
+     "backlogId": "01a1174f-fb56-7cce-9da4-b24e44be06cb",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-injection",
      "id": "HASH-001",
      "concept": "weak-hash-algorithm",
      "file": "src/ReportDesk.Api/Shares/SharePasswordHasher.cs",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "019fe509-8665-7f5f-bc1b-d84687156288",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-csharp-security-injection",
      "id": "PII-001",
      "concept": "sensitive-data-in-logs",
      "file": "src/ReportDesk.Api/Delivery/ReportMailer.cs",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "01a11752-84e7-7252-b56d-0b832f385a56",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-iac",
      "id": "IAC-006",
      "concept": "host-path-mount",
      "file": "deploy/k8s/node-agent/daemonset.yaml",
-     "mechanism": "location-imprecision"
+     "mechanism": "location-imprecision",
+     "backlogId": "01a11753-beed-7686-97b2-4402df7a0634",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-iac",
      "id": "IAC-013",
      "concept": "cleartext-transmission",
      "file": "deploy/k8s/api/ingress.yaml",
-     "mechanism": "iac-ci-check-absent"
+     "mechanism": "iac-ci-check-absent",
+     "backlogId": "01a11756-0623-7d81-a0c2-afd46d7717fc",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-iac",
      "id": "IAC-017",
      "concept": "ci-secret-exposure",
      "file": ".github/workflows/pr-preview.yml",
-     "mechanism": "iac-ci-check-absent"
+     "mechanism": "iac-ci-check-absent",
+     "backlogId": null,
+     "backlogKind": null
     },
     {
      "repo": "bench-csharp-readiness",
      "id": "RDY-004",
      "concept": "missing-authorization",
      "file": "src/ParcelTracking.Api/Controllers/ReportsController.cs",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174a-41b7-712a-b9cd-bffeb3affe8c",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-004",
      "concept": "hardcoded-password",
      "file": "src/db/pool.ts",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-f63b-72e4-9f29-a7ea6601a027",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-005",
      "concept": "hardcoded-password",
      "file": ".env",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174d-f63b-72e4-9f29-a7ea6601a027",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-006",
      "concept": "hardcoded-cryptographic-key",
      "file": ".env.production",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-942e-7533-8770-468bc94d6bf8",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-014",
      "concept": "hardcoded-credential",
      "file": "requests/transcoder.http",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-5d36-71fd-bf30-319ff7b64b4d",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-016",
      "concept": "hardcoded-cryptographic-key",
      "file": "web/vite.config.ts",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-b14f-7235-82b7-06bf43215ebe",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "SQL-001",
      "concept": "sql-injection",
      "file": "src/search/document-search-repository.ts",
-     "mechanism": "injection-taint-in-handler-only"
+     "mechanism": "injection-taint-in-handler-only",
+     "backlogId": "01a02717-2aa2-7f36-8f54-755892c832ac",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "SQL-002",
      "concept": "sql-injection",
      "file": "src/reports/report-repository.ts",
-     "mechanism": "injection-taint-in-handler-only"
+     "mechanism": "injection-taint-in-handler-only",
+     "backlogId": "01a02717-2aa2-7f36-8f54-755892c832ac",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "NOSQL-001",
      "concept": "nosql-injection",
      "file": "src/subscriptions/unsubscribe-routes.ts",
-     "mechanism": "injection-sink-without-rule"
+     "mechanism": "injection-sink-without-rule",
+     "backlogId": "01a11750-192d-7412-953b-dcb2afcd3664",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "CMD-001",
      "concept": "command-injection",
      "file": "src/conversion/document-converter.ts",
-     "mechanism": "injection-taint-in-handler-only"
+     "mechanism": "injection-taint-in-handler-only",
+     "backlogId": "01a02717-2aa2-7f36-8f54-755892c832ac",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "PATH-001",
      "concept": "path-traversal",
      "file": "src/attachments/attachment-routes.ts",
-     "mechanism": "injection-taint-in-handler-only"
+     "mechanism": "injection-taint-in-handler-only",
+     "backlogId": "01a070a4-d954-7cf4-8f54-4e9362617caa",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "XXE-001",
      "concept": "xml-external-entity",
      "file": "src/imports/metadata-importer.ts",
-     "mechanism": "injection-taint-in-handler-only"
+     "mechanism": "injection-taint-in-handler-only",
+     "backlogId": "01a02717-2aa2-7f36-8f54-755892c832ac",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "CODE-001",
      "concept": "code-injection",
      "file": "src/reports/formula-evaluator.ts",
-     "mechanism": "injection-taint-in-handler-only"
+     "mechanism": "injection-taint-in-handler-only",
+     "backlogId": "01a02717-2aa2-7f36-8f54-755892c832ac",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "PROTO-001",
      "concept": "prototype-pollution",
      "file": "src/preferences/deep-merge.ts",
-     "mechanism": "injection-taint-in-handler-only"
+     "mechanism": "injection-taint-in-handler-only",
+     "backlogId": "01a02717-2aa2-7f36-8f54-755892c832ac",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "REDIR-001",
      "concept": "open-redirect",
      "file": "src/shares/share-routes.ts",
-     "mechanism": "injection-taint-in-handler-only"
+     "mechanism": "injection-taint-in-handler-only",
+     "backlogId": "01a1174f-092b-7a93-92bb-c20f2d819df0",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "REDOS-001",
      "concept": "regex-denial-of-service",
      "file": "src/search/highlighter.ts",
-     "mechanism": "injection-sink-without-rule"
+     "mechanism": "injection-sink-without-rule",
+     "backlogId": "01a1174f-fb56-7cce-9da4-b24e44be06cb",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "LOG-001",
      "concept": "log-injection",
      "file": "src/exports/export-audit-log.ts",
-     "mechanism": "injection-sink-without-rule"
+     "mechanism": "injection-sink-without-rule",
+     "backlogId": "01a11750-53ab-73f9-aaea-8c2db4ec865d",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "PII-001",
      "concept": "sensitive-data-in-logs",
      "file": "src/subscriptions/report-mailer.ts",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "01a11752-abd4-7531-a834-e1afec55c521",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-frontend-a11y",
      "id": "A11Y-016",
      "concept": "cross-site-scripting",
      "file": "src/features/item/ItemDetailDialog.tsx",
-     "mechanism": "injection-taint-in-handler-only"
+     "mechanism": "injection-taint-in-handler-only",
+     "backlogId": "01a1174f-282e-776d-a619-78b4f568a20c",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-dependencies",
      "id": "EOL-001",
      "concept": "end-of-life-platform",
      "file": "tools/manifest-export/package.json",
-     "mechanism": "dependency-hygiene-arm"
+     "mechanism": "dependency-hygiene-arm",
+     "backlogId": "01a11754-7b44-77bf-9c3e-80633896f9d2",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-015",
      "concept": "unused-code",
      "file": "src/application/labels/label-service.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-dfe7-7444-b917-5007ef2fc185",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-016",
      "concept": "unused-code",
      "file": "src/domain/value-objects/tracking-number.ts",
-     "mechanism": "info-level-never-in-sarif"
+     "mechanism": "info-level-never-in-sarif",
+     "backlogId": "01a11752-38ec-762c-a51e-5bec9ef95873",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-049",
      "concept": "unused-code",
      "file": "src/infrastructure/rates/rate-card-cache.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-dfe7-7444-b917-5007ef2fc185",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-050",
      "concept": "unused-code",
      "file": "src/infrastructure/rates/rate-card-cache.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-dfe7-7444-b917-5007ef2fc185",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-blazor-a11y",
      "id": "BA-019",
      "concept": "cross-site-scripting",
      "file": "src/HarbourLane.Bookings.Web/Components/Pages/RoomDetail.razor",
-     "mechanism": "injection-sink-without-rule"
+     "mechanism": "injection-sink-without-rule",
+     "backlogId": "01a1174f-b96d-737d-8df3-7d35ce99327e",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-readiness",
      "id": "RDY-003",
      "concept": "missing-authorization",
      "file": "apps/tracking-service/src/http/routes/merchants.ts",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174a-41b7-712a-b9cd-bffeb3affe8c",
+     "backlogKind": "new"
     },
     {
      "repo": "estate-quellbrook-gateway",
      "id": "GW-001",
      "concept": "missing-authorization",
      "file": "src/routes/dispatch-routes.ts",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174a-41b7-712a-b9cd-bffeb3affe8c",
+     "backlogKind": "new"
     },
     {
      "repo": "estate-quellbrook-gateway",
      "id": "GW-002",
      "concept": "sensitive-data-in-logs",
      "file": "src/upstream/upstream-client.ts",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "01a11752-abd4-7531-a834-e1afec55c521",
+     "backlogKind": "new"
     },
     {
      "repo": "estate-quellbrook-notifier",
      "id": "NTF-002",
      "concept": "sensitive-data-in-logs",
      "file": "src/Quellbrook.Notifier/Channels/EmailSender.cs",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "01a11752-84e7-7252-b56d-0b832f385a56",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -11554,35 +11774,45 @@
      "id": "SEC-013",
      "concept": "hardcoded-credential",
      "file": "src/DocumentExport.Api/Notifications/DeliveryNotifier.cs",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-5d36-71fd-bf30-319ff7b64b4d",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-iac",
      "id": "IAC-004",
      "concept": "host-namespace-sharing",
      "file": "deploy/k8s/node-agent/daemonset.yaml",
-     "mechanism": "location-imprecision"
+     "mechanism": "location-imprecision",
+     "backlogId": "01a11753-beed-7686-97b2-4402df7a0634",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-iac",
      "id": "IAC-006",
      "concept": "host-path-mount",
      "file": "deploy/k8s/node-agent/daemonset.yaml",
-     "mechanism": "location-imprecision"
+     "mechanism": "location-imprecision",
+     "backlogId": "01a11753-beed-7686-97b2-4402df7a0634",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-iac",
      "id": "IAC-010",
      "concept": "missing-health-probes",
      "file": "deploy/k8s/reminders/deployment.yaml",
-     "mechanism": "location-imprecision"
+     "mechanism": "location-imprecision",
+     "backlogId": "01a11753-beed-7686-97b2-4402df7a0634",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-014",
      "concept": "hardcoded-credential",
      "file": "requests/transcoder.http",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-5d36-71fd-bf30-319ff7b64b4d",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -11723,35 +11953,45 @@
      "id": "PII-001",
      "concept": "sensitive-data-in-logs",
      "file": "src/ReportDesk.Api/Delivery/ReportMailer.cs",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "01a11752-84e7-7252-b56d-0b832f385a56",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "PII-001",
      "concept": "sensitive-data-in-logs",
      "file": "src/subscriptions/report-mailer.ts",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "01a11752-abd4-7531-a834-e1afec55c521",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "PII-003",
      "concept": "sensitive-data-in-browser-storage",
      "file": "web/src/recent-recipients.ts",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "01a11752-c627-7d3a-ba5b-9ec0c644f853",
+     "backlogKind": "new"
     },
     {
      "repo": "estate-quellbrook-gateway",
      "id": "GW-002",
      "concept": "sensitive-data-in-logs",
      "file": "src/upstream/upstream-client.ts",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "01a11752-abd4-7531-a834-e1afec55c521",
+     "backlogKind": "new"
     },
     {
      "repo": "estate-quellbrook-notifier",
      "id": "NTF-002",
      "concept": "sensitive-data-in-logs",
      "file": "src/Quellbrook.Notifier/Channels/EmailSender.cs",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "01a11752-84e7-7252-b56d-0b832f385a56",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -12063,7 +12303,9 @@
      "id": "CPL-001",
      "concept": "change-coupling",
      "file": "src/ClinicScheduling.Api/Contracts/AppointmentResponse.cs",
-     "mechanism": "structural-population-too-narrow"
+     "mechanism": "structural-population-too-narrow",
+     "backlogId": "01a11751-7379-730a-9b05-aa5f27dc08d9",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -12310,7 +12552,9 @@
      "id": "IAC-017",
      "concept": "ci-secret-exposure",
      "file": ".github/workflows/pr-preview.yml",
-     "mechanism": "iac-ci-check-absent"
+     "mechanism": "iac-ci-check-absent",
+     "backlogId": null,
+     "backlogKind": null
     }
    ],
    "noiseBacklog": [],
@@ -12980,7 +13224,9 @@
      "id": "EGR-001",
      "concept": "network-egress-policy",
      "file": "deploy/k8s/networkpolicy.yaml",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174b-269f-738a-b899-55f8a75cdf29",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -13424,7 +13670,9 @@
      "id": "ADM-001",
      "concept": "runtime-threat-detection-and-admission",
      "file": "deploy/k8s/namespace.yaml",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174b-45cc-7520-ac0d-72562bb84327",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -13731,7 +13979,9 @@
      "id": "EOL-001",
      "concept": "end-of-life-platform",
      "file": "tools/manifest-export/package.json",
-     "mechanism": "dependency-hygiene-arm"
+     "mechanism": "dependency-hygiene-arm",
+     "backlogId": "01a11754-7b44-77bf-9c3e-80633896f9d2",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -14242,7 +14492,9 @@
      "id": "ORD-001",
      "concept": "publicly-mutable-entity-state",
      "file": "src/Quellbrook.Orders.Domain/Orders/Parcel.cs",
-     "mechanism": "structural-population-too-narrow"
+     "mechanism": "structural-population-too-narrow",
+     "backlogId": "01a11751-51aa-7133-a452-2aa11486f28b",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -14350,21 +14602,27 @@
      "id": "DOM-001",
      "concept": "domain-depends-on-infrastructure",
      "file": "src/FleetOps.Domain/Maintenance/MaintenanceDueEvaluator.cs",
-     "mechanism": "structural-population-too-narrow"
+     "mechanism": "structural-population-too-narrow",
+     "backlogId": "01a11750-7821-7d5a-ab8f-329c69a97bcf",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-domain-events",
      "id": "DM6-001",
      "concept": "domain-depends-on-infrastructure",
      "file": "src/Rentals.Lending.Domain/Members/Member.cs",
-     "mechanism": "structural-population-too-narrow"
+     "mechanism": "structural-population-too-narrow",
+     "backlogId": "01a11750-9762-7fed-ab29-994a940168ec",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-domain-privacy",
      "id": "DIB-001",
      "concept": "domain-depends-on-infrastructure",
      "file": "src/membership/domain/members/contact-uniqueness.ts",
-     "mechanism": "dm-ts-arm-missing"
+     "mechanism": "dm-ts-arm-missing",
+     "backlogId": "01a11753-1c41-7b88-ba34-531fa8afb55d",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -14470,7 +14728,9 @@
      "id": "REP-001",
      "concept": "repository-for-non-aggregate",
      "file": "src/billing/domain/invoices/invoice-line-repository.ts",
-     "mechanism": "dm-ts-arm-missing"
+     "mechanism": "dm-ts-arm-missing",
+     "backlogId": "01a11753-3940-78ff-9c8f-b955a57c1d8f",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -14685,7 +14945,9 @@
      "id": "SDR-001",
      "concept": "scattered-domain-rule",
      "file": null,
-     "mechanism": "dm-ts-arm-missing"
+     "mechanism": "dm-ts-arm-missing",
+     "backlogId": "01a11753-5417-7515-b9e1-b2f851753199",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -14789,7 +15051,9 @@
      "id": "MAT-001",
      "concept": "multi-aggregate-transaction",
      "file": "src/membership/features/cancel-membership/cancel-membership.ts",
-     "mechanism": "dm-ts-arm-missing"
+     "mechanism": "dm-ts-arm-missing",
+     "backlogId": "01a11753-72ea-7717-ab9c-045a2729e59a",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -14893,7 +15157,9 @@
      "id": "CIE-001",
      "concept": "constructible-invalid-entity",
      "file": "src/membership/domain/classes/class-session.ts",
-     "mechanism": "dm-ts-arm-missing"
+     "mechanism": "dm-ts-arm-missing",
+     "backlogId": "01a11753-90f5-70fb-9494-fc8c99ba6e77",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -15607,7 +15873,9 @@
      "id": "ES1-002",
      "concept": "nondeterministic-event-fold",
      "file": "src/Rentals.Billing.Application/Projections/AccountBalanceProjection.cs",
-     "mechanism": "structural-population-too-narrow"
+     "mechanism": "structural-population-too-narrow",
+     "backlogId": "01a11751-31ea-76fb-ba86-4fc372c16d63",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -15917,7 +16185,9 @@
      "id": "CH-019",
      "concept": "not-implemented-placeholder",
      "file": "src/infrastructure/carriers/corvid-courier-adapter.ts",
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "01a1174c-e971-728b-b099-8df14131f17c",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -16040,42 +16310,54 @@
      "id": "CH-049",
      "concept": "suppressed-diagnostic",
      "file": "src/Shipping.Rates.Core/Shipping.Rates.Core.csproj",
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "01a1174c-9419-77b0-9e0e-75f903e42854",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-010",
      "concept": "suppressed-diagnostic",
      "file": "src/application/labels/label-service.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a04709-f970-777a-bda2-5004c0b4fb27",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-012",
      "concept": "suppressed-diagnostic",
      "file": "eslint.config.js",
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "01a1174c-9419-77b0-9e0e-75f903e42854",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-013",
      "concept": "commented-out-code",
      "file": "src/application/labels/label-service.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-7ad5-7d6f-ac35-400b18a318df",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-019",
      "concept": "not-implemented-placeholder",
      "file": "src/infrastructure/carriers/corvid-courier-adapter.ts",
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "01a1174c-e971-728b-b099-8df14131f17c",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-020",
      "concept": "incomplete-implementation",
      "file": "src/application/pricing/remote-area-lookup.ts",
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "01a1174d-06b3-7595-a3dc-7024f7d56dcf",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -16296,14 +16578,18 @@
      "id": "A11Y-019",
      "concept": "alt-text-quality",
      "file": "src/features/home/HomePage.tsx",
-     "mechanism": "a11y-text-cards-off-by-default"
+     "mechanism": "a11y-text-cards-off-by-default",
+     "backlogId": "01a11754-5e5d-7028-b3f7-94710f8b11d0",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-blazor-a11y",
      "id": "BA-023",
      "concept": "alt-text-quality",
      "file": "src/HarbourLane.Bookings.Web/Components/Pages/Home.razor",
-     "mechanism": "a11y-text-cards-off-by-default"
+     "mechanism": "a11y-text-cards-off-by-default",
+     "backlogId": "01a11754-5e5d-7028-b3f7-94710f8b11d0",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -16668,14 +16954,18 @@
      "id": "A11Y-020",
      "concept": "link-and-button-text-quality",
      "file": "src/features/home/HomePage.tsx",
-     "mechanism": "a11y-text-cards-off-by-default"
+     "mechanism": "a11y-text-cards-off-by-default",
+     "backlogId": "01a11754-5e5d-7028-b3f7-94710f8b11d0",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-blazor-a11y",
      "id": "BA-024",
      "concept": "link-and-button-text-quality",
      "file": "src/HarbourLane.Bookings.Web/Components/Pages/Home.razor",
-     "mechanism": "a11y-text-cards-off-by-default"
+     "mechanism": "a11y-text-cards-off-by-default",
+     "backlogId": "01a11754-5e5d-7028-b3f7-94710f8b11d0",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -16799,7 +17089,9 @@
      "id": "BA-025",
      "concept": "heading-and-label-text-quality",
      "file": "src/HarbourLane.Bookings.Web/Pages/Admin/EditRoom.cshtml",
-     "mechanism": "a11y-text-cards-off-by-default"
+     "mechanism": "a11y-text-cards-off-by-default",
+     "backlogId": "01a11754-5e5d-7028-b3f7-94710f8b11d0",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -17625,7 +17917,9 @@
      "id": "DOC-001",
      "concept": "documentation-accuracy",
      "file": null,
-     "mechanism": "adr-and-doc-conformance"
+     "mechanism": "adr-and-doc-conformance",
+     "backlogId": "01a11755-987d-7617-bd63-8e0c3d223564",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -18084,14 +18378,18 @@
      "id": "RDY-006",
      "concept": "observability",
      "file": "src/ParcelTracking.Worker/NotificationDispatcher.cs",
-     "mechanism": "presence-only-runtime-checks"
+     "mechanism": "presence-only-runtime-checks",
+     "backlogId": "01a11754-f9a7-7d76-ab9d-8d4f730ebfa7",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-readiness",
      "id": "RDY-005",
      "concept": "observability",
      "file": "apps/tracking-service/src/worker/webhook-dispatcher.ts",
-     "mechanism": "presence-only-runtime-checks"
+     "mechanism": "presence-only-runtime-checks",
+     "backlogId": "01a11754-f9a7-7d76-ab9d-8d4f730ebfa7",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -18992,7 +19290,9 @@
      "id": "REL-001",
      "concept": "release-hygiene",
      "file": "CHANGELOG.md",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174b-6549-7ba7-b839-cbd28ab40ee5",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -19265,14 +19565,18 @@
      "id": "RDY-001",
      "concept": "outbound-http-resilience",
      "file": "src/ParcelTracking.Infrastructure/DependencyInjection.cs",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174a-0cd0-72d6-8664-aa79b83c7fcc",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-readiness",
      "id": "RDY-001",
      "concept": "outbound-http-resilience",
      "file": "apps/tracking-service/src/worker/webhook-dispatcher.ts",
-     "mechanism": "presence-only-runtime-checks"
+     "mechanism": "presence-only-runtime-checks",
+     "backlogId": "01a11755-1816-7b6d-a78f-8da6078f8707",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -19454,14 +19758,18 @@
      "id": "RDY-008",
      "concept": "versioned-schema-migrations",
      "file": "src/ParcelTracking.Worker/Program.cs",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174a-998c-7ece-a33c-667c4afd4ebb",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-readiness",
      "id": "MIG-001",
      "concept": "versioned-schema-migrations",
      "file": "apps/tracking-service/src/worker/delivery-log.ts",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174a-998c-7ece-a33c-667c4afd4ebb",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -19748,14 +20056,18 @@
      "id": "LIB-001",
      "concept": "library-api-versioning",
      "file": "packages/tracking-client/CHANGELOG.md",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174a-ecbf-72b9-be84-f5ecd2add6b8",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-readiness",
      "id": "LIB-002",
      "concept": "library-api-versioning",
      "file": "packages/webhooks/package.json",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174a-ecbf-72b9-be84-f5ecd2add6b8",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -19886,7 +20198,9 @@
      "id": "BDD-001",
      "concept": "executable-specifications",
      "file": "apps/tracking-service/features/returns/return-to-sender.feature",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174b-0717-7c54-8289-14e83bc3f06e",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -20439,7 +20753,9 @@
      "id": "CH-023",
      "concept": "blocking-on-async-code",
      "file": "src/Shipping.Rates.Api/Endpoints/LabelEndpoints.cs",
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "019fdcf7-c736-7d2b-b090-e5c065ff36b1",
+     "backlogKind": "amended"
     }
    ],
    "noiseBacklog": [
@@ -20555,14 +20871,18 @@
      "id": "CH-023",
      "concept": "unchecked-any-external-data",
      "file": "src/infrastructure/carriers/alder-parcel-adapter.ts",
-     "mechanism": "no-rule-for-concept"
+     "mechanism": "no-rule-for-concept",
+     "backlogId": "01a11749-1555-739a-a36e-af265d507859",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-readiness",
      "id": "RDY-004",
      "concept": "unchecked-any-external-data",
      "file": "apps/tracking-service/src/http/routes/parcels.ts",
-     "mechanism": "no-rule-for-concept"
+     "mechanism": "no-rule-for-concept",
+     "backlogId": "01a11749-1555-739a-a36e-af265d507859",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -20932,7 +21252,9 @@
      "id": "A11Y-017",
      "concept": "oversized-source-file",
      "file": "src/features/loans/LoansPage.tsx",
-     "mechanism": "info-level-never-in-sarif"
+     "mechanism": "info-level-never-in-sarif",
+     "backlogId": "01a11752-5a3b-79d7-a22d-f0aa1fc2b1a7",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -21152,14 +21474,18 @@
      "id": "DEP-006",
      "concept": "outdated-dependency",
      "file": "Directory.Packages.props",
-     "mechanism": "info-level-never-in-sarif"
+     "mechanism": "info-level-never-in-sarif",
+     "backlogId": "01a11752-004d-76f2-9274-30441bed56cb",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-dependencies",
      "id": "OUT-001",
      "concept": "outdated-dependency",
      "file": "package.json",
-     "mechanism": "info-level-never-in-sarif"
+     "mechanism": "info-level-never-in-sarif",
+     "backlogId": "01a11752-004d-76f2-9274-30441bed56cb",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -21452,28 +21778,36 @@
      "id": "CH-015",
      "concept": "unused-code",
      "file": "src/application/labels/label-service.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-dfe7-7444-b917-5007ef2fc185",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-016",
      "concept": "unused-code",
      "file": "src/domain/value-objects/tracking-number.ts",
-     "mechanism": "info-level-never-in-sarif"
+     "mechanism": "info-level-never-in-sarif",
+     "backlogId": "01a11752-38ec-762c-a51e-5bec9ef95873",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-049",
      "concept": "unused-code",
      "file": "src/infrastructure/rates/rate-card-cache.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-dfe7-7444-b917-5007ef2fc185",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-050",
      "concept": "unused-code",
      "file": "src/infrastructure/rates/rate-card-cache.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-dfe7-7444-b917-5007ef2fc185",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -21585,21 +21919,27 @@
      "id": "UNU-001",
      "concept": "unused-dependency",
      "file": "package.json",
-     "mechanism": "dependency-hygiene-arm"
+     "mechanism": "dependency-hygiene-arm",
+     "backlogId": "01a11754-a66d-7709-b277-7c15e119925b",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-dependencies",
      "id": "UND-001",
      "concept": "undeclared-dependency",
      "file": "src/scheduling/cutoff.ts",
-     "mechanism": "dependency-hygiene-arm"
+     "mechanism": "dependency-hygiene-arm",
+     "backlogId": "01a11754-a66d-7709-b277-7c15e119925b",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-dependencies",
      "id": "MIS-001",
      "concept": "misplaced-dev-dependency",
      "file": "package.json",
-     "mechanism": "location-imprecision"
+     "mechanism": "location-imprecision",
+     "backlogId": "01a11754-2590-796c-b48c-2fefdb7f3065",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -21702,7 +22042,9 @@
      "id": "CYC-001",
      "concept": "module-dependency-cycle",
      "file": "src/FleetOps.Infrastructure/Email/ReminderMailer.cs",
-     "mechanism": "structural-population-too-narrow"
+     "mechanism": "structural-population-too-narrow",
+     "backlogId": "01a11750-dbbf-7d55-b670-ccfe8b9219d4",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -21815,7 +22157,9 @@
      "id": "DSP-003",
      "concept": "duplicated-code",
      "file": "src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs",
-     "mechanism": "location-imprecision"
+     "mechanism": "location-imprecision",
+     "backlogId": "01a11753-e396-7e16-b4ef-4e6d19a4ed51",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -22116,84 +22460,108 @@
      "id": "HASH-001",
      "concept": "weak-hash-algorithm",
      "file": "src/ReportDesk.Api/Shares/SharePasswordHasher.cs",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "019fe509-8665-7f5f-bc1b-d84687156288",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-csharp-security-injection",
      "id": "PII-001",
      "concept": "sensitive-data-in-logs",
      "file": "src/ReportDesk.Api/Delivery/ReportMailer.cs",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "01a11752-84e7-7252-b56d-0b832f385a56",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-security-iac",
      "id": "IAC-013",
      "concept": "cleartext-transmission",
      "file": "deploy/k8s/api/ingress.yaml",
-     "mechanism": "iac-ci-check-absent"
+     "mechanism": "iac-ci-check-absent",
+     "backlogId": "01a11756-0623-7d81-a0c2-afd46d7717fc",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-readiness",
      "id": "RDY-005",
      "concept": "inbound-input-validation",
      "file": "src/ParcelTracking.Api/Contracts/RedirectParcelRequest.cs",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174a-7056-707a-b6ed-0e16b3f4df60",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-readiness",
      "id": "RDY-010",
      "concept": "security-response-headers",
      "file": "src/ParcelTracking.Api/Hosting/ApiPipeline.cs",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174a-7056-707a-b6ed-0e16b3f4df60",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-readiness",
      "id": "RDY-011",
      "concept": "https-enforcement",
      "file": "src/ParcelTracking.Api/Hosting/ApiPipeline.cs",
-     "mechanism": "repo-wide-posture-switch"
+     "mechanism": "repo-wide-posture-switch",
+     "backlogId": "01a1174a-7056-707a-b6ed-0e16b3f4df60",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-006",
      "concept": "hardcoded-cryptographic-key",
      "file": ".env.production",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-942e-7533-8770-468bc94d6bf8",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-secrets",
      "id": "SEC-016",
      "concept": "hardcoded-cryptographic-key",
      "file": "web/vite.config.ts",
-     "mechanism": "prefix-less-secret"
+     "mechanism": "prefix-less-secret",
+     "backlogId": "01a1174e-b14f-7235-82b7-06bf43215ebe",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "HASH-001",
      "concept": "insufficient-password-hashing",
      "file": "src/shares/share-password.ts",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "01a11752-e224-7655-9572-188c62233a3a",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-security-injection",
      "id": "PII-001",
      "concept": "sensitive-data-in-logs",
      "file": "src/subscriptions/report-mailer.ts",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "01a11752-abd4-7531-a834-e1afec55c521",
+     "backlogKind": "new"
     },
     {
      "repo": "estate-quellbrook-gateway",
      "id": "GW-002",
      "concept": "sensitive-data-in-logs",
      "file": "src/upstream/upstream-client.ts",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "01a11752-abd4-7531-a834-e1afec55c521",
+     "backlogKind": "new"
     },
     {
      "repo": "estate-quellbrook-notifier",
      "id": "NTF-002",
      "concept": "sensitive-data-in-logs",
      "file": "src/Quellbrook.Notifier/Channels/EmailSender.cs",
-     "mechanism": "call-shape-matching"
+     "mechanism": "call-shape-matching",
+     "backlogId": "01a11752-84e7-7252-b56d-0b832f385a56",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -22812,14 +23180,18 @@
      "id": "CH-023",
      "concept": "blocking-on-async-code",
      "file": "src/Shipping.Rates.Api/Endpoints/LabelEndpoints.cs",
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "019fdcf7-c736-7d2b-b090-e5c065ff36b1",
+     "backlogKind": "amended"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-027",
      "concept": "floating-promise",
      "file": "src/api/routes/label-routes.ts",
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "01a1174d-5a0e-7aef-8a19-eb822eb0fdee",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -22936,42 +23308,54 @@
      "id": "CH-026",
      "concept": "missing-cancellation-propagation",
      "file": "src/Shipping.Rates.Core/Pricing/RateCardCache.cs",
-     "mechanism": "info-level-never-in-sarif"
+     "mechanism": "info-level-never-in-sarif",
+     "backlogId": "01a11751-d145-7495-9c48-1b811582c8b0",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-readiness",
      "id": "RDY-002",
      "concept": "missing-cancellation-propagation",
      "file": "src/ParcelTracking.Infrastructure/Persistence/ParcelStore.cs",
-     "mechanism": "presence-only-runtime-checks"
+     "mechanism": "presence-only-runtime-checks",
+     "backlogId": "01a11754-d13a-7a4e-8d54-29795db3eaa8",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-readiness",
      "id": "RDY-003",
      "concept": "missing-cancellation-propagation",
      "file": "src/ParcelTracking.Worker/TrackingPoller.cs",
-     "mechanism": "info-level-never-in-sarif"
+     "mechanism": "info-level-never-in-sarif",
+     "backlogId": "01a11751-d145-7495-9c48-1b811582c8b0",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-030",
      "concept": "missing-cancellation-propagation",
      "file": "src/infrastructure/rates/rate-card-cache.ts",
-     "mechanism": "info-level-never-in-sarif"
+     "mechanism": "info-level-never-in-sarif",
+     "backlogId": "01a11751-d145-7495-9c48-1b811582c8b0",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-readiness",
      "id": "RDY-002",
      "concept": "missing-cancellation-propagation",
      "file": "apps/tracking-service/src/worker/poller.ts",
-     "mechanism": "presence-only-runtime-checks"
+     "mechanism": "presence-only-runtime-checks",
+     "backlogId": "01a11754-d13a-7a4e-8d54-29795db3eaa8",
+     "backlogKind": "new"
     },
     {
      "repo": "estate-quellbrook-orders",
      "id": "ORD-002",
      "concept": "missing-cancellation-propagation",
      "file": "src/Quellbrook.Orders.Infrastructure/Persistence/OrderQueries.cs",
-     "mechanism": "info-level-never-in-sarif"
+     "mechanism": "info-level-never-in-sarif",
+     "backlogId": "01a11751-d145-7495-9c48-1b811582c8b0",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -23078,28 +23462,36 @@
      "id": "CH-021",
      "concept": "pointless-catch-rethrow",
      "file": "src/Shipping.Rates.Core/Carriers/CorvidCourierAdapter.cs",
-     "mechanism": "no-rule-for-concept"
+     "mechanism": "no-rule-for-concept",
+     "backlogId": "01a11749-395d-7669-9c3e-b73bd7268dce",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-014",
      "concept": "empty-catch-block",
      "file": "src/application/labels/label-service.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-bc07-7713-b13e-28b992a47b23",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-022",
      "concept": "pointless-catch-rethrow",
      "file": "src/infrastructure/carriers/corvid-courier-adapter.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a11749-395d-7669-9c3e-b73bd7268dce",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-readiness",
      "id": "RDY-006",
      "concept": "empty-catch-block",
      "file": "apps/tracking-service/src/health/carrier-health.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174b-bc07-7713-b13e-28b992a47b23",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -23306,14 +23698,18 @@
      "id": "CH-025",
      "concept": "null-forgiving-suppression",
      "file": null,
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "01a1174d-1fb5-7c5f-a4c3-84de83c8b049",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-codehealth",
      "id": "CH-026",
      "concept": "null-dereference",
      "file": "tools/print-label.ts",
-     "mechanism": "ts-arm-missing-codehealth"
+     "mechanism": "ts-arm-missing-codehealth",
+     "backlogId": "01a1174c-14dd-7032-9ca7-039f9cb14dc7",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -23810,7 +24206,9 @@
      "id": "DSP-003",
      "concept": "duplicated-code",
      "file": "src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs",
-     "mechanism": "location-imprecision"
+     "mechanism": "location-imprecision",
+     "backlogId": "01a11753-e396-7e16-b4ef-4e6d19a4ed51",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -24009,7 +24407,9 @@
      "id": "CH-036",
      "concept": "undrained-child-process-stream",
      "file": "src/infrastructure/printing/label-printer.ts",
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "01a1174d-910c-71d9-b82f-301ebc5fd625",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -24117,7 +24517,9 @@
      "id": "SSRF-001",
      "concept": "server-side-request-forgery",
      "file": "src/ReportDesk.Api/Controllers/ImportsController.cs",
-     "mechanism": "injection-taint-in-handler-only"
+     "mechanism": "injection-taint-in-handler-only",
+     "backlogId": "01a1174e-ed42-74d7-96be-24720231f4b9",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [
@@ -24317,7 +24719,9 @@
      "id": "CH-034",
      "concept": "unbounded-truncation-loop",
      "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "01a1174c-4be1-7be4-93e1-9f2850642a9e",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -25071,21 +25475,27 @@
      "id": "XSS-001",
      "concept": "cross-site-scripting",
      "file": "src/ReportDesk.Api/Controllers/SearchWidgetController.cs",
-     "mechanism": "injection-sink-without-rule"
+     "mechanism": "injection-sink-without-rule",
+     "backlogId": "01a1174f-b96d-737d-8df3-7d35ce99327e",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-ts-frontend-a11y",
      "id": "A11Y-016",
      "concept": "cross-site-scripting",
      "file": "src/features/item/ItemDetailDialog.tsx",
-     "mechanism": "injection-taint-in-handler-only"
+     "mechanism": "injection-taint-in-handler-only",
+     "backlogId": "01a1174f-282e-776d-a619-78b4f568a20c",
+     "backlogKind": "new"
     },
     {
      "repo": "bench-csharp-blazor-a11y",
      "id": "BA-019",
      "concept": "cross-site-scripting",
      "file": "src/HarbourLane.Bookings.Web/Components/Pages/RoomDetail.razor",
-     "mechanism": "injection-sink-without-rule"
+     "mechanism": "injection-sink-without-rule",
+     "backlogId": "01a1174f-b96d-737d-8df3-7d35ce99327e",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -25188,7 +25598,9 @@
      "id": "CH-033",
      "concept": "inert-configuration-option",
      "file": "src/infrastructure/rates/rate-card-cache.ts",
-     "mechanism": "shallow-heuristic"
+     "mechanism": "shallow-heuristic",
+     "backlogId": "01a1174d-76fd-7894-8c77-fb898f54847b",
+     "backlogKind": "new"
     }
    ],
    "noiseBacklog": [],
@@ -25843,10 +26255,13 @@
  ],
  "fnBacklog": {
   "originSessionKey": "2026-10-07-scanner-benchmark-recall",
+  "filed": "_scans/fn-backlog-filed.json",
+  "draft": "_scans/fn-backlog-draft.md",
   "newItems": 91,
   "amendedItems": 8,
-  "filed": null,
-  "draft": "_scans/fn-backlog-draft.md"
+  "notFiled": [
+   "d36-pull-request-target-checkout (IAC-017, plant defect)"
+  ]
  },
  "zeroRecallDimensions": [
   "X2",
@@ -25937,7 +26352,127 @@
    "languages": [
     "C#",
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "01a11747-2b81-76f4-bc1f-b0ebf2459bc8",
+     "kind": "new",
+     "key": "gap-business-logic-in-controller",
+     "entries": [
+      "bench-csharp-architecture:BLC-001"
+     ]
+    },
+    {
+     "id": "01a11747-5fed-7a89-b58d-5261e35590c9",
+     "kind": "new",
+     "key": "gap-value-object-mutability",
+     "entries": [
+      "bench-csharp-domain-events:VOM-001"
+     ]
+    },
+    {
+     "id": "01a11747-9242-717b-a8c4-dfcaa4175e6f",
+     "kind": "new",
+     "key": "gap-domain-event-never-handled",
+     "entries": [
+      "bench-csharp-domain-events:DEH-001",
+      "bench-csharp-domain-events:DEH-002"
+     ]
+    },
+    {
+     "id": "01a11747-b720-7d45-9a48-648b7890207d",
+     "kind": "new",
+     "key": "gap-event-schema-without-upcaster",
+     "entries": [
+      "bench-csharp-domain-events:ESC-001"
+     ]
+    },
+    {
+     "id": "019fdcf7-c913-7b73-9584-3c99c008867b",
+     "kind": "amended",
+     "key": "gap-modal-focus-not-managed",
+     "entries": [
+      "bench-ts-frontend-a11y:A11Y-010",
+      "bench-csharp-blazor-a11y:BA-010"
+     ]
+    },
+    {
+     "id": "01a11747-f557-7561-986c-bfc5bc425e16",
+     "kind": "new",
+     "key": "gap-autoplay-media-without-control",
+     "entries": [
+      "bench-ts-frontend-a11y:A11Y-013",
+      "bench-csharp-blazor-a11y:BA-013"
+     ]
+    },
+    {
+     "id": "01a11748-1de3-7b4e-bad5-9630fa980a29",
+     "kind": "new",
+     "key": "gap-react-index-as-key",
+     "entries": [
+      "bench-ts-frontend-a11y:A11Y-021"
+     ]
+    },
+    {
+     "id": "01a11748-903b-71d8-acdc-92109e50133c",
+     "kind": "new",
+     "key": "gap-react-hook-missing-dependency",
+     "entries": [
+      "bench-ts-frontend-a11y:A11Y-022"
+     ]
+    },
+    {
+     "id": "01a11748-9b59-7f91-b67f-b090e4261183",
+     "kind": "new",
+     "key": "gap-react-state-mutation",
+     "entries": [
+      "bench-ts-frontend-a11y:A11Y-023"
+     ]
+    },
+    {
+     "id": "01a11748-d515-7837-abeb-4b77a94e6cae",
+     "kind": "new",
+     "key": "gap-form-error-not-associated",
+     "entries": [
+      "bench-ts-frontend-a11y:A11Y-024",
+      "bench-csharp-blazor-a11y:BA-018"
+     ]
+    },
+    {
+     "id": "01a11748-f06b-74a3-9c2c-87dcad8dcfe0",
+     "kind": "new",
+     "key": "gap-consent-not-checked",
+     "entries": [
+      "bench-ts-domain-privacy:CON-001"
+     ]
+    },
+    {
+     "id": "01a11749-1555-739a-a36e-af265d507859",
+     "kind": "new",
+     "key": "gap-unchecked-any-external-data",
+     "entries": [
+      "bench-ts-readiness:RDY-004",
+      "bench-ts-codehealth:CH-023"
+     ]
+    },
+    {
+     "id": "01a11749-395d-7669-9c3e-b73bd7268dce",
+     "kind": "new",
+     "key": "gap-pointless-catch-rethrow",
+     "entries": [
+      "bench-csharp-codehealth:CH-021"
+     ]
+    },
+    {
+     "id": "01a11749-edee-78d1-87d6-b219620338cd",
+     "kind": "new",
+     "key": "gap-excessive-mocking",
+     "entries": [
+      "bench-csharp-tests:TQ-007"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "repo-wide-posture-switch",
@@ -25946,7 +26481,88 @@
    "languages": [
     "C#",
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "01a1174a-0cd0-72d6-8664-aa79b83c7fcc",
+     "kind": "new",
+     "key": "p7-repo-wide-switch",
+     "entries": [
+      "bench-csharp-readiness:RDY-001"
+     ]
+    },
+    {
+     "id": "01a1174a-41b7-712a-b9cd-bffeb3affe8c",
+     "kind": "new",
+     "key": "c2-repo-wide-switch",
+     "entries": [
+      "bench-csharp-readiness:RDY-004",
+      "bench-ts-readiness:RDY-003",
+      "estate-quellbrook-gateway:GW-001"
+     ]
+    },
+    {
+     "id": "01a1174a-7056-707a-b6ed-0e16b3f4df60",
+     "kind": "new",
+     "key": "s1-repo-wide-words",
+     "entries": [
+      "bench-csharp-readiness:RDY-005",
+      "bench-csharp-readiness:RDY-010",
+      "bench-csharp-readiness:RDY-011"
+     ]
+    },
+    {
+     "id": "01a1174a-998c-7ece-a33c-667c4afd4ebb",
+     "kind": "new",
+     "key": "p8-auto-create-beside-migrations",
+     "entries": [
+      "bench-csharp-readiness:RDY-008",
+      "bench-ts-readiness:MIG-001"
+     ]
+    },
+    {
+     "id": "01a1174a-ecbf-72b9-be84-f5ecd2add6b8",
+     "kind": "new",
+     "key": "p10-npm-surface",
+     "entries": [
+      "bench-ts-readiness:LIB-001",
+      "bench-ts-readiness:LIB-002"
+     ]
+    },
+    {
+     "id": "01a1174b-0717-7c54-8289-14e83bc3f06e",
+     "kind": "new",
+     "key": "p11-feature-files-counted",
+     "entries": [
+      "bench-ts-readiness:BDD-001"
+     ]
+    },
+    {
+     "id": "01a1174b-269f-738a-b899-55f8a75cdf29",
+     "kind": "new",
+     "key": "d40-any-networkpolicy",
+     "entries": [
+      "bench-ts-readiness:EGR-001"
+     ]
+    },
+    {
+     "id": "01a1174b-45cc-7520-ac0d-72562bb84327",
+     "kind": "new",
+     "key": "d42-psa-modes",
+     "entries": [
+      "bench-ts-readiness:ADM-001"
+     ]
+    },
+    {
+     "id": "01a1174b-6549-7ba7-b839-cbd28ab40ee5",
+     "kind": "new",
+     "key": "p6-changelog-vs-tags",
+     "entries": [
+      "bench-csharp-maturity-history:REL-001"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "ts-arm-missing-codehealth",
@@ -25954,7 +26570,85 @@
    "count": 12,
    "languages": [
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "01a04709-f970-777a-bda2-5004c0b4fb27",
+     "kind": "amended",
+     "key": "d17-ts-suppressions",
+     "entries": [
+      "bench-ts-codehealth:CH-010"
+     ]
+    },
+    {
+     "id": "01a1174b-7ad5-7d6f-ac35-400b18a318df",
+     "kind": "new",
+     "key": "d17-ts-commented-out-code",
+     "entries": [
+      "bench-ts-codehealth:CH-013"
+     ]
+    },
+    {
+     "id": "01a1174b-bc07-7713-b13e-28b992a47b23",
+     "kind": "new",
+     "key": "x3-ts-empty-catch",
+     "entries": [
+      "bench-ts-codehealth:CH-014",
+      "bench-ts-readiness:RDY-006"
+     ]
+    },
+    {
+     "id": "01a1174b-dfe7-7444-b917-5007ef2fc185",
+     "kind": "new",
+     "key": "ts-dead-private-members",
+     "entries": [
+      "bench-ts-codehealth:CH-015",
+      "bench-ts-codehealth:CH-049",
+      "bench-ts-codehealth:CH-050"
+     ]
+    },
+    {
+     "id": "01a1174b-fa42-703b-9d31-9bfe7761d3f4",
+     "kind": "new",
+     "key": "ts-deprecated-use",
+     "entries": [
+      "bench-ts-codehealth:CH-018"
+     ]
+    },
+    {
+     "id": "01a11749-395d-7669-9c3e-b73bd7268dce",
+     "kind": "new",
+     "key": "gap-pointless-catch-rethrow",
+     "entries": [
+      "bench-ts-codehealth:CH-022"
+     ]
+    },
+    {
+     "id": "01a1174c-14dd-7032-9ca7-039f9cb14dc7",
+     "kind": "new",
+     "key": "x5-ts-null-deref",
+     "entries": [
+      "bench-ts-codehealth:CH-026"
+     ]
+    },
+    {
+     "id": "01a1174c-3211-7372-bb93-0b18b68f7936",
+     "kind": "new",
+     "key": "d10-ts-swallowed-test-failure",
+     "entries": [
+      "bench-ts-codehealth:CH-047"
+     ]
+    },
+    {
+     "id": "01a11749-edee-78d1-87d6-b219620338cd",
+     "kind": "new",
+     "key": "gap-excessive-mocking",
+     "entries": [
+      "bench-ts-codehealth:CH-048"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "shallow-heuristic",
@@ -25963,7 +26657,99 @@
    "languages": [
     "C#",
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "019fdcf7-c736-7d2b-b090-e5c065ff36b1",
+     "kind": "amended",
+     "key": "blocking-dot-result",
+     "entries": [
+      "bench-csharp-codehealth:CH-023"
+     ]
+    },
+    {
+     "id": "01a1174c-4be1-7be4-93e1-9f2850642a9e",
+     "kind": "new",
+     "key": "x16-measure-through-helper",
+     "entries": [
+      "bench-csharp-codehealth:CH-034"
+     ]
+    },
+    {
+     "id": "01a1174c-9419-77b0-9e0e-75f903e42854",
+     "kind": "new",
+     "key": "d17-config-level-suppressions",
+     "entries": [
+      "bench-csharp-codehealth:CH-049",
+      "bench-ts-codehealth:CH-012"
+     ]
+    },
+    {
+     "id": "01a1174c-b123-720a-80c7-a8d01f89e90a",
+     "kind": "new",
+     "key": "d10-tautological-assert",
+     "entries": [
+      "bench-csharp-tests:TQ-002"
+     ]
+    },
+    {
+     "id": "01a1174c-e971-728b-b099-8df14131f17c",
+     "kind": "new",
+     "key": "ts-not-implemented-placeholder",
+     "entries": [
+      "bench-ts-codehealth:CH-019"
+     ]
+    },
+    {
+     "id": "01a1174d-06b3-7595-a3dc-7024f7d56dcf",
+     "kind": "new",
+     "key": "ts-hollow-method",
+     "entries": [
+      "bench-ts-codehealth:CH-020"
+     ]
+    },
+    {
+     "id": "01a1174d-1fb5-7c5f-a4c3-84de83c8b049",
+     "kind": "new",
+     "key": "x5-ts-nonnull-density-threshold",
+     "entries": [
+      "bench-ts-codehealth:CH-025"
+     ]
+    },
+    {
+     "id": "01a1174d-5a0e-7aef-8a19-eb822eb0fdee",
+     "kind": "new",
+     "key": "x1-ts-floating-promise",
+     "entries": [
+      "bench-ts-codehealth:CH-027"
+     ]
+    },
+    {
+     "id": "01a1174d-76fd-7894-8c77-fb898f54847b",
+     "kind": "new",
+     "key": "x25-ts-inert-option",
+     "entries": [
+      "bench-ts-codehealth:CH-033"
+     ]
+    },
+    {
+     "id": "01a1174d-910c-71d9-b82f-301ebc5fd625",
+     "kind": "new",
+     "key": "x13-ts-undrained-stderr",
+     "entries": [
+      "bench-ts-codehealth:CH-036"
+     ]
+    },
+    {
+     "id": "01a1174c-cc04-7e12-b1ef-ef6cc1965293",
+     "kind": "new",
+     "key": "d10-ts-test-without-expect",
+     "entries": [
+      "bench-ts-codehealth:CH-045"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "prefix-less-secret",
@@ -25972,7 +26758,56 @@
    "languages": [
     "C#",
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "01a1174d-e610-7e11-a74c-22c5668865ca",
+     "kind": "new",
+     "key": "secret-connection-string-password",
+     "entries": [
+      "bench-csharp-security-secrets:SEC-005",
+      "bench-csharp-security-secrets:SEC-006",
+      "bench-csharp-security-secrets:SEC-007",
+      "bench-csharp-security-secrets:SEC-017"
+     ]
+    },
+    {
+     "id": "01a1174e-5d36-71fd-bf30-319ff7b64b4d",
+     "kind": "new",
+     "key": "secret-inline-bearer",
+     "entries": [
+      "bench-csharp-security-secrets:SEC-013",
+      "bench-ts-security-secrets:SEC-014"
+     ]
+    },
+    {
+     "id": "01a1174d-f63b-72e4-9f29-a7ea6601a027",
+     "kind": "new",
+     "key": "secret-uri-userinfo",
+     "entries": [
+      "bench-csharp-security-secrets:SEC-014",
+      "bench-ts-security-secrets:SEC-004",
+      "bench-ts-security-secrets:SEC-005"
+     ]
+    },
+    {
+     "id": "01a1174e-942e-7533-8770-468bc94d6bf8",
+     "kind": "new",
+     "key": "secret-unquoted-dotenv",
+     "entries": [
+      "bench-ts-security-secrets:SEC-006"
+     ]
+    },
+    {
+     "id": "01a1174e-b14f-7235-82b7-06bf43215ebe",
+     "kind": "new",
+     "key": "secret-in-call-argument",
+     "entries": [
+      "bench-ts-security-secrets:SEC-016"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "injection-taint-in-handler-only",
@@ -25981,7 +26816,63 @@
    "languages": [
     "C#",
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "01a1174e-cdcb-7361-a24b-54cee6fcc4ca",
+     "kind": "new",
+     "key": "d29-taint-cross-function-csharp",
+     "entries": [
+      "bench-csharp-security-injection:CMD-001"
+     ]
+    },
+    {
+     "id": "01a1174e-ed42-74d7-96be-24720231f4b9",
+     "kind": "new",
+     "key": "ssrf-model-bound-source",
+     "entries": [
+      "bench-csharp-security-injection:SSRF-001"
+     ]
+    },
+    {
+     "id": "01a02717-2aa2-7f36-8f54-755892c832ac",
+     "kind": "amended",
+     "key": "d29-taint-cross-function-ts",
+     "entries": [
+      "bench-ts-security-injection:SQL-001",
+      "bench-ts-security-injection:SQL-002",
+      "bench-ts-security-injection:CMD-001",
+      "bench-ts-security-injection:XXE-001",
+      "bench-ts-security-injection:CODE-001",
+      "bench-ts-security-injection:PROTO-001"
+     ]
+    },
+    {
+     "id": "01a070a4-d954-7cf4-8f54-4e9362617caa",
+     "kind": "amended",
+     "key": "d29-path-join-assumed-safe",
+     "entries": [
+      "bench-ts-security-injection:PATH-001"
+     ]
+    },
+    {
+     "id": "01a1174f-092b-7a93-92bb-c20f2d819df0",
+     "kind": "new",
+     "key": "d29-redirect-ternary-source",
+     "entries": [
+      "bench-ts-security-injection:REDIR-001"
+     ]
+    },
+    {
+     "id": "01a1174f-282e-776d-a619-78b4f568a20c",
+     "kind": "new",
+     "key": "react-xss-from-state",
+     "entries": [
+      "bench-ts-frontend-a11y:A11Y-016"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "injection-sink-without-rule",
@@ -25990,7 +26881,69 @@
    "languages": [
     "C#",
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "01a1174f-7052-78b4-9594-e764a255255c",
+     "kind": "new",
+     "key": "csharp-sqli-dapper-efcore",
+     "entries": [
+      "bench-csharp-security-injection:SQL-001",
+      "bench-csharp-security-injection:SQL-002"
+     ]
+    },
+    {
+     "id": "01a1174f-8f8a-75e6-9959-3f7f527fe742",
+     "kind": "new",
+     "key": "csharp-newtonsoft-typenamehandling",
+     "entries": [
+      "bench-csharp-security-injection:DESER-001"
+     ]
+    },
+    {
+     "id": "01a1174f-b96d-737d-8df3-7d35ce99327e",
+     "kind": "new",
+     "key": "csharp-xss-sinks",
+     "entries": [
+      "bench-csharp-security-injection:XSS-001",
+      "bench-csharp-blazor-a11y:BA-019"
+     ]
+    },
+    {
+     "id": "01a1174f-d4f7-7740-971a-b85038a925b8",
+     "kind": "new",
+     "key": "csharp-open-redirect",
+     "entries": [
+      "bench-csharp-security-injection:REDIR-001"
+     ]
+    },
+    {
+     "id": "01a1174f-fb56-7cce-9da4-b24e44be06cb",
+     "kind": "new",
+     "key": "redos-dynamic-regex",
+     "entries": [
+      "bench-csharp-security-injection:REDOS-001",
+      "bench-ts-security-injection:REDOS-001"
+     ]
+    },
+    {
+     "id": "01a11750-192d-7412-953b-dcb2afcd3664",
+     "kind": "new",
+     "key": "ts-nosql-mongodb-filter",
+     "entries": [
+      "bench-ts-security-injection:NOSQL-001"
+     ]
+    },
+    {
+     "id": "01a11750-53ab-73f9-aaea-8c2db4ec865d",
+     "kind": "new",
+     "key": "ts-log-injection",
+     "entries": [
+      "bench-ts-security-injection:LOG-001"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "structural-population-too-narrow",
@@ -25998,7 +26951,82 @@
    "count": 9,
    "languages": [
     "C#"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "01a11750-7821-7d5a-ab8f-329c69a97bcf",
+     "kind": "new",
+     "key": "dm6-injected-adapter-interface",
+     "entries": [
+      "bench-csharp-architecture:DOM-001"
+     ]
+    },
+    {
+     "id": "01a11750-ba26-7467-b111-467515fd8e67",
+     "kind": "new",
+     "key": "d5-instability-counts-test-edges",
+     "entries": [
+      "bench-csharp-architecture:SDP-001"
+     ]
+    },
+    {
+     "id": "01a11750-dbbf-7d55-b670-ccfe8b9219d4",
+     "kind": "new",
+     "key": "csharp-namespace-cycle",
+     "entries": [
+      "bench-csharp-architecture:CYC-001"
+     ]
+    },
+    {
+     "id": "01a11750-f95e-7558-bf15-7dffea6b0052",
+     "kind": "new",
+     "key": "d27-pass-through",
+     "entries": [
+      "bench-csharp-architecture:IND-001"
+     ]
+    },
+    {
+     "id": "01a11750-9762-7fed-ab29-994a940168ec",
+     "kind": "new",
+     "key": "dm6-orm-attributes",
+     "entries": [
+      "bench-csharp-domain-events:DM6-001"
+     ]
+    },
+    {
+     "id": "01a11751-31ea-76fb-ba86-4fc372c16d63",
+     "kind": "new",
+     "key": "es1-projection-folds",
+     "entries": [
+      "bench-csharp-domain-events:ES1-002"
+     ]
+    },
+    {
+     "id": "01a11751-51aa-7133-a452-2aa11486f28b",
+     "kind": "new",
+     "key": "dm5-entity-without-id",
+     "entries": [
+      "estate-quellbrook-orders:ORD-001"
+     ]
+    },
+    {
+     "id": "01a11751-7379-730a-9b05-aa5f27dc08d9",
+     "kind": "new",
+     "key": "d35-declared-reference-excuses-pair",
+     "entries": [
+      "bench-csharp-maturity-history:CPL-001"
+     ]
+    },
+    {
+     "id": "01a11751-94e4-7bff-a8ba-3ab5d0d4a88b",
+     "kind": "new",
+     "key": "ax8-test-support-project",
+     "entries": [
+      "bench-csharp-tests:AX8-001"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "info-level-never-in-sarif",
@@ -26007,7 +27035,46 @@
    "languages": [
     "C#",
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "01a11752-004d-76f2-9274-30441bed56cb",
+     "kind": "new",
+     "key": "d12-outdated-info-not-in-sarif",
+     "entries": [
+      "bench-csharp-security-dependencies:DEP-006",
+      "bench-ts-security-dependencies:OUT-001"
+     ]
+    },
+    {
+     "id": "01a11752-38ec-762c-a51e-5bec9ef95873",
+     "kind": "new",
+     "key": "r7-unused-export-recommendation",
+     "entries": [
+      "bench-ts-codehealth:CH-016"
+     ]
+    },
+    {
+     "id": "01a11751-d145-7495-9c48-1b811582c8b0",
+     "kind": "new",
+     "key": "x2-per-site-info-not-in-sarif",
+     "entries": [
+      "bench-ts-codehealth:CH-030",
+      "bench-csharp-codehealth:CH-026",
+      "bench-csharp-readiness:RDY-003",
+      "estate-quellbrook-orders:ORD-002"
+     ]
+    },
+    {
+     "id": "01a11752-5a3b-79d7-a22d-f0aa1fc2b1a7",
+     "kind": "new",
+     "key": "r3-oversized-file-threshold",
+     "entries": [
+      "bench-ts-frontend-a11y:A11Y-017"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "call-shape-matching",
@@ -26016,7 +27083,52 @@
    "languages": [
     "C#",
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "01a11752-84e7-7252-b56d-0b832f385a56",
+     "kind": "new",
+     "key": "pii-loggermessage-source-gen",
+     "entries": [
+      "bench-csharp-security-injection:PII-001",
+      "estate-quellbrook-notifier:NTF-002"
+     ]
+    },
+    {
+     "id": "019fe509-8665-7f5f-bc1b-d84687156288",
+     "kind": "amended",
+     "key": "s1-md5-hashdata-csharp",
+     "entries": [
+      "bench-csharp-security-injection:HASH-001"
+     ]
+    },
+    {
+     "id": "01a11752-abd4-7531-a834-e1afec55c521",
+     "kind": "new",
+     "key": "pii-logged-object-fields",
+     "entries": [
+      "bench-ts-security-injection:PII-001",
+      "estate-quellbrook-gateway:GW-002"
+     ]
+    },
+    {
+     "id": "01a11752-c627-7d3a-ba5b-9ec0c644f853",
+     "kind": "new",
+     "key": "pii-browser-storage-neutral-key",
+     "entries": [
+      "bench-ts-security-injection:PII-003"
+     ]
+    },
+    {
+     "id": "01a11752-e224-7655-9572-188c62233a3a",
+     "kind": "new",
+     "key": "s1-ts-md5-password-hash",
+     "entries": [
+      "bench-ts-security-injection:HASH-001"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "dm-ts-arm-missing",
@@ -26024,7 +27136,50 @@
    "count": 5,
    "languages": [
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "01a11753-1c41-7b88-ba34-531fa8afb55d",
+     "kind": "new",
+     "key": "dm6-ts-imports",
+     "entries": [
+      "bench-ts-domain-privacy:DIB-001"
+     ]
+    },
+    {
+     "id": "01a11753-3940-78ff-9c8f-b955a57c1d8f",
+     "kind": "new",
+     "key": "dm7-ts-repository-subject",
+     "entries": [
+      "bench-ts-domain-privacy:REP-001"
+     ]
+    },
+    {
+     "id": "01a11753-5417-7515-b9e1-b2f851753199",
+     "kind": "new",
+     "key": "dm9-ts-arm",
+     "entries": [
+      "bench-ts-domain-privacy:SDR-001"
+     ]
+    },
+    {
+     "id": "01a11753-72ea-7717-ab9c-045a2729e59a",
+     "kind": "new",
+     "key": "dm10-ts-arm",
+     "entries": [
+      "bench-ts-domain-privacy:MAT-001"
+     ]
+    },
+    {
+     "id": "01a11753-90f5-70fb-9494-fc8c99ba6e77",
+     "kind": "new",
+     "key": "dm11-ts-arm",
+     "entries": [
+      "bench-ts-domain-privacy:CIE-001"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "location-imprecision",
@@ -26033,7 +27188,36 @@
    "languages": [
     "C#",
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "01a11753-beed-7686-97b2-4402df7a0634",
+     "kind": "new",
+     "key": "d31-k8s-row-location",
+     "entries": [
+      "bench-csharp-security-iac:IAC-004",
+      "bench-csharp-security-iac:IAC-006",
+      "bench-csharp-security-iac:IAC-010"
+     ]
+    },
+    {
+     "id": "01a11753-e396-7e16-b4ef-4e6d19a4ed51",
+     "kind": "new",
+     "key": "d4-window-starts-early",
+     "entries": [
+      "estate-quellbrook-dispatch:DSP-003"
+     ]
+    },
+    {
+     "id": "01a11754-2590-796c-b48c-2fefdb7f3065",
+     "kind": "new",
+     "key": "r8-misplaced-dev-dep-location",
+     "entries": [
+      "bench-ts-security-dependencies:MIS-001"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "a11y-text-cards-off-by-default",
@@ -26042,7 +27226,22 @@
    "languages": [
     "C#",
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "01a11754-5e5d-7028-b3f7-94710f8b11d0",
+     "kind": "new",
+     "key": "la-cards-framework-gated",
+     "entries": [
+      "bench-ts-frontend-a11y:A11Y-019",
+      "bench-ts-frontend-a11y:A11Y-020",
+      "bench-csharp-blazor-a11y:BA-023",
+      "bench-csharp-blazor-a11y:BA-024",
+      "bench-csharp-blazor-a11y:BA-025"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "dependency-hygiene-arm",
@@ -26050,7 +27249,36 @@
    "count": 5,
    "languages": [
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "019fdcf7-c9c3-723c-8916-1cac2dd90802",
+     "kind": "amended",
+     "key": "d12-npm-deprecation",
+     "entries": [
+      "bench-ts-security-dependencies:DPR-001",
+      "bench-ts-security-dependencies:DPR-002"
+     ]
+    },
+    {
+     "id": "01a11754-7b44-77bf-9c3e-80633896f9d2",
+     "kind": "new",
+     "key": "d44-engines-node",
+     "entries": [
+      "bench-ts-security-dependencies:EOL-001"
+     ]
+    },
+    {
+     "id": "01a11754-a66d-7709-b277-7c15e119925b",
+     "kind": "new",
+     "key": "r8-ts-unused-undeclared",
+     "entries": [
+      "bench-ts-security-dependencies:UNU-001",
+      "bench-ts-security-dependencies:UND-001"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "presence-only-runtime-checks",
@@ -26059,7 +27287,36 @@
    "languages": [
     "C#",
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "01a11754-d13a-7a4e-8d54-29795db3eaa8",
+     "kind": "new",
+     "key": "x2-token-not-forwarded",
+     "entries": [
+      "bench-csharp-readiness:RDY-002",
+      "bench-ts-readiness:RDY-002"
+     ]
+    },
+    {
+     "id": "01a11754-f9a7-7d76-ab9d-8d4f730ebfa7",
+     "kind": "new",
+     "key": "p2-console-output",
+     "entries": [
+      "bench-csharp-readiness:RDY-006",
+      "bench-ts-readiness:RDY-005"
+     ]
+    },
+    {
+     "id": "01a11755-1816-7b6d-a78f-8da6078f8707",
+     "kind": "new",
+     "key": "p7-ts-injected-fetch",
+     "entries": [
+      "bench-ts-readiness:RDY-001"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "adr-and-doc-conformance",
@@ -26067,7 +27324,35 @@
    "count": 4,
    "languages": [
     "C#"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "01a11755-5360-7f01-8dcd-25fa733c9846",
+     "kind": "new",
+     "key": "d7-prose-enforced-rule",
+     "entries": [
+      "bench-csharp-architecture:ARU-001"
+     ]
+    },
+    {
+     "id": "01a11755-7d60-7d5b-9936-b33c70373d3f",
+     "kind": "new",
+     "key": "d25-adr-conformance",
+     "entries": [
+      "bench-csharp-maturity-history:ADR-001",
+      "estate-quellbrook-dispatch:DSP-004"
+     ]
+    },
+    {
+     "id": "01a11755-987d-7617-bd63-8e0c3d223564",
+     "kind": "new",
+     "key": "m4-doc-accuracy",
+     "entries": [
+      "bench-csharp-maturity-history:DOC-001"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "a11y-css-not-read",
@@ -26076,7 +27361,21 @@
    "languages": [
     "C#",
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "019fdcf7-c913-7f14-ad22-745b1bfc4843",
+     "kind": "amended",
+     "key": "ac6-css-files",
+     "entries": [
+      "bench-ts-frontend-a11y:A11Y-014",
+      "bench-ts-frontend-a11y:A11Y-015",
+      "bench-csharp-blazor-a11y:BA-015",
+      "bench-csharp-blazor-a11y:BA-017"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "flaky-test-detection",
@@ -26085,7 +27384,27 @@
    "languages": [
     "C#",
     "TypeScript"
-   ]
+   ],
+   "backlogItems": [
+    {
+     "id": "01a11755-c993-744e-b96f-f191a1c81532",
+     "kind": "new",
+     "key": "flaky-clock-read-in-tests",
+     "entries": [
+      "bench-csharp-tests:TQ-006",
+      "bench-ts-readiness:FLK-001"
+     ]
+    },
+    {
+     "id": "01a11755-ea2a-7ad8-b996-a6c77d48e949",
+     "kind": "new",
+     "key": "d10-ts-fixed-sleep",
+     "entries": [
+      "bench-ts-readiness:FLK-002"
+     ]
+    }
+   ],
+   "notFiled": []
   },
   {
    "id": "iac-ci-check-absent",
@@ -26093,6 +27412,19 @@
    "count": 2,
    "languages": [
     "C#"
+   ],
+   "backlogItems": [
+    {
+     "id": "01a11756-0623-7d81-a0c2-afd46d7717fc",
+     "kind": "new",
+     "key": "d31-ingress-without-tls",
+     "entries": [
+      "bench-csharp-security-iac:IAC-013"
+     ]
+    }
+   ],
+   "notFiled": [
+    "bench-csharp-security-iac:IAC-017"
    ]
   }
  ],

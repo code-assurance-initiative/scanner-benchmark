@@ -186,6 +186,27 @@ def rescore(repo, workspace, mapping):
 
 # --- mechanisms ------------------------------------------------------------------------------------------------------
 
+def fn_mechanisms_with_backlog(summary, fnb, erratum_keys):
+    """SUMMARY's FN mechanisms, each with the backlog item(s) carrying its FNs. When the backlog is filed, every FN must
+    be carried by exactly one item, except an erratum (a benchmark defect, deliberately not filed)."""
+    out = []
+    for m in summary["falseNegativeMechanisms"]:
+        items, missing = {}, []
+        for site in m["sites"]:
+            k = f"{site['repo']}:{site['id']}"
+            it = fnb["byEntry"].get(k)
+            if it:
+                items.setdefault(it["id"], dict(it, entries=[]))["entries"].append(k)
+            elif k not in erratum_keys:
+                missing.append(k)
+        if fnb["byEntry"] and missing:
+            raise SystemExit(f"FN mechanism {m['id']}: no backlog item carries {missing}")
+        out.append({**{k: m[k] for k in ("id", "title", "count", "languages")},
+                    "backlogItems": list(items.values()), "notFiled": sorted(set(
+                        f"{s['repo']}:{s['id']}" for s in m["sites"]) & erratum_keys)})
+    return out
+
+
 def fn_mechanism_index():
     idx = {}
     for mid, _title, sites in FN_MECHANISMS:
@@ -221,15 +242,42 @@ def verdict_index(results_dir, name):
 
 
 def fn_backlog(workspace):
-    """The recall (FalseNegative) backlog filed from this baseline's FNs: filed ids when the filing has finished,
-    else the draft."""
-    filed = os.path.join(workspace, "_scans", "fn-backlog-filed.json")
-    draft = os.path.join(workspace, "_scans", "fn-backlog-draft.md")
-    out = {"originSessionKey": FN_BACKLOG_SESSION, "newItems": 91, "amendedItems": 8,
-           "filed": None, "draft": "_scans/fn-backlog-draft.md" if os.path.exists(draft) else None}
-    if os.path.exists(filed):
-        out["filed"] = "_scans/fn-backlog-filed.json"
-        out["ids"] = load(filed)
+    """The recall (FalseNegative) backlog filed from this baseline's FNs. When `_scans/fn-backlog-filed.json` exists,
+    every FN (repository, entry id) is mapped to the backlog item that carries it: a new item (draft index -> filed id;
+    the draft's `notes` name its entry ids) or an amended existing one (the draft's `duplicates`, whose appended sites
+    name repository and entry id). Without the filed file only the draft is referenced."""
+    filed_p = os.path.join(workspace, "_scans", "fn-backlog-filed.json")
+    draft_json = os.path.join(workspace, "_scans", "fn-backlog-draft.json")
+    draft_md = os.path.join(workspace, "_scans", "fn-backlog-draft.md")
+    out = {"originSessionKey": FN_BACKLOG_SESSION, "filed": None,
+           "draft": "_scans/fn-backlog-draft.md" if os.path.exists(draft_md) else None, "byEntry": {}}
+    if not (os.path.exists(filed_p) and os.path.exists(draft_json)):
+        return out
+    filed, draft = load(filed_p), load(draft_json)
+    out.update(filed="_scans/fn-backlog-filed.json", originSessionKey=filed["originSessionKey"],
+               newItems=filed["count"], amendedItems=len(filed["amended"]), notFiled=filed.get("notFiled", []))
+    ids = {x["draftIndex"]: x["id"] for x in filed["items"]}
+    by_entry = {}
+
+    def put(repo, eid, item):
+        k = f"{repo}:{eid}"
+        if k in by_entry and by_entry[k]["id"] != item["id"]:
+            raise SystemExit(f"FN {k} is carried by two backlog items ({by_entry[k]['id']}, {item['id']})")
+        by_entry[k] = item
+    for i, it in enumerate(draft["items"]):
+        m = re.search(r"entry ids (.+?)\.(?:\s|$)", it.get("notes") or "")
+        if not m or i not in ids:
+            raise SystemExit(f"FN backlog draft item {i} names no entry ids or was not filed")
+        for ref in m.group(1).split(","):
+            repo, eid = ref.strip().split(":")
+            put(repo, eid, {"id": ids[i], "kind": "new", "key": it.get("_key")})
+    for dup in draft["duplicates"]:
+        for site in dup["appendSites"]:
+            m = re.search(r"code-assurance-initiative/([\w.-]+)@\S+ .*— ([A-Z0-9]+-\d+)", site)
+            if not m:
+                raise SystemExit(f"cannot read the site of amended item {dup['existingItem']}: {site[:80]}")
+            put(m.group(1), m.group(2), {"id": dup["existingItem"], "kind": "amended", "key": dup["key"]})
+    out["byEntry"] = by_entry
     return out
 
 
@@ -298,6 +346,8 @@ def build(a):
     agg = aggregate(final, mapping, dim_lens)
     fn_idx = fn_mechanism_index()
     backlog = backlog_items(a.backlog_draft, a.backlog_filed)
+    fnb = fn_backlog(a.workspace)
+    erratum_keys = {f"{er['repo']}:{er['entryId']}" for er in ERRATA}
 
     # in-process re-score of every repository
     extra = collections.defaultdict(lambda: {
@@ -340,8 +390,11 @@ def build(a):
                     if mech is None:
                         raise SystemExit(f"{repo['name']} {eid}: missed by the run but has no FN mechanism")
                     x["missGlobal"][mech] += 1
+                    item = fnb["byEntry"].get(f"{repo['name']}:{eid}")
                     x["fnSites"].append({"repo": repo["name"], "id": eid, "concept": e["concept"],
-                                         "file": e.get("file"), "mechanism": mech})
+                                         "file": e.get("file"), "mechanism": mech,
+                                         "backlogId": item["id"] if item else None,
+                                         "backlogKind": item["kind"] if item else None})
         s = metrics({k: repo["summary"][k] for k in ("tp", "fn", "trapFp", "trapTn", "fp", "tn", "results", "noise",
                                                      "redundant", "fileLevelTp")})
         bands = collections.Counter(b["outcome"] for b in repo["scoreBands"])
@@ -484,12 +537,11 @@ def build(a):
         "byLens": by_lens,
         "byDimension": by_dim,
         "errata": ERRATA,
-        "fnBacklog": fn_backlog(a.workspace),
+        "fnBacklog": {k: v for k, v in fnb.items() if k != "byEntry"},
         "zeroRecallDimensions": zero,
         "worstByRecall": worst,
         "neverFiringDimensions": never,
-        "falseNegativeMechanisms": [{k: m[k] for k in ("id", "title", "count", "languages")}
-                                    for m in summary["falseNegativeMechanisms"]],
+        "falseNegativeMechanisms": fn_mechanisms_with_backlog(summary, fnb, erratum_keys),
         "noiseBacklog": backlog,
         "verdictClasses": summary.get("verdictClasses"),
         "modelNonDeterminism": nondeterminism(a.workspace, llm_dims),
@@ -609,6 +661,11 @@ def md_tables(b):
             if e["missMechanisms"]:
                 top, n = next(iter(e["missMechanisms"].items()))
                 miss = f"{FN_SHORT.get(top, top)} ({n} of {e['fnMissedByRun']})"
+                tids = {f["backlogId"] for f in e["fnSites"] if f["mechanism"] == top and f.get("backlogId")}
+                if len(tids) == 1:
+                    miss += f" → `{next(iter(tids))}`"
+                elif tids:
+                    miss += f" → {len(tids)} backlog items"
                 if len(e["missMechanisms"]) > 1:
                     miss += f"; +{len(e['missMechanisms']) - 1} other"
             if e["fnFoundByOtherDimension"]:
@@ -689,10 +746,14 @@ def md_tables(b):
             L.append(f"| {b['lensLabels'][key]} ({len(by_lens[key])}) | {', '.join(items)} |")
     flush("never-firing")
 
-    L.append("| FNs | Mechanism | Languages |")
-    L.append("|---|---|---|")
+    L.append("| FNs | Mechanism | Languages | Recall backlog items (FNs carried) |")
+    L.append("|---|---|---|---|")
     for m in b["falseNegativeMechanisms"]:
-        L.append(f"| {m['count']} | {m['title']} | {', '.join(m['languages'])} |")
+        ids = ", ".join(f"`{it['id']}`{' (amended)' if it['kind'] == 'amended' else ''} ({len(it['entries'])})"
+                        for it in m.get("backlogItems", []))
+        if m.get("notFiled"):
+            ids += ("; " if ids else "") + "not filed: " + ", ".join(m["notFiled"]) + " (erratum E1, benchmark defect)"
+        L.append(f"| {m['count']} | {m['title']} | {', '.join(m['languages'])} | {ids or '—'} |")
     flush("fn-mechanisms")
 
     if b["noiseBacklog"]:
