@@ -1,0 +1,646 @@
+{
+ "repo": "code-assurance-initiative/estate-quellbrook-notifier",
+ "tag": "v1.0.0",
+ "engineVersion": "rubric-2026.10.1 (pinned instrument kennel-wt-scanner-bench @ 6a05dfb6c)",
+ "keySha256": "b4dabc406c3f50b150c188abd9014db0deab3c225a3b90cec0429a249e054e3c",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-07",
+   "sarifSha256": "3746b26044dca96a51d22b69d38aa04c3d037ee0ed7ffa932d60e063729cf114",
+   "outcomes": {
+    "tp": 1,
+    "fn": 1,
+    "fp": 4,
+    "tn": 128,
+    "trapFp": 2,
+    "trapTn": 6,
+    "results": 6,
+    "noise": 5,
+    "redundant": 0,
+    "uncovered": 3
+   },
+   "note": "contained; first complete local history (66fce9c, before any push); scored with the frozen v1.0.0 key"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "61313c9520fcb197f3f0e90ed993b03473539aede5d87f97fe3a32134b3211df",
+   "outcomes": {
+    "tp": 1,
+    "fn": 1,
+    "fp": 3,
+    "tn": 129,
+    "trapFp": 2,
+    "trapTn": 6,
+    "results": 5,
+    "noise": 4,
+    "redundant": 0,
+    "uncovered": 3
+   },
+   "note": "contained; pushed 614f388 (code identical to v1.0.0, which adds a trap and the final journal entry)"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "ba26e4aa0023b1a660260dddc471b874737f952420ab428387bd84181e06023a",
+   "outcomes": {
+    "tp": 0,
+    "fn": 2,
+    "fp": 3,
+    "tn": 129,
+    "trapFp": 3,
+    "trapTn": 5,
+    "results": 3,
+    "noise": 3,
+    "redundant": 0,
+    "uncovered": 3
+   },
+   "note": "host, model-judged pass; 614f388; the host has no gitleaks or IaC tools, so the history secret and the D31 rows are absent"
+  }
+ ],
+ "verdicts": [
+  {
+   "ruleId": "D28",
+   "file": "src/Quellbrook.Notifier/appsettings.json",
+   "line": 15,
+   "message": "Secret: sendgrid-api-token: gitleaks matched rule 'sendgrid-api-token' here, in git history. Deleting the file does not remove it — the commit persists on every clone, fork and backup — so the act is to ROTATE this credential and treat it as compromised. The \"Rotate the exposed credentials\" row carries the full procedure, including when a `.gitattributes` provenance declaration is the correct answer instead.",
+   "class": "valid",
+   "reason": "The e-mail provider key committed in a033c7c (sprint 2) is readable in history.",
+   "action": "kept: plant NTF-001 (TP)"
+  },
+  {
+   "ruleId": "D28",
+   "file": null,
+   "line": null,
+   "message": "Rotate the exposed credentials — git history can't be un-committed: Some of these secrets are in git HISTORY: deleting the file does not remove them (the commit persists on every clone, fork and backup). The remediation is to ROTATE each historically-exposed credential and treat it as compromised — not to delete the file. Rewriting history is disruptive and unreliable across existing forks. (Working-tree-only secrets — no commit — can instead be removed from the file and moved to a secret store.) If flagged rows sit in content that is not this repository's own authored code — tool-emitted artifacts, recorded scanner output, wholesale-vendored third-party files — declare that provenance in .gitattributes (`path/** linguist-generated` or `linguist-vendored`): this scanner honors the repository's own declarations and stops counting such content, history-anchored rows included, on the next scan. The declaration is a reviewable statement about provenance, not a suppression — never use it on files that carry your own credentials.",
+   "class": "redundant",
+   "reason": "Repository-level roll-up of the located history row ('rotate the exposed credentials').",
+   "action": "summary row (mapping ignore list); counted once with NTF-001"
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Quellbrook.Notifier/Hosting/NotifierServices.cs",
+   "line": 1,
+   "message": "Low coverage: src/Quellbrook.Notifier/Hosting/NotifierServices.cs: 0.0% line coverage (0/38).",
+   "class": "valid",
+   "reason": "The worker's service registration had no test (0 %).",
+   "action": "repository fixed in the scripted history: registration and missing-key tests (sprint 3, 2026-09-03)"
+  },
+  {
+   "ruleId": "D17",
+   "file": ".editorconfig",
+   "line": 37,
+   "message": "AnalyzerSeverityNone: CA2007 — this rule is switched off for every file the section matches, in every project under this directory, and the only record that it was ever switched off is this line: nothing at the sites it would have reported says so, so a reader of that code has no reason to look here, and code added years from now inherits the decision silently. Fix what the rule reports and delete the entry, or — where some sites really are legitimate — leave the rule on and suppress it at those sites with their reasons, so it keeps protecting the rest of the tree. If the rule is genuinely unwanted here, say why — on this line after the entry, or in the comment run directly above it: a comment that only repeats the rule's own title is read as no explanation at all and leaves this row in place.",
+   "class": "false-positive",
+   "reason": "CA2007 is off at the root for tests with the reason on line 36; src/.editorconfig turns it back on for production code.",
+   "action": "caught by trap TRP-005"
+  },
+  {
+   "ruleId": "C4",
+   "file": null,
+   "line": null,
+   "message": "Partial data-retention evidence: A retention mechanism is present, but the data-lifecycle is not yet complete — missing: an expiry limit — a declared maximum age / TTL after which the data is no longer kept, a scheduled purge / cleanup job (PurgeOlderThan / CleanupJob).",
+   "class": "false-positive",
+   "reason": "RetentionOptions declares a maximum age for every kind of stored data and RetentionSweeper deletes expired rows every hour; neither an expiry limit nor a scheduled purge is missing.",
+   "action": "promoted to repository-level trap TRP-007"
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/deployment.yaml",
+   "line": 8,
+   "message": "Medium IaC: CKV_K8S_35: Prefer using secrets as files over secrets as environment variables",
+   "class": "opinion-not-fact",
+   "reason": "CKV_K8S_35 secrets as environment variables, from Secrets materialised by an ExternalSecret; reported at the Deployment's first line.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/deployment.yaml",
+   "line": 45,
+   "message": "Medium IaC: KSV-0125: Restrict container images to trusted registries. Container worker in deployment quellbrook-notifier (namespace: quellbrook-notifier) uses an image from an untrusted registry. Use images from trusted registries.",
+   "class": "opinion-not-fact",
+   "reason": "KSV-0125 'untrusted registry' for the organisation's own ghcr.io.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D41",
+   "file": null,
+   "line": null,
+   "message": "No AppArmor/SELinux confinement: Workloads declare no AppArmor or SELinux profile. A mandatory-access-control profile confines what a compromised container can touch on the host, complementing seccomp's syscall filter.",
+   "class": "opinion-not-fact",
+   "reason": "seccomp RuntimeDefault and dropped capabilities are set; AppArmor/SELinux is a further hardening step.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D42",
+   "file": null,
+   "line": null,
+   "message": "No runtime threat detection: No runtime threat-detection engine (Tetragon TracingPolicy / Falco) is committed. These observe process, file and network activity in-kernel and can alert or kill on malicious behaviour a static scan cannot catch.",
+   "class": "shape-irrelevant",
+   "reason": "Runtime threat detection is a cluster platform concern, not a service repository's.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "C1",
+   "file": null,
+   "line": null,
+   "message": "No data-protection/encryption: No data-protection or encryption usage (ASP.NET Data Protection, AES, column encryption, PBKDF2) was found — sensitive data at rest may be unprotected. If TDE/KMS/vault is delegated to infrastructure, ignore.",
+   "class": "opinion-not-fact",
+   "reason": "Encryption at rest is delegated to the managed database (docs/privacy.md); the row says to ignore it then.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D20",
+   "file": "docs/adr/0001-record-architecture-decisions.md",
+   "line": 1,
+   "message": "The ADR documents a meta-process (how to write ADRs) rather than a specific architectural decision, and the title is generic and uninformative.: Rename the title to 'Process for Recording Architecture Decisions' and explicitly state that this ADR establishes the convention for future ADRs, or create a separate ADR for the specific architectural choice being made.",
+   "class": "opinion-not-fact",
+   "reason": "A decision to record decisions is the conventional first ADR; it has status, context, decision and consequences.",
+   "action": "promoted to trap TRP-008"
+  }
+ ],
+ "falseNegatives": [
+  {
+   "entryId": "NTF-002",
+   "reason": "EmailSender.cs:34 passes the recipient's full e-mail address (message.To) to the source-generated [LoggerMessage] method LogAccepted at Information level (line 37-38: 'accepted by the provider for {Recipient}'). The personal-data-in-log rule matches only calls named Log*/log/info, not source-generated logging methods, which the .NET analyzers (CA1848, warnings as errors) make the only shape that compiles here. Same blind spot as bench-csharp-security-injection PII-001."
+  }
+ ],
+ "scoreBands": [
+  {
+   "entryId": "BND-001",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-002",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-003",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-004",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-005",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-006",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-007",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-008",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-009",
+   "outcome": "in",
+   "score": 80,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 80
+   }
+  },
+  {
+   "entryId": "BND-010",
+   "outcome": "in",
+   "score": 70,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 70
+   }
+  },
+  {
+   "entryId": "BND-011",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-012",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-013",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-014",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-015",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    40,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-016",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    40,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-017",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-018",
+   "outcome": "in",
+   "score": 80,
+   "band": [
+    10,
+    80
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 80
+   }
+  },
+  {
+   "entryId": "BND-019",
+   "outcome": "out",
+   "score": 80,
+   "band": [
+    0,
+    40
+   ],
+   "modelPass": {
+    "outcome": "out",
+    "score": 80
+   }
+  },
+  {
+   "entryId": "BND-020",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-021",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    30,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-022",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-023",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-024",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 90
+   }
+  },
+  {
+   "entryId": "BND-025",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 73
+   }
+  },
+  {
+   "entryId": "BND-026",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-027",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-028",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-029",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-030",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-031",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-032",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-033",
+   "outcome": "in",
+   "score": 50,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 50
+   }
+  },
+  {
+   "entryId": "BND-034",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    0,
+    80
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-035",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    0,
+    70
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-036",
+   "outcome": "in",
+   "score": 0,
+   "band": [
+    0,
+    70
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 0
+   }
+  }
+ ],
+ "observations": [
+  "This repository carries the estate's SECURITY INCIDENT: a real-format e-mail provider key (CSPRNG, authenticates nothing) committed in sprint 2 (a033c7c, appsettings.json:15) and removed in sprint 3 with the fix commits (key from the secret store via ExternalSecret, CI secret scan, ADR 0003, incident note). The contained scan finds it in history at the exact commit, file and line (D28, gitleaks sendgrid-api-token).",
+  "The model-judged host pass cannot see the history secret (no gitleaks on the host): NTF-001 is a contained-mode finding.",
+  "Recall 1/2 (NTF-001); NTF-002 missed because the PII log goes through a source-generated [LoggerMessage] method. Trap resistance 6/8 contained (TRP-005 D17, TRP-007 C4 caught), the model pass also catches TRP-008 (D20 on ADR 0001).",
+  "The scripted history is packaged without the key in the working tree: the two patches that add and remove it carry a marker, and build-history.sh substitutes the value read from the published commit before applying; the rebuild reproduces the exact commit ids and tags.",
+  "A flaky unit test (BackgroundService stopped before it started; ExecuteAsync runs on the thread pool since .NET 10) was found and fixed during authoring and is part of the story as a sprint-2 fix commit; no scanner flagged it."
+ ]
+}
