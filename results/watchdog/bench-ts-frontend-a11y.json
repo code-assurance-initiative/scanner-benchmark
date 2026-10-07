@@ -1,6 +1,6 @@
 {
   "repo": "code-assurance-initiative/bench-ts-frontend-a11y",
-  "tag": "v1.0.0",
+  "tag": "v1.1.0",
   "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc); host model passes on the same engine build",
   "scans": [
     {
@@ -128,6 +128,92 @@
         "uncovered": 2
       },
       "note": "host --with-llm with CODEHEALTH_COMPLIANCE_FRAMEWORKS=wcag-2.2 (NOT the default configuration; informative), final, repo at 6d5e9d3; model scores identical to iteration 2"
+    },
+    {
+      "iteration": 4,
+      "date": "2026-10-07",
+      "sarifSha256": "53c2b03c3189e901c5cdd1d141e8b0d92be162b869e3b87117223de209458d76",
+      "outcomes": {
+        "tp": 12,
+        "fn": 12,
+        "fp": 3,
+        "tn": 88,
+        "trapFp": 3,
+        "trapTn": 19,
+        "results": 15,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 5,
+        "summaryOfConcept": 0
+      },
+      "note": "v1.1.0 iteration 1: contained, repo at abc2311 (key v1.1.0 draft + reading list + gallery arrow keys); four new R10 duplication rows, judged valid and fixed",
+      "tag": "v1.1.0"
+    },
+    {
+      "iteration": 5,
+      "date": "2026-10-07",
+      "sarifSha256": "448cbc79dc1dca076f6d7a630a301486d1bccb4a06ef2a81088811b8ea6ca353",
+      "outcomes": {
+        "tp": 12,
+        "fn": 12,
+        "fp": 3,
+        "tn": 90,
+        "trapFp": 3,
+        "trapTn": 19,
+        "results": 15,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 1,
+        "summaryOfConcept": 0
+      },
+      "note": "v1.1.0 iteration 2: contained, final, repo at 503b290 (tag v1.1.0 = 503b290 + journal entry only)",
+      "tag": "v1.1.0"
+    },
+    {
+      "iteration": 5,
+      "date": "2026-10-07",
+      "sarifSha256": "28e93132c8de967c38268c94c3010c664614022cb08beab463d32c4fd3b7a46c",
+      "outcomes": {
+        "tp": 12,
+        "fn": 12,
+        "fp": 3,
+        "tn": 90,
+        "trapFp": 3,
+        "trapTn": 19,
+        "results": 15,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 1,
+        "summaryOfConcept": 0
+      },
+      "note": "v1.1.0 iteration 2: host --with-llm, default configuration, final, repo at 503b290; the v1.0.0 M4 false-positive row did not recur (M4 90, no finding)",
+      "tag": "v1.1.0"
+    },
+    {
+      "iteration": 5,
+      "date": "2026-10-07",
+      "sarifSha256": "7c80e6ad9ca434fe9c8298a6a1919681744c86fe5f37841300e165f41cba54f7",
+      "configuration": {
+        "label": "wcag-2.2",
+        "env": {
+          "CODEHEALTH_COMPLIANCE_FRAMEWORKS": "wcag-2.2"
+        }
+      },
+      "outcomes": {
+        "tp": 14,
+        "fn": 10,
+        "fp": 3,
+        "tn": 90,
+        "trapFp": 3,
+        "trapTn": 19,
+        "results": 17,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 1,
+        "summaryOfConcept": 0
+      },
+      "note": "v1.1.0 iteration 2: host --with-llm with CODEHEALTH_COMPLIANCE_FRAMEWORKS=wcag-2.2 (NOT the default configuration; informative), repo at 503b290; LA6 not measured this pass (judge answered a batch short)",
+      "tag": "v1.1.0"
     }
   ],
   "verdicts": [
@@ -184,24 +270,68 @@
       "class": "false-positive",
       "reason": "The README sentence 'ESLint (typescript-eslint strict + React hooks rules)' is true: eslint.config.js applies tseslint.configs.strictTypeChecked and eslint-plugin-react-hooks' recommended config, and package.json declares typescript-eslint and eslint-plugin-react-hooks. The check reads the claim's words as names to find in file names and manifest contents and does not read the ESLint config file. Concept not covered by this key: an uncovered row (host model passes only).",
       "action": "Recorded as noise; README unchanged. Seen identically in every host pass (iterations 2 and 3)."
+    },
+    {
+      "ruleId": "R10",
+      "file": "src/features/borrow/BorrowForm.tsx",
+      "line": 92,
+      "message": "Duplication concentrated across 6 sibling directories (5 clone groups): 5 duplicated blocks under src/features/ have copies in at least two of the sibling directories borrow, events, loans, reading-list, search, settings — 2 of them are reported below, and 3 are counted here but not reported individually: those copies match on shape but no longer clear R10's bar for an individually reported row — either they kept neither their own names nor their values, or what was copied is too small to stand on its own (it reports near-exact duplication only, and only of substantial extent). What this row states is the concentration, which the detector measured over all 5 and which does not depend on how exactly each block's copies still match. That concentration is one structural fact, not 5 local ones: the siblings replicate behaviour none of them owns, which is the shape of a missing shared module — a common library every sibling imports — rather than 5 separate extractions. Check first whether the siblings are deliberately standalone deliverables (scaffold templates, demo apps that must stay copy-pasteable); where they are, the duplication is the design and the per-block rows are the ones to act on.",
+      "class": "valid",
+      "reason": "Accurate roll-up of the per-block rows of this scan: the checkbox-plus-label and label-plus-text-input markup was copied across borrow, settings and the new reading-list feature, with no shared form-field component.",
+      "action": "Repository fixed in 503b290: src/components/CheckboxField.tsx and src/components/TextField.tsx replace the repeated label-and-input markup in BorrowForm, SettingsPage and ReadingListPage (both added to the clean list; A11Y-021/024 and TRP-018/019 moved to the new lines). Gone in v1.1.0 iteration 2.",
+      "iteration": 4,
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "R10",
+      "file": "src/features/borrow/BorrowForm.tsx",
+      "line": 92,
+      "message": "Duplicated block (12 lines × 3 locations): src/features/borrow/BorrowForm.tsx:92 · src/features/reading-list/ReadingListPage.tsx:174 · src/features/settings/SettingsPage.tsx:58 — the 3 copies are spread across 3 directories, so the shared home is a decision rather than an obvious spot: check first whether one of them already owns this behaviour, and otherwise put the extracted module somewhere all of the sites already reach rather than making one of them depend on another. There is one copy in each of 3 separate files rather than several in one place, so check first whether these are sibling modules that each declare their own version of one shape — one per entity, per provider, per language. Where they are, no single extracted module collapses them: each module still has to be written, and what recurs is the TEMPLATE. The moves that do collapse a template are to generate these modules from the set they enumerate, or to replace the repeated construction with one factory each site calls with its own values — and where the set is the point, each module pinning one distinct thing, the repetition IS the enumeration and there is nothing to delete.",
+      "class": "valid",
+      "reason": "Accurate: the same 12-line checkbox field (inline wrapper, useId id, checked, an onChange unwrapping event.target.checked, the label) was written out in BorrowForm, SettingsPage and the new ReadingListPage; the third copy, added in v1.1.0, took it over the bar. A shared CheckboxField is the obvious extraction in a React app.",
+      "action": "Repository fixed in 503b290: src/components/CheckboxField.tsx and src/components/TextField.tsx replace the repeated label-and-input markup in BorrowForm, SettingsPage and ReadingListPage (both added to the clean list; A11Y-021/024 and TRP-018/019 moved to the new lines). Gone in v1.1.0 iteration 2.",
+      "iteration": 4,
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "R10",
+      "file": "src/features/reading-list/ReadingListPage.tsx",
+      "line": 145,
+      "message": "Duplicated block (10 lines × 2 locations): src/features/reading-list/ReadingListPage.tsx:145 · src/features/reading-list/ReadingListPage.tsx:156 — both copies are in the same file, so extract the block into one function there and call it from each site — the copies drift apart the first time only one of them is edited.",
+      "class": "valid",
+      "reason": "Accurate: the title and author fields of the new add-a-book form (and the per-row note field) repeated the same label-plus-text-input markup.",
+      "action": "Repository fixed in 503b290: src/components/CheckboxField.tsx and src/components/TextField.tsx replace the repeated label-and-input markup in BorrowForm, SettingsPage and ReadingListPage (both added to the clean list; A11Y-021/024 and TRP-018/019 moved to the new lines). Gone in v1.1.0 iteration 2.",
+      "iteration": 4,
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "R10",
+      "file": "src/features/borrow/BorrowForm.tsx",
+      "line": 75,
+      "message": "Duplicated block (9 lines × 2 locations): src/features/borrow/BorrowForm.tsx:75 · src/features/reading-list/ReadingListPage.tsx:155 — the 2 copies are spread across 2 files, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+      "class": "valid",
+      "reason": "Accurate: the label-plus-text-input markup of the new reading-list form repeats the borrow form's field markup; the cited span runs across two fields, as the message says, and the enclosing unit (a labelled text field) is what repeats.",
+      "action": "Repository fixed in 503b290: src/components/CheckboxField.tsx and src/components/TextField.tsx replace the repeated label-and-input markup in BorrowForm, SettingsPage and ReadingListPage (both added to the clean list; A11Y-021/024 and TRP-018/019 moved to the new lines). Gone in v1.1.0 iteration 2.",
+      "iteration": 4,
+      "tag": "v1.1.0"
     }
   ],
   "falseNegatives": [
     {
       "entryId": "A11Y-010",
-      "reason": "Hand-rolled modal at src/features/item/ItemDetailDialog.tsx:45 — <div role=\"dialog\"> over the page with no aria-modal, no focus move, no focus containment and no Escape handler (verified: the file has no focus or keydown handling at all). No AC dimension has a rule for modal focus management; AC4/AC5 only read the role token."
+      "reason": "Hand-rolled modal at src/features/item/ItemDetailDialog.tsx:45 — <div role=\"dialog\"> over the page with no aria-modal, no focus move, no focus containment and no Escape handler (verified: the file has no focus or keydown handling at all). No AC dimension has a rule for modal focus management; AC4/AC5 only read the role token. v1.1.0: relabelled to modal-focus-not-managed (same site), a concept the Watchdog mapping lists as unmapped; still an FN."
     },
     {
       "entryId": "A11Y-013",
-      "reason": "Autoplaying, looping, muted hero <video> with no controls and no reduced-motion handling (HomePage.tsx:9-17), verified. AC1 correctly treats it as decorative for captions (TRP-002 held); no dimension checks auto-starting motion in media (WCAG 2.2.2)."
+      "reason": "Autoplaying, looping, muted hero <video> with no controls and no reduced-motion handling (HomePage.tsx:9-17), verified. AC1 correctly treats it as decorative for captions (TRP-002 held); no dimension checks auto-starting motion in media (WCAG 2.2.2). v1.1.0: relabelled to autoplay-media-without-control (same site), unmapped for Watchdog (AC1 reads autoplay only to decide whether captions are owed); still an FN."
     },
     {
       "entryId": "A11Y-014",
-      "reason": "Infinite @keyframes shimmer in src/styles/loading.css with no prefers-reduced-motion guard and no global reset, verified. AC6's motion check reads only <style> blocks in markup; in-repo .css files are read for contrast only."
+      "reason": "Infinite @keyframes shimmer in src/styles/loading.css with no prefers-reduced-motion guard and no global reset, verified. AC6's motion check reads only <style> blocks in markup; in-repo .css files are read for contrast only. v1.1.0: relabelled to motion-without-reduced-motion (mapped child of visual-and-motion-safety, same site); still an FN."
     },
     {
       "entryId": "A11Y-015",
-      "reason": ".search-bar__input:focus { outline: none; } with no replacement focus style in src/styles/search.css:18-20, verified. AC6's outline-removal check reads inline styles and <style> blocks, not .css files."
+      "reason": ".search-bar__input:focus { outline: none; } with no replacement focus style in src/styles/search.css:18-20, verified. AC6's outline-removal check reads inline styles and <style> blocks, not .css files. v1.1.0: relabelled to focus-outline-removed (mapped child of visual-and-motion-safety, same site); still an FN."
     },
     {
       "entryId": "A11Y-016",
@@ -218,6 +348,26 @@
     {
       "entryId": "A11Y-020",
       "reason": "'click here' link at HomePage.tsx:56, verified. LA5 is composed only with the WCAG / EN 301 549 compliance framework configured; not in the default configuration. With the framework on, LA5 found it on its line (iterations 2 and 3)."
+    },
+    {
+      "entryId": "A11Y-021",
+      "reason": "src/features/reading-list/ReadingListPage.tsx:161-163 keys rows of a reorderable, filterable list whose rows hold a note draft by array index, verified (moving a book leaves its half-typed note at the old position). react-index-as-key is unmapped for Watchdog: no rule reads JSX keys.",
+      "tag": "v1.1.0"
+    },
+    {
+      "entryId": "A11Y-022",
+      "reason": "src/features/gallery/Gallery.tsx:20-34: the arrow-key effect reads activeIndex but lists only viewerOpen, verified (eslint's exhaustive-deps warns on line 34; the viewer sticks after one step). react-hook-missing-dependency is unmapped for Watchdog: no rule reads dependency arrays (X1 flags only an async effect callback).",
+      "tag": "v1.1.0"
+    },
+    {
+      "entryId": "A11Y-023",
+      "reason": "src/features/reading-list/useReadingList.ts:43-49: markFinished assigns entry.finished on the object held in state, then copies the array, verified. react-state-mutation is unmapped for Watchdog: no rule reads component state updates.",
+      "tag": "v1.1.0"
+    },
+    {
+      "entryId": "A11Y-024",
+      "reason": "src/features/reading-list/ReadingListPage.tsx:141-142: the title error is rendered after the field with no aria-describedby, no aria-invalid and no live region, verified. form-error-not-associated is unmapped for Watchdog: AC2 reads aria-describedby only as a label reference.",
+      "tag": "v1.1.0"
     }
   ],
   "scoreBands": [
@@ -248,7 +398,7 @@
         50,
         90
       ],
-      "note": "LA2 not composed in the default configuration. With CODEHEALTH_COMPLIANCE_FRAMEWORKS=wcag-2.2: 75 (3 of 4 static alts meaningful) -> in."
+      "note": "LA2 not composed in the default configuration. With CODEHEALTH_COMPLIANCE_FRAMEWORKS=wcag-2.2: 75 (3 of 4 static alts meaningful) -> in. v1.1.0 WCAG pass: 75 -> in."
     },
     {
       "entryId": "BND-004",
@@ -257,7 +407,7 @@
         70,
         100
       ],
-      "note": "LA5 not composed in the default configuration. With the WCAG framework: 92 -> in."
+      "note": "LA5 not composed in the default configuration. With the WCAG framework: 92 -> in. v1.1.0 WCAG pass: 95 -> in."
     },
     {
       "entryId": "BND-005",
@@ -266,7 +416,7 @@
         80,
         100
       ],
-      "note": "LA6 not composed in the default configuration. With the WCAG framework: 100 -> in."
+      "note": "LA6 not composed in the default configuration. With the WCAG framework: 100 -> in. v1.1.0 WCAG pass: LA6 not measured (the scanner's judge answered a batch short and the re-ask did not complete) -> unscored in that pass."
     }
   ],
   "observations": [
@@ -277,6 +427,11 @@
     "The React XSS rules taint only props/parameters: API data held in state and rendered with dangerouslySetInnerHTML (A11Y-016) was missed, while the DOMPurify-sanitised notice (TRP-015) was correctly left alone.",
     "Large files: R3 raises a finding only when its score drops below 70, which needs more than 7.5 % of the frontend's files to be large; two files over 400 lines among the frontend's source files are visible only as a score of 78. The 500-line data module trap (TRP-016) and the plant are counted alike in that score.",
     "LA2/LA5/LA6 are off unless the WCAG / EN 301 549 compliance framework is configured; with it on (host model pass), both located text-quality plants were found on their lines and all three bands landed in range. The model passes were stable: identical model-judged scores across two iterations.",
-    "Contained scans were taken on a tree without node_modules/, dist/ and coverage/ (removed with git clean -xdf before each scan) so the scanned tree equals a clone."
+    "Contained scans were taken on a tree without node_modules/, dist/ and coverage/ (removed with git clean -xdf before each scan) so the scanned tree equals a clone.",
+    "v1.1.0 (contract 1.4): A11Y-010 -> modal-focus-not-managed, A11Y-013 -> autoplay-media-without-control, A11Y-014 -> motion-without-reduced-motion, A11Y-015 -> focus-outline-removed, and traps TRP-012/013 -> the same two children, all on the same sites. No outcome changed by a relabel: no Watchdog result had matched any of these entries at v1.0.0, and none does now. The default-configuration totals at v1.1.0: 12/24 plants (50 %), 19/22 traps held (86 %), noise 20 % (the same three caught traps).",
+    "v1.1.0 added the plants the author had omitted for lack of concepts (A11Y-021 index key on a reorderable list, A11Y-022 effect with a missing dependency, A11Y-023 in-place state mutation, A11Y-024 unassociated form error) and their look-alikes (TRP-018 index key on a static list, TRP-019 complete memo deps, TRP-020 splice on a copy, TRP-021 associated form error, TRP-022 native dialog focus). All four plants are FNs on concepts the Watchdog mapping lists as unmapped; all five traps held. Six of the 24 plants now sit on unmapped concepts (no scanner rule).",
+    "Writing the new feature made Watchdog's R10 report real duplication (a checkbox field copied into a third form, label-plus-input repeated): judged valid and fixed with shared CheckboxField/TextField components. The duplication-free v1.0.0 tree had the checkbox markup twice, below R10's bar.",
+    "Model passes at v1.1.0: the M4 'README/code drift' false positive of v1.0.0 did not recur in either host pass (M4 90 without a finding, README unchanged) and LA6 went unmeasured in the WCAG pass (judge batch answered short). Both are instrument variance, not repository changes.",
+    "react-hooks/exhaustive-deps is 'warn' in eslint-plugin-react-hooks 7.1.1's recommended-latest preset, so the planted missing dependency leaves `npm run lint` green with one warning; no rule was changed or demoted and nothing is suppressed. The compiler-based react-hooks/immutability rule does not flag the A11Y-023 mutation."
   ]
 }
