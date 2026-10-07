@@ -103,6 +103,13 @@
       "commit": "7ebcfbd2a860664a30c37cf2233a06679af8dc65",
       "keySha256": "3318283a747a5e4a4b75d4f826b104878d9e201e20850c06b2e0244e29cedf43",
       "frozenAt": "2026-10-07"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-ts-security-secrets",
+      "tag": "v1.0.0",
+      "commit": "60170c5de06c913a3b73695bcef823ef048abfe4",
+      "keySha256": "1737a27114aee510b76bdd29110f49accfdc0cc2c8794103d709cf95fda1cf07",
+      "frozenAt": "2026-10-07"
     }
   ]
 }
