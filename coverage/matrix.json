@@ -197,7 +197,8 @@
       },
       "concepts": [
         "god-class",
-        "oversized-source-file"
+        "oversized-source-file",
+        "long-method"
       ],
       "requires": [],
       "status": "in-scope",
@@ -334,7 +335,9 @@
       },
       "concepts": [
         "module-dependency-cycle",
-        "unstable-dependency"
+        "unstable-dependency",
+        "layer-dependency-violation",
+        "module-off-main-sequence"
       ],
       "requires": [],
       "status": "in-scope",
@@ -665,7 +668,8 @@
       "concepts": [
         "test-without-assertion",
         "skipped-test-without-reason",
-        "excessive-mocking"
+        "excessive-mocking",
+        "flaky-test"
       ],
       "requires": [
         "build + test execution"
@@ -806,7 +810,8 @@
       "concepts": [
         "vulnerable-dependency",
         "outdated-dependency",
-        "deprecated-dependency"
+        "deprecated-dependency",
+        "dependencies-not-locked"
       ],
       "requires": [
         "package restore (dotnet list package / npm metadata)"
@@ -1179,7 +1184,9 @@
         "suppressed-diagnostic",
         "commented-out-code",
         "empty-catch-block",
-        "unused-code"
+        "unused-code",
+        "unreachable-code",
+        "obsolete-symbol-still-used"
       ],
       "requires": [
         "a .NET tree that builds (abstains build-less: DimensionEditions.WithheldNotSelfSufficient)"
@@ -2006,7 +2013,23 @@
         "ci-workflow-injection",
         "ci-secret-exposure",
         "unpinned-ci-action",
-        "download-without-integrity-check"
+        "download-without-integrity-check",
+        "end-of-life-platform",
+        "insecure-cookie-flags",
+        "iac-misconfiguration",
+        "container-excessive-privilege",
+        "mutable-image-reference",
+        "unbounded-allocation-from-untrusted-length",
+        "unsynchronized-shared-state",
+        "unreachable-code",
+        "unused-code",
+        "silent-error-fallback",
+        "redundant-condition-operand",
+        "missing-subresource-integrity",
+        "secret-in-process-arguments",
+        "cleartext-transmission",
+        "dependency-release-cooldown-missing",
+        "sensitive-data-in-token-payload"
       ],
       "requires": [
         "contained scan (external scanner baked in the analyzer image): semgrep"
@@ -2187,7 +2210,8 @@
         "mutable-image-reference",
         "download-without-integrity-check",
         "hardcoded-credential",
-        "iac-misconfiguration"
+        "iac-misconfiguration",
+        "improper-certificate-validation"
       ],
       "requires": [
         "contained scan (external scanner baked in the analyzer image): trivy config"
@@ -2478,7 +2502,13 @@
       "concepts": [
         "build-provenance-and-signing",
         "unpinned-ci-action",
-        "mutable-image-reference"
+        "mutable-image-reference",
+        "download-without-integrity-check",
+        "security-tooling-in-ci",
+        "dependencies-not-locked",
+        "ci-secret-exposure",
+        "ci-token-excessive-permissions",
+        "secret-in-process-arguments"
       ],
       "requires": [],
       "status": "in-scope",
@@ -6172,7 +6202,11 @@
       },
       "concepts": [
         "incomplete-implementation",
-        "unreachable-code"
+        "unreachable-code",
+        "not-implemented-placeholder",
+        "commented-out-code",
+        "suppressed-diagnostic",
+        "skipped-test-without-reason"
       ],
       "requires": [],
       "status": "in-scope",
@@ -8524,7 +8558,14 @@
         "inbound-input-validation",
         "weak-cryptographic-algorithm",
         "weak-hash-algorithm",
-        "hardcoded-cryptographic-key"
+        "hardcoded-cryptographic-key",
+        "improper-certificate-validation",
+        "token-signature-or-expiry-not-validated",
+        "sensitive-data-in-url",
+        "sensitive-data-in-logs",
+        "missing-subresource-integrity",
+        "insufficient-password-hashing",
+        "cleartext-transmission"
       ],
       "requires": [],
       "status": "in-scope",
@@ -8798,7 +8839,8 @@
       },
       "concepts": [
         "empty-catch-block",
-        "pointless-catch-rethrow"
+        "pointless-catch-rethrow",
+        "rethrow-resets-stack-trace"
       ],
       "requires": [],
       "status": "in-scope",
@@ -8935,7 +8977,8 @@
       },
       "concepts": [
         "nullable-analysis-disabled",
-        "null-forgiving-suppression"
+        "null-forgiving-suppression",
+        "null-dereference"
       ],
       "requires": [],
       "status": "in-scope",

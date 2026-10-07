@@ -154,12 +154,28 @@
       "description": "MD5/SHA-1 used where collision or preimage resistance matters (passwords, signatures, integrity)."
     },
     {
+      "id": "insufficient-password-hashing",
+      "title": "Password stored or derived without an adequate key-derivation function",
+      "cwe": "CWE-916",
+      "family": "security",
+      "kind": "finding",
+      "description": "A password persisted or verified in plaintext or with a fast general-purpose hash instead of a slow salted KDF, or a password-based key derivation (PBKDF2, bcrypt, scrypt, Argon2) whose work factor is below current guidance or whose salt is a constant shared by every password."
+    },
+    {
       "id": "insecure-randomness",
       "title": "Insecure randomness for security values",
       "cwe": "CWE-338",
       "family": "security",
       "kind": "finding",
       "description": "A non-cryptographic PRNG generating keys, tokens, salts or identifiers that must be unguessable."
+    },
+    {
+      "id": "cleartext-transmission",
+      "title": "Cleartext transmission of data",
+      "cwe": "CWE-319",
+      "family": "security",
+      "kind": "finding",
+      "description": "A request, link, socket, RPC channel or server setting that sends application data or credentials over an unencrypted protocol (http://, plaintext gRPC, raw socket, telnet, TLS not required) where an encrypted one is available."
     },
     {
       "id": "missing-authorization",
@@ -226,6 +242,14 @@
       "description": "Personal data or tokens persisted in localStorage/sessionStorage/IndexedDB or non-HttpOnly cookies."
     },
     {
+      "id": "sensitive-data-in-token-payload",
+      "title": "Credential or sensitive data placed in a token payload",
+      "cwe": null,
+      "family": "security",
+      "kind": "finding",
+      "description": "A password, secret, payment-card number or card verification value written into the claims of a signed but unencrypted token (JWT), where every holder of the token can read it."
+    },
+    {
       "id": "unbounded-allocation-from-untrusted-length",
       "title": "Allocation or read sized by an unvalidated length field",
       "cwe": "CWE-789",
@@ -258,6 +282,22 @@
       "description": "Pipeline secrets made available to untrusted code: privileged triggers that build fork code, secrets passed to third-party steps or promoted to job-wide environment."
     },
     {
+      "id": "secret-in-process-arguments",
+      "title": "Secret passed as a process command-line argument",
+      "cwe": "CWE-214",
+      "family": "security",
+      "kind": "finding",
+      "description": "A credential passed to a command as a command-line argument or --flag=value, where it is visible in the process list to other processes on the host and commonly echoed into build logs."
+    },
+    {
+      "id": "ci-token-excessive-permissions",
+      "title": "CI job token broader than the job needs",
+      "cwe": "CWE-250",
+      "family": "security",
+      "kind": "finding",
+      "description": "A CI workflow or job runs with the platform's default (often write-all) automatic token, or grants it scopes wider than its steps use, so any compromised step inherits write access to code, releases or packages."
+    },
+    {
       "id": "unpinned-ci-action",
       "title": "Third-party CI action not pinned to an immutable reference",
       "cwe": "CWE-829",
@@ -272,6 +312,14 @@
       "family": "security",
       "kind": "finding",
       "description": "curl|sh, Invoke-WebRequest|iex or an unverified installer download in build scripts, Dockerfiles or CI."
+    },
+    {
+      "id": "missing-subresource-integrity",
+      "title": "Third-party script or stylesheet loaded without integrity check",
+      "cwe": "CWE-830",
+      "family": "security",
+      "kind": "finding",
+      "description": "A page includes a script or stylesheet from a third-party origin (CDN, analytics, widget host) without a Subresource Integrity hash, so whatever that origin serves executes with the page's privileges."
     },
     {
       "id": "container-excessive-privilege",
@@ -360,6 +408,14 @@
       "family": "security",
       "kind": "posture",
       "description": "An ecosystem in the repository resolves dependencies without a lockfile or central version pinning, so builds are not reproducible."
+    },
+    {
+      "id": "dependency-release-cooldown-missing",
+      "title": "Dependency updates adopted without a release-age cooldown",
+      "cwe": null,
+      "family": "security",
+      "kind": "finding",
+      "description": "A dependency-update bot or package-manager configuration (Dependabot, Renovate, npm, pnpm, yarn, bun, uv, Poetry, Bundler) that adopts a newly published release immediately, with no minimum release age or cooldown window in which a compromised release can be detected and withdrawn."
     },
     {
       "id": "unused-dependency",
@@ -570,6 +626,14 @@
       "description": "A source file or UI component exceeding the size threshold."
     },
     {
+      "id": "long-method",
+      "title": "Overlong method or function",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A single method or function whose body exceeds the length threshold, whatever the size of the type or file that holds it."
+    },
+    {
       "id": "duplicated-code",
       "title": "Duplicated code",
       "cwe": "CWE-1041",
@@ -618,6 +682,14 @@
       "description": "Types, members, files or exports that nothing references."
     },
     {
+      "id": "obsolete-symbol-still-used",
+      "title": "Symbol marked obsolete by its own codebase is still used",
+      "cwe": "CWE-477",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A type or member the codebase itself marks deprecated/obsolete (an [Obsolete] attribute, @deprecated tag or equivalent) that is still called or referenced from within the same codebase, so the announced migration was never finished."
+    },
+    {
       "id": "unreachable-code",
       "title": "Unreachable branch or region",
       "cwe": "CWE-561",
@@ -656,6 +728,14 @@
       "family": "codehealth",
       "kind": "finding",
       "description": "A catch clause whose only statement rethrows, adding nothing."
+    },
+    {
+      "id": "rethrow-resets-stack-trace",
+      "title": "Rethrow discards the original stack trace",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A catch block rethrows the caught exception object (throw ex;) instead of rethrowing in place, so the stack trace restarts at the rethrow and hides where the failure originated."
     },
     {
       "id": "blocking-on-async-code",
@@ -704,6 +784,14 @@
       "family": "codehealth",
       "kind": "finding",
       "description": "The '!' operator (or equivalent non-null assertion) silencing null-safety analysis."
+    },
+    {
+      "id": "null-dereference",
+      "title": "Possible null dereference",
+      "cwe": "CWE-476",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "A value the code itself treats as possibly null (null-conditional access, `as` cast, null test) is dereferenced on a path where nothing guarantees it is non-null."
     },
     {
       "id": "hand-rolled-structured-format-parsing",
@@ -928,6 +1016,14 @@
       "family": "architecture",
       "kind": "metric",
       "description": "A module many others depend on that itself has high instability (efferent coupling)."
+    },
+    {
+      "id": "module-off-main-sequence",
+      "title": "Module far from the main sequence (abstractness vs. instability)",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "metric",
+      "description": "A module whose abstractness and instability are out of balance: concrete yet heavily depended on (rigid to change), or abstract yet unstable (likely unused), measured as the distance from A + I = 1."
     },
     {
       "id": "architecture-rules-unenforced",

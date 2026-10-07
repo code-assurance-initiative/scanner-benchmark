@@ -103,6 +103,19 @@ rows that restate other rows (roll-ups, totals), and give the reason.
 `family` here is a mapping-level grouping of concepts one scanner may confuse with each other (e.g. a credential
 reported under a sibling secret type). It is unrelated to the taxonomy's `family` field.
 
+A mapping may also carry informational keys that the harness ignores: `notes` (prose), `offConcept`
+(`[{rule, message, source}]`: results the scanner really emits under a rule that denote none of the concepts mapped
+to it, so they map to no concept; recorded so the omission is visibly deliberate) and `unevidenced`
+(`[{concept, dimension, source}]`: a dimension listed for a concept although none of its results evidences it at
+this scanner version, so it has no rule item). They change no outcome, so they need no version bump.
+
+**Watchdog (rubric-2026.10.1).** Watchdog's ruleId is the bare dimension id, so the message title decides the
+concept. In `mappings/watchdog.json` every multi-concept in-scope dimension is fully discriminated: D3, D5, D7, D10,
+D12, D13, D17, D28, D29, D31, D32, D36, IC1, PF3, R2, R8, S1, X1, X3 and X5, plus SC1. Each result lands on exactly
+the concept its title denotes, or on none (`offConcept`). The tables are curated in
+`mappings/watchdog-build/discrim.py`, with the engine source line of each title format. The out-of-scope runtime
+card AXR1 is not discriminated. Single-concept dimensions keep the bare ruleId rule.
+
 Note: bench repositories stay vendor-neutral, so they normally omit `scannerHints`; the harness mappings carry
 scanner knowledge.
 

@@ -29,7 +29,11 @@ c("server-side-request-forgery", "Server-side request forgery / bypassable addre
 c("open-redirect", "Open redirect", "CWE-601", "security", "finding", "A redirect to a URL taken from the request without validation.")
 c("weak-cryptographic-algorithm", "Broken or risky cryptographic algorithm or mode", "CWE-327", "security", "finding", "Use of DES/3DES/RC4, ECB mode, weak RSA padding or comparable deprecated primitives.")
 c("weak-hash-algorithm", "Weak hash used for a security purpose", "CWE-328", "security", "finding", "MD5/SHA-1 used where collision or preimage resistance matters (passwords, signatures, integrity).")
+c("insufficient-password-hashing", "Password stored or derived without an adequate key-derivation function", "CWE-916", "security", "finding",
+  "A password persisted or verified in plaintext or with a fast general-purpose hash instead of a slow salted KDF, or a password-based key derivation (PBKDF2, bcrypt, scrypt, Argon2) whose work factor is below current guidance or whose salt is a constant shared by every password.")
 c("insecure-randomness", "Insecure randomness for security values", "CWE-338", "security", "finding", "A non-cryptographic PRNG generating keys, tokens, salts or identifiers that must be unguessable.")
+c("cleartext-transmission", "Cleartext transmission of data", "CWE-319", "security", "finding",
+  "A request, link, socket, RPC channel or server setting that sends application data or credentials over an unencrypted protocol (http://, plaintext gRPC, raw socket, telnet, TLS not required) where an encrypted one is available.")
 c("missing-authorization", "Missing authorization on an endpoint", "CWE-862", "security", "finding", "A state-changing or data-returning endpoint reachable without an authorization check.")
 c("mass-assignment", "Mass assignment", "CWE-915", "security", "finding", "Binding request data directly onto a persistence/domain object so callers can set fields they must not control.")
 c("error-information-exposure", "Stack trace / error detail exposed to clients", "CWE-209", "security", "finding", "Exception details or stack traces returned in responses.")
@@ -38,12 +42,20 @@ c("token-signature-or-expiry-not-validated", "Security token signature or lifeti
 c("sensitive-data-in-logs", "Sensitive or personal data written to logs", "CWE-532", "security", "finding", "Personal data, credentials or tokens reaching a log or console sink.")
 c("sensitive-data-in-url", "Sensitive data in URL / query string", "CWE-598", "security", "finding", "Personal data or secrets placed in a URL, path or query string.")
 c("sensitive-data-in-browser-storage", "Sensitive data in unprotected browser storage", "CWE-922", "security", "finding", "Personal data or tokens persisted in localStorage/sessionStorage/IndexedDB or non-HttpOnly cookies.")
+c("sensitive-data-in-token-payload", "Credential or sensitive data placed in a token payload", None, "security", "finding",
+  "A password, secret, payment-card number or card verification value written into the claims of a signed but unencrypted token (JWT), where every holder of the token can read it.")
 c("unbounded-allocation-from-untrusted-length", "Allocation or read sized by an unvalidated length field", "CWE-789", "security", "finding", "An integer length read from an untrusted stream/reader used for an allocation or bulk read without an upper bound.")
 c("uncontrolled-recursion", "Uncontrolled recursion over caller-supplied input", "CWE-674", "security", "finding", "A recursive walk over a caller-supplied document (JSON/XML tree) with no depth limit.")
 c("ci-workflow-injection", "CI workflow expression / script injection", "CWE-78", "security", "finding", "Attacker-controlled CI context (PR title, branch name, comment body) interpolated into a pipeline shell step.")
 c("ci-secret-exposure", "CI secret exposed to untrusted code", None, "security", "finding", "Pipeline secrets made available to untrusted code: privileged triggers that build fork code, secrets passed to third-party steps or promoted to job-wide environment.")
+c("secret-in-process-arguments", "Secret passed as a process command-line argument", "CWE-214", "security", "finding",
+  "A credential passed to a command as a command-line argument or --flag=value, where it is visible in the process list to other processes on the host and commonly echoed into build logs.")
+c("ci-token-excessive-permissions", "CI job token broader than the job needs", "CWE-250", "security", "finding",
+  "A CI workflow or job runs with the platform's default (often write-all) automatic token, or grants it scopes wider than its steps use, so any compromised step inherits write access to code, releases or packages.")
 c("unpinned-ci-action", "Third-party CI action not pinned to an immutable reference", "CWE-829", "security", "finding", "A CI step referencing a third-party action/orb/image by mutable tag or branch instead of a full commit digest.")
 c("download-without-integrity-check", "Remote code downloaded and executed without integrity check", "CWE-494", "security", "finding", "curl|sh, Invoke-WebRequest|iex or an unverified installer download in build scripts, Dockerfiles or CI.")
+c("missing-subresource-integrity", "Third-party script or stylesheet loaded without integrity check", "CWE-830", "security", "finding",
+  "A page includes a script or stylesheet from a third-party origin (CDN, analytics, widget host) without a Subresource Integrity hash, so whatever that origin serves executes with the page's privileges.")
 c("container-excessive-privilege", "Container runs with excessive privilege", "CWE-250", "security", "finding", "Container/workload running as root, privileged, with added capabilities, host namespaces or a writable root filesystem.")
 c("container-missing-resource-limits", "Workload without resource limits", "CWE-770", "security", "finding", "A container/pod specification without CPU/memory limits.")
 c("mutable-image-reference", "Container image referenced by mutable tag", None, "security", "finding", "A base or runtime image referenced by ':latest' or another mutable tag instead of a pinned version/digest.")
@@ -56,6 +68,8 @@ c("outdated-dependency", "Outdated dependency", None, "readiness", "finding", "A
 c("deprecated-dependency", "Deprecated dependency", None, "readiness", "finding", "A dependency its publisher has marked deprecated.")
 c("license-policy-violation", "Dependency license incompatible with policy", None, "compliance", "finding", "A third-party package whose declared license is denied or copyleft-incompatible under the configured policy.")
 c("dependencies-not-locked", "Dependencies not locked", None, "security", "posture", "An ecosystem in the repository resolves dependencies without a lockfile or central version pinning, so builds are not reproducible.")
+c("dependency-release-cooldown-missing", "Dependency updates adopted without a release-age cooldown", None, "security", "finding",
+  "A dependency-update bot or package-manager configuration (Dependabot, Renovate, npm, pnpm, yarn, bun, uv, Poetry, Bundler) that adopts a newly published release immediately, with no minimum release age or cooldown window in which a compromised release can be detected and withdrawn.")
 c("unused-dependency", "Declared dependency never used", None, "codehealth", "finding", "A package declared in a manifest that no source file imports.")
 c("undeclared-dependency", "Imported package not declared", None, "codehealth", "finding", "A package imported by source but declared in no manifest (works only transitively or by accident).")
 c("misplaced-dev-dependency", "Development-only package declared as a production dependency", None, "codehealth", "finding", "Type, test or build-only packages declared as runtime dependencies.")
@@ -84,23 +98,31 @@ c("high-cyclomatic-complexity", "Function with high cyclomatic complexity", "CWE
 c("high-cognitive-complexity", "Function with high cognitive complexity", None, "codehealth", "finding", "A method/function hard to follow because of nesting and flow breaks (Sonar-style cognitive complexity).")
 c("god-class", "Oversized class (god class)", None, "codehealth", "finding", "A class with too many lines or members that concentrates unrelated responsibilities.")
 c("oversized-source-file", "Oversized source file / component", "CWE-1080", "codehealth", "finding", "A source file or UI component exceeding the size threshold.")
+c("long-method", "Overlong method or function", None, "codehealth", "finding",
+  "A single method or function whose body exceeds the length threshold, whatever the size of the type or file that holds it.")
 c("duplicated-code", "Duplicated code", "CWE-1041", "codehealth", "finding", "Copy-pasted code blocks or identical long conditions that should be shared.")
 c("low-class-cohesion", "Low class cohesion (LCOM)", None, "codehealth", "metric", "A class whose methods split into disconnected groups sharing no state or calls.")
 c("technical-debt-marker", "TODO / FIXME / HACK marker", "CWE-546", "codehealth", "finding", "A comment marking known unfinished or questionable work.")
 c("suppressed-diagnostic", "Suppressed compiler / analyzer diagnostic", None, "codehealth", "finding", "A pragma or attribute disabling a warning or analyzer rule.")
 c("commented-out-code", "Commented-out code", None, "codehealth", "finding", "Blocks of code left in comments.")
 c("unused-code", "Unused code (dead symbols, unreachable files, unused exports)", "CWE-561", "codehealth", "finding", "Types, members, files or exports that nothing references.")
+c("obsolete-symbol-still-used", "Symbol marked obsolete by its own codebase is still used", "CWE-477", "codehealth", "finding",
+  "A type or member the codebase itself marks deprecated/obsolete (an [Obsolete] attribute, @deprecated tag or equivalent) that is still called or referenced from within the same codebase, so the announced migration was never finished.")
 c("unreachable-code", "Unreachable branch or region", "CWE-561", "codehealth", "finding", "A branch, case label or conditional-compilation region that can never execute.")
 c("not-implemented-placeholder", "Not-implemented stub or placeholder in shipped code", None, "codehealth", "finding", "NotImplementedException throws or placeholder literals in production code.")
 c("incomplete-implementation", "Incomplete implementation by code shape", None, "codehealth", "finding", "Constant-returning stubs, async methods that never await, guards that cannot change the outcome, comparisons against NaN, skeleton types.")
 c("empty-catch-block", "Empty catch block (swallowed exception)", "CWE-1069", "codehealth", "finding", "A catch clause that discards the exception without handling or logging it.")
 c("pointless-catch-rethrow", "Catch that only rethrows", None, "codehealth", "finding", "A catch clause whose only statement rethrows, adding nothing.")
+c("rethrow-resets-stack-trace", "Rethrow discards the original stack trace", None, "codehealth", "finding",
+  "A catch block rethrows the caught exception object (throw ex;) instead of rethrowing in place, so the stack trace restarts at the rethrow and hides where the failure originated.")
 c("blocking-on-async-code", "Blocking on asynchronous code (sync-over-async)", None, "codehealth", "finding", ".Wait()/.Result/.GetAwaiter().GetResult() or a blocking call inside an async function.")
 c("async-void-method", "async void outside event handlers", None, "codehealth", "finding", "An async void method whose exceptions cannot be observed.")
 c("missing-cancellation-propagation", "Async operation without cancellation", None, "codehealth", "finding", "An async method/function performing I/O that accepts and forwards no cancellation token/signal.")
 c("non-structured-log-message", "Log message built by string interpolation", None, "codehealth", "finding", "A logging call whose message template is an interpolated/concatenated string instead of a structured template with arguments.")
 c("nullable-analysis-disabled", "Null-safety analysis not enabled", None, "codehealth", "posture", "Projects compile without nullable reference types / strict null checks.")
 c("null-forgiving-suppression", "Null-safety suppressed with the null-forgiving operator", None, "codehealth", "finding", "The '!' operator (or equivalent non-null assertion) silencing null-safety analysis.")
+c("null-dereference", "Possible null dereference", "CWE-476", "codehealth", "finding",
+  "A value the code itself treats as possibly null (null-conditional access, `as` cast, null test) is dereferenced on a path where nothing guarantees it is non-null.")
 c("hand-rolled-structured-format-parsing", "Hand-rolled JSON/XML parsing", None, "codehealth", "finding", "Regex or string slicing used to extract values from JSON/XML when a parser is available.")
 c("silent-error-fallback", "Failure path silently falls back to a constant", "CWE-390", "codehealth", "finding", "A parse/lookup failure returns a hard-coded default with no logging or signal to the caller.")
 c("js-interop-contract-mismatch", "JavaScript interop call to a missing function", None, "codehealth", "finding", "A string-named JS interop invocation that no referenced script defines.")
@@ -130,6 +152,8 @@ c("low-value-comments", "Low-value or misleading comments", None, "maturity", "j
 # ---------------- architecture ----------------
 c("module-dependency-cycle", "Circular dependency between modules/projects", "CWE-1047", "architecture", "finding", "Projects, packages or modules that depend on each other in a cycle.")
 c("unstable-dependency", "Stable modules depending on volatile ones", None, "architecture", "metric", "A module many others depend on that itself has high instability (efferent coupling).")
+c("module-off-main-sequence", "Module far from the main sequence (abstractness vs. instability)", None, "architecture", "metric",
+  "A module whose abstractness and instability are out of balance: concrete yet heavily depended on (rigid to change), or abstract yet unstable (likely unused), measured as the distance from A + I = 1.")
 c("architecture-rules-unenforced", "Architecture decisions not enforced", None, "architecture", "posture", "Checkable architecture decisions without an automated enforcement (architecture tests, analyzers).")
 c("layer-dependency-violation", "Layer / boundary dependency violation", None, "architecture", "finding", "A dependency pointing the wrong way between layers (domain -> infrastructure, app -> web) or a deep import across a package boundary.")
 c("boundary-type-leakage", "Domain type leaking across a bounded-context boundary", None, "architecture", "finding", "Public surface of one context exposing another context's domain types instead of ids/contracts.")
