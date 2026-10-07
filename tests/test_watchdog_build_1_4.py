@@ -123,7 +123,11 @@ class MatrixFromKeys(unittest.TestCase):
         rd = cov["bench-csharp-readiness"]  # readiness was planned with score-bands only; its key plants X2 rows
         self.assertTrue(rd["source"].startswith("key v"))
         self.assertIn("must-fire", rd["labels"])
-        self.assertEqual(cov["bench-ts-codehealth"]["source"], "plan")  # not frozen: planned labels stay
+        reg = load_json(os.path.join(ROOT, "registry.json"))
+        frozen = {x["repo"].split("/")[1] for x in reg["repos"]}
+        planned = [c for repo, c in cov.items() if repo not in frozen]
+        self.assertTrue(all(c["source"] == "plan" for c in planned))  # not frozen: planned labels stay
+        self.assertTrue(all(c["source"].startswith("key v") for repo, c in cov.items() if repo in frozen))
 
     def test_every_registered_repo_is_listed_with_its_key(self):
         reg = load_json(os.path.join(ROOT, "registry.json"))
