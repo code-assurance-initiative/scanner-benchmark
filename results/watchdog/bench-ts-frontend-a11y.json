@@ -1,0 +1,282 @@
+{
+  "repo": "code-assurance-initiative/bench-ts-frontend-a11y",
+  "tag": "v1.0.0",
+  "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc); host model passes on the same engine build",
+  "scans": [
+    {
+      "iteration": 1,
+      "date": "2026-10-07",
+      "sarifSha256": "b6339472925922e65b9d13b2ec690bdeb52acff384f46231362a8fa1b37dbb72",
+      "outcomes": {
+        "tp": 12,
+        "fn": 8,
+        "fp": 3,
+        "tn": 79,
+        "trapFp": 3,
+        "trapTn": 14,
+        "results": 15,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 2
+      },
+      "note": "contained, repo at 98736a3 (key at 98736a3)"
+    },
+    {
+      "iteration": 2,
+      "date": "2026-10-07",
+      "sarifSha256": "5ce4020252dc45bd3a8c298bacc84064e25021f56963aa92a732e700f4c57d8f",
+      "outcomes": {
+        "tp": 12,
+        "fn": 8,
+        "fp": 3,
+        "tn": 80,
+        "trapFp": 3,
+        "trapTn": 14,
+        "results": 15,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 1
+      },
+      "note": "contained, repo at a04a767 (BorrowForm extracted)"
+    },
+    {
+      "iteration": 2,
+      "date": "2026-10-07",
+      "sarifSha256": "3b60395cf5f0f858a409238338d8db5e258c8a859209285be4c26083b4b7978d",
+      "outcomes": {
+        "tp": 12,
+        "fn": 8,
+        "fp": 3,
+        "tn": 80,
+        "trapFp": 3,
+        "trapTn": 14,
+        "results": 15,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 2
+      },
+      "note": "host --with-llm, default configuration, repo at a04a767"
+    },
+    {
+      "iteration": 2,
+      "date": "2026-10-07",
+      "sarifSha256": "6fa82df38f9cfc7c66a1bf1d727182559cdc1dd4748de37275e51197941f5190",
+      "outcomes": {
+        "tp": 14,
+        "fn": 6,
+        "fp": 3,
+        "tn": 80,
+        "trapFp": 3,
+        "trapTn": 14,
+        "results": 17,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 2
+      },
+      "note": "host --with-llm with CODEHEALTH_COMPLIANCE_FRAMEWORKS=wcag-2.2 (NOT the default configuration; informative), repo at a04a767"
+    },
+    {
+      "iteration": 3,
+      "date": "2026-10-07",
+      "sarifSha256": "5ce4020252dc45bd3a8c298bacc84064e25021f56963aa92a732e700f4c57d8f",
+      "outcomes": {
+        "tp": 12,
+        "fn": 8,
+        "fp": 3,
+        "tn": 80,
+        "trapFp": 3,
+        "trapTn": 14,
+        "results": 15,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 1
+      },
+      "note": "contained, final, repo at 6d5e9d3 (tag v1.0.0 = 6d5e9d3 + journal entry only)"
+    },
+    {
+      "iteration": 3,
+      "date": "2026-10-07",
+      "sarifSha256": "3b60395cf5f0f858a409238338d8db5e258c8a859209285be4c26083b4b7978d",
+      "outcomes": {
+        "tp": 12,
+        "fn": 8,
+        "fp": 3,
+        "tn": 80,
+        "trapFp": 3,
+        "trapTn": 14,
+        "results": 15,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 2
+      },
+      "note": "host --with-llm, default configuration, final, repo at 6d5e9d3; model scores identical to iteration 2"
+    },
+    {
+      "iteration": 3,
+      "date": "2026-10-07",
+      "sarifSha256": "6fa82df38f9cfc7c66a1bf1d727182559cdc1dd4748de37275e51197941f5190",
+      "outcomes": {
+        "tp": 14,
+        "fn": 6,
+        "fp": 3,
+        "tn": 80,
+        "trapFp": 3,
+        "trapTn": 14,
+        "results": 17,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 2
+      },
+      "note": "host --with-llm with CODEHEALTH_COMPLIANCE_FRAMEWORKS=wcag-2.2 (NOT the default configuration; informative), final, repo at 6d5e9d3; model scores identical to iteration 2"
+    }
+  ],
+  "verdicts": [
+    {
+      "ruleId": "D3",
+      "file": "src/features/borrow/BorrowDialog.tsx",
+      "line": 13,
+      "message": "FunctionTooLong: BorrowDialog.BorrowDialog: FunctionTooLong — BorrowDialog runs 108 significant lines (blank, comment-only and punctuation-only lines excluded) in one body. The bar is 100 significant lines; this is 8 over it, 1.08× the bar. This is length, not branching: a long straight-line body scores low on complexity and is still read whole to change any part of it, so the complexity numbers beside this row neither confirm nor excuse it. To reduce it, extract each cohesive step of the body — the runs of statements that work on the same values and would earn the same name — into its own named unit, and have this one call them in order.",
+      "class": "valid",
+      "reason": "Accurate: the BorrowDialog component body was 108 significant lines against the stated 100-line bar, and it did two jobs — hosting the native modal dialog and owning the whole reservation form (state, validation, submission, fields).",
+      "action": "Repository fixed in a04a767: the form became its own component (BorrowForm.tsx, added to the clean list); BorrowDialog keeps the dialog, its backdrop handler and heading. TRP-008 moved to lines 35-41 (same element, same code). Gone in iterations 2 and 3."
+    },
+    {
+      "ruleId": "AC4",
+      "file": "src/features/borrow/BorrowDialog.tsx",
+      "line": 75,
+      "message": "Click handler on a non-interactive <dialog>: A click handler on a plain element isn't keyboard-operable. Use a <button>, or add role + tabIndex={0} + a key handler.",
+      "class": "false-positive",
+      "reason": "TRP-008. The element is a native <dialog> opened with showModal(): the browser moves focus into it, makes the page inert, closes it on Escape, and the form's Cancel button closes it too. The onClick handler acts only when event.target === event.currentTarget, i.e. on a click on the ::backdrop outside the form — an optional pointer convenience with keyboard equivalents. The scanner's dismiss-backdrop escape (EventHandlers.IsDismissBackdrop) recognises a wrapper of a role=\"dialog\"/aria-modal descendant, not the native modal element itself.",
+      "action": "Recorded as noise; the site is trap TRP-008 (caught). Recurs at BorrowDialog.tsx:35 in iterations 2 and 3 after the refactor (same element, same code)."
+    },
+    {
+      "ruleId": "AC4",
+      "file": "src/features/search/ResultCard.tsx",
+      "line": 24,
+      "message": "Click handler on a non-interactive <article>: A click handler on a plain element isn't keyboard-operable. Use a <button>, or add role + tabIndex={0} + a key handler.",
+      "class": "false-positive",
+      "reason": "TRP-005. The <article> click is a pointer convenience: the card contains a native <button> 'View details' whose handler (open → onOpen(item.id)) performs exactly the action the card click performs, and the card handler ignores clicks that land on the button. Keyboard and assistive-technology users have a proper control. The scanner's duplicated-action escape did not match because the card handler (handleCardClick) and the button handler (open) are different functions.",
+      "action": "Recorded as noise; the site is trap TRP-005 (caught). Recurs unchanged in iterations 2 and 3."
+    },
+    {
+      "ruleId": "AC6",
+      "file": "src/styles/hero.css",
+      "line": 9,
+      "message": "Low contrast colour pair in CSS (3.8:1): `.hero__title` sets color: #ffffff on background-color: #2f8f9d — 3.8:1, below the 4.5:1 WCAG AA minimum for normal text. Darken or lighten one of them.",
+      "class": "false-positive",
+      "reason": "TRP-010. The same rule (.hero__title, hero.css:9-17) sets font-size: 2.25rem and font-weight: 700 — 36px bold, large text under WCAG 1.4.3, for which the AA minimum is 3:1. #ffffff on #2f8f9d is 3.8:1 and passes. The scanner applies the 4.5:1 normal-text bar without reading the font size declared in the same block.",
+      "action": "Recorded as noise; the site is trap TRP-010 (caught). Recurs unchanged in iterations 2 and 3."
+    },
+    {
+      "ruleId": "P6",
+      "file": null,
+      "line": null,
+      "message": "Changelog looks stale/thin: The changelog this check read carries 2 versioned entries, against a bar of 3. Counted as either an `x.y.z` string or a version-shaped section heading (`## [1.2.0]`, `## V14.x.x`, `## Updates in 8.0.x`), whichever is the larger — so a log sectioned by minor series counts its sections, not its individual patch numbers. Entries recorded somewhere this check does not read — release notes generated at tag time from a generator config it did not recognise, or a log kept outside the repository — are not counted here, and this row is about what is re-findable in the tree rather than about how often you release.",
+      "class": "opinion-not-fact",
+      "reason": "The count is right (CHANGELOG.md has one release section plus the format header), but the repository is at its first release, so one logged release is complete; 'stale/thin' is a conclusion the count of versioned entries does not support for a v1.0.0 project. Concept (release hygiene) not covered by this key: an uncovered row.",
+      "action": "Recorded; no change. Recurs unchanged in iterations 2 and 3."
+    },
+    {
+      "ruleId": "M4",
+      "file": null,
+      "line": null,
+      "message": "README/code drift: ESLint uses typescript-eslint strict + React hooks rules — searched for: `typescript-eslint strict`, `React hooks rules`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+      "class": "false-positive",
+      "reason": "The README sentence 'ESLint (typescript-eslint strict + React hooks rules)' is true: eslint.config.js applies tseslint.configs.strictTypeChecked and eslint-plugin-react-hooks' recommended config, and package.json declares typescript-eslint and eslint-plugin-react-hooks. The check reads the claim's words as names to find in file names and manifest contents and does not read the ESLint config file. Concept not covered by this key: an uncovered row (host model passes only).",
+      "action": "Recorded as noise; README unchanged. Seen identically in every host pass (iterations 2 and 3)."
+    }
+  ],
+  "falseNegatives": [
+    {
+      "entryId": "A11Y-010",
+      "reason": "Hand-rolled modal at src/features/item/ItemDetailDialog.tsx:45 — <div role=\"dialog\"> over the page with no aria-modal, no focus move, no focus containment and no Escape handler (verified: the file has no focus or keydown handling at all). No AC dimension has a rule for modal focus management; AC4/AC5 only read the role token."
+    },
+    {
+      "entryId": "A11Y-013",
+      "reason": "Autoplaying, looping, muted hero <video> with no controls and no reduced-motion handling (HomePage.tsx:9-17), verified. AC1 correctly treats it as decorative for captions (TRP-002 held); no dimension checks auto-starting motion in media (WCAG 2.2.2)."
+    },
+    {
+      "entryId": "A11Y-014",
+      "reason": "Infinite @keyframes shimmer in src/styles/loading.css with no prefers-reduced-motion guard and no global reset, verified. AC6's motion check reads only <style> blocks in markup; in-repo .css files are read for contrast only."
+    },
+    {
+      "entryId": "A11Y-015",
+      "reason": ".search-bar__input:focus { outline: none; } with no replacement focus style in src/styles/search.css:18-20, verified. AC6's outline-removal check reads inline styles and <style> blocks, not .css files."
+    },
+    {
+      "entryId": "A11Y-016",
+      "reason": "item.summaryHtml from the catalogue API (held in component state after getItem) written with dangerouslySetInnerHTML unsanitised (ItemDetailDialog.tsx:62-65), verified. semgrep 1.86.0 ran over the file with 0 results: the React XSS rules in the SAST pack taint only component props and parameters, not fetched data in state."
+    },
+    {
+      "entryId": "A11Y-017",
+      "reason": "src/features/loans/LoansPage.tsx: 549 lines (494 non-blank), six components plus sort, CSV and date helpers, verified. R3 counted it (and the data trap) as over 400 lines and scored 78, but R3 raises a finding only when its score falls below 70; the D3 long-file check (500-line bar) did not fire on it."
+    },
+    {
+      "entryId": "A11Y-019",
+      "reason": "alt=\"IMG_2041.jpg\" at HomePage.tsx:35-41, verified. LA2 is composed only when the WCAG / EN 301 549 compliance framework is configured (CODEHEALTH_COMPLIANCE_FRAMEWORKS); in the default configuration measured here it builds no card. With the framework on, LA2 found it on its line (iterations 2 and 3)."
+    },
+    {
+      "entryId": "A11Y-020",
+      "reason": "'click here' link at HomePage.tsx:56, verified. LA5 is composed only with the WCAG / EN 301 549 compliance framework configured; not in the default configuration. With the framework on, LA5 found it on its line (iterations 2 and 3)."
+    }
+  ],
+  "scoreBands": [
+    {
+      "entryId": "BND-001",
+      "outcome": "out",
+      "score": 40,
+      "band": [
+        0,
+        20
+      ],
+      "class": "opinion-not-fact",
+      "note": "AC7 reports rung 0 ('No accessibility enforcement found', also the A11Y-018 plant, found) but its scale puts rung 0 at 4/10 (AdoptionCurve floor). The band is the benchmark's reading of 'nothing enforced'; set before the first scan and kept."
+    },
+    {
+      "entryId": "BND-002",
+      "outcome": "in",
+      "score": 100,
+      "band": [
+        90,
+        100
+      ]
+    },
+    {
+      "entryId": "BND-003",
+      "outcome": "unscored",
+      "band": [
+        50,
+        90
+      ],
+      "note": "LA2 not composed in the default configuration. With CODEHEALTH_COMPLIANCE_FRAMEWORKS=wcag-2.2: 75 (3 of 4 static alts meaningful) -> in."
+    },
+    {
+      "entryId": "BND-004",
+      "outcome": "unscored",
+      "band": [
+        70,
+        100
+      ],
+      "note": "LA5 not composed in the default configuration. With the WCAG framework: 92 -> in."
+    },
+    {
+      "entryId": "BND-005",
+      "outcome": "unscored",
+      "band": [
+        80,
+        100
+      ],
+      "note": "LA6 not composed in the default configuration. With the WCAG framework: 100 -> in."
+    }
+  ],
+  "observations": [
+    "Every located JSX/HTML plant of AC1-AC5 was found on its exact line: img without alt, video without captions, icon-only button, placeholder-only input, html without lang, h1->h3 skip, click-only div, positive tabIndex, href=\"#\" button, role=\"switch\" without aria-checked. The scanner reads JSX/TSX well (useId-based label/id pairs, a visually-hidden label, role+tabIndex+key-handler chips, decorative alt=\"\" + role=presentation, aria-hidden icons in named buttons, a fragment skip link, a muted decorative video were all left alone).",
+    "AC6 is strong on literal colour pairs in .css files (the 2.7:1 body-text plant on its rule line; a :disabled pair correctly exempt) but blind to everything else a .css file says about motion and focus: an unguarded @keyframes and an outline removed on :focus in a stylesheet are not read. It also ignores the font size declared in the same rule, so a large-text pair between 3:1 and 4.5:1 is reported (TRP-010).",
+    "AC4's escapes are shape-based: a native <dialog> with a backdrop-click handler (TRP-008) and a clickable card whose action is duplicated by an inner button under a different handler name (TRP-005) were both reported as keyboard defects.",
+    "No dimension checks modal focus management (aria-modal, focus move/containment, Escape) or auto-starting motion in media; both plants missed.",
+    "The React XSS rules taint only props/parameters: API data held in state and rendered with dangerouslySetInnerHTML (A11Y-016) was missed, while the DOMPurify-sanitised notice (TRP-015) was correctly left alone.",
+    "Large files: R3 raises a finding only when its score drops below 70, which needs more than 7.5 % of the frontend's files to be large; two files over 400 lines among the frontend's source files are visible only as a score of 78. The 500-line data module trap (TRP-016) and the plant are counted alike in that score.",
+    "LA2/LA5/LA6 are off unless the WCAG / EN 301 549 compliance framework is configured; with it on (host model pass), both located text-quality plants were found on their lines and all three bands landed in range. The model passes were stable: identical model-judged scores across two iterations.",
+    "Contained scans were taken on a tree without node_modules/, dist/ and coverage/ (removed with git clean -xdf before each scan) so the scanned tree equals a clone."
+  ]
+}
