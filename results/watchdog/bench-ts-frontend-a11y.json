@@ -296,6 +296,32 @@
         }
       },
       "note": "freestanding clone of v1.1.0 (09b0b16) at _frozen/v1.1.0/bench-ts-frontend-a11y; TypeScript sidecar ran (no SidecarModelFailures, ProductionSourceUnmodelled false). Result set identical to the v1.1.0 iteration-2 WCAG pass (17 results, no new row). LA2 75 in, LA5 95 in, and LA6 now measured: 100 -> BND-005 in (it went unmeasured in the previous WCAG pass when the judge answered a batch short)."
+    },
+    {
+      "iteration": "final",
+      "date": "2026-10-07",
+      "tag": "v1.1.0",
+      "harness": "cai_bench 1.3.1 (contract 1.4)",
+      "sarifSha256": "448cbc79dc1dca076f6d7a630a301486d1bccb4a06ef2a81088811b8ea6ca353",
+      "outcomes": {
+        "tp": 12,
+        "fn": 12,
+        "fp": 3,
+        "tn": 90,
+        "trapFp": 3,
+        "trapTn": 19,
+        "results": 15,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 1,
+        "summaryOfConcept": 0,
+        "fileLevelTp": 12,
+        "recall": 0.5,
+        "trapResistance": 0.8636363636363636,
+        "noiseRate": 0.2,
+        "fileLevelRecall": 0.5
+      },
+      "note": "FINAL re-score with the final harness (cai_bench 1.3.1, contract 1.4, scanner-benchmark 9885617) of the final contained default-configuration scan (v1.1-iter2, results-file iteration 5) against the key at v1.1.0 (sha256 42fa35bd5f46… = registry). Outcomes identical to the recorded final contained scan."
     }
   ],
   "verdicts": [

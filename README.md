@@ -28,29 +28,39 @@ The answer key holds **labels**. TP / FP / TN / FN are **outcomes** of one scann
 
 ## Benchmark repositories
 
-All under [`github.com/code-assurance-initiative`](https://github.com/code-assurance-initiative). C# and TypeScript
-first. Each is one theme, small and idiomatic.
+All under [`github.com/code-assurance-initiative`](https://github.com/code-assurance-initiative): 25 repositories, C#
+and TypeScript, each one theme, small and idiomatic. The five `estate-quellbrook-*` repositories are a reference
+estate — the services of one fictional company (Quellbrook Freight), with Dockerfiles, Kubernetes manifests, CI, ADRs
+and about three sprints of scripted history — scored at integration level. The tag below is the LATEST registered one;
+earlier tags stay registered and valid.
 
-| Repository | Theme |
-|---|---|
-| `bench-csharp-baseline-clean` | a clean baseline: nothing to find |
-| `bench-csharp-security-secrets` | hard-coded credentials and their look-alikes |
-| `bench-csharp-security-injection` | injection |
-| `bench-csharp-security-dependencies` | vulnerable dependencies |
-| `bench-csharp-security-iac` | infrastructure-as-code |
-| `bench-csharp-codehealth` | code health |
-| `bench-csharp-architecture` | architecture |
-| `bench-csharp-domain-events` | domain modelling, events, event sourcing |
-| `bench-csharp-readiness` | operational readiness |
-| `bench-csharp-maturity-history` | scripted git history, ADRs, docs |
-| `bench-csharp-tests` | build and tests |
-| `bench-ts-baseline-clean` | a clean baseline: nothing to find |
-| `bench-ts-security-secrets` | hard-coded credentials and their look-alikes |
-| `bench-ts-security-injection` | injection |
-| `bench-ts-security-dependencies` | vulnerable dependencies |
-| `bench-ts-frontend-a11y` | front-end accessibility |
-| `bench-ts-codehealth` | code health |
-| `estate-<company>-<service>` ×4–6 | a reference estate: a fictional company's services, scored at integration level |
+| Repository | Language | Latest tag | Theme |
+|---|---|---|---|
+| [`bench-csharp-baseline-clean`](https://github.com/code-assurance-initiative/bench-csharp-baseline-clean) | C# | v1.0.0 | certified-clean control: nothing planted, traps only |
+| [`bench-csharp-security-secrets`](https://github.com/code-assurance-initiative/bench-csharp-security-secrets) | C# | v1.0.0 | hard-coded secrets and their look-alikes (incl. git history) |
+| [`bench-csharp-security-injection`](https://github.com/code-assurance-initiative/bench-csharp-security-injection) | C# | v1.0.0 | injection and unsafe input handling |
+| [`bench-csharp-security-dependencies`](https://github.com/code-assurance-initiative/bench-csharp-security-dependencies) | C# | v1.1.0 | vulnerable, deprecated, outdated, copyleft and end-of-life dependencies |
+| [`bench-csharp-security-iac`](https://github.com/code-assurance-initiative/bench-csharp-security-iac) | C# | v1.1.0 | Kubernetes, Dockerfile, compose, Terraform and CI-workflow security |
+| [`bench-csharp-codehealth`](https://github.com/code-assurance-initiative/bench-csharp-codehealth) | C# | v1.0.0 | code health |
+| [`bench-csharp-architecture`](https://github.com/code-assurance-initiative/bench-csharp-architecture) | C# | v1.1.0 | architecture and structure in a multi-project solution |
+| [`bench-csharp-domain-events`](https://github.com/code-assurance-initiative/bench-csharp-domain-events) | C# | v1.1.1 | domain modelling, messaging and event sourcing |
+| [`bench-csharp-readiness`](https://github.com/code-assurance-initiative/bench-csharp-readiness) | C# | v1.0.0 | production readiness of an API + worker |
+| [`bench-csharp-maturity-history`](https://github.com/code-assurance-initiative/bench-csharp-maturity-history) | C# | v1.0.0 | scripted git history (hotspots, silos, coupling), ADRs and documentation drift |
+| [`bench-csharp-tests`](https://github.com/code-assurance-initiative/bench-csharp-tests) | C# | v1.0.0 | test-suite quality |
+| [`bench-csharp-blazor-a11y`](https://github.com/code-assurance-initiative/bench-csharp-blazor-a11y) | C# | v1.0.0 | Blazor / Razor Pages accessibility and JS-interop correctness |
+| [`bench-ts-baseline-clean`](https://github.com/code-assurance-initiative/bench-ts-baseline-clean) | TypeScript | v1.0.0 | certified-clean control: nothing planted, traps only |
+| [`bench-ts-security-secrets`](https://github.com/code-assurance-initiative/bench-ts-security-secrets) | TypeScript | v1.0.0 | hard-coded secrets and their look-alikes |
+| [`bench-ts-security-injection`](https://github.com/code-assurance-initiative/bench-ts-security-injection) | TypeScript | v1.0.0 | injection and unsafe input handling |
+| [`bench-ts-security-dependencies`](https://github.com/code-assurance-initiative/bench-ts-security-dependencies) | TypeScript | v1.0.0 | npm dependency risk, incl. unused / undeclared / misplaced packages |
+| [`bench-ts-codehealth`](https://github.com/code-assurance-initiative/bench-ts-codehealth) | TypeScript | v1.0.0 | code health |
+| [`bench-ts-frontend-a11y`](https://github.com/code-assurance-initiative/bench-ts-frontend-a11y) | TypeScript | v1.1.0 | React front-end quality and accessibility |
+| [`bench-ts-domain-privacy`](https://github.com/code-assurance-initiative/bench-ts-domain-privacy) | TypeScript | v1.0.1 | domain modelling, vertical slices and personal-data handling |
+| [`bench-ts-readiness`](https://github.com/code-assurance-initiative/bench-ts-readiness) | TypeScript | v1.0.0 | production readiness of an npm-workspaces monorepo on Kubernetes |
+| [`estate-quellbrook-gateway`](https://github.com/code-assurance-initiative/estate-quellbrook-gateway) | TypeScript | v1.0.0 | reference estate: API gateway / BFF (Fastify) |
+| [`estate-quellbrook-orders`](https://github.com/code-assurance-initiative/estate-quellbrook-orders) | C# | v1.0.0 | reference estate: order service (DDD, outbox) |
+| [`estate-quellbrook-dispatch`](https://github.com/code-assurance-initiative/estate-quellbrook-dispatch) | C# | v1.0.0 | reference estate: dispatch service — carries the estate's regression |
+| [`estate-quellbrook-notifier`](https://github.com/code-assurance-initiative/estate-quellbrook-notifier) | C# | v1.0.0 | reference estate: notifier worker — carries the secret left in history |
+| [`estate-quellbrook-web`](https://github.com/code-assurance-initiative/estate-quellbrook-web) | TypeScript | v1.0.0 | reference estate: operator web front end (React + Vite) |
 
 Frozen versions are listed in [`registry.json`](registry.json) with their tag, commit and the sha256 of their answer
 key. Only a registered (repo, tag, keySha256) is a benchmark result; anything else is a work in progress.
@@ -125,6 +135,34 @@ python3 -m cai_bench sha256   --key benchmark/answer-key.json                   
 python3 -m unittest                                                                     # the harness's own tests
 ```
 
+### Reproducing a recorded score
+
+Every recorded number can be recomputed from public inputs. For a registry entry `(repo, tag, keySha256)`:
+
+```sh
+git clone --branch <tag> https://github.com/code-assurance-initiative/<repo>
+python3 -m cai_bench sha256 --key <repo>/benchmark/answer-key.json       # must equal keySha256 in registry.json
+<scanner> <repo> --format sarif --output report.sarif                     # sha256 of the SARIF scored is recorded
+python3 -m cai_bench score --key <repo>/benchmark/answer-key.json --sarif report.sarif \
+    --mapping mappings/<scanner>.json --scores scores.json --json report.json
+```
+
+For the recorded Watchdog results, `results/watchdog/final-scores.json` gives per repository the tag, commit, key
+sha256, the `sarifSha256` of the scan that was scored and the full outcome; a SARIF with that hash scored with the
+command above reproduces the row (score bands need the scanner's dimension scores, made by
+`mappings/watchdog_scores.py <scan>/scorecard.json`). `python3 results/watchdog/summarise.py` rebuilds
+`SUMMARY.json` from `final-scores.json`.
+
+## Results
+
+- [`results/watchdog/SUMMARY.md`](results/watchdog/SUMMARY.md) — Watchdog over all 25 repositories at their latest
+  tags: headline recall / trap resistance / noise per repository, language and family; per dimension; the general
+  false-negative and noise mechanisms; instrument notes and method lessons. Machine-readable:
+  [`SUMMARY.json`](results/watchdog/SUMMARY.json), [`final-scores.json`](results/watchdog/final-scores.json);
+  per-repository verdicts in `results/watchdog/<repo>.json`.
+- [`coverage/MATRIX.md`](coverage/MATRIX.md) — every Watchdog dimension, whether it is in scope, and which frozen
+  repositories label it (read from their keys at the registered tags).
+
 ## Adding a benchmark repository
 
 1. **Answer key first.** Write `benchmark/answer-key.json` and `benchmark/README.md` before the code, and validate
@@ -156,12 +194,13 @@ python3 -m unittest                                                             
 ## Layout
 
 ```
-docs/CONTRACT.md                   fixed formats, matching and metric semantics (v1)
+docs/CONTRACT.md                   fixed formats, matching and metric semantics (v1.4)
 schema/answer-key.schema.json      JSON Schema (draft 2020-12) for benchmark/answer-key.json
 taxonomy.json                      scanner-neutral concepts
 mappings/<scanner>.json            concept -> the scanner's rule ids and dimensions
 registry.json                      frozen benchmark repositories
-results/<scanner>/                 recorded results per scanner
+coverage/                          coverage matrix (matrix.json, MATRIX.md, render_matrix.py)
+results/<scanner>/                 recorded results per scanner (watchdog: SUMMARY.md, final-scores.json, <repo>.json)
 cai_bench/                         the CLI (python3 -m cai_bench)
 tests/                             its tests, with fixture keys, SARIF, taxonomy and mapping
 ```

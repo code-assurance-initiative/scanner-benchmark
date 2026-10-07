@@ -39,6 +39,32 @@
     "uncovered": 0
    },
    "note": "contained, final; repository commit 0606450 (tag v1.0.0 = 0606450 + journal entry only). No model-judged band in the key, so no host --with-llm pass."
+  },
+  {
+   "iteration": "final",
+   "date": "2026-10-07",
+   "tag": "v1.0.0",
+   "harness": "cai_bench 1.3.1 (contract 1.4)",
+   "sarifSha256": "11afb83ac35097bd8704074faac1676e734bb2b1df0046f66d788c0caa0676ff",
+   "outcomes": {
+    "tp": 3,
+    "fn": 14,
+    "fp": 17,
+    "tn": 194,
+    "trapFp": 14,
+    "trapTn": 21,
+    "results": 21,
+    "noise": 18,
+    "redundant": 0,
+    "uncovered": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 3,
+    "recall": 0.17647058823529413,
+    "trapResistance": 0.6,
+    "noiseRate": 0.8571428571428571,
+    "fileLevelRecall": 0.17647058823529413
+   },
+   "note": "FINAL re-score with the final harness (cai_bench 1.3.1, contract 1.4, scanner-benchmark 9885617) of the final contained default-configuration scan (iter2, results-file iteration 2) against the key at v1.0.0 (sha256 166acf1fb645… = registry). Outcomes identical to the recorded final contained scan."
   }
  ],
  "verdicts": [

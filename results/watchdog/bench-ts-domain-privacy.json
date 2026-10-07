@@ -1,6 +1,6 @@
 {
  "repo": "code-assurance-initiative/bench-ts-domain-privacy",
- "tag": "v1.0.0",
+ "tag": "v1.0.1",
  "engineVersion": "kennel main 6a05dfb6c (kennel-wt-scanner-bench), rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc) + host --with-llm passes (default and gdpr-tech)",
  "scans": [
   {
@@ -162,6 +162,32 @@
     }
    },
    "note": "freestanding clone of v1.0.1 (c96b81d) at _frozen/v1.0.1/bench-ts-domain-privacy; TypeScript sidecar ran (no SidecarModelFailures, ProductionSourceUnmodelled false). Same rows as the default pass plus 33 LA1 personal-data rows; LA1 20 -> BND-005 (band 10-70) unscored -> in."
+  },
+  {
+   "iteration": "final",
+   "date": "2026-10-07",
+   "tag": "v1.0.1",
+   "harness": "cai_bench 1.3.1 (contract 1.4)",
+   "sarifSha256": "e39719617dcc02398481064031814ea0301c2b26b872b9fbba47b712a9aa855a",
+   "outcomes": {
+    "tp": 5,
+    "fn": 6,
+    "fp": 1,
+    "tn": 152,
+    "trapFp": 1,
+    "trapTn": 13,
+    "results": 10,
+    "noise": 5,
+    "redundant": 0,
+    "uncovered": 10,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 5,
+    "recall": 0.45454545454545453,
+    "trapResistance": 0.9285714285714286,
+    "noiseRate": 0.5,
+    "fileLevelRecall": 0.45454545454545453
+   },
+   "note": "FINAL re-score with the final harness (cai_bench 1.3.1, contract 1.4, scanner-benchmark 9885617) of the final contained default-configuration scan (iter2, results-file iteration 2) against the key at v1.0.1 (sha256 f9dde9b07bd0… = registry). Scored with key v1.0.1 (subject on the D23 plant): TP 4 -> 5, noise 6 -> 5; the recorded iteration-2 outcome was against key v1.0.0. Top-level tag corrected v1.0.0 -> v1.0.1 (latest registered tag)."
   }
  ],
  "verdicts": [

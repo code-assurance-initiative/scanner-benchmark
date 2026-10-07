@@ -57,6 +57,32 @@
     "uncovered": 4
    },
    "note": "host, model-judged pass; c633a99; the host has no container/IaC tools"
+  },
+  {
+   "iteration": "final",
+   "date": "2026-10-07",
+   "tag": "v1.0.0",
+   "harness": "cai_bench 1.3.1 (contract 1.4)",
+   "sarifSha256": "8a1a83a61c0541226d8c408996b9c9c125ce070ff72609fad5d1f952b7590669",
+   "outcomes": {
+    "tp": 3,
+    "fn": 0,
+    "fp": 4,
+    "tn": 93,
+    "trapFp": 3,
+    "trapTn": 4,
+    "results": 7,
+    "noise": 4,
+    "redundant": 0,
+    "uncovered": 3,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 3,
+    "recall": 1.0,
+    "trapResistance": 0.5714285714285714,
+    "noiseRate": 0.5714285714285714,
+    "fileLevelRecall": 1.0
+   },
+   "note": "FINAL re-score with the final harness (cai_bench 1.3.1, contract 1.4, scanner-benchmark 9885617) of the final contained default-configuration scan (iter2, results-file iteration 2) against the key at v1.0.0 (sha256 1971775473ee… = registry). Outcomes identical to the recorded final contained scan."
   }
  ],
  "verdicts": [

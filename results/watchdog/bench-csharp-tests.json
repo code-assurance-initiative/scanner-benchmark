@@ -38,6 +38,32 @@
     "uncovered": 4
    },
    "note": "contained, final; repository commit eabe7b3 (tag v1.0.0 = a2dce40, journal only after it)"
+  },
+  {
+   "iteration": "final",
+   "date": "2026-10-07",
+   "tag": "v1.0.0",
+   "harness": "cai_bench 1.3.1 (contract 1.4)",
+   "sarifSha256": "0d5b1de8678ef01e680ab70c5edb0c24b2f1e725a6d9b6d4d14567904eb263b0",
+   "outcomes": {
+    "tp": 7,
+    "fn": 4,
+    "fp": 1,
+    "tn": 94,
+    "trapFp": 1,
+    "trapTn": 12,
+    "results": 8,
+    "noise": 1,
+    "redundant": 0,
+    "uncovered": 4,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 8,
+    "recall": 0.6363636363636364,
+    "trapResistance": 0.9230769230769231,
+    "noiseRate": 0.125,
+    "fileLevelRecall": 0.7272727272727273
+   },
+   "note": "FINAL re-score with the final harness (cai_bench 1.3.1, contract 1.4, scanner-benchmark 9885617) of the final contained default-configuration scan (iter2, results-file iteration 2) against the key at v1.0.0 (sha256 53bdee5a56ae… = registry). Outcomes identical to the recorded final contained scan."
   }
  ],
  "verdicts": [

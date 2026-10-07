@@ -1,0 +1,4368 @@
+{
+ "source": "results/watchdog/final-scores.json",
+ "harness": {
+  "name": "cai_bench",
+  "version": "1.3.1",
+  "contract": "1.4",
+  "commit": "9885617"
+ },
+ "mapping": {
+  "path": "mappings/watchdog.json",
+  "scanner": "watchdog",
+  "version": "rubric-2026.10.1"
+ },
+ "instrument": "Watchdog, kennel main 6a05dfb6c, rubric-2026.10.1; contained scans (codehealth-analyzer:train-src-89d1e8def87553cc)",
+ "headline": "contained scan, scanner default configuration",
+ "repos": [
+  {
+   "name": "bench-csharp-baseline-clean",
+   "tag": "v1.0.0",
+   "language": "C#",
+   "family": "control",
+   "tp": 0,
+   "fn": 0,
+   "trapFp": 1,
+   "trapTn": 0,
+   "results": 1,
+   "noise": 1,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 2,
+   "summaryOfConcept": 0,
+   "recall": null,
+   "trapResistance": 0.0,
+   "noiseShare": 1.0,
+   "fileLevelRecall": null,
+   "hostModelPass": {
+    "tp": 0,
+    "fn": 0,
+    "trapFp": 1,
+    "trapTn": 0,
+    "results": 1,
+    "noise": 1,
+    "fileLevelTp": 0,
+    "redundant": 0,
+    "uncovered": 3,
+    "summaryOfConcept": 0,
+    "recall": null,
+    "trapResistance": 0.0,
+    "noiseShare": 1.0,
+    "fileLevelRecall": null
+   }
+  },
+  {
+   "name": "bench-csharp-security-secrets",
+   "tag": "v1.0.0",
+   "language": "C#",
+   "family": "security",
+   "tp": 11,
+   "fn": 6,
+   "trapFp": 1,
+   "trapTn": 23,
+   "results": 22,
+   "noise": 1,
+   "fileLevelTp": 11,
+   "redundant": 10,
+   "uncovered": 6,
+   "summaryOfConcept": 0,
+   "recall": 0.6471,
+   "trapResistance": 0.9583,
+   "noiseShare": 0.0455,
+   "fileLevelRecall": 0.6471
+  },
+  {
+   "name": "bench-csharp-security-dependencies",
+   "tag": "v1.1.0",
+   "language": "C#",
+   "family": "security",
+   "tp": 7,
+   "fn": 1,
+   "trapFp": 2,
+   "trapTn": 6,
+   "results": 12,
+   "noise": 2,
+   "fileLevelTp": 7,
+   "redundant": 3,
+   "uncovered": 4,
+   "summaryOfConcept": 0,
+   "recall": 0.875,
+   "trapResistance": 0.75,
+   "noiseShare": 0.1667,
+   "fileLevelRecall": 0.875
+  },
+  {
+   "name": "bench-csharp-security-injection",
+   "tag": "v1.0.0",
+   "language": "C#",
+   "family": "security",
+   "tp": 10,
+   "fn": 10,
+   "trapFp": 4,
+   "trapTn": 19,
+   "results": 18,
+   "noise": 6,
+   "fileLevelTp": 10,
+   "redundant": 2,
+   "uncovered": 13,
+   "summaryOfConcept": 0,
+   "recall": 0.5,
+   "trapResistance": 0.8261,
+   "noiseShare": 0.3333,
+   "fileLevelRecall": 0.5
+  },
+  {
+   "name": "bench-csharp-security-iac",
+   "tag": "v1.1.0",
+   "language": "C#",
+   "family": "security",
+   "tp": 14,
+   "fn": 5,
+   "trapFp": 2,
+   "trapTn": 18,
+   "results": 83,
+   "noise": 60,
+   "fileLevelTp": 17,
+   "redundant": 9,
+   "uncovered": 8,
+   "summaryOfConcept": 0,
+   "recall": 0.7368,
+   "trapResistance": 0.9,
+   "noiseShare": 0.7229,
+   "fileLevelRecall": 0.8947,
+   "hostModelPass": {
+    "tp": 2,
+    "fn": 17,
+    "trapFp": 0,
+    "trapTn": 20,
+    "results": 4,
+    "noise": 2,
+    "fileLevelTp": 3,
+    "redundant": 0,
+    "uncovered": 8,
+    "summaryOfConcept": 0,
+    "recall": 0.1053,
+    "trapResistance": 1.0,
+    "noiseShare": 0.5,
+    "fileLevelRecall": 0.1579
+   }
+  },
+  {
+   "name": "bench-csharp-architecture",
+   "tag": "v1.1.0",
+   "language": "C#",
+   "family": "architecture",
+   "tp": 11,
+   "fn": 6,
+   "trapFp": 4,
+   "trapTn": 18,
+   "results": 24,
+   "noise": 11,
+   "fileLevelTp": 11,
+   "redundant": 2,
+   "uncovered": 11,
+   "summaryOfConcept": 0,
+   "recall": 0.6471,
+   "trapResistance": 0.8182,
+   "noiseShare": 0.4583,
+   "fileLevelRecall": 0.6471,
+   "hostModelPass": {
+    "tp": 11,
+    "fn": 6,
+    "trapFp": 4,
+    "trapTn": 18,
+    "results": 24,
+    "noise": 11,
+    "fileLevelTp": 11,
+    "redundant": 2,
+    "uncovered": 21,
+    "summaryOfConcept": 0,
+    "recall": 0.6471,
+    "trapResistance": 0.8182,
+    "noiseShare": 0.4583,
+    "fileLevelRecall": 0.6471
+   }
+  },
+  {
+   "name": "bench-csharp-domain-events",
+   "tag": "v1.1.1",
+   "language": "C#",
+   "family": "domain",
+   "tp": 24,
+   "fn": 6,
+   "trapFp": 2,
+   "trapTn": 25,
+   "results": 102,
+   "noise": 77,
+   "fileLevelTp": 24,
+   "redundant": 1,
+   "uncovered": 11,
+   "summaryOfConcept": 0,
+   "recall": 0.8,
+   "trapResistance": 0.9259,
+   "noiseShare": 0.7549,
+   "fileLevelRecall": 0.8,
+   "hostModelPass": {
+    "tp": 24,
+    "fn": 6,
+    "trapFp": 2,
+    "trapTn": 25,
+    "results": 96,
+    "noise": 70,
+    "fileLevelTp": 24,
+    "redundant": 2,
+    "uncovered": 14,
+    "summaryOfConcept": 0,
+    "recall": 0.8,
+    "trapResistance": 0.9259,
+    "noiseShare": 0.7292,
+    "fileLevelRecall": 0.8
+   }
+  },
+  {
+   "name": "bench-csharp-codehealth",
+   "tag": "v1.0.0",
+   "language": "C#",
+   "family": "codehealth",
+   "tp": 45,
+   "fn": 5,
+   "trapFp": 3,
+   "trapTn": 27,
+   "results": 54,
+   "noise": 3,
+   "fileLevelTp": 45,
+   "redundant": 6,
+   "uncovered": 7,
+   "summaryOfConcept": 1,
+   "recall": 0.9,
+   "trapResistance": 0.9,
+   "noiseShare": 0.0556,
+   "fileLevelRecall": 0.9,
+   "hostModelPass": {
+    "tp": 45,
+    "fn": 5,
+    "trapFp": 3,
+    "trapTn": 27,
+    "results": 54,
+    "noise": 3,
+    "fileLevelTp": 45,
+    "redundant": 6,
+    "uncovered": 53,
+    "summaryOfConcept": 1,
+    "recall": 0.9,
+    "trapResistance": 0.9,
+    "noiseShare": 0.0556,
+    "fileLevelRecall": 0.9
+   }
+  },
+  {
+   "name": "bench-csharp-tests",
+   "tag": "v1.0.0",
+   "language": "C#",
+   "family": "testing",
+   "tp": 7,
+   "fn": 4,
+   "trapFp": 1,
+   "trapTn": 12,
+   "results": 8,
+   "noise": 1,
+   "fileLevelTp": 8,
+   "redundant": 0,
+   "uncovered": 4,
+   "summaryOfConcept": 0,
+   "recall": 0.6364,
+   "trapResistance": 0.9231,
+   "noiseShare": 0.125,
+   "fileLevelRecall": 0.7273
+  },
+  {
+   "name": "bench-csharp-readiness",
+   "tag": "v1.0.0",
+   "language": "C#",
+   "family": "readiness",
+   "tp": 3,
+   "fn": 9,
+   "trapFp": 7,
+   "trapTn": 18,
+   "results": 19,
+   "noise": 15,
+   "fileLevelTp": 3,
+   "redundant": 1,
+   "uncovered": 0,
+   "summaryOfConcept": 1,
+   "recall": 0.25,
+   "trapResistance": 0.72,
+   "noiseShare": 0.7895,
+   "fileLevelRecall": 0.25,
+   "hostModelPass": {
+    "tp": 3,
+    "fn": 9,
+    "trapFp": 3,
+    "trapTn": 22,
+    "results": 14,
+    "noise": 10,
+    "fileLevelTp": 3,
+    "redundant": 1,
+    "uncovered": 0,
+    "summaryOfConcept": 1,
+    "recall": 0.25,
+    "trapResistance": 0.88,
+    "noiseShare": 0.7143,
+    "fileLevelRecall": 0.25
+   }
+  },
+  {
+   "name": "bench-csharp-maturity-history",
+   "tag": "v1.0.0",
+   "language": "C#",
+   "family": "maturity",
+   "tp": 3,
+   "fn": 4,
+   "trapFp": 1,
+   "trapTn": 9,
+   "results": 5,
+   "noise": 2,
+   "fileLevelTp": 3,
+   "redundant": 0,
+   "uncovered": 22,
+   "summaryOfConcept": 0,
+   "recall": 0.4286,
+   "trapResistance": 0.9,
+   "noiseShare": 0.4,
+   "fileLevelRecall": 0.4286,
+   "hostModelPass": {
+    "tp": 5,
+    "fn": 2,
+    "trapFp": 1,
+    "trapTn": 9,
+    "results": 8,
+    "noise": 2,
+    "fileLevelTp": 5,
+    "redundant": 1,
+    "uncovered": 23,
+    "summaryOfConcept": 0,
+    "recall": 0.7143,
+    "trapResistance": 0.9,
+    "noiseShare": 0.25,
+    "fileLevelRecall": 0.7143
+   }
+  },
+  {
+   "name": "bench-ts-baseline-clean",
+   "tag": "v1.0.0",
+   "language": "TypeScript",
+   "family": "control",
+   "tp": 0,
+   "fn": 0,
+   "trapFp": 2,
+   "trapTn": 1,
+   "results": 2,
+   "noise": 2,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 1,
+   "summaryOfConcept": 0,
+   "recall": null,
+   "trapResistance": 0.3333,
+   "noiseShare": 1.0,
+   "fileLevelRecall": null,
+   "hostModelPass": {
+    "tp": 0,
+    "fn": 0,
+    "trapFp": 2,
+    "trapTn": 1,
+    "results": 2,
+    "noise": 2,
+    "fileLevelTp": 0,
+    "redundant": 0,
+    "uncovered": 40,
+    "summaryOfConcept": 0,
+    "recall": null,
+    "trapResistance": 0.3333,
+    "noiseShare": 1.0,
+    "fileLevelRecall": null
+   }
+  },
+  {
+   "name": "bench-ts-security-secrets",
+   "tag": "v1.0.0",
+   "language": "TypeScript",
+   "family": "security",
+   "tp": 12,
+   "fn": 5,
+   "trapFp": 1,
+   "trapTn": 22,
+   "results": 22,
+   "noise": 1,
+   "fileLevelTp": 12,
+   "redundant": 9,
+   "uncovered": 5,
+   "summaryOfConcept": 0,
+   "recall": 0.7059,
+   "trapResistance": 0.9565,
+   "noiseShare": 0.0455,
+   "fileLevelRecall": 0.7059,
+   "hostModelPass": {
+    "tp": 7,
+    "fn": 10,
+    "trapFp": 1,
+    "trapTn": 22,
+    "results": 9,
+    "noise": 1,
+    "fileLevelTp": 7,
+    "redundant": 1,
+    "uncovered": 8,
+    "summaryOfConcept": 0,
+    "recall": 0.4118,
+    "trapResistance": 0.9565,
+    "noiseShare": 0.1111,
+    "fileLevelRecall": 0.4118
+   }
+  },
+  {
+   "name": "bench-ts-security-injection",
+   "tag": "v1.0.0",
+   "language": "TypeScript",
+   "family": "security",
+   "tp": 7,
+   "fn": 14,
+   "trapFp": 5,
+   "trapTn": 20,
+   "results": 16,
+   "noise": 7,
+   "fileLevelTp": 7,
+   "redundant": 2,
+   "uncovered": 45,
+   "summaryOfConcept": 0,
+   "recall": 0.3333,
+   "trapResistance": 0.8,
+   "noiseShare": 0.4375,
+   "fileLevelRecall": 0.3333,
+   "hostModelPass": {
+    "tp": 2,
+    "fn": 19,
+    "trapFp": 2,
+    "trapTn": 23,
+    "results": 6,
+    "noise": 2,
+    "fileLevelTp": 2,
+    "redundant": 2,
+    "uncovered": 55,
+    "summaryOfConcept": 0,
+    "recall": 0.0952,
+    "trapResistance": 0.92,
+    "noiseShare": 0.3333,
+    "fileLevelRecall": 0.0952
+   }
+  },
+  {
+   "name": "bench-ts-frontend-a11y",
+   "tag": "v1.1.0",
+   "language": "TypeScript",
+   "family": "frontend",
+   "tp": 12,
+   "fn": 12,
+   "trapFp": 3,
+   "trapTn": 19,
+   "results": 15,
+   "noise": 3,
+   "fileLevelTp": 12,
+   "redundant": 0,
+   "uncovered": 1,
+   "summaryOfConcept": 0,
+   "recall": 0.5,
+   "trapResistance": 0.8636,
+   "noiseShare": 0.2,
+   "fileLevelRecall": 0.5,
+   "hostModelPass": {
+    "tp": 12,
+    "fn": 12,
+    "trapFp": 3,
+    "trapTn": 19,
+    "results": 15,
+    "noise": 3,
+    "fileLevelTp": 12,
+    "redundant": 0,
+    "uncovered": 1,
+    "summaryOfConcept": 0,
+    "recall": 0.5,
+    "trapResistance": 0.8636,
+    "noiseShare": 0.2,
+    "fileLevelRecall": 0.5
+   }
+  },
+  {
+   "name": "bench-ts-security-dependencies",
+   "tag": "v1.0.0",
+   "language": "TypeScript",
+   "family": "security",
+   "tp": 6,
+   "fn": 7,
+   "trapFp": 2,
+   "trapTn": 12,
+   "results": 9,
+   "noise": 3,
+   "fileLevelTp": 6,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.4615,
+   "trapResistance": 0.8571,
+   "noiseShare": 0.3333,
+   "fileLevelRecall": 0.4615,
+   "hostModelPass": {
+    "tp": 1,
+    "fn": 12,
+    "trapFp": 2,
+    "trapTn": 12,
+    "results": 4,
+    "noise": 3,
+    "fileLevelTp": 1,
+    "redundant": 0,
+    "uncovered": 1,
+    "summaryOfConcept": 0,
+    "recall": 0.0769,
+    "trapResistance": 0.8571,
+    "noiseShare": 0.75,
+    "fileLevelRecall": 0.0769
+   }
+  },
+  {
+   "name": "bench-ts-codehealth",
+   "tag": "v1.0.0",
+   "language": "TypeScript",
+   "family": "codehealth",
+   "tp": 29,
+   "fn": 22,
+   "trapFp": 6,
+   "trapTn": 30,
+   "results": 38,
+   "noise": 8,
+   "fileLevelTp": 29,
+   "redundant": 1,
+   "uncovered": 8,
+   "summaryOfConcept": 0,
+   "recall": 0.5686,
+   "trapResistance": 0.8333,
+   "noiseShare": 0.2105,
+   "fileLevelRecall": 0.5686,
+   "hostModelPass": {
+    "tp": 29,
+    "fn": 22,
+    "trapFp": 6,
+    "trapTn": 30,
+    "results": 38,
+    "noise": 8,
+    "fileLevelTp": 29,
+    "redundant": 1,
+    "uncovered": 17,
+    "summaryOfConcept": 0,
+    "recall": 0.5686,
+    "trapResistance": 0.8333,
+    "noiseShare": 0.2105,
+    "fileLevelRecall": 0.5686
+   }
+  },
+  {
+   "name": "bench-ts-domain-privacy",
+   "tag": "v1.0.1",
+   "language": "TypeScript",
+   "family": "domain",
+   "tp": 5,
+   "fn": 6,
+   "trapFp": 1,
+   "trapTn": 13,
+   "results": 10,
+   "noise": 5,
+   "fileLevelTp": 5,
+   "redundant": 0,
+   "uncovered": 10,
+   "summaryOfConcept": 0,
+   "recall": 0.4545,
+   "trapResistance": 0.9286,
+   "noiseShare": 0.5,
+   "fileLevelRecall": 0.4545,
+   "hostModelPass": {
+    "tp": 4,
+    "fn": 7,
+    "trapFp": 1,
+    "trapTn": 13,
+    "results": 9,
+    "noise": 5,
+    "fileLevelTp": 4,
+    "redundant": 0,
+    "uncovered": 10,
+    "summaryOfConcept": 0,
+    "recall": 0.3636,
+    "trapResistance": 0.9286,
+    "noiseShare": 0.5556,
+    "fileLevelRecall": 0.3636
+   }
+  },
+  {
+   "name": "bench-csharp-blazor-a11y",
+   "tag": "v1.0.0",
+   "language": "C#",
+   "family": "frontend",
+   "tp": 16,
+   "fn": 9,
+   "trapFp": 2,
+   "trapTn": 20,
+   "results": 18,
+   "noise": 2,
+   "fileLevelTp": 16,
+   "redundant": 0,
+   "uncovered": 7,
+   "summaryOfConcept": 0,
+   "recall": 0.64,
+   "trapResistance": 0.9091,
+   "noiseShare": 0.1111,
+   "fileLevelRecall": 0.64,
+   "hostModelPass": {
+    "tp": 16,
+    "fn": 9,
+    "trapFp": 2,
+    "trapTn": 20,
+    "results": 18,
+    "noise": 2,
+    "fileLevelTp": 16,
+    "redundant": 0,
+    "uncovered": 6,
+    "summaryOfConcept": 0,
+    "recall": 0.64,
+    "trapResistance": 0.9091,
+    "noiseShare": 0.1111,
+    "fileLevelRecall": 0.64
+   }
+  },
+  {
+   "name": "bench-ts-readiness",
+   "tag": "v1.0.0",
+   "language": "TypeScript",
+   "family": "readiness",
+   "tp": 3,
+   "fn": 14,
+   "trapFp": 14,
+   "trapTn": 21,
+   "results": 21,
+   "noise": 18,
+   "fileLevelTp": 3,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.1765,
+   "trapResistance": 0.6,
+   "noiseShare": 0.8571,
+   "fileLevelRecall": 0.1765
+  },
+  {
+   "name": "estate-quellbrook-gateway",
+   "tag": "v1.0.0",
+   "language": "TypeScript",
+   "family": "estate",
+   "tp": 0,
+   "fn": 2,
+   "trapFp": 1,
+   "trapTn": 6,
+   "results": 3,
+   "noise": 3,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 3,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 0.8571,
+   "noiseShare": 1.0,
+   "fileLevelRecall": 0.0,
+   "hostModelPass": {
+    "tp": 0,
+    "fn": 2,
+    "trapFp": 1,
+    "trapTn": 6,
+    "results": 1,
+    "noise": 1,
+    "fileLevelTp": 0,
+    "redundant": 0,
+    "uncovered": 32,
+    "summaryOfConcept": 0,
+    "recall": 0.0,
+    "trapResistance": 0.8571,
+    "noiseShare": 1.0,
+    "fileLevelRecall": 0.0
+   }
+  },
+  {
+   "name": "estate-quellbrook-orders",
+   "tag": "v1.0.0",
+   "language": "C#",
+   "family": "estate",
+   "tp": 0,
+   "fn": 2,
+   "trapFp": 6,
+   "trapTn": 6,
+   "results": 20,
+   "noise": 20,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 5,
+   "summaryOfConcept": 1,
+   "recall": 0.0,
+   "trapResistance": 0.5,
+   "noiseShare": 1.0,
+   "fileLevelRecall": 0.0,
+   "hostModelPass": {
+    "tp": 0,
+    "fn": 2,
+    "trapFp": 5,
+    "trapTn": 7,
+    "results": 17,
+    "noise": 17,
+    "fileLevelTp": 0,
+    "redundant": 0,
+    "uncovered": 6,
+    "summaryOfConcept": 1,
+    "recall": 0.0,
+    "trapResistance": 0.5833,
+    "noiseShare": 1.0,
+    "fileLevelRecall": 0.0
+   }
+  },
+  {
+   "name": "estate-quellbrook-dispatch",
+   "tag": "v1.0.0",
+   "language": "C#",
+   "family": "estate",
+   "tp": 3,
+   "fn": 2,
+   "trapFp": 9,
+   "trapTn": 6,
+   "results": 24,
+   "noise": 21,
+   "fileLevelTp": 4,
+   "redundant": 0,
+   "uncovered": 6,
+   "summaryOfConcept": 0,
+   "recall": 0.6,
+   "trapResistance": 0.4,
+   "noiseShare": 0.875,
+   "fileLevelRecall": 0.8,
+   "hostModelPass": {
+    "tp": 3,
+    "fn": 2,
+    "trapFp": 7,
+    "trapTn": 8,
+    "results": 20,
+    "noise": 17,
+    "fileLevelTp": 4,
+    "redundant": 0,
+    "uncovered": 6,
+    "summaryOfConcept": 0,
+    "recall": 0.6,
+    "trapResistance": 0.5333,
+    "noiseShare": 0.85,
+    "fileLevelRecall": 0.8
+   }
+  },
+  {
+   "name": "estate-quellbrook-notifier",
+   "tag": "v1.0.0",
+   "language": "C#",
+   "family": "estate",
+   "tp": 1,
+   "fn": 1,
+   "trapFp": 2,
+   "trapTn": 6,
+   "results": 5,
+   "noise": 4,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 3,
+   "summaryOfConcept": 0,
+   "recall": 0.5,
+   "trapResistance": 0.75,
+   "noiseShare": 0.8,
+   "fileLevelRecall": 0.5,
+   "hostModelPass": {
+    "tp": 0,
+    "fn": 2,
+    "trapFp": 3,
+    "trapTn": 5,
+    "results": 3,
+    "noise": 3,
+    "fileLevelTp": 0,
+    "redundant": 0,
+    "uncovered": 3,
+    "summaryOfConcept": 0,
+    "recall": 0.0,
+    "trapResistance": 0.625,
+    "noiseShare": 1.0,
+    "fileLevelRecall": 0.0
+   }
+  },
+  {
+   "name": "estate-quellbrook-web",
+   "tag": "v1.0.0",
+   "language": "TypeScript",
+   "family": "estate",
+   "tp": 3,
+   "fn": 0,
+   "trapFp": 3,
+   "trapTn": 4,
+   "results": 7,
+   "noise": 4,
+   "fileLevelTp": 3,
+   "redundant": 0,
+   "uncovered": 3,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.5714,
+   "noiseShare": 0.5714,
+   "fileLevelRecall": 1.0,
+   "hostModelPass": {
+    "tp": 3,
+    "fn": 0,
+    "trapFp": 3,
+    "trapTn": 4,
+    "results": 7,
+    "noise": 4,
+    "fileLevelTp": 3,
+    "redundant": 0,
+    "uncovered": 4,
+    "summaryOfConcept": 0,
+    "recall": 1.0,
+    "trapResistance": 0.5714,
+    "noiseShare": 0.5714,
+    "fileLevelRecall": 1.0
+   }
+  }
+ ],
+ "totals": {
+  "tp": 232,
+  "fn": 152,
+  "trapFp": 85,
+  "trapTn": 361,
+  "results": 558,
+  "noise": 280,
+  "fileLevelTp": 237,
+  "redundant": 46,
+  "uncovered": 185,
+  "summaryOfConcept": 3,
+  "recall": 0.6042,
+  "trapResistance": 0.8094,
+  "noiseShare": 0.5018,
+  "fileLevelRecall": 0.6172,
+  "repositories": 25,
+  "tpMatchedBy": {
+   "located": 205,
+   "locationFromMessage": 1,
+   "subject": 18,
+   "repositoryLevel": 8
+  },
+  "scoreBands": {
+   "contained": {
+    "in": 212,
+    "unscored": 144,
+    "out": 41
+   },
+   "hostModelPass": {
+    "in": 237,
+    "unscored": 90,
+    "out": 39
+   }
+  }
+ },
+ "byLanguage": {
+  "C#": {
+   "tp": 155,
+   "fn": 70,
+   "trapFp": 47,
+   "trapTn": 213,
+   "results": 415,
+   "noise": 226,
+   "fileLevelTp": 160,
+   "redundant": 34,
+   "uncovered": 109,
+   "summaryOfConcept": 3,
+   "recall": 0.6889,
+   "trapResistance": 0.8192,
+   "noiseShare": 0.5446,
+   "fileLevelRecall": 0.7111
+  },
+  "TypeScript": {
+   "tp": 77,
+   "fn": 82,
+   "trapFp": 38,
+   "trapTn": 148,
+   "results": 143,
+   "noise": 54,
+   "fileLevelTp": 77,
+   "redundant": 12,
+   "uncovered": 76,
+   "summaryOfConcept": 0,
+   "recall": 0.4843,
+   "trapResistance": 0.7957,
+   "noiseShare": 0.3776,
+   "fileLevelRecall": 0.4843
+  }
+ },
+ "byFamily": {
+  "architecture": {
+   "tp": 11,
+   "fn": 6,
+   "trapFp": 4,
+   "trapTn": 18,
+   "results": 24,
+   "noise": 11,
+   "fileLevelTp": 11,
+   "redundant": 2,
+   "uncovered": 11,
+   "summaryOfConcept": 0,
+   "recall": 0.6471,
+   "trapResistance": 0.8182,
+   "noiseShare": 0.4583,
+   "fileLevelRecall": 0.6471
+  },
+  "codehealth": {
+   "tp": 74,
+   "fn": 27,
+   "trapFp": 9,
+   "trapTn": 57,
+   "results": 92,
+   "noise": 11,
+   "fileLevelTp": 74,
+   "redundant": 7,
+   "uncovered": 15,
+   "summaryOfConcept": 1,
+   "recall": 0.7327,
+   "trapResistance": 0.8636,
+   "noiseShare": 0.1196,
+   "fileLevelRecall": 0.7327
+  },
+  "control": {
+   "tp": 0,
+   "fn": 0,
+   "trapFp": 3,
+   "trapTn": 1,
+   "results": 3,
+   "noise": 3,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 3,
+   "summaryOfConcept": 0,
+   "recall": null,
+   "trapResistance": 0.25,
+   "noiseShare": 1.0,
+   "fileLevelRecall": null
+  },
+  "domain": {
+   "tp": 29,
+   "fn": 12,
+   "trapFp": 3,
+   "trapTn": 38,
+   "results": 112,
+   "noise": 82,
+   "fileLevelTp": 29,
+   "redundant": 1,
+   "uncovered": 21,
+   "summaryOfConcept": 0,
+   "recall": 0.7073,
+   "trapResistance": 0.9268,
+   "noiseShare": 0.7321,
+   "fileLevelRecall": 0.7073
+  },
+  "estate": {
+   "tp": 7,
+   "fn": 7,
+   "trapFp": 21,
+   "trapTn": 28,
+   "results": 59,
+   "noise": 52,
+   "fileLevelTp": 8,
+   "redundant": 0,
+   "uncovered": 20,
+   "summaryOfConcept": 1,
+   "recall": 0.5,
+   "trapResistance": 0.5714,
+   "noiseShare": 0.8814,
+   "fileLevelRecall": 0.5714
+  },
+  "frontend": {
+   "tp": 28,
+   "fn": 21,
+   "trapFp": 5,
+   "trapTn": 39,
+   "results": 33,
+   "noise": 5,
+   "fileLevelTp": 28,
+   "redundant": 0,
+   "uncovered": 8,
+   "summaryOfConcept": 0,
+   "recall": 0.5714,
+   "trapResistance": 0.8864,
+   "noiseShare": 0.1515,
+   "fileLevelRecall": 0.5714
+  },
+  "maturity": {
+   "tp": 3,
+   "fn": 4,
+   "trapFp": 1,
+   "trapTn": 9,
+   "results": 5,
+   "noise": 2,
+   "fileLevelTp": 3,
+   "redundant": 0,
+   "uncovered": 22,
+   "summaryOfConcept": 0,
+   "recall": 0.4286,
+   "trapResistance": 0.9,
+   "noiseShare": 0.4,
+   "fileLevelRecall": 0.4286
+  },
+  "readiness": {
+   "tp": 6,
+   "fn": 23,
+   "trapFp": 21,
+   "trapTn": 39,
+   "results": 40,
+   "noise": 33,
+   "fileLevelTp": 6,
+   "redundant": 1,
+   "uncovered": 0,
+   "summaryOfConcept": 1,
+   "recall": 0.2069,
+   "trapResistance": 0.65,
+   "noiseShare": 0.825,
+   "fileLevelRecall": 0.2069
+  },
+  "security": {
+   "tp": 67,
+   "fn": 48,
+   "trapFp": 17,
+   "trapTn": 120,
+   "results": 182,
+   "noise": 80,
+   "fileLevelTp": 70,
+   "redundant": 35,
+   "uncovered": 81,
+   "summaryOfConcept": 0,
+   "recall": 0.5826,
+   "trapResistance": 0.8759,
+   "noiseShare": 0.4396,
+   "fileLevelRecall": 0.6087
+  },
+  "testing": {
+   "tp": 7,
+   "fn": 4,
+   "trapFp": 1,
+   "trapTn": 12,
+   "results": 8,
+   "noise": 1,
+   "fileLevelTp": 8,
+   "redundant": 0,
+   "uncovered": 4,
+   "summaryOfConcept": 0,
+   "recall": 0.6364,
+   "trapResistance": 0.9231,
+   "noiseShare": 0.125,
+   "fileLevelRecall": 0.7273
+  }
+ },
+ "byDimension": {
+  "(no scanner rule)": {
+   "tp": 0,
+   "fn": 15,
+   "trapFp": 0,
+   "trapTn": 11,
+   "results": 0,
+   "noise": 0,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 1.0,
+   "noiseShare": null,
+   "fileLevelRecall": 0.0
+  },
+  "AC1": {
+   "tp": 5,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 5,
+   "results": 5,
+   "noise": 0,
+   "fileLevelTp": 5,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "AC2": {
+   "tp": 5,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 5,
+   "results": 5,
+   "noise": 0,
+   "fileLevelTp": 5,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "AC3": {
+   "tp": 4,
+   "fn": 0,
+   "trapFp": 1,
+   "trapTn": 2,
+   "results": 5,
+   "noise": 1,
+   "fileLevelTp": 4,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.6667,
+   "noiseShare": 0.2,
+   "fileLevelRecall": 1.0
+  },
+  "AC4": {
+   "tp": 7,
+   "fn": 0,
+   "trapFp": 3,
+   "trapTn": 6,
+   "results": 10,
+   "noise": 3,
+   "fileLevelTp": 7,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.6667,
+   "noiseShare": 0.3,
+   "fileLevelRecall": 1.0
+  },
+  "AC5": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 3,
+   "results": 2,
+   "noise": 0,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "AC6": {
+   "tp": 4,
+   "fn": 4,
+   "trapFp": 2,
+   "trapTn": 7,
+   "results": 6,
+   "noise": 2,
+   "fileLevelTp": 4,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.5,
+   "trapResistance": 0.7778,
+   "noiseShare": 0.3333,
+   "fileLevelRecall": 0.5
+  },
+  "AX1": {
+   "tp": 1,
+   "fn": 0,
+   "trapFp": 1,
+   "trapTn": 1,
+   "results": 2,
+   "noise": 1,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.5,
+   "noiseShare": 0.5,
+   "fileLevelRecall": 1.0
+  },
+  "AX2": {
+   "tp": 1,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 1,
+   "noise": 0,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "AX3": {
+   "tp": 0,
+   "fn": 2,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 0,
+   "noise": 0,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 1.0,
+   "noiseShare": null,
+   "fileLevelRecall": 0.0
+  },
+  "AX4": {
+   "tp": 1,
+   "fn": 3,
+   "trapFp": 0,
+   "trapTn": 8,
+   "results": 1,
+   "noise": 0,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.25,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.25
+  },
+  "AX6": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 3,
+   "results": 2,
+   "noise": 0,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "AX7": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 2,
+   "noise": 0,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "AXR1": {
+   "tp": 0,
+   "fn": 19,
+   "trapFp": 0,
+   "trapTn": 23,
+   "results": 0,
+   "noise": 0,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 1.0,
+   "noiseShare": null,
+   "fileLevelRecall": 0.0
+  },
+  "C2": {
+   "tp": 0,
+   "fn": 0,
+   "trapFp": 4,
+   "trapTn": 0,
+   "results": 4,
+   "noise": 4,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 5,
+   "summaryOfConcept": 0,
+   "recall": null,
+   "trapResistance": 0.0,
+   "noiseShare": 1.0,
+   "fileLevelRecall": null
+  },
+  "D1": {
+   "tp": 3,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 9,
+   "results": 3,
+   "noise": 0,
+   "fileLevelTp": 3,
+   "redundant": 0,
+   "uncovered": 2,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "D10": {
+   "tp": 6,
+   "fn": 9,
+   "trapFp": 1,
+   "trapTn": 16,
+   "results": 8,
+   "noise": 2,
+   "fileLevelTp": 7,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.4,
+   "trapResistance": 0.9412,
+   "noiseShare": 0.25,
+   "fileLevelRecall": 0.4667
+  },
+  "D11": {
+   "tp": 0,
+   "fn": 5,
+   "trapFp": 0,
+   "trapTn": 9,
+   "results": 0,
+   "noise": 0,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 1.0,
+   "noiseShare": null,
+   "fileLevelRecall": 0.0
+  },
+  "D12": {
+   "tp": 4,
+   "fn": 10,
+   "trapFp": 0,
+   "trapTn": 10,
+   "results": 4,
+   "noise": 0,
+   "fileLevelTp": 4,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.2857,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.2857
+  },
+  "D13": {
+   "tp": 16,
+   "fn": 18,
+   "trapFp": 2,
+   "trapTn": 57,
+   "results": 20,
+   "noise": 2,
+   "fileLevelTp": 18,
+   "redundant": 2,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.4706,
+   "trapResistance": 0.9661,
+   "noiseShare": 0.1,
+   "fileLevelRecall": 0.5294
+  },
+  "D14": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 1,
+   "trapTn": 2,
+   "results": 3,
+   "noise": 1,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.6667,
+   "noiseShare": 0.3333,
+   "fileLevelRecall": 1.0
+  },
+  "D15": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 3,
+   "results": 2,
+   "noise": 0,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 1,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "D16": {
+   "tp": 1,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 2,
+   "noise": 1,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.5,
+   "fileLevelRecall": 1.0
+  },
+  "D17": {
+   "tp": 12,
+   "fn": 14,
+   "trapFp": 9,
+   "trapTn": 16,
+   "results": 21,
+   "noise": 9,
+   "fileLevelTp": 12,
+   "redundant": 0,
+   "uncovered": 8,
+   "summaryOfConcept": 0,
+   "recall": 0.4615,
+   "trapResistance": 0.64,
+   "noiseShare": 0.4286,
+   "fileLevelRecall": 0.4615
+  },
+  "D18": {
+   "tp": 1,
+   "fn": 0,
+   "trapFp": 3,
+   "trapTn": 1,
+   "results": 4,
+   "noise": 3,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 1,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.25,
+   "noiseShare": 0.75,
+   "fileLevelRecall": 1.0
+  },
+  "D2": {
+   "tp": 3,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 1,
+   "results": 3,
+   "noise": 0,
+   "fileLevelTp": 3,
+   "redundant": 0,
+   "uncovered": 2,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "D20": {
+   "tp": 0,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 4,
+   "results": 0,
+   "noise": 0,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": null,
+   "trapResistance": 1.0,
+   "noiseShare": null,
+   "fileLevelRecall": null
+  },
+  "D23": {
+   "tp": 3,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 67,
+   "noise": 64,
+   "fileLevelTp": 3,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.9552,
+   "fileLevelRecall": 1.0
+  },
+  "D25": {
+   "tp": 0,
+   "fn": 2,
+   "trapFp": 0,
+   "trapTn": 1,
+   "results": 0,
+   "noise": 0,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 1.0,
+   "noiseShare": null,
+   "fileLevelRecall": 0.0
+  },
+  "D28": {
+   "tp": 24,
+   "fn": 13,
+   "trapFp": 0,
+   "trapTn": 59,
+   "results": 24,
+   "noise": 0,
+   "fileLevelTp": 24,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.6486,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.6486
+  },
+  "D29": {
+   "tp": 16,
+   "fn": 85,
+   "trapFp": 4,
+   "trapTn": 137,
+   "results": 24,
+   "noise": 7,
+   "fileLevelTp": 16,
+   "redundant": 1,
+   "uncovered": 2,
+   "summaryOfConcept": 0,
+   "recall": 0.1584,
+   "trapResistance": 0.9716,
+   "noiseShare": 0.2917,
+   "fileLevelRecall": 0.1584
+  },
+  "D3": {
+   "tp": 5,
+   "fn": 1,
+   "trapFp": 0,
+   "trapTn": 6,
+   "results": 5,
+   "noise": 0,
+   "fileLevelTp": 5,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.8333,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.8333
+  },
+  "D30": {
+   "tp": 9,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 4,
+   "results": 9,
+   "noise": 0,
+   "fileLevelTp": 9,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "D31": {
+   "tp": 9,
+   "fn": 19,
+   "trapFp": 13,
+   "trapTn": 54,
+   "results": 99,
+   "noise": 83,
+   "fileLevelTp": 13,
+   "redundant": 7,
+   "uncovered": 1,
+   "summaryOfConcept": 0,
+   "recall": 0.3214,
+   "trapResistance": 0.806,
+   "noiseShare": 0.8384,
+   "fileLevelRecall": 0.4643
+  },
+  "D32": {
+   "tp": 3,
+   "fn": 5,
+   "trapFp": 2,
+   "trapTn": 7,
+   "results": 5,
+   "noise": 2,
+   "fileLevelTp": 3,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.375,
+   "trapResistance": 0.7778,
+   "noiseShare": 0.4,
+   "fileLevelRecall": 0.375
+  },
+  "D35": {
+   "tp": 0,
+   "fn": 1,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 0,
+   "noise": 0,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 1.0,
+   "noiseShare": null,
+   "fileLevelRecall": 0.0
+  },
+  "D36": {
+   "tp": 1,
+   "fn": 5,
+   "trapFp": 0,
+   "trapTn": 7,
+   "results": 3,
+   "noise": 2,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 2,
+   "summaryOfConcept": 0,
+   "recall": 0.1667,
+   "trapResistance": 1.0,
+   "noiseShare": 0.6667,
+   "fileLevelRecall": 0.3333
+  },
+  "D39": {
+   "tp": 1,
+   "fn": 0,
+   "trapFp": 2,
+   "trapTn": 1,
+   "results": 3,
+   "noise": 2,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 3,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.3333,
+   "noiseShare": 0.6667,
+   "fileLevelRecall": 1.0
+  },
+  "D4": {
+   "tp": 1,
+   "fn": 4,
+   "trapFp": 0,
+   "trapTn": 6,
+   "results": 3,
+   "noise": 1,
+   "fileLevelTp": 2,
+   "redundant": 1,
+   "uncovered": 4,
+   "summaryOfConcept": 0,
+   "recall": 0.2,
+   "trapResistance": 1.0,
+   "noiseShare": 0.3333,
+   "fileLevelRecall": 0.4
+  },
+  "D40": {
+   "tp": 0,
+   "fn": 1,
+   "trapFp": 0,
+   "trapTn": 3,
+   "results": 0,
+   "noise": 0,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 1.0,
+   "noiseShare": null,
+   "fileLevelRecall": 0.0
+  },
+  "D44": {
+   "tp": 1,
+   "fn": 1,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 1,
+   "noise": 0,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.5,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.5
+  },
+  "D5": {
+   "tp": 1,
+   "fn": 6,
+   "trapFp": 1,
+   "trapTn": 11,
+   "results": 3,
+   "noise": 2,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 12,
+   "summaryOfConcept": 0,
+   "recall": 0.1429,
+   "trapResistance": 0.9167,
+   "noiseShare": 0.6667,
+   "fileLevelRecall": 0.1429
+  },
+  "D6": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 2,
+   "noise": 0,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "D7": {
+   "tp": 4,
+   "fn": 4,
+   "trapFp": 0,
+   "trapTn": 12,
+   "results": 4,
+   "noise": 0,
+   "fileLevelTp": 4,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.5,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.5
+  },
+  "DM1": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 1,
+   "trapTn": 3,
+   "results": 5,
+   "noise": 2,
+   "fileLevelTp": 2,
+   "redundant": 1,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.75,
+   "noiseShare": 0.4,
+   "fileLevelRecall": 1.0
+  },
+  "DM10": {
+   "tp": 1,
+   "fn": 1,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 1,
+   "noise": 0,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.5,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.5
+  },
+  "DM11": {
+   "tp": 1,
+   "fn": 1,
+   "trapFp": 0,
+   "trapTn": 4,
+   "results": 1,
+   "noise": 0,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.5,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.5
+  },
+  "DM2": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 2,
+   "trapTn": 3,
+   "results": 6,
+   "noise": 4,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 4,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.6,
+   "noiseShare": 0.6667,
+   "fileLevelRecall": 1.0
+  },
+  "DM3": {
+   "tp": 1,
+   "fn": 0,
+   "trapFp": 1,
+   "trapTn": 1,
+   "results": 4,
+   "noise": 3,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 2,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.5,
+   "noiseShare": 0.75,
+   "fileLevelRecall": 1.0
+  },
+  "DM4": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 1,
+   "trapTn": 2,
+   "results": 4,
+   "noise": 2,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.6667,
+   "noiseShare": 0.5,
+   "fileLevelRecall": 1.0
+  },
+  "DM5": {
+   "tp": 3,
+   "fn": 1,
+   "trapFp": 0,
+   "trapTn": 3,
+   "results": 3,
+   "noise": 0,
+   "fileLevelTp": 3,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.75,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.75
+  },
+  "DM6": {
+   "tp": 1,
+   "fn": 3,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 1,
+   "noise": 0,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.25,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.25
+  },
+  "DM7": {
+   "tp": 2,
+   "fn": 1,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 6,
+   "noise": 4,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.6667,
+   "trapResistance": 1.0,
+   "noiseShare": 0.6667,
+   "fileLevelRecall": 0.6667
+  },
+  "DM9": {
+   "tp": 1,
+   "fn": 1,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 1,
+   "noise": 0,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.5,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.5
+  },
+  "ED3": {
+   "tp": 1,
+   "fn": 0,
+   "trapFp": 2,
+   "trapTn": 2,
+   "results": 27,
+   "noise": 26,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 10,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.5,
+   "noiseShare": 0.963,
+   "fileLevelRecall": 1.0
+  },
+  "ED4": {
+   "tp": 1,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 3,
+   "results": 1,
+   "noise": 0,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "ED5": {
+   "tp": 1,
+   "fn": 0,
+   "trapFp": 3,
+   "trapTn": 2,
+   "results": 13,
+   "noise": 12,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 1,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.4,
+   "noiseShare": 0.9231,
+   "fileLevelRecall": 1.0
+  },
+  "ES1": {
+   "tp": 1,
+   "fn": 1,
+   "trapFp": 0,
+   "trapTn": 1,
+   "results": 1,
+   "noise": 0,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.5,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.5
+  },
+  "ES3": {
+   "tp": 1,
+   "fn": 0,
+   "trapFp": 1,
+   "trapTn": 1,
+   "results": 2,
+   "noise": 1,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.5,
+   "noiseShare": 0.5,
+   "fileLevelRecall": 1.0
+  },
+  "GD1": {
+   "tp": 1,
+   "fn": 1,
+   "trapFp": 0,
+   "trapTn": 1,
+   "results": 1,
+   "noise": 0,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.5,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.5
+  },
+  "IC1": {
+   "tp": 5,
+   "fn": 12,
+   "trapFp": 0,
+   "trapTn": 17,
+   "results": 7,
+   "noise": 0,
+   "fileLevelTp": 5,
+   "redundant": 2,
+   "uncovered": 3,
+   "summaryOfConcept": 0,
+   "recall": 0.2941,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.2941
+  },
+  "P10": {
+   "tp": 0,
+   "fn": 2,
+   "trapFp": 1,
+   "trapTn": 2,
+   "results": 1,
+   "noise": 1,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 1,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 0.6667,
+   "noiseShare": 1.0,
+   "fileLevelRecall": 0.0
+  },
+  "P2": {
+   "tp": 0,
+   "fn": 2,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 1,
+   "noise": 1,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 4,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 1.0,
+   "noiseShare": 1.0,
+   "fileLevelRecall": 0.0
+  },
+  "P7": {
+   "tp": 0,
+   "fn": 2,
+   "trapFp": 0,
+   "trapTn": 5,
+   "results": 0,
+   "noise": 0,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 1,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 1.0,
+   "noiseShare": null,
+   "fileLevelRecall": 0.0
+  },
+  "P8": {
+   "tp": 0,
+   "fn": 2,
+   "trapFp": 0,
+   "trapTn": 5,
+   "results": 0,
+   "noise": 0,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 1.0,
+   "noiseShare": null,
+   "fileLevelRecall": 0.0
+  },
+  "PF3": {
+   "tp": 1,
+   "fn": 2,
+   "trapFp": 1,
+   "trapTn": 3,
+   "results": 2,
+   "noise": 1,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 1,
+   "summaryOfConcept": 0,
+   "recall": 0.3333,
+   "trapResistance": 0.75,
+   "noiseShare": 0.5,
+   "fileLevelRecall": 0.3333
+  },
+  "R10": {
+   "tp": 2,
+   "fn": 3,
+   "trapFp": 1,
+   "trapTn": 5,
+   "results": 3,
+   "noise": 1,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 9,
+   "summaryOfConcept": 0,
+   "recall": 0.4,
+   "trapResistance": 0.8333,
+   "noiseShare": 0.3333,
+   "fileLevelRecall": 0.4
+  },
+  "R11": {
+   "tp": 1,
+   "fn": 3,
+   "trapFp": 2,
+   "trapTn": 6,
+   "results": 3,
+   "noise": 2,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.25,
+   "trapResistance": 0.75,
+   "noiseShare": 0.6667,
+   "fileLevelRecall": 0.25
+  },
+  "R2": {
+   "tp": 1,
+   "fn": 5,
+   "trapFp": 5,
+   "trapTn": 5,
+   "results": 6,
+   "noise": 5,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.1667,
+   "trapResistance": 0.5,
+   "noiseShare": 0.8333,
+   "fileLevelRecall": 0.1667
+  },
+  "R3": {
+   "tp": 0,
+   "fn": 2,
+   "trapFp": 0,
+   "trapTn": 3,
+   "results": 0,
+   "noise": 0,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 1.0,
+   "noiseShare": null,
+   "fileLevelRecall": 0.0
+  },
+  "R5": {
+   "tp": 0,
+   "fn": 2,
+   "trapFp": 0,
+   "trapTn": 3,
+   "results": 0,
+   "noise": 0,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 1.0,
+   "noiseShare": null,
+   "fileLevelRecall": 0.0
+  },
+  "R7": {
+   "tp": 0,
+   "fn": 6,
+   "trapFp": 4,
+   "trapTn": 2,
+   "results": 4,
+   "noise": 4,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 0.3333,
+   "noiseShare": 1.0,
+   "fileLevelRecall": 0.0
+  },
+  "R8": {
+   "tp": 0,
+   "fn": 3,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 1,
+   "noise": 1,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.0,
+   "trapResistance": 1.0,
+   "noiseShare": 1.0,
+   "fileLevelRecall": 0.0
+  },
+  "R9": {
+   "tp": 1,
+   "fn": 1,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 1,
+   "noise": 0,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.5,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.5
+  },
+  "S1": {
+   "tp": 1,
+   "fn": 18,
+   "trapFp": 2,
+   "trapTn": 14,
+   "results": 4,
+   "noise": 3,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.0526,
+   "trapResistance": 0.875,
+   "noiseShare": 0.75,
+   "fileLevelRecall": 0.1053
+  },
+  "X1": {
+   "tp": 3,
+   "fn": 3,
+   "trapFp": 1,
+   "trapTn": 3,
+   "results": 4,
+   "noise": 1,
+   "fileLevelTp": 3,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.5,
+   "trapResistance": 0.75,
+   "noiseShare": 0.25,
+   "fileLevelRecall": 0.5
+  },
+  "X10": {
+   "tp": 1,
+   "fn": 4,
+   "trapFp": 0,
+   "trapTn": 6,
+   "results": 1,
+   "noise": 0,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 1,
+   "summaryOfConcept": 0,
+   "recall": 0.2,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.2
+  },
+  "X12": {
+   "tp": 2,
+   "fn": 1,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 2,
+   "noise": 0,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.6667,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.6667
+  },
+  "X13": {
+   "tp": 1,
+   "fn": 1,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 1,
+   "noise": 0,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.5,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.5
+  },
+  "X14": {
+   "tp": 1,
+   "fn": 2,
+   "trapFp": 1,
+   "trapTn": 3,
+   "results": 2,
+   "noise": 1,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.3333,
+   "trapResistance": 0.75,
+   "noiseShare": 0.5,
+   "fileLevelRecall": 0.3333
+  },
+  "X16": {
+   "tp": 1,
+   "fn": 1,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 1,
+   "noise": 0,
+   "fileLevelTp": 1,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.5,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.5
+  },
+  "X17": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 2,
+   "noise": 0,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "X18": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 1,
+   "results": 2,
+   "noise": 0,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "X19": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 2,
+   "noise": 0,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "X2": {
+   "tp": 0,
+   "fn": 6,
+   "trapFp": 0,
+   "trapTn": 1,
+   "results": 1,
+   "noise": 1,
+   "fileLevelTp": 0,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 3,
+   "recall": 0.0,
+   "trapResistance": 1.0,
+   "noiseShare": 1.0,
+   "fileLevelRecall": 0.0
+  },
+  "X23": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 1,
+   "results": 2,
+   "noise": 0,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "X24": {
+   "tp": 2,
+   "fn": 4,
+   "trapFp": 0,
+   "trapTn": 7,
+   "results": 5,
+   "noise": 0,
+   "fileLevelTp": 2,
+   "redundant": 3,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.3333,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.3333
+  },
+  "X3": {
+   "tp": 3,
+   "fn": 4,
+   "trapFp": 0,
+   "trapTn": 6,
+   "results": 3,
+   "noise": 0,
+   "fileLevelTp": 3,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.4286,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 0.4286
+  },
+  "X4": {
+   "tp": 4,
+   "fn": 0,
+   "trapFp": 2,
+   "trapTn": 3,
+   "results": 6,
+   "noise": 2,
+   "fileLevelTp": 4,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.6,
+   "noiseShare": 0.3333,
+   "fileLevelRecall": 1.0
+  },
+  "X5": {
+   "tp": 4,
+   "fn": 2,
+   "trapFp": 1,
+   "trapTn": 3,
+   "results": 5,
+   "noise": 1,
+   "fileLevelTp": 4,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 0.6667,
+   "trapResistance": 0.75,
+   "noiseShare": 0.2,
+   "fileLevelRecall": 0.6667
+  },
+  "X6": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 2,
+   "noise": 0,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "X7": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 1,
+   "trapTn": 2,
+   "results": 3,
+   "noise": 1,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 1,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 0.6667,
+   "noiseShare": 0.3333,
+   "fileLevelRecall": 1.0
+  },
+  "X8": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 2,
+   "results": 2,
+   "noise": 0,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  },
+  "X9": {
+   "tp": 2,
+   "fn": 0,
+   "trapFp": 0,
+   "trapTn": 1,
+   "results": 2,
+   "noise": 0,
+   "fileLevelTp": 2,
+   "redundant": 0,
+   "uncovered": 0,
+   "summaryOfConcept": 0,
+   "recall": 1.0,
+   "trapResistance": 1.0,
+   "noiseShare": 0.0,
+   "fileLevelRecall": 1.0
+  }
+ },
+ "falseNegativeMechanisms": [
+  {
+   "id": "no-rule-for-concept",
+   "title": "No rule for the concept at all (scanner-neutral concepts beyond the reference scanner: unmapped or unevidenced in the mapping)",
+   "count": 19,
+   "languages": [
+    "C#",
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-csharp-architecture",
+     "id": "BLC-001",
+     "concept": "business-logic-in-controller",
+     "file": "src/FleetOps.Api/Controllers/WorkOrdersController.cs",
+     "lines": [
+      47,
+      74
+     ]
+    },
+    {
+     "repo": "bench-csharp-domain-events",
+     "id": "VOM-001",
+     "concept": "value-object-mutability",
+     "file": "src/Rentals.Lending.Domain/Catalogue/StorageLocation.cs",
+     "lines": [
+      4,
+      16
+     ]
+    },
+    {
+     "repo": "bench-csharp-domain-events",
+     "id": "DEH-001",
+     "concept": "domain-event-never-handled",
+     "file": "src/Rentals.Lending.Domain/Catalogue/EquipmentRelocated.cs",
+     "lines": [
+      9,
+      9
+     ]
+    },
+    {
+     "repo": "bench-csharp-domain-events",
+     "id": "DEH-002",
+     "concept": "domain-event-never-handled",
+     "file": "src/Rentals.Lending.Domain/Members/MemberEvents.cs",
+     "lines": [
+      13,
+      13
+     ]
+    },
+    {
+     "repo": "bench-csharp-domain-events",
+     "id": "ESC-001",
+     "concept": "event-schema-change-without-upcaster",
+     "file": "src/Rentals.Billing.Domain/Accounts/Events/DepositHeld.cs",
+     "lines": [
+      5,
+      5
+     ]
+    },
+    {
+     "repo": "bench-ts-frontend-a11y",
+     "id": "A11Y-010",
+     "concept": "modal-focus-not-managed",
+     "file": "src/features/item/ItemDetailDialog.tsx",
+     "lines": [
+      45,
+      45
+     ]
+    },
+    {
+     "repo": "bench-ts-frontend-a11y",
+     "id": "A11Y-013",
+     "concept": "autoplay-media-without-control",
+     "file": "src/features/home/HomePage.tsx",
+     "lines": [
+      9,
+      17
+     ]
+    },
+    {
+     "repo": "bench-ts-frontend-a11y",
+     "id": "A11Y-021",
+     "concept": "react-index-as-key",
+     "file": "src/features/reading-list/ReadingListPage.tsx",
+     "lines": [
+      161,
+      163
+     ]
+    },
+    {
+     "repo": "bench-ts-frontend-a11y",
+     "id": "A11Y-022",
+     "concept": "react-hook-missing-dependency",
+     "file": "src/features/gallery/Gallery.tsx",
+     "lines": [
+      20,
+      34
+     ]
+    },
+    {
+     "repo": "bench-ts-frontend-a11y",
+     "id": "A11Y-023",
+     "concept": "react-state-mutation",
+     "file": "src/features/reading-list/useReadingList.ts",
+     "lines": [
+      43,
+      49
+     ]
+    },
+    {
+     "repo": "bench-ts-frontend-a11y",
+     "id": "A11Y-024",
+     "concept": "form-error-not-associated",
+     "file": "src/features/reading-list/ReadingListPage.tsx",
+     "lines": [
+      141,
+      142
+     ]
+    },
+    {
+     "repo": "bench-csharp-blazor-a11y",
+     "id": "BA-010",
+     "concept": "modal-focus-not-managed",
+     "file": "src/HarbourLane.Bookings.Web/Components/Shared/ConfirmDialog.razor",
+     "lines": [
+      3,
+      12
+     ]
+    },
+    {
+     "repo": "bench-csharp-blazor-a11y",
+     "id": "BA-013",
+     "concept": "autoplay-media-without-control",
+     "file": "src/HarbourLane.Bookings.Web/Components/Pages/Home.razor",
+     "lines": [
+      6,
+      7
+     ]
+    },
+    {
+     "repo": "bench-csharp-blazor-a11y",
+     "id": "BA-018",
+     "concept": "form-error-not-associated",
+     "file": "src/HarbourLane.Bookings.Web/Components/Pages/Book.razor",
+     "lines": [
+      55,
+      58
+     ]
+    },
+    {
+     "repo": "bench-ts-domain-privacy",
+     "id": "CON-001",
+     "concept": "consent-not-checked",
+     "file": "src/membership/features/send-class-reminders/send-class-reminders.ts",
+     "lines": [
+      75,
+      79
+     ]
+    },
+    {
+     "repo": "bench-ts-readiness",
+     "id": "RDY-004",
+     "concept": "unchecked-any-external-data",
+     "file": "apps/tracking-service/src/http/routes/parcels.ts",
+     "lines": [
+      55,
+      59
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-023",
+     "concept": "unchecked-any-external-data",
+     "file": "src/infrastructure/carriers/alder-parcel-adapter.ts",
+     "lines": [
+      62,
+      62
+     ]
+    },
+    {
+     "repo": "bench-csharp-codehealth",
+     "id": "CH-021",
+     "concept": "pointless-catch-rethrow",
+     "file": "src/Shipping.Rates.Core/Carriers/CorvidCourierAdapter.cs",
+     "lines": [
+      128,
+      128
+     ]
+    },
+    {
+     "repo": "bench-csharp-tests",
+     "id": "TQ-007",
+     "concept": "excessive-mocking",
+     "file": "tests/Fx.Conversion.UnitTests/Quotes/QuoteServiceTests.cs",
+     "lines": [
+      18,
+      19
+     ]
+    }
+   ]
+  },
+  {
+   "id": "repo-wide-posture-switch",
+   "title": "Repository-wide posture switches: one qualifying site anywhere credits the whole repository, so the defective site is never itemised (P7, P8, C2, S1, D40, D42, P10, P11, P6)",
+   "count": 15,
+   "languages": [
+    "C#",
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-csharp-readiness",
+     "id": "RDY-001",
+     "concept": "outbound-http-resilience",
+     "file": "src/ParcelTracking.Infrastructure/DependencyInjection.cs",
+     "lines": [
+      70,
+      71
+     ]
+    },
+    {
+     "repo": "bench-csharp-readiness",
+     "id": "RDY-004",
+     "concept": "missing-authorization",
+     "file": "src/ParcelTracking.Api/Controllers/ReportsController.cs",
+     "lines": [
+      8,
+      13
+     ]
+    },
+    {
+     "repo": "bench-csharp-readiness",
+     "id": "RDY-005",
+     "concept": "inbound-input-validation",
+     "file": "src/ParcelTracking.Api/Contracts/RedirectParcelRequest.cs",
+     "lines": [
+      3,
+      10
+     ]
+    },
+    {
+     "repo": "bench-csharp-readiness",
+     "id": "RDY-008",
+     "concept": "versioned-schema-migrations",
+     "file": "src/ParcelTracking.Worker/Program.cs",
+     "lines": [
+      43,
+      47
+     ]
+    },
+    {
+     "repo": "bench-csharp-readiness",
+     "id": "RDY-010",
+     "concept": "security-response-headers",
+     "file": "src/ParcelTracking.Api/Hosting/ApiPipeline.cs",
+     "lines": [
+      21,
+      29
+     ]
+    },
+    {
+     "repo": "bench-csharp-readiness",
+     "id": "RDY-011",
+     "concept": "https-enforcement",
+     "file": "src/ParcelTracking.Api/Hosting/ApiPipeline.cs",
+     "lines": [
+      13,
+      18
+     ]
+    },
+    {
+     "repo": "bench-ts-readiness",
+     "id": "MIG-001",
+     "concept": "versioned-schema-migrations",
+     "file": "apps/tracking-service/src/worker/delivery-log.ts",
+     "lines": [
+      13,
+      25
+     ]
+    },
+    {
+     "repo": "bench-ts-readiness",
+     "id": "LIB-001",
+     "concept": "library-api-versioning",
+     "file": "packages/tracking-client/CHANGELOG.md",
+     "lines": [
+      5,
+      17
+     ]
+    },
+    {
+     "repo": "bench-ts-readiness",
+     "id": "LIB-002",
+     "concept": "library-api-versioning",
+     "file": "packages/webhooks/package.json",
+     "lines": null
+    },
+    {
+     "repo": "bench-ts-readiness",
+     "id": "BDD-001",
+     "concept": "executable-specifications",
+     "file": "apps/tracking-service/features/returns/return-to-sender.feature",
+     "lines": null
+    },
+    {
+     "repo": "bench-ts-readiness",
+     "id": "EGR-001",
+     "concept": "network-egress-policy",
+     "file": "deploy/k8s/networkpolicy.yaml",
+     "lines": [
+      104,
+      111
+     ]
+    },
+    {
+     "repo": "bench-ts-readiness",
+     "id": "ADM-001",
+     "concept": "runtime-threat-detection-and-admission",
+     "file": "deploy/k8s/namespace.yaml",
+     "lines": [
+      5,
+      10
+     ]
+    },
+    {
+     "repo": "bench-ts-readiness",
+     "id": "RDY-003",
+     "concept": "missing-authorization",
+     "file": "apps/tracking-service/src/http/routes/merchants.ts",
+     "lines": [
+      9,
+      14
+     ]
+    },
+    {
+     "repo": "bench-csharp-maturity-history",
+     "id": "REL-001",
+     "concept": "release-hygiene",
+     "file": "CHANGELOG.md",
+     "lines": null
+    },
+    {
+     "repo": "estate-quellbrook-gateway",
+     "id": "GW-001",
+     "concept": "missing-authorization",
+     "file": "src/routes/dispatch-routes.ts",
+     "lines": [
+      73,
+      96
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ts-arm-missing-codehealth",
+   "title": "Code-health and test rules with no TypeScript arm (suppressions, commented-out code, empty catch, dead private code, @deprecated use, catch-rethrow, null dereference, swallowed test failures, mock dominance)",
+   "count": 12,
+   "languages": [
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-010",
+     "concept": "suppressed-diagnostic",
+     "file": "src/application/labels/label-service.ts",
+     "lines": [
+      120,
+      120
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-013",
+     "concept": "commented-out-code",
+     "file": "src/application/labels/label-service.ts",
+     "lines": [
+      214,
+      214
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-014",
+     "concept": "empty-catch-block",
+     "file": "src/application/labels/label-service.ts",
+     "lines": [
+      434,
+      434
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-015",
+     "concept": "unused-code",
+     "file": "src/application/labels/label-service.ts",
+     "lines": [
+      414,
+      414
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-018",
+     "concept": "obsolete-symbol-still-used",
+     "file": "src/application/labels/label-service.ts",
+     "lines": [
+      124,
+      124
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-022",
+     "concept": "pointless-catch-rethrow",
+     "file": "src/infrastructure/carriers/corvid-courier-adapter.ts",
+     "lines": [
+      60,
+      60
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-026",
+     "concept": "null-dereference",
+     "file": "tools/print-label.ts",
+     "lines": [
+      17,
+      17
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-047",
+     "concept": "test-failure-swallowed",
+     "file": "tests/unit/carrier-adapters.test.ts",
+     "lines": [
+      89,
+      89
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-048",
+     "concept": "excessive-mocking",
+     "file": "tests/unit/quote-routes.test.ts",
+     "lines": [
+      16,
+      16
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-049",
+     "concept": "unused-code",
+     "file": "src/infrastructure/rates/rate-card-cache.ts",
+     "lines": [
+      33,
+      33
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-050",
+     "concept": "unused-code",
+     "file": "src/infrastructure/rates/rate-card-cache.ts",
+     "lines": [
+      39,
+      39
+     ]
+    },
+    {
+     "repo": "bench-ts-readiness",
+     "id": "RDY-006",
+     "concept": "empty-catch-block",
+     "file": "apps/tracking-service/src/health/carrier-health.ts",
+     "lines": [
+      14,
+      18
+     ]
+    }
+   ]
+  },
+  {
+   "id": "shallow-heuristic",
+   "title": "Pattern recognisers too shallow for the defect's shape (.Result, Assert.True(true), WarningsNotAsErrors, eslint config off-switches, Error('Not implemented'), hollow methods, density bars, bare floating promises, inert options, undrained stderr, vitest test without expect, truncation loops)",
+   "count": 12,
+   "languages": [
+    "C#",
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-csharp-codehealth",
+     "id": "CH-023",
+     "concept": "blocking-on-async-code",
+     "file": "src/Shipping.Rates.Api/Endpoints/LabelEndpoints.cs",
+     "lines": [
+      16,
+      16
+     ]
+    },
+    {
+     "repo": "bench-csharp-codehealth",
+     "id": "CH-034",
+     "concept": "unbounded-truncation-loop",
+     "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+     "lines": [
+      160,
+      160
+     ]
+    },
+    {
+     "repo": "bench-csharp-codehealth",
+     "id": "CH-049",
+     "concept": "suppressed-diagnostic",
+     "file": "src/Shipping.Rates.Core/Shipping.Rates.Core.csproj",
+     "lines": [
+      5,
+      5
+     ]
+    },
+    {
+     "repo": "bench-csharp-tests",
+     "id": "TQ-002",
+     "concept": "test-without-assertion",
+     "file": "tests/Fx.Conversion.UnitTests/Allocation/AllocatorTests.cs",
+     "lines": [
+      42,
+      43
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-012",
+     "concept": "suppressed-diagnostic",
+     "file": "eslint.config.js",
+     "lines": [
+      38,
+      61
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-019",
+     "concept": "not-implemented-placeholder",
+     "file": "src/infrastructure/carriers/corvid-courier-adapter.ts",
+     "lines": [
+      66,
+      66
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-020",
+     "concept": "incomplete-implementation",
+     "file": "src/application/pricing/remote-area-lookup.ts",
+     "lines": [
+      8,
+      8
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-025",
+     "concept": "null-forgiving-suppression",
+     "file": null,
+     "lines": null
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-027",
+     "concept": "floating-promise",
+     "file": "src/api/routes/label-routes.ts",
+     "lines": [
+      11,
+      11
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-033",
+     "concept": "inert-configuration-option",
+     "file": "src/infrastructure/rates/rate-card-cache.ts",
+     "lines": [
+      47,
+      47
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-036",
+     "concept": "undrained-child-process-stream",
+     "file": "src/infrastructure/printing/label-printer.ts",
+     "lines": [
+      14,
+      14
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-045",
+     "concept": "test-without-assertion",
+     "file": "tests/unit/label-service.test.ts",
+     "lines": [
+      15,
+      15
+     ]
+    }
+   ]
+  },
+  {
+   "id": "prefix-less-secret",
+   "title": "Prefix-less secrets: every vendor-prefixed secret was found, every secret without a vendor prefix was missed (punctuated Password=, credentials in connection URIs, inline Bearer, unquoted dotenv, .http files, Vite define)",
+   "count": 11,
+   "languages": [
+    "C#",
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-csharp-security-secrets",
+     "id": "SEC-005",
+     "concept": "hardcoded-password",
+     "file": "src/DocumentExport.Api/Persistence/AuditStoreSettings.cs",
+     "lines": [
+      13,
+      13
+     ]
+    },
+    {
+     "repo": "bench-csharp-security-secrets",
+     "id": "SEC-006",
+     "concept": "hardcoded-password",
+     "file": "src/DocumentExport.Api/appsettings.Production.json",
+     "lines": [
+      3,
+      3
+     ]
+    },
+    {
+     "repo": "bench-csharp-security-secrets",
+     "id": "SEC-007",
+     "concept": "hardcoded-password",
+     "file": "src/DocumentExport.Api/appsettings.Development.json",
+     "lines": [
+      3,
+      3
+     ]
+    },
+    {
+     "repo": "bench-csharp-security-secrets",
+     "id": "SEC-013",
+     "concept": "hardcoded-credential",
+     "file": "src/DocumentExport.Api/Notifications/DeliveryNotifier.cs",
+     "lines": [
+      19,
+      19
+     ]
+    },
+    {
+     "repo": "bench-csharp-security-secrets",
+     "id": "SEC-014",
+     "concept": "hardcoded-password",
+     "file": "deploy/migrate.sh",
+     "lines": [
+      7,
+      7
+     ]
+    },
+    {
+     "repo": "bench-csharp-security-secrets",
+     "id": "SEC-017",
+     "concept": "secret-in-version-history",
+     "file": "src/DocumentExport.Api/appsettings.Staging.json",
+     "lines": [
+      3,
+      3
+     ]
+    },
+    {
+     "repo": "bench-ts-security-secrets",
+     "id": "SEC-004",
+     "concept": "hardcoded-password",
+     "file": "src/db/pool.ts",
+     "lines": [
+      9,
+      9
+     ]
+    },
+    {
+     "repo": "bench-ts-security-secrets",
+     "id": "SEC-005",
+     "concept": "hardcoded-password",
+     "file": ".env",
+     "lines": [
+      4,
+      4
+     ]
+    },
+    {
+     "repo": "bench-ts-security-secrets",
+     "id": "SEC-006",
+     "concept": "hardcoded-cryptographic-key",
+     "file": ".env.production",
+     "lines": [
+      3,
+      3
+     ]
+    },
+    {
+     "repo": "bench-ts-security-secrets",
+     "id": "SEC-014",
+     "concept": "hardcoded-credential",
+     "file": "requests/transcoder.http",
+     "lines": [
+      6,
+      16
+     ]
+    },
+    {
+     "repo": "bench-ts-security-secrets",
+     "id": "SEC-016",
+     "concept": "hardcoded-cryptographic-key",
+     "file": "web/vite.config.ts",
+     "lines": [
+      13,
+      13
+     ]
+    }
+   ]
+  },
+  {
+   "id": "injection-taint-in-handler-only",
+   "title": "Injection taint confined to the request handler: the tainted value arrives as a method parameter, model-bound argument, component state or ternary, or passes a function assumed safe (path.join)",
+   "count": 11,
+   "languages": [
+    "C#",
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-csharp-security-injection",
+     "id": "CMD-001",
+     "concept": "command-injection",
+     "file": "src/ReportDesk.Api/Conversion/DocumentConverter.cs",
+     "lines": [
+      21,
+      27
+     ]
+    },
+    {
+     "repo": "bench-csharp-security-injection",
+     "id": "SSRF-001",
+     "concept": "server-side-request-forgery",
+     "file": "src/ReportDesk.Api/Controllers/ImportsController.cs",
+     "lines": [
+      22,
+      22
+     ]
+    },
+    {
+     "repo": "bench-ts-security-injection",
+     "id": "SQL-001",
+     "concept": "sql-injection",
+     "file": "src/search/document-search-repository.ts",
+     "lines": [
+      24,
+      29
+     ]
+    },
+    {
+     "repo": "bench-ts-security-injection",
+     "id": "SQL-002",
+     "concept": "sql-injection",
+     "file": "src/reports/report-repository.ts",
+     "lines": [
+      11,
+      13
+     ]
+    },
+    {
+     "repo": "bench-ts-security-injection",
+     "id": "CMD-001",
+     "concept": "command-injection",
+     "file": "src/conversion/document-converter.ts",
+     "lines": [
+      24,
+      26
+     ]
+    },
+    {
+     "repo": "bench-ts-security-injection",
+     "id": "PATH-001",
+     "concept": "path-traversal",
+     "file": "src/attachments/attachment-routes.ts",
+     "lines": [
+      32,
+      34
+     ]
+    },
+    {
+     "repo": "bench-ts-security-injection",
+     "id": "XXE-001",
+     "concept": "xml-external-entity",
+     "file": "src/imports/metadata-importer.ts",
+     "lines": [
+      15,
+      15
+     ]
+    },
+    {
+     "repo": "bench-ts-security-injection",
+     "id": "CODE-001",
+     "concept": "code-injection",
+     "file": "src/reports/formula-evaluator.ts",
+     "lines": [
+      22,
+      22
+     ]
+    },
+    {
+     "repo": "bench-ts-security-injection",
+     "id": "PROTO-001",
+     "concept": "prototype-pollution",
+     "file": "src/preferences/deep-merge.ts",
+     "lines": [
+      12,
+      18
+     ]
+    },
+    {
+     "repo": "bench-ts-security-injection",
+     "id": "REDIR-001",
+     "concept": "open-redirect",
+     "file": "src/shares/share-routes.ts",
+     "lines": [
+      79,
+      81
+     ]
+    },
+    {
+     "repo": "bench-ts-frontend-a11y",
+     "id": "A11Y-016",
+     "concept": "cross-site-scripting",
+     "file": "src/features/item/ItemDetailDialog.tsx",
+     "lines": [
+      62,
+      65
+     ]
+    }
+   ]
+  },
+  {
+   "id": "injection-sink-without-rule",
+   "title": "Injection sink or library with no rule in the baked packs (Dapper, EF FromSqlRaw, Newtonsoft TypeNameHandling, ContentResult XSS, Redirect, Regex without timeout, MongoDB filters, dynamic RegExp, log injection, Blazor MarkupString)",
+   "count": 10,
+   "languages": [
+    "C#",
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-csharp-security-injection",
+     "id": "SQL-001",
+     "concept": "sql-injection",
+     "file": "src/ReportDesk.Api/Search/DocumentSearchRepository.cs",
+     "lines": [
+      14,
+      22
+     ]
+    },
+    {
+     "repo": "bench-csharp-security-injection",
+     "id": "SQL-002",
+     "concept": "sql-injection",
+     "file": "src/ReportDesk.Api/Reports/ReportRepository.cs",
+     "lines": [
+      13,
+      14
+     ]
+    },
+    {
+     "repo": "bench-csharp-security-injection",
+     "id": "DESER-001",
+     "concept": "insecure-deserialization",
+     "file": "src/ReportDesk.Api/SavedSearches/SavedSearchSerializer.cs",
+     "lines": [
+      10,
+      18
+     ]
+    },
+    {
+     "repo": "bench-csharp-security-injection",
+     "id": "XSS-001",
+     "concept": "cross-site-scripting",
+     "file": "src/ReportDesk.Api/Controllers/SearchWidgetController.cs",
+     "lines": [
+      25,
+      25
+     ]
+    },
+    {
+     "repo": "bench-csharp-security-injection",
+     "id": "REDIR-001",
+     "concept": "open-redirect",
+     "file": "src/ReportDesk.Api/Controllers/ReportsController.cs",
+     "lines": [
+      78,
+      78
+     ]
+    },
+    {
+     "repo": "bench-csharp-security-injection",
+     "id": "REDOS-001",
+     "concept": "regex-denial-of-service",
+     "file": "src/ReportDesk.Api/Search/HighlightService.cs",
+     "lines": [
+      13,
+      15
+     ]
+    },
+    {
+     "repo": "bench-ts-security-injection",
+     "id": "NOSQL-001",
+     "concept": "nosql-injection",
+     "file": "src/subscriptions/unsubscribe-routes.ts",
+     "lines": [
+      16,
+      21
+     ]
+    },
+    {
+     "repo": "bench-ts-security-injection",
+     "id": "REDOS-001",
+     "concept": "regex-denial-of-service",
+     "file": "src/search/highlighter.ts",
+     "lines": [
+      13,
+      13
+     ]
+    },
+    {
+     "repo": "bench-ts-security-injection",
+     "id": "LOG-001",
+     "concept": "log-injection",
+     "file": "src/exports/export-audit-log.ts",
+     "lines": [
+      22,
+      24
+     ]
+    },
+    {
+     "repo": "bench-csharp-blazor-a11y",
+     "id": "BA-019",
+     "concept": "cross-site-scripting",
+     "file": "src/HarbourLane.Bookings.Web/Components/Pages/RoomDetail.razor",
+     "lines": [
+      36,
+      36
+     ]
+    }
+   ]
+  },
+  {
+   "id": "structural-population-too-narrow",
+   "title": "Architecture / domain detectors read too narrow a population (project-reference cycles only, test edges in instability, no pass-through detection, attributes and projections ignored, entities without Id, declared references excuse co-change, test-support project not seen as test code)",
+   "count": 9,
+   "languages": [
+    "C#"
+   ],
+   "sites": [
+    {
+     "repo": "bench-csharp-architecture",
+     "id": "DOM-001",
+     "concept": "domain-depends-on-infrastructure",
+     "file": "src/FleetOps.Domain/Maintenance/MaintenanceDueEvaluator.cs",
+     "lines": [
+      7,
+      12
+     ]
+    },
+    {
+     "repo": "bench-csharp-architecture",
+     "id": "SDP-001",
+     "concept": "unstable-dependency",
+     "file": "src/FleetOps.ServiceDefaults/FleetOps.ServiceDefaults.csproj",
+     "lines": [
+      8,
+      8
+     ]
+    },
+    {
+     "repo": "bench-csharp-architecture",
+     "id": "CYC-001",
+     "concept": "module-dependency-cycle",
+     "file": "src/FleetOps.Infrastructure/Email/ReminderMailer.cs",
+     "lines": [
+      2,
+      2
+     ]
+    },
+    {
+     "repo": "bench-csharp-architecture",
+     "id": "IND-001",
+     "concept": "call-indirection",
+     "file": "src/FleetOps.Application/Facades/WorkOrderFacade.cs",
+     "lines": [
+      8,
+      22
+     ]
+    },
+    {
+     "repo": "bench-csharp-domain-events",
+     "id": "DM6-001",
+     "concept": "domain-depends-on-infrastructure",
+     "file": "src/Rentals.Lending.Domain/Members/Member.cs",
+     "lines": [
+      7,
+      7
+     ]
+    },
+    {
+     "repo": "bench-csharp-domain-events",
+     "id": "ES1-002",
+     "concept": "nondeterministic-event-fold",
+     "file": "src/Rentals.Billing.Application/Projections/AccountBalanceProjection.cs",
+     "lines": [
+      46,
+      50
+     ]
+    },
+    {
+     "repo": "estate-quellbrook-orders",
+     "id": "ORD-001",
+     "concept": "publicly-mutable-entity-state",
+     "file": "src/Quellbrook.Orders.Domain/Orders/Parcel.cs",
+     "lines": [
+      15,
+      17
+     ]
+    },
+    {
+     "repo": "bench-csharp-maturity-history",
+     "id": "CPL-001",
+     "concept": "change-coupling",
+     "file": "src/ClinicScheduling.Api/Contracts/AppointmentResponse.cs",
+     "lines": null
+    },
+    {
+     "repo": "bench-csharp-tests",
+     "id": "AX8-001",
+     "concept": "production-depends-on-test-code",
+     "file": "src/Fx.Conversion.Api/Fx.Conversion.Api.csproj",
+     "lines": [
+      10,
+      10
+     ]
+    }
+   ]
+  },
+  {
+   "id": "info-level-never-in-sarif",
+   "title": "Measured but never reported: per-site rows at Info/Recommendation level or below a score threshold never reach SARIF; only a location-less roll-up does (X2 CancellationToken, D12/npm outdated, R7 unused exports, R3 size)",
+   "count": 8,
+   "languages": [
+    "C#",
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-csharp-security-dependencies",
+     "id": "DEP-006",
+     "concept": "outdated-dependency",
+     "file": "Directory.Packages.props",
+     "lines": [
+      26,
+      26
+     ]
+    },
+    {
+     "repo": "bench-ts-security-dependencies",
+     "id": "OUT-001",
+     "concept": "outdated-dependency",
+     "file": "package.json",
+     "lines": [
+      24,
+      24
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-016",
+     "concept": "unused-code",
+     "file": "src/domain/value-objects/tracking-number.ts",
+     "lines": [
+      24,
+      24
+     ]
+    },
+    {
+     "repo": "bench-ts-codehealth",
+     "id": "CH-030",
+     "concept": "missing-cancellation-propagation",
+     "file": "src/infrastructure/rates/rate-card-cache.ts",
+     "lines": [
+      89,
+      89
+     ]
+    },
+    {
+     "repo": "bench-ts-frontend-a11y",
+     "id": "A11Y-017",
+     "concept": "oversized-source-file",
+     "file": "src/features/loans/LoansPage.tsx",
+     "lines": null
+    },
+    {
+     "repo": "bench-csharp-codehealth",
+     "id": "CH-026",
+     "concept": "missing-cancellation-propagation",
+     "file": "src/Shipping.Rates.Core/Pricing/RateCardCache.cs",
+     "lines": [
+      63,
+      63
+     ]
+    },
+    {
+     "repo": "bench-csharp-readiness",
+     "id": "RDY-003",
+     "concept": "missing-cancellation-propagation",
+     "file": "src/ParcelTracking.Worker/TrackingPoller.cs",
+     "lines": [
+      16,
+      40
+     ]
+    },
+    {
+     "repo": "estate-quellbrook-orders",
+     "id": "ORD-002",
+     "concept": "missing-cancellation-propagation",
+     "file": "src/Quellbrook.Orders.Infrastructure/Persistence/OrderQueries.cs",
+     "lines": [
+      9,
+      35
+     ]
+    }
+   ]
+  },
+  {
+   "id": "call-shape-matching",
+   "title": "Data-flow rules that match call NAMES, not data: source-generated [LoggerMessage] methods, structured log fields, headers inside a logged object, localStorage under a neutral key, MD5.HashData / createHash('md5') for passwords",
+   "count": 7,
+   "languages": [
+    "C#",
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-csharp-security-injection",
+     "id": "PII-001",
+     "concept": "sensitive-data-in-logs",
+     "file": "src/ReportDesk.Api/Delivery/ReportMailer.cs",
+     "lines": [
+      13,
+      13
+     ]
+    },
+    {
+     "repo": "bench-csharp-security-injection",
+     "id": "HASH-001",
+     "concept": "weak-hash-algorithm",
+     "file": "src/ReportDesk.Api/Shares/SharePasswordHasher.cs",
+     "lines": [
+      12,
+      12
+     ]
+    },
+    {
+     "repo": "estate-quellbrook-notifier",
+     "id": "NTF-002",
+     "concept": "sensitive-data-in-logs",
+     "file": "src/Quellbrook.Notifier/Channels/EmailSender.cs",
+     "lines": [
+      34,
+      38
+     ]
+    },
+    {
+     "repo": "bench-ts-security-injection",
+     "id": "PII-001",
+     "concept": "sensitive-data-in-logs",
+     "file": "src/subscriptions/report-mailer.ts",
+     "lines": [
+      53,
+      53
+     ]
+    },
+    {
+     "repo": "bench-ts-security-injection",
+     "id": "PII-003",
+     "concept": "sensitive-data-in-browser-storage",
+     "file": "web/src/recent-recipients.ts",
+     "lines": [
+      20,
+      20
+     ]
+    },
+    {
+     "repo": "bench-ts-security-injection",
+     "id": "HASH-001",
+     "concept": "insufficient-password-hashing",
+     "file": "src/shares/share-password.ts",
+     "lines": [
+      5,
+      5
+     ]
+    },
+    {
+     "repo": "estate-quellbrook-gateway",
+     "id": "GW-002",
+     "concept": "sensitive-data-in-logs",
+     "file": "src/upstream/upstream-client.ts",
+     "lines": [
+      88,
+      109
+     ]
+    }
+   ]
+  },
+  {
+   "id": "dm-ts-arm-missing",
+   "title": "DM9-DM11 have no TypeScript arm, and DM6/DM7 only partial ones (decorators only; no interface type arguments)",
+   "count": 5,
+   "languages": [
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-ts-domain-privacy",
+     "id": "DIB-001",
+     "concept": "domain-depends-on-infrastructure",
+     "file": "src/membership/domain/members/contact-uniqueness.ts",
+     "lines": [
+      1,
+      18
+     ]
+    },
+    {
+     "repo": "bench-ts-domain-privacy",
+     "id": "REP-001",
+     "concept": "repository-for-non-aggregate",
+     "file": "src/billing/domain/invoices/invoice-line-repository.ts",
+     "lines": [
+      4,
+      4
+     ]
+    },
+    {
+     "repo": "bench-ts-domain-privacy",
+     "id": "SDR-001",
+     "concept": "scattered-domain-rule",
+     "file": null,
+     "lines": null
+    },
+    {
+     "repo": "bench-ts-domain-privacy",
+     "id": "MAT-001",
+     "concept": "multi-aggregate-transaction",
+     "file": "src/membership/features/cancel-membership/cancel-membership.ts",
+     "lines": [
+      22,
+      32
+     ]
+    },
+    {
+     "repo": "bench-ts-domain-privacy",
+     "id": "CIE-001",
+     "concept": "constructible-invalid-entity",
+     "file": "src/membership/domain/classes/class-session.ts",
+     "lines": [
+      11,
+      23
+     ]
+    }
+   ]
+  },
+  {
+   "id": "location-imprecision",
+   "title": "Found the file, missed the site: checkov/trivy Kubernetes rows at line 1 or the pod spec, a duplicate-block window that starts early, a misplaced dependency reported at its importer",
+   "count": 5,
+   "languages": [
+    "C#",
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-csharp-security-iac",
+     "id": "IAC-004",
+     "concept": "host-namespace-sharing",
+     "file": "deploy/k8s/node-agent/daemonset.yaml",
+     "lines": [
+      20,
+      20
+     ]
+    },
+    {
+     "repo": "bench-csharp-security-iac",
+     "id": "IAC-006",
+     "concept": "host-path-mount",
+     "file": "deploy/k8s/node-agent/daemonset.yaml",
+     "lines": [
+      71,
+      74
+     ]
+    },
+    {
+     "repo": "bench-csharp-security-iac",
+     "id": "IAC-010",
+     "concept": "missing-health-probes",
+     "file": "deploy/k8s/reminders/deployment.yaml",
+     "lines": [
+      24,
+      41
+     ]
+    },
+    {
+     "repo": "estate-quellbrook-dispatch",
+     "id": "DSP-003",
+     "concept": "duplicated-code",
+     "file": "src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs",
+     "lines": [
+      48,
+      63
+     ]
+    },
+    {
+     "repo": "bench-ts-security-dependencies",
+     "id": "MIS-001",
+     "concept": "misplaced-dev-dependency",
+     "file": "package.json",
+     "lines": [
+      31,
+      31
+     ]
+    }
+   ]
+  },
+  {
+   "id": "a11y-text-cards-off-by-default",
+   "title": "Model-judged accessibility text cards (LA2 alt text, LA5 link text, LA6 labels) are composed only with a compliance framework configured, so the default configuration measures nothing",
+   "count": 5,
+   "languages": [
+    "C#",
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-ts-frontend-a11y",
+     "id": "A11Y-019",
+     "concept": "alt-text-quality",
+     "file": "src/features/home/HomePage.tsx",
+     "lines": [
+      35,
+      41
+     ]
+    },
+    {
+     "repo": "bench-ts-frontend-a11y",
+     "id": "A11Y-020",
+     "concept": "link-and-button-text-quality",
+     "file": "src/features/home/HomePage.tsx",
+     "lines": [
+      56,
+      56
+     ]
+    },
+    {
+     "repo": "bench-csharp-blazor-a11y",
+     "id": "BA-023",
+     "concept": "alt-text-quality",
+     "file": "src/HarbourLane.Bookings.Web/Components/Pages/Home.razor",
+     "lines": [
+      27,
+      27
+     ]
+    },
+    {
+     "repo": "bench-csharp-blazor-a11y",
+     "id": "BA-024",
+     "concept": "link-and-button-text-quality",
+     "file": "src/HarbourLane.Bookings.Web/Components/Pages/Home.razor",
+     "lines": [
+      36,
+      36
+     ]
+    },
+    {
+     "repo": "bench-csharp-blazor-a11y",
+     "id": "BA-025",
+     "concept": "heading-and-label-text-quality",
+     "file": "src/HarbourLane.Bookings.Web/Pages/Admin/EditRoom.cshtml",
+     "lines": [
+      25,
+      25
+     ]
+    }
+   ]
+  },
+  {
+   "id": "dependency-hygiene-arm",
+   "title": "Dependency hygiene arms missing: npm deprecation not graded, EOL ignores engines.node and nested packages, R8 unused/undeclared blind on TypeScript",
+   "count": 5,
+   "languages": [
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-ts-security-dependencies",
+     "id": "DPR-001",
+     "concept": "deprecated-dependency",
+     "file": "package.json",
+     "lines": [
+      34,
+      34
+     ]
+    },
+    {
+     "repo": "bench-ts-security-dependencies",
+     "id": "DPR-002",
+     "concept": "deprecated-dependency",
+     "file": "package-lock.json",
+     "lines": [
+      1682,
+      1688
+     ]
+    },
+    {
+     "repo": "bench-ts-security-dependencies",
+     "id": "EOL-001",
+     "concept": "end-of-life-platform",
+     "file": "tools/manifest-export/package.json",
+     "lines": [
+      11,
+      11
+     ]
+    },
+    {
+     "repo": "bench-ts-security-dependencies",
+     "id": "UNU-001",
+     "concept": "unused-dependency",
+     "file": "package.json",
+     "lines": [
+      36,
+      36
+     ]
+    },
+    {
+     "repo": "bench-ts-security-dependencies",
+     "id": "UND-001",
+     "concept": "undeclared-dependency",
+     "file": "src/scheduling/cutoff.ts",
+     "lines": [
+      1,
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "id": "presence-only-runtime-checks",
+   "title": "Presence-only runtime checks: X2 checks that a token parameter exists, not that it is forwarded; an injected fetch hides outbound HTTP from P7/X2; Console output is neither a log call nor flagged",
+   "count": 5,
+   "languages": [
+    "C#",
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-csharp-readiness",
+     "id": "RDY-002",
+     "concept": "missing-cancellation-propagation",
+     "file": "src/ParcelTracking.Infrastructure/Persistence/ParcelStore.cs",
+     "lines": [
+      13,
+      18
+     ]
+    },
+    {
+     "repo": "bench-csharp-readiness",
+     "id": "RDY-006",
+     "concept": "observability",
+     "file": "src/ParcelTracking.Worker/NotificationDispatcher.cs",
+     "lines": [
+      45,
+      50
+     ]
+    },
+    {
+     "repo": "bench-ts-readiness",
+     "id": "RDY-001",
+     "concept": "outbound-http-resilience",
+     "file": "apps/tracking-service/src/worker/webhook-dispatcher.ts",
+     "lines": [
+      51,
+      62
+     ]
+    },
+    {
+     "repo": "bench-ts-readiness",
+     "id": "RDY-002",
+     "concept": "missing-cancellation-propagation",
+     "file": "apps/tracking-service/src/worker/poller.ts",
+     "lines": [
+      32,
+      45
+     ]
+    },
+    {
+     "repo": "bench-ts-readiness",
+     "id": "RDY-005",
+     "concept": "observability",
+     "file": "apps/tracking-service/src/worker/webhook-dispatcher.ts",
+     "lines": [
+      72,
+      78
+     ]
+    }
+   ]
+  },
+  {
+   "id": "adr-and-doc-conformance",
+   "title": "ADR / documentation conformance is model-judged: absent from contained scans and unreliable in host passes (prose-enforced ADRs, README drift, ADR contradicted by an endpoint)",
+   "count": 4,
+   "languages": [
+    "C#"
+   ],
+   "sites": [
+    {
+     "repo": "bench-csharp-architecture",
+     "id": "ARU-001",
+     "concept": "architecture-rules-unenforced",
+     "file": "docs/adr/0003-vertical-slices.md",
+     "lines": null
+    },
+    {
+     "repo": "bench-csharp-maturity-history",
+     "id": "ADR-001",
+     "concept": "adr-conformance",
+     "file": "docs/adr/0004-minimal-api-endpoints.md",
+     "lines": null
+    },
+    {
+     "repo": "bench-csharp-maturity-history",
+     "id": "DOC-001",
+     "concept": "documentation-accuracy",
+     "file": null,
+     "lines": null
+    },
+    {
+     "repo": "estate-quellbrook-dispatch",
+     "id": "DSP-004",
+     "concept": "adr-conformance",
+     "file": "docs/adr/0002-endpoints-call-application-handlers.md",
+     "lines": null
+    }
+   ]
+  },
+  {
+   "id": "a11y-css-not-read",
+   "title": "AC6 reads <style> blocks and inline styles only: motion and focus-outline defects in .css / .razor.css files are invisible",
+   "count": 4,
+   "languages": [
+    "C#",
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-ts-frontend-a11y",
+     "id": "A11Y-014",
+     "concept": "motion-without-reduced-motion",
+     "file": "src/styles/loading.css",
+     "lines": [
+      1,
+      29
+     ]
+    },
+    {
+     "repo": "bench-ts-frontend-a11y",
+     "id": "A11Y-015",
+     "concept": "focus-outline-removed",
+     "file": "src/styles/search.css",
+     "lines": [
+      18,
+      20
+     ]
+    },
+    {
+     "repo": "bench-csharp-blazor-a11y",
+     "id": "BA-015",
+     "concept": "motion-without-reduced-motion",
+     "file": "src/HarbourLane.Bookings.Web/Components/Shared/ToastHost.razor.css",
+     "lines": [
+      10,
+      43
+     ]
+    },
+    {
+     "repo": "bench-csharp-blazor-a11y",
+     "id": "BA-017",
+     "concept": "focus-outline-removed",
+     "file": "src/HarbourLane.Bookings.Web/Components/Layout/NavMenu.razor.css",
+     "lines": [
+      27,
+      29
+     ]
+    }
+   ]
+  },
+  {
+   "id": "flaky-test-detection",
+   "title": "Flaky tests: detection is three re-runs (a 1e-4 flake never shows), no time-zone/clock-read rule, the fixed-sleep rule reads C# only",
+   "count": 3,
+   "languages": [
+    "C#",
+    "TypeScript"
+   ],
+   "sites": [
+    {
+     "repo": "bench-csharp-tests",
+     "id": "TQ-006",
+     "concept": "flaky-test",
+     "file": "tests/Fx.Conversion.UnitTests/Rates/RateTableTests.cs",
+     "lines": [
+      59,
+      60
+     ]
+    },
+    {
+     "repo": "bench-ts-readiness",
+     "id": "FLK-001",
+     "concept": "flaky-test",
+     "file": "apps/tracking-service/tests/unit/share-links.test.ts",
+     "lines": [
+      11,
+      15
+     ]
+    },
+    {
+     "repo": "bench-ts-readiness",
+     "id": "FLK-002",
+     "concept": "flaky-test",
+     "file": "apps/tracking-service/tests/integration/poller.test.ts",
+     "lines": [
+      46,
+      55
+     ]
+    }
+   ]
+  },
+  {
+   "id": "iac-ci-check-absent",
+   "title": "IaC / CI checks absent in the pinned rule sets: Ingress without TLS, pull_request_target checking out and building the PR head",
+   "count": 2,
+   "languages": [
+    "C#"
+   ],
+   "sites": [
+    {
+     "repo": "bench-csharp-security-iac",
+     "id": "IAC-013",
+     "concept": "cleartext-transmission",
+     "file": "deploy/k8s/api/ingress.yaml",
+     "lines": [
+      8,
+      20
+     ]
+    },
+    {
+     "repo": "bench-csharp-security-iac",
+     "id": "IAC-017",
+     "concept": "ci-secret-exposure",
+     "file": ".github/workflows/pr-preview.yml",
+     "lines": [
+      16,
+      28
+     ]
+    }
+   ]
+  }
+ ],
+ "verdictClasses": {
+  "false-positive": 364,
+  "valid": 328,
+  "opinion-not-fact": 151,
+  "redundant": 76,
+  "shape-irrelevant": 22
+ },
+ "noiseMechanisms": {
+  "filedItems": 70,
+  "sites": 329,
+  "top": [
+   {
+    "backlogId": "01a1162f-11e8-793e-a411-c3ed552d8ac4",
+    "dimension": "D23",
+    "language": "csharp",
+    "sites": 50,
+    "repositories": 1,
+    "mechanism": "D23 'Cross-context type X (A -> B) ... exposed in B's public surface ... couples the contexts' derives a type's bounded context from its PROJECT/assembly, so a context's own Domain types used by its own Application layer, integration events from the published Contracts project, and the shared messaging kernel are all reported as cross-context coupling."
+   },
+   {
+    "backlogId": "01a1162c-1c81-7e22-96ef-3b9d8c1b2d13",
+    "dimension": "M4",
+    "language": "multi",
+    "sites": 42,
+    "repositories": 4,
+    "mechanism": "M4 'README/code drift' publishes rows that come straight from the model's reading of the README ('reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree') — an unverified claim is emitted as a finding."
+   },
+   {
+    "backlogId": "01a1162f-c932-7e86-8930-d460a177a3ac",
+    "dimension": "D8",
+    "language": "typescript",
+    "sites": 34,
+    "repositories": 1,
+    "mechanism": "The TS coverage run installs with `npm ci --ignore-scripts`, which skips native-binding install steps (libxmljs2's prebuilt binding); every suite that imports the application then fails to load, and D8 publishes per-file 'Low coverage: 0.0%' rows for the whole route layer as a fact about the repository instead of degrading the measurement."
+   },
+   {
+    "backlogId": "01a11630-b850-75db-bd2e-9c55164c5621",
+    "dimension": "ED3",
+    "language": "csharp",
+    "sites": 19,
+    "repositories": 2,
+    "mechanism": "ED3 'Event not named in past tense' and DM3 'Integration event couples to a producer-owned domain type' classify HTTP request/response records and contract summary DTOs (types under a *.Contracts namespace/folder) as events, although nothing publishes them."
+   },
+   {
+    "backlogId": "01a11632-3b2e-78ce-8895-e0b486f990b4",
+    "dimension": "D21",
+    "language": "csharp",
+    "sites": 14,
+    "repositories": 1,
+    "mechanism": "D21 (model-judged naming consistency) emits rows whose text concludes 'These are distinct operations ... No inconsistency.: No change needed.' — the model's negative verdicts are published as findings."
+   },
+   {
+    "backlogId": "01a1162c-b24b-7a6d-bd9c-35a3f29da90d",
+    "dimension": "M4",
+    "language": "multi",
+    "sites": 10,
+    "repositories": 2,
+    "mechanism": "M4 checks a README feature claim by matching model-chosen phrases ('CSV import functionality in CLI', 'typescript-eslint strict', 'React hooks rules') against file and directory NAMES and manifest text; when the phrase is not a name the implemented feature is reported as missing."
+   },
+   {
+    "backlogId": "01a11631-6582-7027-84a0-e70cb9dfbdd2",
+    "dimension": "D5",
+    "language": "csharp",
+    "sites": 9,
+    "repositories": 9,
+    "mechanism": "D5 'Off the main sequence' publishes a finding for every concrete, stable library (domain core, application layer, contracts) with distance >= 0.7, including rows whose own text says 'the shape a shared-kernel / building-block library has BY DESIGN' — a row that concedes the shape is healthy is still emitted."
+   },
+   {
+    "backlogId": "01a1162b-203d-7da3-a028-602d2c87fbc4",
+    "dimension": "D17",
+    "language": "csharp",
+    "sites": 9,
+    "repositories": 8,
+    "mechanism": "D17 'AnalyzerSeverityNone' reports a `dotnet_diagnostic.<id>.severity = none` line in .editorconfig as an undocumented, repository-wide suppression ('the only record that it was ever switched off is this line') even when the comment on the line directly above states the reason and a nested src/.editorconfig re-enables the rule for all production code."
+   },
+   {
+    "backlogId": "01a11632-a98a-76a8-b7a7-92ae4fc0637b",
+    "dimension": "D24",
+    "language": "csharp",
+    "sites": 8,
+    "repositories": 2,
+    "mechanism": "D24 model-judged 'redundant comment' asks to remove grouping headings inside long registration methods ('// Persistence', '// E-mail and reminders') and comments stating a physical purpose the code cannot express."
+   },
+   {
+    "backlogId": "01a11636-72a9-780c-8629-cd48ad0b0718",
+    "dimension": "R10",
+    "language": "typescript",
+    "sites": 8,
+    "repositories": 2,
+    "mechanism": "R10 'Duplicated block (7 lines x 2 locations)' / 'with local edits' / 'concentrated across sibling directories' reports 5-10 line parallel accessors, shared call preludes (parse, look up, stop on a miss) and a 10-line HTML escaper duplicated across two separately compiled targets, where extraction would add indirection without removing a maintenance risk."
+   },
+   {
+    "backlogId": "01a11630-3ab0-71e9-a09f-f53c8f7a2bb6",
+    "dimension": "D8",
+    "language": "typescript",
+    "sites": 8,
+    "repositories": 1,
+    "mechanism": "D8 ('Low coverage: 0.0%') and R4 ('No test reaches this file') report composition roots, process entry points, release scripts and thin browser glue over vendor SDKs as untested; the reachability/coverage fact is right, but the implied 'must be unit-tested' does not apply to wiring files whose collaborators are each tested."
+   }
+  ]
+ }
+}

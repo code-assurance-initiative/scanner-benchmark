@@ -56,6 +56,32 @@
         "uncovered": 8
       },
       "note": "iteration-2 SARIF re-scored with key v1.1.0 under harness 1.3 (precise IaC concepts, locationFromMessage, file-level recall)"
+    },
+    {
+      "iteration": "final",
+      "date": "2026-10-07",
+      "tag": "v1.1.0",
+      "harness": "cai_bench 1.3.1 (contract 1.4)",
+      "sarifSha256": "dea4a9a56401b2cd6224c483c63b22ba1a0710f0f87b8ec072918c827a10b165",
+      "outcomes": {
+        "tp": 14,
+        "fn": 5,
+        "fp": 3,
+        "tn": 104,
+        "trapFp": 2,
+        "trapTn": 18,
+        "results": 83,
+        "noise": 60,
+        "redundant": 9,
+        "uncovered": 8,
+        "summaryOfConcept": 0,
+        "fileLevelTp": 17,
+        "recall": 0.7368421052631579,
+        "trapResistance": 0.9,
+        "noiseRate": 0.7228915662650602,
+        "fileLevelRecall": 0.8947368421052632
+      },
+      "note": "FINAL re-score with the final harness (cai_bench 1.3.1, contract 1.4, scanner-benchmark 9885617) of the final contained default-configuration scan (iter2, results-file iteration 2 (re-scored)) against the key at v1.1.0 (sha256 7fc4112abbb6… = registry). Outcomes identical to the recorded final contained scan."
     }
   ],
   "verdicts": [

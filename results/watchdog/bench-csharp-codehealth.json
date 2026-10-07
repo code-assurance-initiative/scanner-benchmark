@@ -74,6 +74,32 @@
     "uncovered": 7
    },
    "note": "contained, final; repo 29f24c9 (code identical to v1.0.0 d9f2e3e, which adds only the journal); two model passes iter4-llm1/2, identical sarif 7cae066b…, D21 90, D24 70"
+  },
+  {
+   "iteration": "final",
+   "date": "2026-10-07",
+   "tag": "v1.0.0",
+   "harness": "cai_bench 1.3.1 (contract 1.4)",
+   "sarifSha256": "827e2def12e6dcf3f94ed5095444899113917350e1c4ecd90d5c647942ec1c50",
+   "outcomes": {
+    "tp": 45,
+    "fn": 5,
+    "fp": 3,
+    "tn": 109,
+    "trapFp": 3,
+    "trapTn": 27,
+    "results": 54,
+    "noise": 3,
+    "redundant": 6,
+    "uncovered": 7,
+    "summaryOfConcept": 1,
+    "fileLevelTp": 45,
+    "recall": 0.9,
+    "trapResistance": 0.9,
+    "noiseRate": 0.05555555555555555,
+    "fileLevelRecall": 0.9
+   },
+   "note": "FINAL re-score with the final harness (cai_bench 1.3.1, contract 1.4, scanner-benchmark 9885617) of the final contained default-configuration scan (iter4, results-file iteration 4) against the key at v1.0.0 (sha256 581497cf5d0d… = registry). Contract 1.4 summaryOfConcept: the location-less X2 roll-up is now outcome summary-of-concept of CH-026, outside every metric (results 55 -> 54, noise 4 -> 3)."
   }
  ],
  "verdicts": [

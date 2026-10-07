@@ -56,6 +56,32 @@
         "uncovered": 2
       },
       "note": "contained, final; model-judged pass iter3-llm alongside"
+    },
+    {
+      "iteration": "final",
+      "date": "2026-10-07",
+      "tag": "v1.0.0",
+      "harness": "cai_bench 1.3.1 (contract 1.4)",
+      "sarifSha256": "83f5629c6fa1fc4db7b4e436071a748d6d697a9f3ef46b17025e8499041a1f68",
+      "outcomes": {
+        "tp": 0,
+        "fn": 0,
+        "fp": 1,
+        "tn": 145,
+        "trapFp": 1,
+        "trapTn": 0,
+        "results": 1,
+        "noise": 1,
+        "redundant": 0,
+        "uncovered": 2,
+        "summaryOfConcept": 0,
+        "fileLevelTp": 0,
+        "recall": null,
+        "trapResistance": 0.0,
+        "noiseRate": 1.0,
+        "fileLevelRecall": null
+      },
+      "note": "FINAL re-score with the final harness (cai_bench 1.3.1, contract 1.4, scanner-benchmark 9885617) of the final contained default-configuration scan (iter3, results-file iteration 3) against the key at v1.0.0 (sha256 b03513609f4c… = registry). Outcomes identical to the recorded final contained scan."
     }
   ],
   "verdicts": [

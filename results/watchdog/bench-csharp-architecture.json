@@ -115,6 +115,32 @@
         "uncovered": 21
       },
       "note": "host pass with --with-llm on c6a9e9e; same rows as the iteration-3 model-judged pass except one re-worded D19 row; BND-008 D22 100 (in)"
+    },
+    {
+      "iteration": "final",
+      "date": "2026-10-07",
+      "tag": "v1.1.0",
+      "harness": "cai_bench 1.3.1 (contract 1.4)",
+      "sarifSha256": "5a9dc115b8af62fcb7648fd9870a7cd48854c7b715cc25a8e594578cc1dd0a5f",
+      "outcomes": {
+        "tp": 11,
+        "fn": 6,
+        "fp": 5,
+        "tn": 254,
+        "trapFp": 4,
+        "trapTn": 18,
+        "results": 24,
+        "noise": 11,
+        "redundant": 2,
+        "uncovered": 11,
+        "summaryOfConcept": 0,
+        "fileLevelTp": 11,
+        "recall": 0.6470588235294118,
+        "trapResistance": 0.8181818181818182,
+        "noiseRate": 0.4583333333333333,
+        "fileLevelRecall": 0.6470588235294118
+      },
+      "note": "FINAL re-score with the final harness (cai_bench 1.3.1, contract 1.4, scanner-benchmark 9885617) of the final contained default-configuration scan (v1.1-iter1, results-file iteration 4) against the key at v1.1.0 (sha256 85b26bbaf25a… = registry). Outcomes identical to the recorded final contained scan."
     }
   ],
   "verdicts": [
