@@ -1,0 +1,968 @@
+{
+ "repo": "code-assurance-initiative/bench-csharp-codehealth",
+ "tag": "v1.0.0",
+ "engineVersion": "kennel main 6a05dfb6c (kennel-wt-scanner-bench), rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc) + host --with-llm passes",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-07",
+   "sarifSha256": "35c1f5cfd90921ffede62f0d5976f243dcff85cd4cae69ec3ced05221e379bb0",
+   "outcomes": {
+    "tp": 44,
+    "fn": 5,
+    "fp": 2,
+    "tn": 104,
+    "trapFp": 1,
+    "trapTn": 27,
+    "results": 58,
+    "noise": 8,
+    "redundant": 6,
+    "uncovered": 16
+   },
+   "note": "contained; repo 923ad51"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "cc42018e8eef374ea63f840dabafd84aea87cc577c6837be39782d1a63a6a0c8",
+   "outcomes": {
+    "tp": 45,
+    "fn": 5,
+    "fp": 3,
+    "tn": 109,
+    "trapFp": 3,
+    "trapTn": 27,
+    "results": 55,
+    "noise": 4,
+    "redundant": 6,
+    "uncovered": 9
+   },
+   "note": "contained; repo 9f9e86d"
+  },
+  {
+   "iteration": 3,
+   "date": "2026-10-07",
+   "sarifSha256": "827e2def12e6dcf3f94ed5095444899113917350e1c4ecd90d5c647942ec1c50",
+   "outcomes": {
+    "tp": 45,
+    "fn": 5,
+    "fp": 3,
+    "tn": 109,
+    "trapFp": 3,
+    "trapTn": 27,
+    "results": 55,
+    "noise": 4,
+    "redundant": 6,
+    "uncovered": 7
+   },
+   "note": "contained; repo d837ab1; model pass iter3-llm alongside (sarif 6765f322…, D21 100, D24 55)"
+  },
+  {
+   "iteration": 4,
+   "date": "2026-10-07",
+   "sarifSha256": "827e2def12e6dcf3f94ed5095444899113917350e1c4ecd90d5c647942ec1c50",
+   "outcomes": {
+    "tp": 45,
+    "fn": 5,
+    "fp": 3,
+    "tn": 109,
+    "trapFp": 3,
+    "trapTn": 27,
+    "results": 55,
+    "noise": 4,
+    "redundant": 6,
+    "uncovered": 7
+   },
+   "note": "contained, final; repo 29f24c9 (code identical to v1.0.0 d9f2e3e, which adds only the journal); two model passes iter4-llm1/2, identical sarif 7cae066b…, D21 90, D24 70"
+  }
+ ],
+ "verdicts": [
+  {
+   "ruleId": "D1",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 11,
+   "message": "ZplLabelRenderer.Render (cyclomatic 16): ZplLabelRenderer.Render has cyclomatic complexity 16 (threshold 15). To reduce it, split the body: these branches sit side by side rather than nested inside one another, so extracting each one on its own would leave a function per branch. Group the statements between the checks into named steps and move each step into its own function, so the body reads as a short sequence of named stages.",
+   "class": "valid",
+   "reason": "Accurate (cyclomatic 16): the long Render also held three inline handling-instruction branches that belong in a helper. Same site as the long-method plant, but a separate true measurement.",
+   "action": "repo fixed (086cadf): handling instructions extracted; Render stays over 100 significant lines and 250 IL instructions",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D2",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 11,
+   "message": "ZplLabelRenderer.Render (cognitive 17): ZplLabelRenderer.Render has cognitive complexity 17 (threshold 15). To reduce it, split the body: this score is breadth rather than depth — many checks laid out side by side rather than nested inside one another, so inverting conditions into early returns has nothing left to flatten. Group the statements between the checks into named steps and move each step into its own function, so the body reads as a short sequence of named stages.",
+   "class": "valid",
+   "reason": "Accurate (cognitive 17), same cause as the D1 row.",
+   "action": "repo fixed (086cadf)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D17",
+   "file": "src/Shipping.Rates.Core/Pricing/RateCardCache.cs",
+   "line": 23,
+   "message": "WriteOnlyPrivateField: private Timer _refreshTimer — assigned 1 time(s), read never — this field is written and never read anywhere its type can be reached from, so the state it keeps answers no question: every assignment to it computes a value that nothing observes, on every instance, for the lifetime of each one. It reads as a flag the code branches on, and nothing branches on it. Delete the field and its assignments — or, if the value was MEANT to be consulted, the missing read is the defect this row is pointing at, and the branch that should have depended on it is not there.",
+   "class": "false-positive",
+   "reason": "Disproof: RateCardCache.cs, the _refreshTimer field. A System.Threading.Timer that nothing references is eligible for collection and stops firing; the field is what keeps it alive, so the write is not dead state. (Its missing disposal is plant CH-035.)",
+   "action": "promoted to trap TRP-029; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D17",
+   "file": "src/Shipping.Rates.Core/Pricing/RateCardCache.cs",
+   "line": 24,
+   "message": "WriteOnlyPrivateField: private TimeSpan _ttl — assigned 1 time(s), read never — this field is written and never read anywhere its type can be reached from, so the state it keeps answers no question: every assignment to it computes a value that nothing observes, on every instance, for the lifetime of each one. It reads as a flag the code branches on, and nothing branches on it. Delete the field and its assignments — or, if the value was MEANT to be consulted, the missing read is the defect this row is pointing at, and the branch that should have depended on it is not there.",
+   "class": "valid",
+   "reason": "True: _ttl is assigned in the constructor and read nowhere. It is the inert option CH-041 seen as dead state, which the key had not labelled.",
+   "action": "key: CH-050 (unused-code, must-fire) added; field declarations reordered so CH-050 and TRP-029 are 8 lines apart",
+   "iteration": 1
+  },
+  {
+   "ruleId": "IC1",
+   "file": "src/Shipping.Rates.Core/Labels/LabelOptions.cs",
+   "line": 19,
+   "message": "Placeholder data left in code: A placeholder e-mail address (\"labels@shipping-rates.invalid\") is still in shipped code — its domain is reserved for documentation, so anything sent here is undeliverable by construction. Replace it with the real address, or take it from configuration.",
+   "class": "valid",
+   "reason": "The default sender labels@shipping-rates.invalid was a placeholder: configuring SmtpHost alone would have sent from an undeliverable address.",
+   "action": "repo fixed (b8481aa): FromAddress has no default and e-mail is sent only when it is configured",
+   "iteration": 1
+  },
+  {
+   "ruleId": "X1",
+   "file": "src/Shipping.Rates.Tools/Program.cs",
+   "line": 7,
+   "message": "Sync-over-async (deadlock risk): Blocking on a Task with `.Wait()`/`.GetAwaiter().GetResult()` can deadlock (and wastes a thread). Prefer awaiting it: make the caller `async` and `await` instead. Where a synchronous entry point must stay — a public sync API you cannot break, or a process entry point that must not return until the work finishes — the block belongs in ONE documented bridge and never inside code that is already async; and where it already is that bridge, give the wait a TIMEOUT so a hung task fails the call instead of hanging the process.",
+   "class": "false-positive",
+   "reason": "Disproof: Tools/Program.cs Main. A console entry point has no synchronisation context to deadlock on and no thread pool to starve; blocking the main thread until the one command finishes is what it is for. Trap TRP-013.",
+   "action": "recorded as noise (trap TRP-013 caught)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "X2",
+   "file": null,
+   "line": null,
+   "message": "Not all async methods take a CancellationToken: Only 21/26 async methods accept a CancellationToken, so in-flight work can't be stopped early when the caller gives up — whatever ends it in your host (shutdown signal, timeout, abandoned request, user cancel). Thread a token through the call chain and honour it at each await and loop; where a method genuinely cannot be interrupted, omitting it is a deliberate choice — judge against your hosting model.",
+   "class": "valid",
+   "reason": "True (21/26). Two real misses (webhook handler, CLI dispatcher) plus the plants CH-026 and CH-025 and an event handler that cannot take a token. The per-method rows are Info and never reach SARIF, so this location-less roll-up is the only signal for the located plant CH-026, which the harness cannot credit.",
+   "action": "repo fixed (316decf) for the two real misses; the rest is the plant",
+   "iteration": 1
+  },
+  {
+   "ruleId": "X7",
+   "file": "src/Shipping.Rates.Core/Carriers/AlderParcelAdapter.cs",
+   "line": 109,
+   "message": "Silent fallback default on parse failure: `ExtractErrorCode` falls back to `\"UNKNOWN\"` when `match.Success` is false, with no log or throw — a malformed value silently becomes that default. Log the input or fail validation. If that constant is the correct answer to the test rather than a stand-in for a value that could not be read, this is not a silent default: say so in a comment on the member and the row stops firing.",
+   "class": "false-positive",
+   "reason": "Disproof: AlderParcelAdapter.cs lines 35-36. ExtractErrorCode returns the sentinel \"UNKNOWN\" only on an error path, and the caller always logs it with the HTTP status and throws it inside a CarrierException; nothing is silent and no default poses as data.",
+   "action": "promoted to trap TRP-030; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D5",
+   "file": null,
+   "line": null,
+   "message": "Off the main sequence: Shipping.Rates.Core: Shipping.Rates.Core: abstractness 0.06, instability 0.00, distance 0.94 — zone of pain — concrete and depended on by 2 project(s), so it's rigid to change.",
+   "class": "opinion-not-fact",
+   "reason": "The main-sequence metric is accurate; \"rigid to change\" overreaches for the domain library every project builds on.",
+   "action": "recorded as noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Shipping.Rates.Core/Pricing/RateCardCache.cs",
+   "line": 1,
+   "message": "Low coverage: src/Shipping.Rates.Core/Pricing/RateCardCache.cs: 25.4% line coverage (17/67).",
+   "class": "valid",
+   "reason": "Accurate: little or no test coverage.",
+   "action": "repo fixed (24d1071): tests added",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Shipping.Rates.Tools/CommandLine.cs",
+   "line": 1,
+   "message": "Low coverage: src/Shipping.Rates.Tools/CommandLine.cs: 28.1% line coverage (9/32).",
+   "class": "valid",
+   "reason": "Accurate: no or little test coverage of the CLI path.",
+   "action": "repo fixed (24d1071): tests added",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Shipping.Rates.Tools/Printing/PrinterStatusProbe.cs",
+   "line": 1,
+   "message": "Low coverage: src/Shipping.Rates.Tools/Printing/PrinterStatusProbe.cs: 0.0% line coverage (0/37).",
+   "class": "valid",
+   "reason": "Accurate: no or little test coverage of the CLI path.",
+   "action": "repo fixed (24d1071): tests added",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Shipping.Rates.Tools/Import/DropFolderWatcher.cs",
+   "line": 1,
+   "message": "Low coverage: src/Shipping.Rates.Tools/Import/DropFolderWatcher.cs: 0.0% line coverage (0/20).",
+   "class": "valid",
+   "reason": "Accurate: no or little test coverage of the CLI path.",
+   "action": "repo fixed (24d1071): tests added",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Shipping.Rates.Tools/Import/RateCardReloader.cs",
+   "line": 1,
+   "message": "Low coverage: src/Shipping.Rates.Tools/Import/RateCardReloader.cs: 0.0% line coverage (0/24).",
+   "class": "valid",
+   "reason": "Accurate: no or little test coverage of the CLI path.",
+   "action": "repo fixed (24d1071): tests added",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Shipping.Rates.Tools/Printing/LabelPrinter.cs",
+   "line": 1,
+   "message": "Low coverage: src/Shipping.Rates.Tools/Printing/LabelPrinter.cs: 0.0% line coverage (0/25).",
+   "class": "valid",
+   "reason": "Accurate. The success paths need a real CUPS printer (offline test rule), and every offline path through PrintCommand runs into the planted release-guard defect CH-039.",
+   "action": "partly fixed (refusal paths tested); residual documented in the journal",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Shipping.Rates.Tools/Printing/PrintCommand.cs",
+   "line": 1,
+   "message": "Low coverage: src/Shipping.Rates.Tools/Printing/PrintCommand.cs: 0.0% line coverage (0/23).",
+   "class": "valid",
+   "reason": "Accurate. The success paths need a real CUPS printer (offline test rule), and every offline path through PrintCommand runs into the planted release-guard defect CH-039.",
+   "action": "partly fixed (refusal paths tested); residual documented in the journal",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Shipping.Rates.Tools/CommandLine.cs",
+   "line": 20,
+   "message": "CRAP 87: CommandLine.RunAsync: Cyclomatic 14 with 28.1% file coverage — too complex for how untested it is (CRAP = CC²·(1−cov)³ + CC; ≥30 needs tests or simplification).",
+   "class": "valid",
+   "reason": "Accurate given the coverage at the time (CRAP).",
+   "action": "repo fixed (24d1071)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Shipping.Rates.Core/Carriers/ServiceCodeMap.cs",
+   "line": 8,
+   "message": "CRAP 53: ServiceCodeMap.ToCarrierCode: Cyclomatic 17 with 50.0% file coverage — too complex for how untested it is (CRAP = CC²·(1−cov)³ + CC; ≥30 needs tests or simplification).",
+   "class": "valid",
+   "reason": "Accurate given the coverage at the time (CRAP).",
+   "action": "repo fixed (24d1071): all 16 service codes tested",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Shipping.Rates.Tools/Printing/PrintCommand.cs",
+   "line": 17,
+   "message": "CRAP 30: PrintCommand.RunAsync: Cyclomatic 5 with 0.0% file coverage — too complex for how untested it is (CRAP = CC²·(1−cov)³ + CC; ≥30 needs tests or simplification).",
+   "class": "valid",
+   "reason": "Accurate (CRAP); same residual as the PrintCommand coverage row.",
+   "action": "residual documented",
+   "iteration": 1
+  },
+  {
+   "ruleId": "C1",
+   "file": null,
+   "line": null,
+   "message": "No data-protection/encryption: No data-protection or encryption usage (ASP.NET Data Protection, AES, column encryption, PBKDF2) was found — sensitive data at rest may be unprotected. If TDE/KMS/vault is delegated to infrastructure, ignore.",
+   "class": "opinion-not-fact",
+   "reason": "The measurement (no encryption API in code) is accurate; the conclusion that sensitive data at rest may be unprotected overreaches: the data at rest are print-ready label files and their index on the service volume, protected by a deployment control the scanner cannot see (its own text concedes this).",
+   "action": "recorded as noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "C3",
+   "file": null,
+   "line": null,
+   "message": "Partial audit-trail evidence: An audit mechanism is present, but the trail is not yet complete — missing: an EF SaveChanges interceptor (or equivalent write-side hook, e.g. an event-store append every change flows through), [Audited] per-entity coverage.",
+   "class": "shape-irrelevant",
+   "reason": "Asks for an EF SaveChanges interceptor; there is no database and no entity write path in this file-backed service.",
+   "action": "recorded as noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "C4",
+   "file": null,
+   "line": null,
+   "message": "Partial data-retention evidence: A retention mechanism is present, but the data-lifecycle is not yet complete — missing: a scheduled purge / cleanup job (PurgeOlderThan / CleanupJob), a documented retention period / data-expiry.",
+   "class": "valid",
+   "reason": "True: labels with addresses and e-mails were kept forever.",
+   "action": "repo fixed (b8481aa): Labels:RetentionDays and an hourly LabelRetentionService",
+   "iteration": 1
+  },
+  {
+   "ruleId": "P7",
+   "file": null,
+   "line": null,
+   "message": "Outbound HTTP without resilience: The app makes outbound HTTP calls but no resilience handler was detected (Polly / AddStandardResilienceHandler / circuit-breaker). A slow or failing dependency will cascade — add timeouts, retries with back-off, and a circuit breaker.",
+   "class": "valid",
+   "reason": "True: carrier and rate-card clients had a timeout only.",
+   "action": "repo fixed (b8481aa): standard resilience handler, retries disabled for unsafe methods",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D10",
+   "file": "tests/Shipping.Rates.UnitTests/Tools/ImportTests.cs",
+   "line": 57,
+   "message": "Fixed-sleep synchronisation: The_watcher_returns_the_files_that_arrive: This test starts a background task and then orders itself against it with `Task.Delay(200)` — a fixed wait, not a signal that the work is done. Whether it passes depends on how loaded the machine is, which is why a test written this way is green on a developer's box and random in CI. Wait for the event itself instead: the process's own exit or output, a completion handle, or a condition polled to a timeout.",
+   "class": "valid",
+   "reason": "True: the test raced the watcher with Task.Delay(200).",
+   "action": "repo fixed at the root (watch counts files already present; test writes first, no sleep)",
+   "iteration": 2
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Shipping.Rates.Tools/Program.cs",
+   "line": 1,
+   "message": "Low coverage: src/Shipping.Rates.Tools/Program.cs: 0.0% line coverage (0/9).",
+   "class": "valid",
+   "reason": "True: Main was untested.",
+   "action": "repo fixed: test runs Main without arguments",
+   "iteration": 2
+  },
+  {
+   "ruleId": "X2",
+   "file": null,
+   "line": null,
+   "message": "Not all async methods take a CancellationToken: Only 24/27 async methods accept a CancellationToken, so in-flight work can't be stopped early when the caller gives up — whatever ends it in your host (shutdown signal, timeout, abandoned request, user cancel). Thread a token through the call chain and honour it at each await and loop; where a method genuinely cannot be interrupted, omitting it is a deliberate choice — judge against your hosting model.",
+   "class": "valid",
+   "reason": "True (24/27): the remaining three are CH-026, CH-025 (async void) and a FileSystemWatcher event handler. Location-less expression of plant CH-026.",
+   "action": "no change",
+   "iteration": 2
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Accounts/CarrierAccountManager.cs",
+   "line": 26,
+   "message": "redundant comment: \"stores the key and remembers when it was rotated\" — Remove. The method name `RotateKey` and parameter names make the intent clear. If the implementation details are complex, document them in the XML summary, not as a line comment.",
+   "class": "valid",
+   "reason": "True: the comment restates the next line. One of the restating comments of the messy parts that BND-008 measures.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Accounts/CarrierAccountManager.cs",
+   "line": 63,
+   "message": "redundant comment: \"increment the counter\" — Remove. `_requestCounts[carrier] = used + 1;` is self-explanatory arithmetic.",
+   "class": "valid",
+   "reason": "True: the comment restates the next line. One of the restating comments of the messy parts that BND-008 measures.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/LabelService.cs",
+   "line": 218,
+   "message": "redundant comment: \"check the weight\" — Remove. The `if` condition `parcel.WeightGrams <= 0` clearly shows the check.",
+   "class": "valid",
+   "reason": "True: the comment restates the next line. One of the restating comments of the messy parts that BND-008 measures.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/LabelService.cs",
+   "line": 241,
+   "message": "redundant comment: \"apply the discount\" — Remove. The method name `ApplyAccountDiscount` and the calculation `(1 - (pct / 100m))` are self-documenting.",
+   "class": "valid",
+   "reason": "True: the comment restates the next line. One of the restating comments of the messy parts that BND-008 measures.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/LabelService.cs",
+   "line": 448,
+   "message": "redundant comment: \"add one to the count and the price to the revenue\" — Remove. The tuple assignment `_stats[carrier] = (s.Count + 1, s.Revenue + price);` is clear.",
+   "class": "valid",
+   "reason": "True: the comment restates the next line. One of the restating comments of the messy parts that BND-008 measures.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Pricing/RateCalculator.cs",
+   "line": 49,
+   "message": "redundant comment: \"check if the destination is remote\" — Remove. The method call `_remoteAreas.IsRemoteArea(...)` is self-explanatory.",
+   "class": "valid",
+   "reason": "True: the comment restates the next line. One of the restating comments of the messy parts that BND-008 measures.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Pricing/RateCalculator.cs",
+   "line": 93,
+   "message": "redundant comment: \"add the fuel surcharge\" — Remove. The method call `_policy.FuelSurcharge(...)` is self-explanatory.",
+   "class": "valid",
+   "reason": "True: the comment restates the next line. One of the restating comments of the messy parts that BND-008 measures.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 22,
+   "message": "redundant comment: \"header: carrier and service\" — Remove. The ZPL command `^A0N,56,56^FD` followed by carrier data is a standard label format; the comment adds no insight into *why* this specific format is used.",
+   "class": "valid",
+   "reason": "True: a section signpost inside the overlong Render that repeats what the next ZPL line says; a symptom of CH-004.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 28,
+   "message": "redundant comment: \"sender block\" — Remove. The label `^FDFrom:` makes the purpose of the block obvious.",
+   "class": "valid",
+   "reason": "True: a section signpost inside the overlong Render that repeats what the next ZPL line says; a symptom of CH-004.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 40,
+   "message": "redundant comment: \"recipient block\" — Remove. The label `^FDTo:` makes the purpose of the block obvious.",
+   "class": "valid",
+   "reason": "True: a section signpost inside the overlong Render that repeats what the next ZPL line says; a symptom of CH-004.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 50,
+   "message": "redundant comment: \"routing block\" — Remove. The label `^FDRouting` is self-explanatory.",
+   "class": "valid",
+   "reason": "True: a section signpost inside the overlong Render that repeats what the next ZPL line says; a symptom of CH-004.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 63,
+   "message": "redundant comment: \"barcode block\" — Remove. The ZPL command `^BY` is a standard barcode definition; the comment doesn't explain *why* this specific barcode type or size is chosen.",
+   "class": "valid",
+   "reason": "True: a section signpost inside the overlong Render that repeats what the next ZPL line says; a symptom of CH-004.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 68,
+   "message": "redundant comment: \"customs box\" — Remove. The conditional `if (content.CustomsRequired)` combined with the subsequent ZPL commands implies the block's purpose.",
+   "class": "valid",
+   "reason": "True: a section signpost inside the overlong Render that repeats what the next ZPL line says; a symptom of CH-004.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 76,
+   "message": "redundant comment: \"footer\" — Remove. The label `^FDRef:` indicates the content.",
+   "class": "valid",
+   "reason": "True: a section signpost inside the overlong Render that repeats what the next ZPL line says; a symptom of CH-004.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 79,
+   "message": "redundant comment: \"service box\" — Remove. The ZPL command `^GB` (graphic box) at a specific coordinate is a visual element; the comment doesn't explain the business rule for its placement.",
+   "class": "valid",
+   "reason": "True: a section signpost inside the overlong Render that repeats what the next ZPL line says; a symptom of CH-004.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 84,
+   "message": "redundant comment: \"handling instructions\" — Remove. The method name `HandlingInstructions` is sufficient.",
+   "class": "valid",
+   "reason": "True: a section signpost inside the overlong Render that repeats what the next ZPL line says; a symptom of CH-004.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 87,
+   "message": "redundant comment: \"return address\" — Remove. The label `^FDIf undeliverable return to:` is self-explanatory.",
+   "class": "valid",
+   "reason": "True: a section signpost inside the overlong Render that repeats what the next ZPL line says; a symptom of CH-004.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 89,
+   "message": "redundant comment: \"sort code\" — Remove. The label `^FDSort` is self-explanatory.",
+   "class": "valid",
+   "reason": "True: a section signpost inside the overlong Render that repeats what the next ZPL line says; a symptom of CH-004.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 93,
+   "message": "redundant comment: \"declared value box\" — Remove. The conditional `if (content.DeclaredValue > 0)` implies the block's purpose.",
+   "class": "valid",
+   "reason": "True: a section signpost inside the overlong Render that repeats what the next ZPL line says; a symptom of CH-004.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 101,
+   "message": "redundant comment: \"destination country\" — Remove. The ZPL command `^GB` at a specific coordinate is a visual element; the comment doesn't explain the business rule.",
+   "class": "valid",
+   "reason": "True: a section signpost inside the overlong Render that repeats what the next ZPL line says; a symptom of CH-004.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 105,
+   "message": "redundant comment: \"carrier compliance block\" — Remove. The conditional `if (content.Carrier == \"CORVID\")` implies the block's purpose.",
+   "class": "valid",
+   "reason": "True: a section signpost inside the overlong Render that repeats what the next ZPL line says; a symptom of CH-004.",
+   "action": "kept (measured posture, BND-008)",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D24",
+   "file": "src/Shipping.Rates.Core/Labels/ZplLabelRenderer.cs",
+   "line": 119,
+   "message": "redundant comment: \"receipt stub, torn off by the sender\" — Remove. The ZPL command `^GB` draws a line; the comment describes the physical result, which is likely obvious from the context of a label printer.",
+   "class": "false-positive",
+   "reason": "Disproof: ZplLabelRenderer.cs, the comment above the ^GB line. It states the physical purpose of the printed box (a stub the sender tears off), which the drawing command cannot express.",
+   "action": "recorded as noise",
+   "iteration": 3
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the CLI 'imports the carriers' CSV rate cards'. — searched for: `CSV import functionality in CLI`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "Disproof: every claimed feature is implemented and findable by name - RateCardCsv/RateCardImportCommand (CSV import), DropFolderWatcher (drop waiting), LabelPrinter runs lp (CUPS), SmtpClient in LabelService (e-mail), LabelArchive and index.json (archive/index), LabelRetentionService (hourly job), SignWebhook/VerifyWebhook (HMAC), AddStandardResilienceHandler (resilience), AuthorizationPolicies rates.read/labels.write (scopes).",
+   "action": "recorded as noise",
+   "iteration": 3
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the CLI 'waits for rate-card drops'. — searched for: `rate-card drop waiting mechanism`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "Disproof: every claimed feature is implemented and findable by name - RateCardCsv/RateCardImportCommand (CSV import), DropFolderWatcher (drop waiting), LabelPrinter runs lp (CUPS), SmtpClient in LabelService (e-mail), LabelArchive and index.json (archive/index), LabelRetentionService (hourly job), SignWebhook/VerifyWebhook (HMAC), AddStandardResilienceHandler (resilience), AuthorizationPolicies rates.read/labels.write (scopes).",
+   "action": "recorded as noise",
+   "iteration": 3
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the CLI 'prints labels on CUPS label printers'. — searched for: `CUPS integration`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "Disproof: every claimed feature is implemented and findable by name - RateCardCsv/RateCardImportCommand (CSV import), DropFolderWatcher (drop waiting), LabelPrinter runs lp (CUPS), SmtpClient in LabelService (e-mail), LabelArchive and index.json (archive/index), LabelRetentionService (hourly job), SignWebhook/VerifyWebhook (HMAC), AddStandardResilienceHandler (resilience), AuthorizationPolicies rates.read/labels.write (scopes).",
+   "action": "recorded as noise",
+   "iteration": 3
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims labels are 'e-mailed to the customer'. — searched for: `email sending functionality`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "Disproof: every claimed feature is implemented and findable by name - RateCardCsv/RateCardImportCommand (CSV import), DropFolderWatcher (drop waiting), LabelPrinter runs lp (CUPS), SmtpClient in LabelService (e-mail), LabelArchive and index.json (archive/index), LabelRetentionService (hourly job), SignWebhook/VerifyWebhook (HMAC), AddStandardResilienceHandler (resilience), AuthorizationPolicies rates.read/labels.write (scopes).",
+   "action": "recorded as noise",
+   "iteration": 3
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims labels are 'archived' and 'recorded in the label index'. — searched for: `label archiving`, `label index`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "Disproof: every claimed feature is implemented and findable by name - RateCardCsv/RateCardImportCommand (CSV import), DropFolderWatcher (drop waiting), LabelPrinter runs lp (CUPS), SmtpClient in LabelService (e-mail), LabelArchive and index.json (archive/index), LabelRetentionService (hourly job), SignWebhook/VerifyWebhook (HMAC), AddStandardResilienceHandler (resilience), AuthorizationPolicies rates.read/labels.write (scopes).",
+   "action": "recorded as noise",
+   "iteration": 3
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims an 'hourly job' deletes labels after retention days. — searched for: `hourly deletion job`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "Disproof: every claimed feature is implemented and findable by name - RateCardCsv/RateCardImportCommand (CSV import), DropFolderWatcher (drop waiting), LabelPrinter runs lp (CUPS), SmtpClient in LabelService (e-mail), LabelArchive and index.json (archive/index), LabelRetentionService (hourly job), SignWebhook/VerifyWebhook (HMAC), AddStandardResilienceHandler (resilience), AuthorizationPolicies rates.read/labels.write (scopes).",
+   "action": "recorded as noise",
+   "iteration": 3
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims tracking webhooks are 'authenticated by an HMAC signature'. — searched for: `HMAC authentication`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "Disproof: every claimed feature is implemented and findable by name - RateCardCsv/RateCardImportCommand (CSV import), DropFolderWatcher (drop waiting), LabelPrinter runs lp (CUPS), SmtpClient in LabelService (e-mail), LabelArchive and index.json (archive/index), LabelRetentionService (hourly job), SignWebhook/VerifyWebhook (HMAC), AddStandardResilienceHandler (resilience), AuthorizationPolicies rates.read/labels.write (scopes).",
+   "action": "recorded as noise",
+   "iteration": 3
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the API uses a 'standard resilience pipeline (timeouts and circuit breaker; retries only for safe methods)'. — searched for: `resilience pipeline`, `circuit breaker`, `retry policy`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "Disproof: every claimed feature is implemented and findable by name - RateCardCsv/RateCardImportCommand (CSV import), DropFolderWatcher (drop waiting), LabelPrinter runs lp (CUPS), SmtpClient in LabelService (e-mail), LabelArchive and index.json (archive/index), LabelRetentionService (hourly job), SignWebhook/VerifyWebhook (HMAC), AddStandardResilienceHandler (resilience), AuthorizationPolicies rates.read/labels.write (scopes).",
+   "action": "recorded as noise",
+   "iteration": 3
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims callers need access tokens with 'rates.read' and 'labels.write' scopes. — searched for: `scopes`, `access token validation`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "Disproof: every claimed feature is implemented and findable by name - RateCardCsv/RateCardImportCommand (CSV import), DropFolderWatcher (drop waiting), LabelPrinter runs lp (CUPS), SmtpClient in LabelService (e-mail), LabelArchive and index.json (archive/index), LabelRetentionService (hourly job), SignWebhook/VerifyWebhook (HMAC), AddStandardResilienceHandler (resilience), AuthorizationPolicies rates.read/labels.write (scopes).",
+   "action": "recorded as noise",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "The method name `BuildRateRequest` is used in both `AlderParcelAdapter` and `CorvidCourierAdapter`. While consistent in naming, the underlying concept differs slightly: `AlderParcelAdapter` builds a request for rate calculation (QuoteRequest), whereas `CorvidCourierAdapter` also builds a rate request. However, looking at the broader context, `AlderParcelAdapter` has `CreateLabelAsync` and `MapRates`, while `CorvidCourierAdapter` has `SchedulePickupAsync` and `MapStatus`. The naming `BuildRateRequest` is consistent across adapters for the same logical step (creating the HTTP request for rates). No inconsistency found here as they perform the same role in their respective adapters.: No change needed. (symbols: Shipping.Rates.Core.Carriers.AlderParcelAdapter.BuildRateRequest, Shipping.Rates.Core.Carriers.CorvidCourierAdapter.BuildRateRequest)",
+   "class": "false-positive",
+   "reason": "The row's own text concludes there is no inconsistency (or treats two same-named copy-pasted methods as a naming question): a non-finding published as a finding.",
+   "action": "recorded as noise",
+   "iteration": 4
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "Different carriers implement different methods for different actions. `Alder` uses `CreateLabelAsync` while `Corvid` uses `SchedulePickupAsync`. These are distinct business operations, not the same concept named differently. No inconsistency.: No change needed. (symbols: Shipping.Rates.Core.Carriers.AlderParcelAdapter.CreateLabelAsync, Shipping.Rates.Core.Carriers.CorvidCourierAdapter.SchedulePickupAsync)",
+   "class": "false-positive",
+   "reason": "The row's own text concludes there is no inconsistency (or treats two same-named copy-pasted methods as a naming question): a non-finding published as a finding.",
+   "action": "recorded as noise",
+   "iteration": 4
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "In `LabelService`, there is `ParseParcels` (returns `List<Parcel>`) and `Validate` (returns `List<string>` errors). These are distinct operations: parsing input data vs validating business rules. No inconsistency.: No change needed. (symbols: Shipping.Rates.Core.Labels.LabelService.ParseParcels, Shipping.Rates.Core.Labels.LabelService.Validate)",
+   "class": "false-positive",
+   "reason": "The row's own text concludes there is no inconsistency (or treats two same-named copy-pasted methods as a naming question): a non-finding published as a finding.",
+   "action": "recorded as noise",
+   "iteration": 4
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "`RateCardCache` has a private `DownloadAsync` method, while `IRateCardProvider` has a public `GetCard` method. These are different layers (cache implementation vs interface contract). No inconsistency.: No change needed. (symbols: Shipping.Rates.Core.Pricing.RateCardCache.DownloadAsync, Shipping.Rates.Core.Pricing.IRateCardProvider.GetCard)",
+   "class": "false-positive",
+   "reason": "The row's own text concludes there is no inconsistency (or treats two same-named copy-pasted methods as a naming question): a non-finding published as a finding.",
+   "action": "recorded as noise",
+   "iteration": 4
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "`CarrierRegistry.Resolve` returns an `ICarrierAdapter`. This is a factory/resolver pattern. No inconsistency.: No change needed. (symbols: Shipping.Rates.Core.Carriers.CarrierRegistry.Resolve, Shipping.Rates.Core.Carriers.ICarrierAdapter)",
+   "class": "false-positive",
+   "reason": "The row's own text concludes there is no inconsistency (or treats two same-named copy-pasted methods as a naming question): a non-finding published as a finding.",
+   "action": "recorded as noise",
+   "iteration": 4
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "Both methods in `LabelService` start with `Build`. `BuildContent` creates the label content, `BuildEmailBody` creates the email body. This is a consistent naming convention for factory-like methods within the same class.: No change needed. (symbols: Shipping.Rates.Core.Labels.LabelService.BuildContent, Shipping.Rates.Core.Labels.LabelService.BuildEmailBody)",
+   "class": "false-positive",
+   "reason": "The row's own text concludes there is no inconsistency (or treats two same-named copy-pasted methods as a naming question): a non-finding published as a finding.",
+   "action": "recorded as noise",
+   "iteration": 4
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "`LabelService` uses `ApplyAccountDiscount` (verb phrase) while `SurchargePolicy` uses noun phrases for fees (`InsuranceFee`, `FuelSurcharge`, `OversizeFee`). These are in different classes with different responsibilities. `ApplyAccountDiscount` is an action performed by the service, while the fees in `SurchargePolicy` are calculations/properties of the policy. No inconsistency.: No change needed. (symbols: Shipping.Rates.Core.Labels.LabelService.ApplyAccountDiscount, Shipping.Rates.Core.Pricing.SurchargePolicy.InsuranceFee, Shipping.Rates.Core.Pricing.SurchargePolicy.FuelSurcharge, Shipping.Rates.Core.Pricing.SurchargePolicy.OversizeFee)",
+   "class": "false-positive",
+   "reason": "The row's own text concludes there is no inconsistency (or treats two same-named copy-pasted methods as a naming question): a non-finding published as a finding.",
+   "action": "recorded as noise",
+   "iteration": 4
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "Both methods in `DimensionalWeight` return the chargeable weight in different units. The naming is consistent and clear.: No change needed. (symbols: Shipping.Rates.Core.Pricing.DimensionalWeight.ChargeableGrams, Shipping.Rates.Core.Pricing.DimensionalWeight.ChargeableKilograms)",
+   "class": "false-positive",
+   "reason": "The row's own text concludes there is no inconsistency (or treats two same-named copy-pasted methods as a naming question): a non-finding published as a finding.",
+   "action": "recorded as noise",
+   "iteration": 4
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "Both methods in `LabelService` are predicates checking validity. The naming is consistent.: No change needed. (symbols: Shipping.Rates.Core.Labels.LabelService.IsValidEmail, Shipping.Rates.Core.Labels.LabelService.IsValidPostalCode)",
+   "class": "false-positive",
+   "reason": "The row's own text concludes there is no inconsistency (or treats two same-named copy-pasted methods as a naming question): a non-finding published as a finding.",
+   "action": "recorded as noise",
+   "iteration": 4
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "`KeyFor` returns a key, `VerifyWebhook` performs an action. Different roles. No inconsistency.: No change needed. (symbols: Shipping.Rates.Core.Accounts.CarrierAccountManager.KeyFor, Shipping.Rates.Core.Accounts.CarrierAccountManager.VerifyWebhook)",
+   "class": "false-positive",
+   "reason": "The row's own text concludes there is no inconsistency (or treats two same-named copy-pasted methods as a naming question): a non-finding published as a finding.",
+   "action": "recorded as noise",
+   "iteration": 4
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "`ShipDateFor` returns a date, `ParseCutoff` parses a string. Different roles. No inconsistency.: No change needed. (symbols: Shipping.Rates.Core.Pricing.CutoffCalendar.ShipDateFor, Shipping.Rates.Core.Pricing.CutoffCalendar.ParseCutoff)",
+   "class": "false-positive",
+   "reason": "The row's own text concludes there is no inconsistency (or treats two same-named copy-pasted methods as a naming question): a non-finding published as a finding.",
+   "action": "recorded as noise",
+   "iteration": 4
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "`ToCarrierCode` converts a service code, `SingleLine` formats an address. Different roles. No inconsistency.: No change needed. (symbols: Shipping.Rates.Core.Carriers.ServiceCodeMap.ToCarrierCode, Shipping.Rates.Core.Labels.AddressFormatter.SingleLine)",
+   "class": "false-positive",
+   "reason": "The row's own text concludes there is no inconsistency (or treats two same-named copy-pasted methods as a naming question): a non-finding published as a finding.",
+   "action": "recorded as noise",
+   "iteration": 4
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "`LabelArchive.Root` is a property representing a file system path or directory. The `SectionName` properties in various Options classes represent configuration section names. These are different concepts (file path vs config key). No inconsistency.: No change needed. (symbols: Shipping.Rates.Core.Labels.LabelArchive.Root, Shipping.Rates.Api.Hosting.CarrierOptions.SectionName, Shipping.Rates.Core.Pricing.SurchargeOptions.SectionName, Shipping.Rates.Core.Pricing.ShippingOptions.SectionName)",
+   "class": "false-positive",
+   "reason": "The row's own text concludes there is no inconsistency (or treats two same-named copy-pasted methods as a naming question): a non-finding published as a finding.",
+   "action": "recorded as noise",
+   "iteration": 4
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "Private fields in `RateCardCache` use underscores and descriptive names. No inconsistency.: No change needed. (symbols: Shipping.Rates.Core.Pricing.RateCardCache._refreshTimer, Shipping.Rates.Core.Pricing.RateCardCache._ttl, Shipping.Rates.Core.Pricing.RateCardCache._clock)",
+   "class": "false-positive",
+   "reason": "The row's own text concludes there is no inconsistency (or treats two same-named copy-pasted methods as a naming question): a non-finding published as a finding.",
+   "action": "recorded as noise",
+   "iteration": 4
+  },
+  {
+   "ruleId": "D21",
+   "file": null,
+   "line": null,
+   "message": "Private fields in `CarrierAccountManager` use a mix of `m_` prefix (`m_windowStart`) and `_` prefix (`_requestCounts`, etc.). This is an inconsistency in internal field naming conventions within the same class.: Standardize on `_` prefix for all private fields (e.g., rename `m_windowStart` to `_windowStart`). (symbols: Shipping.Rates.Core.Accounts.CarrierAccountManager.m_windowStart, Shipping.Rates.Core.Accounts.CarrierAccountManager._requestCounts, Shipping.Rates.Core.Accounts.CarrierAccountManager._auditCapacity, Shipping.Rates.Core.Accounts.CarrierAccountManager._apiKeys, Shipping.Rates.Core.Accounts.CarrierAccountManager._keyRotatedAt)",
+   "class": "valid",
+   "reason": "True: the planted m_ prefix next to _ fields.",
+   "action": "kept (measured posture, BND-007)",
+   "iteration": 4
+  },
+  {
+   "ruleId": "D4",
+   "file": "src/Shipping.Rates.Core/Carriers/AlderParcelAdapter.cs",
+   "line": 78,
+   "message": "Duplicated block (13 lines × 2): src/Shipping.Rates.Core/Carriers/AlderParcelAdapter.cs:78-90 | src/Shipping.Rates.Core/Carriers/CorvidCourierAdapter.cs:74-86 — the copies sit in sibling files of one directory, so a shared home is within easy reach: extract the block into a single shared function the call sites can all reach — a file they already depend on, or a new one alongside them — and call it from both call sites, so a change lands once. Read the line range as the matched WINDOW rather than a finished unit: at `src/Shipping.Rates.Core/Carriers/AlderParcelAdapter.cs:78` it does not close everything it opens, so those exact lines cannot be lifted as they stand — widen the region to the smallest complete statement or declaration that contains it, and extract that. Note that the copies do not run to the end of the range shown: their LAST lines are different code, not the same code under different names — the matched region ends inside that line. Extract the lines above it, and read the last line of each site separately.",
+   "class": "redundant",
+   "reason": "A second detection of the already-found plant CH-006 at the same site; one remediation clears both.",
+   "action": "recorded; counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "IC1",
+   "file": "src/Shipping.Rates.Core/Carriers/CorvidCourierAdapter.cs",
+   "line": 142,
+   "message": "Unfinished stub — throws NotImplementedException: `VoidLabelAsync` is a shipped member whose whole body throws NotImplementedException — scaffolding that was never completed. Implement it or remove the dead surface.",
+   "class": "redundant",
+   "reason": "A second detection of the already-found plant CH-018 at the same site; one remediation clears both.",
+   "action": "recorded; counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "IC1",
+   "file": "src/Shipping.Rates.Core/Labels/LabelService.cs",
+   "line": 262,
+   "message": "Commented-out code: A line of code has been commented out rather than removed — dead weight that rots and confuses. Delete it (version control remembers).",
+   "class": "redundant",
+   "reason": "A second detection of the already-found plant CH-012 at the same site; one remediation clears both.",
+   "action": "recorded; counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "IC1",
+   "file": "src/Shipping.Rates.Core/Labels/LabelService.cs",
+   "line": 265,
+   "message": "Commented-out code: A line of code has been commented out rather than removed — dead weight that rots and confuses. Delete it (version control remembers).",
+   "class": "redundant",
+   "reason": "A second detection of the already-found plant CH-012 at the same site; one remediation clears both.",
+   "action": "recorded; counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "IC1",
+   "file": "src/Shipping.Rates.Core/Labels/LabelService.cs",
+   "line": 267,
+   "message": "Commented-out code: A line of code has been commented out rather than removed — dead weight that rots and confuses. Delete it (version control remembers).",
+   "class": "redundant",
+   "reason": "A second detection of the already-found plant CH-012 at the same site; one remediation clears both.",
+   "action": "recorded; counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "X3",
+   "file": "src/Shipping.Rates.Core/Labels/LabelService.cs",
+   "line": 399,
+   "message": "Swallowed exception (empty catch): An empty catch block silently discards the error — failures vanish with no log and no rethrow. Log it, handle it, or don't catch it.",
+   "class": "redundant",
+   "reason": "A second detection of the already-found plant CH-013 at the same site; one remediation clears both.",
+   "action": "recorded; counted once",
+   "iteration": 1
+  }
+ ],
+ "falseNegatives": [
+  {
+   "entryId": "CH-021",
+   "reason": "catch (HttpRequestException) { throw; } in CorvidCourierAdapter.CreateLabelAsync is a real pointless catch-rethrow; the scanner has no rule for the concept (the mapping lists no rule for pointless-catch-rethrow)."
+  },
+  {
+   "entryId": "CH-023",
+   "reason": "archive.ReadAsync(...).Result inside the GET /api/labels/{id} handler blocks a request thread; X1 and PF3 detect only .Wait() and .GetAwaiter().GetResult(), not the .Result property."
+  },
+  {
+   "entryId": "CH-026",
+   "reason": "RateCardCache.DownloadAsync does HTTP I/O with no CancellationToken. X2 emits the per-method row at Info level, which never reaches SARIF; only a location-less roll-up ('Not all async methods take a CancellationToken') is emitted, which cannot match the located plant."
+  },
+  {
+   "entryId": "CH-034",
+   "reason": "ZplLabelRenderer.FitToWidth drops the last character while MeasureDots(line, dotsPerChar) > fieldDots; the measure includes fixed margins, so a narrow field consumes the string and Substring(0, -1) throws. X16 does not read a condition that measures the string through a helper call."
+  },
+  {
+   "entryId": "CH-049",
+   "reason": "<WarningsNotAsErrors>$(WarningsNotAsErrors);CS0618;CA2200</WarningsNotAsErrors> in the Core csproj demotes two errors project-wide with no reason; D17 reads <NoWarn> but not <WarningsNotAsErrors>."
+  }
+ ],
+ "scoreBands": [
+  {
+   "entryId": "BND-001",
+   "outcome": "in",
+   "score": 94,
+   "band": [
+    70,
+    97
+   ]
+  },
+  {
+   "entryId": "BND-002",
+   "outcome": "in",
+   "score": 88,
+   "band": [
+    70,
+    97
+   ]
+  },
+  {
+   "entryId": "BND-003",
+   "outcome": "in",
+   "score": 98,
+   "band": [
+    75,
+    99
+   ]
+  },
+  {
+   "entryId": "BND-004",
+   "outcome": "in",
+   "score": 92,
+   "band": [
+    70,
+    97
+   ]
+  },
+  {
+   "entryId": "BND-005",
+   "outcome": "in",
+   "score": 99,
+   "band": [
+    80,
+    99
+   ]
+  },
+  {
+   "entryId": "BND-006",
+   "outcome": "unscored",
+   "band": [
+    60,
+    80
+   ],
+   "note": "PF2 is not applicable below its gate (no packaged library, fewer than 8 allocation-aware uses); band kept."
+  },
+  {
+   "entryId": "BND-007",
+   "outcome": "out",
+   "score": 90,
+   "band": [
+    40,
+    85
+   ],
+   "class": "opinion-not-fact",
+   "note": "Model-judged. Iteration 3: 100, which exposed that the planned mixed naming (snake_case, Hungarian, m_ prefix) had not been implemented; the repository was brought in line with the pre-registered rationale. Iteration 4 (two passes, identical): 90 — the model samples member symbols and saw one of the five planted names. Band set before the first scan and kept."
+  },
+  {
+   "entryId": "BND-008",
+   "outcome": "in",
+   "score": 70,
+   "band": [
+    40,
+    85
+   ],
+   "note": "Model-judged: 55 (iteration 3), 70 (iteration 4, two identical passes)."
+  }
+ ],
+ "observations": [
+  "Recall 45/50 (90%) on the contained pass; every structural X-card plant (X6, X9, X10, X12, X13, X18-X23, X25-X30, X32), all of D1/D2/D3/D4/D6/D39, GD1/IC1 and most of D17 were found at the planted line. The five misses are concept gaps (pointless catch-rethrow, .Result, WarningsNotAsErrors), an Info-level per-method row that never reaches SARIF (X2), and a truncation loop whose length test goes through a helper (X16).",
+  "Trap resistance 27/30. Caught: GetAwaiter().GetResult() in a console Main (X1 has no entry-point exemption, although X2 has one); a write-only Timer field that roots the timer (D17 WriteOnlyPrivateField); an \"UNKNOWN\" error-code sentinel on a logged-and-thrown error path (X7). Held: flat mapping switch (D1 flat-dispatcher gate), generated code for D1/D3/D39, DTO pair, log-and-throw;, async void event handler with catch-all, justified scoped pragma, TODO in a string literal, cohesive many-method class, Dictionary.Remove over Keys on net10.0, both-streams-drained process, floored truncation loop, correct case-normalised switch, NotSupportedException capability refusal.",
+  "Harness: a location-less roll-up (X2, X5 posture rows, PF3) can only match a repository-level entry. CH-028/CH-029 were keyed repository-level for that reason; CH-026 is keyed at its site (where the defect is), so the X2 roll-up is scored as noise although it is valid. The coordinator may want a contract rule letting a location-less row of a concept match a located plant of that concept when the key has exactly one such plant.",
+  "Model-judged D21 emits rows whose text concludes 'No inconsistency ... No change needed'; they reach SARIF as findings (13 in one pass). Recorded as false positives.",
+  "Scanner M4 (README drift) produced 9 false drift claims in the model pass: it matches claimed features against file names and manifests only, so a feature implemented in a differently named class (e.g. 'CUPS' in LabelPrinter, 'HMAC' in CarrierAccountManager) reads as missing.",
+  "Build: the repository builds with two warnings by design (CS0618, CA2200), the visible symptom of plant CH-049."
+ ]
+}
