@@ -96,6 +96,13 @@
       "keySha256": "d21bdbf2ddb77cad41c2dfb8d0886904b574438d56cb07b93b201506ef6559f7",
       "frozenAt": "2026-10-07",
       "note": "history-derived dimensions (ownership, freshness) are measured against the wall clock; scores drift on later re-scans"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-ts-baseline-clean",
+      "tag": "v1.0.0",
+      "commit": "7ebcfbd2a860664a30c37cf2233a06679af8dc65",
+      "keySha256": "3318283a747a5e4a4b75d4f826b104878d9e201e20850c06b2e0244e29cedf43",
+      "frozenAt": "2026-10-07"
     }
   ]
 }
