@@ -190,6 +190,13 @@
       "frozenAt": "2026-10-07",
       "supersedes": "v1.0.0",
       "change": "subject on BTL-001 (contract 1.2); code unchanged"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-csharp-blazor-a11y",
+      "tag": "v1.0.0",
+      "commit": "fc4090774c0e6275973199566dbddeb7c439d448",
+      "keySha256": "b27fff90b3df91789073f0c8147a963bbe27f45eab2698093464b3e93f9b4eeb",
+      "frozenAt": "2026-10-07"
     }
   ]
 }
