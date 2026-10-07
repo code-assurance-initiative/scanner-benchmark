@@ -1,0 +1,807 @@
+{
+ "repo": "code-assurance-initiative/bench-csharp-security-iac",
+ "tag": "v1.0.0",
+ "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-07",
+   "sarifSha256": "85423dcf5056925c422f8a2c3c86deaf395538c83e2e7c80fbb874e8089b1f1e",
+   "outcomes": {
+    "tp": 12,
+    "fn": 7,
+    "fp": 2,
+    "tn": 105,
+    "trapFp": 0,
+    "trapTn": 20,
+    "results": 85,
+    "noise": 51,
+    "redundant": 22,
+    "uncovered": 13
+   },
+   "note": "draft key (IAC-001/TRP-004/TRP-005 then located on the final stage); scored with the per-message mapping"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "dea4a9a56401b2cd6224c483c63b22ba1a0710f0f87b8ec072918c827a10b165",
+   "outcomes": {
+    "tp": 13,
+    "fn": 6,
+    "fp": 3,
+    "tn": 104,
+    "trapFp": 2,
+    "trapTn": 18,
+    "results": 83,
+    "noise": 48,
+    "redundant": 22,
+    "uncovered": 8
+   },
+   "note": "final, frozen key; host model pass iter2-llm alongside (sarif 244b01058b1571d7\u2026), LA4 not invoked"
+  }
+ ],
+ "verdicts": [
+  {
+   "ruleId": "D5",
+   "file": null,
+   "line": null,
+   "message": "Off the main sequence: Depot.Slots.Core: Depot.Slots.Core: abstractness 0.20, instability 0.00, distance 0.80 \u2014 zone of pain \u2014 concrete and depended on by 3 project(s), so it's rigid to change.",
+   "class": "opinion-not-fact",
+   "reason": "Depot.Slots.Core is the domain kernel the three other projects build on; being concrete and stable is its purpose. The metric is accurate; 'rigid to change' goes beyond it (the dimension's own text says a stable kernel is healthy).",
+   "action": "recorded as scanner noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Depot.Slots.Reminders/RemindersServiceCollectionExtensions.cs",
+   "line": 1,
+   "message": "Low coverage: src/Depot.Slots.Reminders/RemindersServiceCollectionExtensions.cs: 0.0% line coverage (0/21).",
+   "class": "valid",
+   "reason": "Accurate: the reminder host (DI registration, worker loop, health check) and the storage registration had no tests.",
+   "action": "repo fixed: RemindersHostTests boots the worker host over the in-memory store; StorageRegistrationTests covers both providers",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Depot.Slots.Reminders/ReminderWorker.cs",
+   "line": 1,
+   "message": "Low coverage: src/Depot.Slots.Reminders/ReminderWorker.cs: 0.0% line coverage (0/18).",
+   "class": "valid",
+   "reason": "Accurate: the reminder host (DI registration, worker loop, health check) and the storage registration had no tests.",
+   "action": "repo fixed: RemindersHostTests boots the worker host over the in-memory store; StorageRegistrationTests covers both providers",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Depot.Slots.Reminders/ReminderWorkerHealthCheck.cs",
+   "line": 1,
+   "message": "Low coverage: src/Depot.Slots.Reminders/ReminderWorkerHealthCheck.cs: 0.0% line coverage (0/14).",
+   "class": "valid",
+   "reason": "Accurate: the reminder host (DI registration, worker loop, health check) and the storage registration had no tests.",
+   "action": "repo fixed: RemindersHostTests boots the worker host over the in-memory store; StorageRegistrationTests covers both providers",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Depot.Slots.Infrastructure/StorageServiceCollectionExtensions.cs",
+   "line": 1,
+   "message": "Low coverage: src/Depot.Slots.Infrastructure/StorageServiceCollectionExtensions.cs: 43.8% line coverage (7/16).",
+   "class": "valid",
+   "reason": "Accurate: the reminder host (DI registration, worker loop, health check) and the storage registration had no tests.",
+   "action": "repo fixed: RemindersHostTests boots the worker host over the in-memory store; StorageRegistrationTests covers both providers",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Depot.Slots.Infrastructure/Postgres/PostgresBookingStore.cs",
+   "line": 1,
+   "message": "Low coverage: src/Depot.Slots.Infrastructure/Postgres/PostgresBookingStore.cs: 0.0% line coverage (0/75).",
+   "class": "valid",
+   "reason": "Accurate: the PostgreSQL store and schema initialiser had no tests; the exclusion-constraint handling was unverified. Writing the tests also exposed a real bug: a non-UTC DateTimeOffset parameter made Npgsql throw.",
+   "action": "repo fixed: Testcontainers-backed PostgresBookingStoreTests (skip when no container runtime); store normalises every timestamp to UTC",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Depot.Slots.Infrastructure/Postgres/SchemaInitializer.cs",
+   "line": 1,
+   "message": "Low coverage: src/Depot.Slots.Infrastructure/Postgres/SchemaInitializer.cs: 0.0% line coverage (0/7).",
+   "class": "valid",
+   "reason": "Accurate: the PostgreSQL store and schema initialiser had no tests; the exclusion-constraint handling was unverified. Writing the tests also exposed a real bug: a non-UTC DateTimeOffset parameter made Npgsql throw.",
+   "action": "repo fixed: Testcontainers-backed PostgresBookingStoreTests (skip when no container runtime); store normalises every timestamp to UTC",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D17",
+   "file": ".editorconfig",
+   "line": 37,
+   "message": "AnalyzerSeverityNone: CA2007 \u2014 this rule is switched off for every file the section matches, in every project under this directory, and the only record that it was ever switched off is this line: nothing at the sites it would have reported says so, so a reader of that code has no reason to look here, and code added years from now inherits the decision silently. Fix what the rule reports and delete the entry, or \u2014 where some sites really are legitimate \u2014 leave the rule on and suppress it at those sites with their reasons, so it keeps protecting the rest of the tree. If the rule is genuinely unwanted here, say why \u2014 on this line after the entry, or in the comment run directly above it: a comment that only repeats the rule's own title is read as no explanation at all and leaves this row in place.",
+   "class": "false-positive",
+   "reason": "CA2007 is off only in the root .editorconfig for tests (xUnit1030 forbids ConfigureAwait(false) there) and switched back on for production code by src/.editorconfig; the comment on the line above records why. Same site and verdict as bench-csharp-baseline-clean (TRP-001 there).",
+   "action": "recorded as scanner noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D29",
+   "file": ".github/workflows/deploy.yml",
+   "line": 32,
+   "message": "High: watchdog-secret-interpolated-into-run: A secret is interpolated straight into this `run:` script. Actions expands `${{ }}` BEFORE the shell exists, so the literal secret value is what gets written into the step's script file on the runner's disk and passed to the shell as code \u2014 not as data. Quoting does not change that. From there it reaches every place the script itself reaches: the on-disk script, any shell trace (`set -x`, `bash -v`), a `ps` listing of the commands it launches, and any error text that echoes the failing command. Log masking does not cover those, and a secret cannot be un-leaked once it is on a runner you do not own. Bind the secret to an `env:` entry on the step instead (`env:` `MY_TOKEN: ${{ secrets.MY_TOKEN }}`) and reference that ENVIRONMENT VARIABLE from the script using your shell's own syntax (`\"$MY_TOKEN\"` in bash, `$env:MY_TOKEN` in PowerShell), so the value is passed to the process as data and is never substituted into the script text.",
+   "class": "valid",
+   "reason": "True and it is plant IAC-018 (the deploy token interpolated into the run script and onto kubectl's command line). The harness maps this rule to ci-secret-exposure while the key labels the plant secret-in-process-arguments, so it scores as unmatched.",
+   "action": "none in the repo (it is the plant); coordinator: map watchdog-secret-interpolated-into-run to secret-in-process-arguments or declare a family",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 9,
+   "message": "High IaC: KSV-0009: Access to host network. DaemonSet 'node-agent' should not set 'spec.template.spec.hostNetwork' to true. Do not set 'spec.template.spec.hostNetwork' to true.",
+   "class": "valid",
+   "reason": "KSV-0009 is plant IAC-004 (hostNetwork), but located on the DaemonSet's spec (line 9) instead of line 20, outside the tolerance.",
+   "action": "none (plant); counted as a location false negative of IAC-004",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "src/Depot.Slots.Reminders/Dockerfile",
+   "line": 1,
+   "message": "High IaC: DS-0002: Image user should not be 'root'. Specify at least 1 USER command in Dockerfile with non-root user as argument. Add 'USER <non root user name>' line to the Dockerfile. A container that starts as root runs your process with root's capabilities inside the namespace, so a compromise of the process starts from there. The step: create an unprivileged account in the image (`RUN useradd -r -M app` \u2014 or whatever this base image's account tooling is, `adduser` and `useradd` are not both present everywhere`), give it ownership of the paths the process writes at runtime (`COPY --chown=` on those layers, or a `RUN chown -R`), and end the final stage with `USER app` so it is the default at start. Build stages that only compile can stay root; it is the stage that RUNS that needs the account. If the process genuinely requires root \u2014 it manages the container runtime, ptraces another process or opens raw devices \u2014 say so here rather than making a change that breaks it.",
+   "class": "valid",
+   "reason": "DS-0002 is plant IAC-001 (no USER), reported at line 1. The absence holds for the whole file, so the key's stage-range site was too narrow.",
+   "action": "key fixed: IAC-001 is a whole-file entry",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/api/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_35: Prefer using secrets as files over secrets as environment variables",
+   "class": "opinion-not-fact",
+   "reason": "CKV_K8S_35: the connection string / bot token come from secretKeyRef, the standard Kubernetes mechanism. Mounting as files is a hardening preference; the check asserts a defect the manifest does not have.",
+   "action": "recorded as scanner noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/api/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_40: Containers should run as a high UID to avoid host conflict",
+   "class": "opinion-not-fact",
+   "reason": "CKV_K8S_40 / KSV-0020 'UID <= 10000' on the API: the pod runs as non-root UID 1654 with no privilege escalation, all capabilities dropped and a read-only root filesystem (TRP-007's site, reported on the resource/container lines instead of 32-33). A UID range is a preference, not a privilege.",
+   "action": "recorded as scanner noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/api/deployment.yaml",
+   "line": 38,
+   "message": "Medium IaC: KSV-0125: Restrict container images to trusted registries. Container api in deployment depot-slots-api (namespace: depot-slots) uses an image from an untrusted registry. Use images from trusted registries.",
+   "class": "opinion-not-fact",
+   "reason": "KSV-0125 'restrict images to trusted registries': ghcr.io (the team's own registry) and the vendor's registry are the images' legitimate sources; an allow-list is an admission-policy choice, not a manifest defect.",
+   "action": "recorded as scanner noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_14: Image Tag should be fixed - not latest or blank",
+   "class": "redundant",
+   "reason": "CKV_K8S_14/43 restate plant IAC-007 (fluent-bit:latest), located at line 1.",
+   "action": "counted once (IAC-007 found by KSV-0013)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_16: Container should not be privileged",
+   "class": "redundant",
+   "reason": "CKV_K8S_16 restates plant IAC-005 (privileged), at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_19: Containers should not share the host network namespace",
+   "class": "valid",
+   "reason": "CKV_K8S_19 is plant IAC-004 (hostNetwork) at line 1, outside the tolerance.",
+   "action": "none (plant); location false negative of IAC-004",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_20: Containers should not run with allowPrivilegeEscalation",
+   "class": "redundant",
+   "reason": "Consequences of the privileged, root, unconfined forwarder container (IAC-005): escalation, writable root FS, root, NET_RAW, no securityContext restrictions, no seccomp, capabilities, UID. One remediation (drop privileged, add a restrictive securityContext) clears them; located at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_22: Use read-only filesystem for containers where possible",
+   "class": "redundant",
+   "reason": "Consequences of the privileged, root, unconfined forwarder container (IAC-005): escalation, writable root FS, root, NET_RAW, no securityContext restrictions, no seccomp, capabilities, UID. One remediation (drop privileged, add a restrictive securityContext) clears them; located at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_23: Minimize the admission of root containers",
+   "class": "redundant",
+   "reason": "Consequences of the privileged, root, unconfined forwarder container (IAC-005): escalation, writable root FS, root, NET_RAW, no securityContext restrictions, no seccomp, capabilities, UID. One remediation (drop privileged, add a restrictive securityContext) clears them; located at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_28: Minimize the admission of containers with the NET_RAW capability",
+   "class": "redundant",
+   "reason": "Consequences of the privileged, root, unconfined forwarder container (IAC-005): escalation, writable root FS, root, NET_RAW, no securityContext restrictions, no seccomp, capabilities, UID. One remediation (drop privileged, add a restrictive securityContext) clears them; located at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_29: Apply security context to your pods and containers",
+   "class": "redundant",
+   "reason": "Consequences of the privileged, root, unconfined forwarder container (IAC-005): escalation, writable root FS, root, NET_RAW, no securityContext restrictions, no seccomp, capabilities, UID. One remediation (drop privileged, add a restrictive securityContext) clears them; located at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_31: Ensure that the seccomp profile is set to docker/default or runtime/default",
+   "class": "redundant",
+   "reason": "Consequences of the privileged, root, unconfined forwarder container (IAC-005): escalation, writable root FS, root, NET_RAW, no securityContext restrictions, no seccomp, capabilities, UID. One remediation (drop privileged, add a restrictive securityContext) clears them; located at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_37: Minimize the admission of containers with capabilities assigned",
+   "class": "redundant",
+   "reason": "Consequences of the privileged, root, unconfined forwarder container (IAC-005): escalation, writable root FS, root, NET_RAW, no securityContext restrictions, no seccomp, capabilities, UID. One remediation (drop privileged, add a restrictive securityContext) clears them; located at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_38: Ensure that Service Account Tokens are only mounted where necessary",
+   "class": "false-positive",
+   "reason": "CKV_K8S_38 on the node-agent: its Kubernetes filter queries the API server for pod metadata (configmap.yaml, filter 'kubernetes'), so the service-account token is necessary there.",
+   "action": "recorded as scanner noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_40: Containers should run as a high UID to avoid host conflict",
+   "class": "redundant",
+   "reason": "Consequences of the privileged, root, unconfined forwarder container (IAC-005): escalation, writable root FS, root, NET_RAW, no securityContext restrictions, no seccomp, capabilities, UID. One remediation (drop privileged, add a restrictive securityContext) clears them; located at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_43: Image should use digest",
+   "class": "redundant",
+   "reason": "CKV_K8S_14/43 restate plant IAC-007 (fluent-bit:latest), located at line 1.",
+   "action": "counted once (IAC-007 found by KSV-0013)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_8: Liveness Probe Should be Configured",
+   "class": "valid",
+   "reason": "The Fluent Bit DaemonSet had no liveness or readiness probe; a wedged forwarder would silently stop shipping logs.",
+   "action": "repo fixed: Fluent Bit HTTP health server enabled, readiness/liveness probes on /api/v1/health",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_9: Readiness Probe Should be Configured",
+   "class": "valid",
+   "reason": "The Fluent Bit DaemonSet had no liveness or readiness probe; a wedged forwarder would silently stop shipping logs.",
+   "action": "repo fixed: Fluent Bit HTTP health server enabled, readiness/liveness probes on /api/v1/health",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 9,
+   "message": "Medium IaC: KSV-0023: hostPath volumes mounted. DaemonSet 'node-agent' should not set 'spec.template.volumes.hostPath'. Do not set 'spec.volumes[*].hostPath'.",
+   "class": "valid",
+   "reason": "KSV-0023 is plant IAC-006 (the containerd socket hostPath), located on the DaemonSet's spec (line 9), far from the volume (now lines 71-74). It also covers the deliberately unlabelled read-only /var/log mount.",
+   "action": "none (plant); counted as a location false negative of IAC-006",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 29,
+   "message": "Medium IaC: KSV-0125: Restrict container images to trusted registries. Container fluent-bit in daemonset node-agent (namespace: depot-slots) uses an image from an untrusted registry. Use images from trusted registries.",
+   "class": "opinion-not-fact",
+   "reason": "KSV-0125 'restrict images to trusted registries': ghcr.io (the team's own registry) and the vendor's registry are the images' legitimate sources; an allow-list is an admission-policy choice, not a manifest defect.",
+   "action": "recorded as scanner noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/rbac.yaml",
+   "line": 2,
+   "message": "Medium IaC: CKV_K8S_155: Minimize ClusterRoles that grant control over validating or mutating admission webhook configurations",
+   "class": "redundant",
+   "reason": "Consequences of the wildcard ClusterRole (IAC-014): wildcard use, webhook control, CSR approval, bind, escalate. Located on the ClusterRole document (line 2), outside the plant's rules lines.",
+   "action": "counted once (IAC-014 found by KSV-0044)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/rbac.yaml",
+   "line": 2,
+   "message": "Medium IaC: CKV_K8S_156: Minimize ClusterRoles that grant permissions to approve CertificateSigningRequests",
+   "class": "redundant",
+   "reason": "Consequences of the wildcard ClusterRole (IAC-014): wildcard use, webhook control, CSR approval, bind, escalate. Located on the ClusterRole document (line 2), outside the plant's rules lines.",
+   "action": "counted once (IAC-014 found by KSV-0044)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/rbac.yaml",
+   "line": 2,
+   "message": "Medium IaC: CKV_K8S_157: Minimize Roles and ClusterRoles that grant permissions to bind RoleBindings or ClusterRoleBindings",
+   "class": "redundant",
+   "reason": "Consequences of the wildcard ClusterRole (IAC-014): wildcard use, webhook control, CSR approval, bind, escalate. Located on the ClusterRole document (line 2), outside the plant's rules lines.",
+   "action": "counted once (IAC-014 found by KSV-0044)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/rbac.yaml",
+   "line": 2,
+   "message": "Medium IaC: CKV_K8S_158: Minimize Roles and ClusterRoles that grant permissions to escalate Roles or ClusterRoles",
+   "class": "redundant",
+   "reason": "Consequences of the wildcard ClusterRole (IAC-014): wildcard use, webhook control, CSR approval, bind, escalate. Located on the ClusterRole document (line 2), outside the plant's rules lines.",
+   "action": "counted once (IAC-014 found by KSV-0044)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/node-agent/rbac.yaml",
+   "line": 2,
+   "message": "Medium IaC: CKV_K8S_49: Minimize wildcard use in Roles and ClusterRoles",
+   "class": "redundant",
+   "reason": "Consequences of the wildcard ClusterRole (IAC-014): wildcard use, webhook control, CSR approval, bind, escalate. Located on the ClusterRole document (line 2), outside the plant's rules lines.",
+   "action": "counted once (IAC-014 found by KSV-0044)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_10: CPU requests should be set",
+   "class": "redundant",
+   "reason": "Restate plant IAC-009 (no requests/limits), at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_11: CPU limits should be set",
+   "class": "redundant",
+   "reason": "Restate plant IAC-009 (no requests/limits), at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_12: Memory requests should be set",
+   "class": "redundant",
+   "reason": "Restate plant IAC-009 (no requests/limits), at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_13: Memory limits should be set",
+   "class": "redundant",
+   "reason": "Restate plant IAC-009 (no requests/limits), at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_20: Containers should not run with allowPrivilegeEscalation",
+   "class": "redundant",
+   "reason": "Restate plant IAC-008 (no securityContext on the worker container), at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_22: Use read-only filesystem for containers where possible",
+   "class": "redundant",
+   "reason": "Restate plant IAC-008 (no securityContext on the worker container), at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_23: Minimize the admission of root containers",
+   "class": "redundant",
+   "reason": "Restate plant IAC-008 (no securityContext on the worker container), at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_28: Minimize the admission of containers with the NET_RAW capability",
+   "class": "redundant",
+   "reason": "Restate plant IAC-008 (no securityContext on the worker container), at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_29: Apply security context to your pods and containers",
+   "class": "redundant",
+   "reason": "Restate plant IAC-008 (no securityContext on the worker container), at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_30: Apply security context to your containers",
+   "class": "redundant",
+   "reason": "Restate plant IAC-008 (no securityContext on the worker container), at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_31: Ensure that the seccomp profile is set to docker/default or runtime/default",
+   "class": "redundant",
+   "reason": "Restate plant IAC-008 (no securityContext on the worker container), at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_35: Prefer using secrets as files over secrets as environment variables",
+   "class": "opinion-not-fact",
+   "reason": "CKV_K8S_35: the connection string / bot token come from secretKeyRef, the standard Kubernetes mechanism. Mounting as files is a hardening preference; the check asserts a defect the manifest does not have.",
+   "action": "recorded as scanner noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_37: Minimize the admission of containers with capabilities assigned",
+   "class": "redundant",
+   "reason": "Restate plant IAC-008 (no securityContext on the worker container), at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_38: Ensure that Service Account Tokens are only mounted where necessary",
+   "class": "redundant",
+   "reason": "Restates plant IAC-011 (default service-account token automounted), at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_40: Containers should run as a high UID to avoid host conflict",
+   "class": "redundant",
+   "reason": "Restate plant IAC-008 (no securityContext on the worker container), at line 1.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_8: Liveness Probe Should be Configured",
+   "class": "redundant",
+   "reason": "CKV_K8S_8/9 are the real detection of plant IAC-010 (no probes), located at line 1, outside the container range.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 1,
+   "message": "Medium IaC: CKV_K8S_9: Readiness Probe Should be Configured",
+   "class": "redundant",
+   "reason": "CKV_K8S_8/9 are the real detection of plant IAC-010 (no probes), located at line 1, outside the container range.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/api/deployment.yaml",
+   "line": 38,
+   "message": "Low IaC: KSV-0020: Runs with UID <= 10000. Container 'api' of Deployment 'depot-slots-api' should set 'securityContext.runAsUser' > 10000. Set 'containers[].securityContext.runAsUser' to an integer > 10000. One securityContext edit clears this facet's near-duplicate rules together: KSV-0020, KSV-0021.",
+   "class": "opinion-not-fact",
+   "reason": "CKV_K8S_40 / KSV-0020 'UID <= 10000' on the API: the pod runs as non-root UID 1654 with no privilege escalation, all capabilities dropped and a read-only root filesystem (TRP-007's site, reported on the resource/container lines instead of 32-33). A UID range is a preference, not a privilege.",
+   "action": "recorded as scanner noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "src/Depot.Slots.Api/Dockerfile",
+   "line": 1,
+   "message": "Low IaC: DS-0026: No HEALTHCHECK defined. Add HEALTHCHECK instruction in your Dockerfile. Add HEALTHCHECK instruction in Dockerfile. Without one the runtime only knows whether the process is alive, not whether it is serving, so a wedged container is restarted by nobody. The step: add a `HEALTHCHECK` to the image that probes the service the way a client would \u2014 this image already declares `EXPOSE 8080`, so a request to `localhost:8080` on the service's own health or root route, exiting non-zero when it does not answer, is the probe \u2014 and give it an `--interval`, a `--timeout` and a `--start-period` long enough to cover startup. If the image ships no HTTP client, probe with whatever the runtime already has, or declare the check in the orchestrator instead and say so here.",
+   "class": "false-positive",
+   "reason": "TRP-004: the API image runs only on Kubernetes, which ignores HEALTHCHECK; the Deployment probes /health/live and /health/ready (deploy/k8s/api/deployment.yaml:55-66). Scored as clean-file noise only because the key located the trap on the final stage while the absence is file-wide.",
+   "action": "key fixed: TRP-004 is a whole-file entry; trap caught",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "src/Depot.Slots.Reminders/Dockerfile",
+   "line": 1,
+   "message": "Low IaC: DS-0026: No HEALTHCHECK defined. Add HEALTHCHECK instruction in your Dockerfile. Add HEALTHCHECK instruction in Dockerfile. Without one the runtime only knows whether the process is alive, not whether it is serving, so a wedged container is restarted by nobody. The step: add a `HEALTHCHECK` to the image that probes the service the way a client would \u2014 this image already declares `EXPOSE 8080`, so a request to `localhost:8080` on the service's own health or root route, exiting non-zero when it does not answer, is the probe \u2014 and give it an `--interval`, a `--timeout` and a `--start-period` long enough to cover startup. If the image ships no HTTP client, probe with whatever the runtime already has, or declare the check in the orchestrator instead and say so here.",
+   "class": "false-positive",
+   "reason": "TRP-005: same for the worker image; Kubernetes ignores HEALTHCHECK, and the worker's missing probes are a manifest defect (IAC-010).",
+   "action": "key fixed: TRP-005 is a whole-file entry; trap caught",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D36",
+   "file": null,
+   "line": null,
+   "message": "No artifact signing: No artifact signing found in CI \u2014 sign your released artifacts with whatever your ecosystem ships (`cosign sign` over the image digest your pipeline pushes, so a consumer can `cosign verify` what they pull, cosign/sigstore for container images, `dotnet nuget sign` with a code-signing certificate for the NuGet packages (`dotnet nuget verify` checks it), or Authenticode via signtool for any executable you ship) so consumers can verify what you built. What was searched, so you can tell an absence from a miss: this repository's CI files, the scripts they invoke and its own composite actions, its root build manifest and its release manifest, its release task runner if it has one, and its own release automation script \u2014 plus the trusted-publishing declarations that sign on the registry's side. A signature produced by a pipeline whose configuration is not in this repository, or by a signer whose name is none of the ones this check carries, is not seen here.",
+   "class": "valid",
+   "reason": "Accurate: no SBOM and no artifact signing. This is the deliberately weak posture measured by BND-007 (build-provenance-and-signing, band 0-40).",
+   "action": "none: deliberate posture under BND-007",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D36",
+   "file": null,
+   "line": null,
+   "message": "No SBOM: No SBOM generation or committed SBOM found \u2014 produce one with what your ecosystem ships (`sbom-tool generate` (install it with `dotnet tool install --global Microsoft.Sbom.DotNetTool`) or `dotnet CycloneDX` over the solution, `syft` (or `anchore/sbom-action` in CI) over the source tree or released image). Ship it with the artifact you distribute \u2014 for a package registry that means packing the document (`*.spdx.json` / `*.cdx.json`) into the package itself, so it cannot drift from what a consumer installs. What was searched, so you can tell an absence from a miss: this repository's CI files, the scripts they invoke and its own composite actions, any SBOM committed to the repository, the SBOM configuration declared in its build and release manifests, and the container-build SBOM inputs. An SBOM produced by a pipeline whose configuration is not in this repository, or by a generator whose name is none of the ones this check carries, is not seen here.",
+   "class": "valid",
+   "reason": "Accurate: no SBOM and no artifact signing. This is the deliberately weak posture measured by BND-007 (build-provenance-and-signing, band 0-40).",
+   "action": "none: deliberate posture under BND-007",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D36",
+   "file": null,
+   "line": null,
+   "message": "Unpinned build actions: CI references GitHub Actions by a floating ref (@main / @tag) rather than a pinned commit SHA, weakening build integrity. 1 floating ref(s) across 1 workflow file(s). Each floating ref is itemized at file:line by the SAST (D29) lens. `.github/dependabot.yml` declares an updater for the `github-actions` ecosystem, so pinning does not freeze these steps: the updater rewrites SHA pins as new releases ship, which makes this posture near-zero maintenance to hold once taken.",
+   "class": "redundant",
+   "reason": "Restates plant IAC-016 (docker/setup-buildx-action@v3) without a location.",
+   "action": "counted once",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D36",
+   "file": null,
+   "line": null,
+   "message": "Secret passed as a command-line argument: 2 CI command(s) pass a credential in the command line (as an argument of its own, or attached to an option as `--flag=<secret>`), where it is visible in the runner's process table to any other process on the host (and to anything that logs a command line): .github/workflows/deploy.yml: kubectl --server \"$KUBE_SERVER\" --token \"${{ secrets.KUBE_DEPLOY_TOKEN }}\" apply --recursive -f deploy/k8s; .github/workflows/deploy.yml: kubectl --server \"$KUBE_SERVER\" --token \"${{ secrets.KUBE_DEPLOY_TOKEN }}\" -n depot-slots rollout status deployment/depot-slots-api --timeout=5m. Pass the credential through the environment instead (an `env:` mapping on the step, read by the tool from its own variable) or on stdin, so it never appears in an argument vector.",
+   "class": "valid",
+   "reason": "Is plant IAC-018 (2 kubectl commands with --token in deploy.yml) but carries no SARIF location, so it cannot match the located plant.",
+   "action": "none (plant); location-less false negative of IAC-018",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D36",
+   "file": null,
+   "line": null,
+   "message": "Workflow token grant is wider than its jobs use: 1 `permissions:` grant(s) are wider than the jobs that hold them use (release.yml:7 (write-all; held by images)). `write-all` grants every scope GitHub defines \u2014 contents, packages, actions, id-token, security-events, pages, deployments and the rest \u2014 and no job needs all of them; a named write scope declared at the top of a workflow is inherited by every job that declares no block of its own, including the ones that only build. GitHub Actions has no step-level `permissions:`, so wherever the grant is held it is live for every step of that job: the build and dependency-install steps run build scripts, install hooks and plugins from the whole transitive dependency tree, and any one of them can read the token and commit to the repository, publish its packages or attest its artifacts. Declare `permissions: {contents: read}` at the top of the workflow, and name the exact write scopes \u2014 and only those \u2014 on the one job that publishes.",
+   "class": "valid",
+   "reason": "Is plant IAC-015 ('release.yml:7 (write-all ...)' in the message) but carries no SARIF location.",
+   "action": "none (plant); location-less false negative of IAC-015",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D37",
+   "file": null,
+   "line": null,
+   "message": "Disclosure policy has no reporting contact: SECURITY.md is present but no reporting contact (email / URL / mailto) was found \u2014 a coordinated-disclosure policy must tell reporters where to send a report.",
+   "class": "valid",
+   "reason": "SECURITY.md named GitHub private reporting but gave no URL or e-mail.",
+   "action": "repo fixed: SECURITY.md links the private advisory form",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D41",
+   "file": null,
+   "line": null,
+   "message": "No AppArmor/SELinux confinement: Workloads declare no AppArmor or SELinux profile. A mandatory-access-control profile confines what a compromised container can touch on the host, complementing seccomp's syscall filter.",
+   "class": "valid",
+   "reason": "Accurate: no AppArmor/SELinux anywhere - the deliberately partial posture of BND-002.",
+   "action": "none: deliberate posture under BND-002",
+   "iteration": 1
+  },
+  {
+   "ruleId": "P5",
+   "file": null,
+   "line": null,
+   "message": "No DR/backup evidence: A persistence guard (data volume / purge-protection) was found, but no backup, geo-recovery or RTO/RPO controls were evidenced \u2014 a volume that survives a container recreate is not a tested restore from catastrophic loss.",
+   "class": "valid",
+   "reason": "Accurate: no backup/RTO evidence - the deliberate posture of BND-005.",
+   "action": "none: deliberate posture under BND-005",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Depot.Slots.Infrastructure/Postgres/PostgresBookingStore.cs",
+   "line": 1,
+   "message": "Low coverage: src/Depot.Slots.Infrastructure/Postgres/PostgresBookingStore.cs: 0.0% line coverage (0/75).",
+   "class": "false-positive",
+   "reason": "The code is tested: PostgresBookingStoreTests exercise every store method and the schema initialiser against a real PostgreSQL in a container (local run: PostgresBookingStore 100 % line coverage). The scanner's sandbox has no container runtime, so those tests skip there and it measures 0 %; the claim of low coverage is untrue of the repository.",
+   "action": "recorded as scanner noise (environment limitation); code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/Depot.Slots.Infrastructure/Postgres/SchemaInitializer.cs",
+   "line": 1,
+   "message": "Low coverage: src/Depot.Slots.Infrastructure/Postgres/SchemaInitializer.cs: 0.0% line coverage (0/7).",
+   "class": "false-positive",
+   "reason": "The code is tested: PostgresBookingStoreTests exercise every store method and the schema initialiser against a real PostgreSQL in a container (local run: PostgresBookingStore 100 % line coverage). The scanner's sandbox has no container runtime, so those tests skip there and it measures 0 %; the claim of low coverage is untrue of the repository.",
+   "action": "recorded as scanner noise (environment limitation); code kept",
+   "iteration": 2
+  }
+ ],
+ "falseNegatives": [
+  {
+   "entryId": "IAC-004",
+   "reason": "hostNetwork: true (daemonset.yaml:20) is reported by KSV-0009 on the DaemonSet's spec (line 9) and by CKV_K8S_19 at line 1, both outside the \u00b13 tolerance; the plant is on the exact line. Location imprecision, not a missing rule."
+  },
+  {
+   "entryId": "IAC-006",
+   "reason": "The read-write containerd-socket hostPath (daemonset.yaml:71-74) is reported only by KSV-0023 at line 9 (the DaemonSet spec), one row for all hostPath volumes; it never names the socket. Location imprecision."
+  },
+  {
+   "entryId": "IAC-013",
+   "reason": "Ingress without a tls: section serving the bearer-token API over plain HTTP: no rule fires (no trivy/checkov/semgrep check for Ingress TLS in the pinned rule sets)."
+  },
+  {
+   "entryId": "IAC-015",
+   "reason": "permissions: write-all (release.yml:7) is reported by D36 'Workflow token grant is wider than its jobs use' with the site in the message but no SARIF location, so it cannot match a located entry."
+  },
+  {
+   "entryId": "IAC-017",
+   "reason": "pull_request_target that checks out github.event.pull_request.head.sha and docker-builds it with the registry token in env: neither pull-request-target-code-checkout nor any custom rule fired."
+  },
+  {
+   "entryId": "IAC-018",
+   "reason": "kubectl --token \"${{ secrets.KUBE_DEPLOY_TOKEN }}\" (deploy.yml:33-34): D36 'Secret passed as a command-line argument' reports it without a SARIF location; semgrep watchdog-secret-interpolated-into-run reports it at line 32 but the mapping assigns that rule to ci-secret-exposure."
+  }
+ ],
+ "scoreBands": [
+  {
+   "entryId": "BND-001",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    60,
+    100
+   ]
+  },
+  {
+   "entryId": "BND-002",
+   "outcome": "out",
+   "score": 80,
+   "band": [
+    10,
+    60
+   ],
+   "class": "opinion-not-fact",
+   "note": "D41 credits seccomp found anywhere in the YAML blob (one of three workloads sets RuntimeDefault) as if every workload had it; AppArmor/SELinux absent. Band set before the first scan and kept."
+  },
+  {
+   "entryId": "BND-003",
+   "outcome": "unscored",
+   "band": [
+    0,
+    30
+   ],
+   "note": "D42 is gated on cluster-governance resources the repository does not ship, so the absence of runtime detection/admission is not scored. Leniency; band kept."
+  },
+  {
+   "entryId": "BND-004",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    50,
+    100
+   ]
+  },
+  {
+   "entryId": "BND-005",
+   "outcome": "in",
+   "score": 0,
+   "band": [
+    0,
+    40
+   ]
+  },
+  {
+   "entryId": "BND-006",
+   "outcome": "unscored",
+   "band": [
+    30,
+    90
+   ],
+   "note": "LA4 made no model call in the host --with-llm pass (absent from llm-calls.json and the scorecard)."
+  },
+  {
+   "entryId": "BND-007",
+   "outcome": "in",
+   "score": 25,
+   "band": [
+    0,
+    40
+   ]
+  }
+ ],
+ "observations": [
+  "D31's checkov pass reports Kubernetes findings at line 1 of the document (and trivy pod-level checks on the workload's spec), so container- and pod-level defects are often located far from their site: two plants are FNs purely by location, and ~40 line-1 rows restate found plants (redundant).",
+  "D36 reports workflow-level findings (write-all, secret on the command line, unpinned actions) without a SARIF location even when the message names file:line; located plants cannot be matched (same harness gap as bench-csharp-security-dependencies).",
+  "IAC-010 (missing probes) is scored TP via KSV-0125 (registry allow-list) on the container line, because both map to iac-misconfiguration; the real probe rows (CKV_K8S_8/9) are at line 1. The concept is too coarse to tell them apart.",
+  "Harness decision for the coordinator: watchdog-secret-interpolated-into-run is mapped to ci-secret-exposure; the taxonomy describes that concept as secrets reaching untrusted code. A secret expanded into a run script is closer to secret-in-process-arguments (CWE-214) - remap or declare a family.",
+  "No rule for Ingress TLS and no firing for pull_request_target + head checkout + build: both are clean misses on high-impact plants.",
+  "All 20 traps that probe a located site were left alone (digest pins with 'latest' in a comment, numeric USER, emptyDir, anchor/merge-key probes, ExternalSecret, SealedSecret ciphertext, pull_request_target without checkout, env-passed secrets, SHA-pinned first-party actions). The two caught traps are both 'no HEALTHCHECK' on Kubernetes-only images.",
+  "Engine bug already noted by the coordinator still applies: WD-K8S-0004 is the automount rule here (IAC-011)."
+ ]
+}
