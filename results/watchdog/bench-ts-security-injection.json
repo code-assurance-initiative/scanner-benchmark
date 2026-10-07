@@ -1,0 +1,887 @@
+{
+ "repo": "code-assurance-initiative/bench-ts-security-injection",
+ "tag": "v1.0.0",
+ "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-07",
+   "sarifSha256": "404f177bed32964c49e247bbd5f92a4ae50a683179b404d43d8b361803a66577",
+   "outcomes": {
+    "tp": 6,
+    "fn": 15,
+    "fp": 7,
+    "tn": 116,
+    "trapFp": 4,
+    "trapTn": 20,
+    "results": 16,
+    "noise": 8,
+    "redundant": 2,
+    "uncovered": 52
+   },
+   "note": "repo commit a1a6358"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "67f3f209bb70ab01d8d7ac5744ebe146b6b9240f0bee001e135da46459d2c929",
+   "outcomes": {
+    "tp": 6,
+    "fn": 15,
+    "fp": 7,
+    "tn": 119,
+    "trapFp": 5,
+    "trapTn": 20,
+    "results": 16,
+    "noise": 8,
+    "redundant": 2,
+    "uncovered": 45
+   },
+   "note": "repo commit 417c273 (after the iteration-1 fixes and key change)"
+  },
+  {
+   "iteration": 3,
+   "date": "2026-10-07",
+   "sarifSha256": "d836e3dfa7fc2c4610e0f30bfacecb7cd2e5a646a791f200dfb99318978dd458",
+   "outcomes": {
+    "tp": 6,
+    "fn": 15,
+    "fp": 7,
+    "tn": 120,
+    "trapFp": 5,
+    "trapTn": 20,
+    "results": 16,
+    "noise": 8,
+    "redundant": 2,
+    "uncovered": 45
+   },
+   "note": "final; repo commit 314f907 (code and key identical to v1.0.0 aff1ad7, which adds only the journal)"
+  }
+ ],
+ "verdicts": [
+  {
+   "ruleId": "D1",
+   "file": "src/reports/report-routes.ts",
+   "line": 40,
+   "message": "report-routes.reportRoutes (cyclomatic 26): report-routes.reportRoutes has cyclomatic complexity 26 (threshold 15). Most of this is not in the body itself: 5 of the 26 points are its own statements and the rest belongs to 5 function literals inside it that branch (lines 80, 99, 114, …). The decisions are inside those literals, which nothing outside this body can call, review or test on its own, so splitting the enclosing body is not the move available here. To reduce it, lift the literals' work into a named function or method at the enclosing scope and have each literal call it, then reduce whichever part then reads as the largest.",
+   "class": "valid",
+   "reason": "The reportRoutes factory held five inline handlers.",
+   "action": "repo fixed (d7b561a): named handlers",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D1",
+   "file": "src/saved-searches/filter-tree.ts",
+   "line": 31,
+   "message": "filter-tree.validateNode (cyclomatic 16): filter-tree.validateNode has cyclomatic complexity 16 (threshold 15). To reduce it, separate the cases: extract each independent branch into its own named function, and where the body has guards that only reject input, fold those into early returns at the top.",
+   "class": "valid",
+   "reason": "validateNode mixed group and comparison checks in one branchy function.",
+   "action": "repo fixed (d7b561a): split into validateOperands and validateComparison; TRP-024 depth check and recursion unchanged",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D2",
+   "file": "src/reports/report-routes.ts",
+   "line": 40,
+   "message": "report-routes.reportRoutes (cognitive 29): report-routes.reportRoutes has cognitive complexity 29 (threshold 15). Drivers by points: if/else 11 (14 pts), boolean chains 6, ternaries 5 (6 pts), error handling 3 (nesting depth added 4). Most of this is not in the body itself: 4 of the 29 points are its own statements and the rest belongs to 5 function literals inside it that branch (lines 80, 99, 114, …). The decisions are inside those literals, which nothing outside this body can call, review or test on its own, so splitting the enclosing body is not the move available here. To reduce it, lift the literals' work into a named function or method at the enclosing scope and have each literal call it, then reduce whichever part then reads as the largest.",
+   "class": "valid",
+   "reason": "The reportRoutes factory held five inline handlers.",
+   "action": "repo fixed (d7b561a): named handlers",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/app.ts",
+   "line": 1,
+   "message": "Low coverage: src/app.ts: 0.0% line coverage (0/16).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/composition.ts",
+   "line": 1,
+   "message": "Low coverage: src/composition.ts: 0.0% line coverage (0/15).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/lifecycle.ts",
+   "line": 1,
+   "message": "Low coverage: src/lifecycle.ts: 0.0% line coverage (0/19).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/logger.ts",
+   "line": 1,
+   "message": "Low coverage: src/logger.ts: 0.0% line coverage (0/2).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/server.ts",
+   "line": 1,
+   "message": "Low coverage: src/server.ts: 0.0% line coverage (0/18).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/attachments/attachment-routes.ts",
+   "line": 1,
+   "message": "Low coverage: src/attachments/attachment-routes.ts: 7.1% line coverage (1/14).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/conversion/thumbnail-routes.ts",
+   "line": 1,
+   "message": "Low coverage: src/conversion/thumbnail-routes.ts: 5.9% line coverage (1/17).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/documents/document-routes.ts",
+   "line": 1,
+   "message": "Low coverage: src/documents/document-routes.ts: 2.9% line coverage (1/35).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/exports/export-routes.ts",
+   "line": 1,
+   "message": "Low coverage: src/exports/export-routes.ts: 8.0% line coverage (2/25).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/feeds/feed-routes.ts",
+   "line": 1,
+   "message": "Low coverage: src/feeds/feed-routes.ts: 6.7% line coverage (1/15).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/health/health-routes.ts",
+   "line": 1,
+   "message": "Low coverage: src/health/health-routes.ts: 0.0% line coverage (0/2).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/http/authentication.ts",
+   "line": 1,
+   "message": "Low coverage: src/http/authentication.ts: 48.0% line coverage (12/25).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/http/errors.ts",
+   "line": 1,
+   "message": "Low coverage: src/http/errors.ts: 17.6% line coverage (3/17).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/http/html.ts",
+   "line": 1,
+   "message": "Low coverage: src/http/html.ts: 0.0% line coverage (0/2).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/http/problem.ts",
+   "line": 1,
+   "message": "Low coverage: src/http/problem.ts: 0.0% line coverage (0/1).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/http/scopes.ts",
+   "line": 1,
+   "message": "Low coverage: src/http/scopes.ts: 10.0% line coverage (1/10).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/http/transport-security.ts",
+   "line": 1,
+   "message": "Low coverage: src/http/transport-security.ts: 0.0% line coverage (0/5).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/http/validation.ts",
+   "line": 1,
+   "message": "Low coverage: src/http/validation.ts: 0.0% line coverage (0/6).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/imports/import-routes.ts",
+   "line": 1,
+   "message": "Low coverage: src/imports/import-routes.ts: 0.0% line coverage (0/39).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/imports/metadata-flattener.ts",
+   "line": 1,
+   "message": "Low coverage: src/imports/metadata-flattener.ts: 0.0% line coverage (0/10).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/imports/metadata-importer.ts",
+   "line": 1,
+   "message": "Low coverage: src/imports/metadata-importer.ts: 0.0% line coverage (0/5).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/imports/retention-schedule-reader.ts",
+   "line": 1,
+   "message": "Low coverage: src/imports/retention-schedule-reader.ts: 0.0% line coverage (0/11).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/imports/xml-elements.ts",
+   "line": 1,
+   "message": "Low coverage: src/imports/xml-elements.ts: 0.0% line coverage (0/6).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/preferences/preference-routes.ts",
+   "line": 1,
+   "message": "Low coverage: src/preferences/preference-routes.ts: 0.0% line coverage (0/14).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/preferences/preferences.ts",
+   "line": 1,
+   "message": "Low coverage: src/preferences/preferences.ts: 0.0% line coverage (0/2).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/reports/report-routes.ts",
+   "line": 1,
+   "message": "Low coverage: src/reports/report-routes.ts: 0.0% line coverage (0/54).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/saved-searches/saved-search-routes.ts",
+   "line": 1,
+   "message": "Low coverage: src/saved-searches/saved-search-routes.ts: 0.0% line coverage (0/34).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/search/search-routes.ts",
+   "line": 1,
+   "message": "Low coverage: src/search/search-routes.ts: 0.0% line coverage (0/28).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/shares/share-routes.ts",
+   "line": 1,
+   "message": "Low coverage: src/shares/share-routes.ts: 0.0% line coverage (0/41).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/subscriptions/subscription-routes.ts",
+   "line": 1,
+   "message": "Low coverage: src/subscriptions/subscription-routes.ts: 0.0% line coverage (0/39).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/subscriptions/unsubscribe-routes.ts",
+   "line": 1,
+   "message": "Low coverage: src/subscriptions/unsubscribe-routes.ts: 0.0% line coverage (0/10).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/templates/template-routes.ts",
+   "line": 1,
+   "message": "Low coverage: src/templates/template-routes.ts: 0.0% line coverage (0/8).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D26",
+   "file": null,
+   "line": null,
+   "message": "Projects may be oversized for their cohesion: 1 of 1 project(s) overshoot their size bounds, lowering Project Cohesion to 0.0/10. The most over is `(repository root)` (3011 LoC, 151 module-visible types across 18 directories). Review these for cohesion — draw the boundary inside the module first (group each responsibility into its own package or directory and keep the cross-boundary members non-public), since splitting a published package moves types between packages and breaks consumers.",
+   "class": "opinion-not-fact",
+   "reason": "A single small service package organised by feature folders (ADR 0001); the size measurement is right, the call to split it into packages is not supported by it.",
+   "action": "recorded as noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D29",
+   "file": "src/reports/layout-format.ts",
+   "line": 29,
+   "message": "High: watchdog-assembled-code-string-evaluated-ts: This call evaluates a code string that was ASSEMBLED at runtime -- a value is spliced into JavaScript source the author wrote around it, and the result is handed to `eval`/`new Function` to be executed. The surrounding syntax is the author's, so a value carrying `)`, `;` or a newline does not stay in the expression slot it was written for: it closes that slot and continues as statements, with the full authority of this module. Because the splice happens behind a reusable function, every caller inherits that authority without being told. Parse or validate the value instead of executing it -- `JSON.parse` for data, a purpose-built expression evaluator for expressions -- or bind it as an ARGUMENT, `new Function('value', body)` invoked with the value, so it can never be read as code.",
+   "class": "valid",
+   "reason": "True: the custom YAML tag compiles a scalar from the uploaded layout with new Function. It is the planted DESER-001 defect seen as code injection; the key labels the site insecure-deserialization (README, Contested truths).",
+   "action": "nothing to fix (planted); counted by the harness as code-injection noise; DESER-001 remains an FN; recorded for the coordinator (deserialization/code-injection family)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D29",
+   "file": "src/reports/row-comparator.ts",
+   "line": 25,
+   "message": "High: watchdog-assembled-code-string-evaluated-ts: This call evaluates a code string that was ASSEMBLED at runtime -- a value is spliced into JavaScript source the author wrote around it, and the result is handed to `eval`/`new Function` to be executed. The surrounding syntax is the author's, so a value carrying `)`, `;` or a newline does not stay in the expression slot it was written for: it closes that slot and continues as statements, with the full authority of this module. Because the splice happens behind a reusable function, every caller inherits that authority without being told. Parse or validate the value instead of executing it -- `JSON.parse` for data, a purpose-built expression evaluator for expressions -- or bind it as an ARGUMENT, `new Function('value', body)` invoked with the value, so it can never be read as code.",
+   "class": "false-positive",
+   "reason": "TRP-011. Disproof: row-comparator.ts builds the source only from fields[column] (a fixed table keyed by the ReportColumn enum, validated by the request schema) and a sign that is one of the literals '1'/'-1'; no request text reaches the string.",
+   "action": "recorded as noise; site already trap TRP-011",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D29",
+   "file": "src/conversion/thumbnail-routes.ts",
+   "line": 43,
+   "message": "Medium: res-render-injection: User controllable data `req` enters `res.render(...)` this can lead to the loading of other HTML/templating pages that they may not be authorized to render. An attacker may attempt to use directory traversal techniques e.g. `../folder/index` to access other HTML pages on the file system. Where possible, do not allow users to define what should be  loaded in res.render or use an allow list for the existing application. This is a semgrep security-AUDIT rule: it reports that a sensitive construct is present, not that it is exploitable here. Confirm whether this site handles untrusted input or is reachable across a trust boundary — and apply the change where it is; where the construct is required by the platform or protocol it calls into, and carries no untrusted data (a syscall/FFI shim, a build- or debug-gated tool, a fixed local surface), record the review and leave the code as it is.",
+   "class": "false-positive",
+   "reason": "Disproof: the matched call is not Express's res.render; it is a service method named render (renderer.render = ImageMagick thumbnail, cards.render = Nunjucks with a fixed template name and the document as data, reports.render = layout applied to rows). No request value selects a template or path.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D29",
+   "file": "src/documents/document-routes.ts",
+   "line": 69,
+   "message": "Medium: res-render-injection: User controllable data `req` enters `res.render(...)` this can lead to the loading of other HTML/templating pages that they may not be authorized to render. An attacker may attempt to use directory traversal techniques e.g. `../folder/index` to access other HTML pages on the file system. Where possible, do not allow users to define what should be  loaded in res.render or use an allow list for the existing application. This is a semgrep security-AUDIT rule: it reports that a sensitive construct is present, not that it is exploitable here. Confirm whether this site handles untrusted input or is reachable across a trust boundary — and apply the change where it is; where the construct is required by the platform or protocol it calls into, and carries no untrusted data (a syscall/FFI shim, a build- or debug-gated tool, a fixed local surface), record the review and leave the code as it is.",
+   "class": "false-positive",
+   "reason": "Disproof: the matched call is not Express's res.render; it is a service method named render (renderer.render = ImageMagick thumbnail, cards.render = Nunjucks with a fixed template name and the document as data, reports.render = layout applied to rows). No request value selects a template or path.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D29",
+   "file": "src/reports/report-routes.ts",
+   "line": 106,
+   "message": "Medium: res-render-injection: User controllable data `req` enters `res.render(...)` this can lead to the loading of other HTML/templating pages that they may not be authorized to render. An attacker may attempt to use directory traversal techniques e.g. `../folder/index` to access other HTML pages on the file system. Where possible, do not allow users to define what should be  loaded in res.render or use an allow list for the existing application. This is a semgrep security-AUDIT rule: it reports that a sensitive construct is present, not that it is exploitable here. Confirm whether this site handles untrusted input or is reachable across a trust boundary — and apply the change where it is; where the construct is required by the platform or protocol it calls into, and carries no untrusted data (a syscall/FFI shim, a build- or debug-gated tool, a fixed local surface), record the review and leave the code as it is.",
+   "class": "false-positive",
+   "reason": "Disproof: the matched call is not Express's res.render; it is a service method named render (renderer.render = ImageMagick thumbnail, cards.render = Nunjucks with a fixed template name and the document as data, reports.render = layout applied to rows). No request value selects a template or path.",
+   "action": "recorded as noise; code kept",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D29",
+   "file": "src/saved-searches/saved-search-routes.ts",
+   "line": 88,
+   "message": "Medium: watchdog-open-redirect-default-operand-js: This redirect sends the user wherever the REQUEST says to go, and the `|| '/'` default in front of it is not the guard it looks like. A default chooses what happens when the parameter is ABSENT; it never constrains what happens when the parameter is HOSTILE. Whenever the caller supplies any value at all the left operand wins, so the caller picks the destination, and `?? '/'` behaves the same way -- it only widens \"absent\" from falsy to null-or-undefined. The browser follows it, so this endpoint sends its own users wherever the caller says: a redirect that starts on your domain, in your TLS certificate and next to your brand, and lands on a page the caller wrote. That first hop is the whole value of an open redirect, which is why they are the standard carrier for phishing, for OAuth `redirect_uri` theft, and for slipping past allow-lists that only inspect the host a user clicked. \"Send them back where they came from, else home\" needs a destination this code controls: keep an explicit allow-list and test membership before redirecting (`if (!ALLOWED.includes(dest)) return res.redirect('/')`), or accept a same-origin path only and require a single leading `/` (`/^\\/(?!\\/)/`) so a scheme-relative `//host` cannot pass. Where an absolute URL is genuinely needed, resolve it against a fixed base -- `new URL(dest, 'https://your.host/')` -- and let the base own the origin.",
+   "class": "false-positive",
+   "reason": "TRP-015. Disproof: the left operand is sameSitePath(req.query.returnTo) (src/http/local-path.ts), which returns undefined for anything but a single-slash same-site path without backslashes or control characters; the `??` operand is only the fixed fallback. The rule treats a validator call like a raw request read.",
+   "action": "recorded as noise; site already trap TRP-015",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D32",
+   "file": "src/subscriptions/crm-client.ts",
+   "line": 37,
+   "message": "Medium: watchdog-personal-data-in-url: Personal data appears to be placed in a URL or query string. URLs are recorded in server and proxy access logs, browser history and outbound Referer headers, so the value escapes the system's own retention controls. Move it to a request body or use an opaque identifier.",
+   "class": "false-positive",
+   "reason": "TRP-022. Disproof: `email=` carries the boolean `enabled` (\"true\"/\"false\"); the subscription is addressed by an opaque id. No personal data is in the URL.",
+   "action": "recorded as noise; site already trap TRP-022",
+   "iteration": 1
+  },
+  {
+   "ruleId": "AC7",
+   "file": null,
+   "line": null,
+   "message": "Accessibility enforcement below the top rung: No accessibility enforcement found — no a11y linter (an accessibility check that can read your UI — no component framework was detected and your pages are rendered by server-side templates, which neither the JSX/Vue ESLint plugins nor the HTML-template linters can parse; run axe/pa11y over the rendered pages, or assert the accessibility invariants over that rendered HTML in the test suite you already have) and no axe/pa11y/Lighthouse in tests or CI. Start by running that check over your rendered pages in CI. What was searched, so you can tell an absence from a miss: the 3 markup file(s) this pass actually assessed, the linter configuration checked in beside them, and this repository's test and CI files — matched by name against the accessibility checkers this dimension carries. An audit run outside the repository, a hosted scanner, or a check whose name is not one of those, is not seen here.",
+   "class": "valid",
+   "reason": "The upload page and the rendered document card had no automated accessibility check.",
+   "action": "repo fixed (b8ff2ae): axe-core over the upload page and a rendered card in the test suite",
+   "iteration": 1
+  },
+  {
+   "ruleId": "C2",
+   "file": null,
+   "line": null,
+   "message": "No named authorization policies: Authorization IS enforced here (by route guards, auth middleware or checks that refuse a caller) — this is NOT a claim that endpoints are unprotected. What's missing is a NAMED rule set: who may do what is encoded inline where it is checked, so the rules can't be listed, reviewed or tested apart from the code that applies them. Recommendation, not a defect.",
+   "class": "false-positive",
+   "reason": "Disproof: scopes are named constants in src/http/scopes.ts, every /api route declares requireScope(Scopes.x) at registration, and the README lists the scope per endpoint. Same finding as in bench-ts-baseline-clean.",
+   "action": "promoted to repository-level trap TRP-025 (authorization-enforcement)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "P6",
+   "file": null,
+   "line": null,
+   "message": "Changelog looks stale/thin: The changelog this check read carries 2 versioned entries, against a bar of 3. Counted as either an `x.y.z` string or a version-shaped section heading (`## [1.2.0]`, `## V14.x.x`, `## Updates in 8.0.x`), whichever is the larger — so a log sectioned by minor series counts its sections, not its individual patch numbers. Entries recorded somewhere this check does not read — release notes generated at tag time from a generator config it did not recognise, or a log kept outside the repository — are not counted here, and this row is about what is re-findable in the tree rather than about how often you release.",
+   "class": "opinion-not-fact",
+   "reason": "The service has had one release; inventing entries to clear a bar would falsify the history (as in the baseline repositories).",
+   "action": "recorded as noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/exports/export-routes.ts",
+   "line": 16,
+   "message": "Duplication concentrated across 8 sibling directories (6 clone groups): 6 duplicated blocks under src/ have copies in at least two of the sibling directories conversion, exports, feeds, imports, saved-searches, search (+2 more sibling(s) not listed) — 3 of them are reported below, and 3 are counted here but not reported individually: those copies match on shape but no longer clear R10's bar for an individually reported row — either they kept neither their own names nor their values, or what was copied is too small to stand on its own (it reports near-exact duplication only, and only of substantial extent). What this row states is the concentration, which the detector measured over all 6 and which does not depend on how exactly each block's copies still match. That concentration is one structural fact, not 6 local ones: the siblings replicate behaviour none of them owns, which is the shape of a missing shared module — a common library every sibling imports — rather than 6 separate extractions. Check first whether the siblings are deliberately standalone deliverables (scaffold templates, demo apps that must stay copy-pasteable); where they are, the duplication is the design and the per-block rows are the ones to act on.",
+   "class": "valid",
+   "reason": "Summary of the copied groups; the valid ones were fixed.",
+   "action": "fixed with the groups (d7b561a)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/imports/import-routes.ts",
+   "line": 47,
+   "message": "Duplicated block (15 lines × 2 locations): src/imports/import-routes.ts:47 · src/imports/import-routes.ts:68 — all 2 copies are in the same file, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+   "class": "valid",
+   "reason": "Real duplication: a parse-then-look-up block copied across route modules (or two handlers of one module).",
+   "action": "repo fixed (d7b561a): parseIdWith, findDocument, xmlImport and fromYaml helpers",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/documents/document-routes.ts",
+   "line": 38,
+   "message": "Duplicated block (12 lines × 2 locations): src/documents/document-routes.ts:38 · src/documents/document-routes.ts:50 — all 2 copies are in the same file, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+   "class": "valid",
+   "reason": "Real duplication: a parse-then-look-up block copied across route modules (or two handlers of one module).",
+   "action": "repo fixed (d7b561a): parseIdWith, findDocument, xmlImport and fromYaml helpers",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/exports/export-routes.ts",
+   "line": 16,
+   "message": "Duplicated block with local edits (12 matched lines × 2 locations): src/exports/export-routes.ts:16 · src/shares/share-routes.ts:31 — the two spans are one implementation copied and then locally edited — 95 tokens are still identical, in the same order in both files, with only local edits between them. The copies have already begun to drift, which is this row's finding: an edit made to one and not the other changes behaviour silently. Diff the two spans first to learn what genuinely differs, then extract the shared core into one module both sites use, passing the differences in as parameters — or, if one copy exists only because the other could not be imported from its context, make one of them the single source the other is generated or re-exported from. If one copy is no longer reachable, delete it rather than letting it shadow the live one.",
+   "class": "valid",
+   "reason": "Real duplication: a parse-then-look-up block copied across route modules (or two handlers of one module).",
+   "action": "repo fixed (d7b561a): parseIdWith, findDocument, xmlImport and fromYaml helpers",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/reports/report-routes.ts",
+   "line": 96,
+   "message": "Duplicated block (11 lines × 2 locations): src/reports/report-routes.ts:96 · src/reports/report-routes.ts:111 — all 2 copies are in the same file, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+   "class": "valid",
+   "reason": "Real duplication: a parse-then-look-up block copied across route modules (or two handlers of one module).",
+   "action": "repo fixed (d7b561a): parseIdWith, findDocument, xmlImport and fromYaml helpers",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/http/html.ts",
+   "line": 1,
+   "message": "Duplicated block (10 lines × 2 locations): src/http/html.ts:1 · web/src/escape-html.ts:1 — the 2 copies are spread across 2 files, and the SHAPE of this repetition could not be determined. It is not a run of declarations, a listing, a declaration header, a type body or a slice through a construct — and it was not measured as a run of executable statements either, so this row cannot tell you whether a function can stand where these lines are. Read the two spans before acting, because the move is opposite in the two cases. Where they are statements, the ordinary answer holds: give the shared part one home and call it from each site. Where they turn out to be declarations, a literal's entries, or the cases of an enumeration, there is no call site to call anything from, and collapsing them would delete what each copy pins — a shared base type, a generated set, or one exported constant each site refers to is the move instead, and sometimes the honest answer is that there is nothing to extract at all. Reported because the copies drift apart the first time only one of them is edited, which is true whichever of those they are.",
+   "class": "opinion-not-fact",
+   "reason": "Ten lines of HTML escaping in two separately compiled targets (server and browser) with no shared package between them; the measurement is right, sharing would need a build change out of proportion.",
+   "action": "recorded as noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/exports/export-routes.ts",
+   "line": 20,
+   "message": "Duplicated block with local edits (9 matched lines × 2 locations): src/exports/export-routes.ts:20 · src/exports/export-routes.ts:33 — the two spans are one implementation copied and then locally edited — 77 tokens are still identical, in the same order in both spans, with only local edits between them. The copies have already begun to drift, which is this row's finding: an edit made to one and not the other changes behaviour silently. Diff the two spans first to learn what genuinely differs, then extract the shared core into one module both sites use, passing the differences in as parameters — or, if one copy exists only because the other could not be imported from its context, make one of them the single source the other is generated or re-exported from. If one copy is no longer reachable, delete it rather than letting it shadow the live one.",
+   "class": "valid",
+   "reason": "Real duplication: a parse-then-look-up block copied across route modules (or two handlers of one module).",
+   "action": "repo fixed (d7b561a): parseIdWith, findDocument, xmlImport and fromYaml helpers",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/conversion/thumbnail-routes.ts",
+   "line": 29,
+   "message": "Duplicated block with local edits (8 matched lines × 2 locations): src/conversion/thumbnail-routes.ts:29 · src/exports/export-routes.ts:20 — the two spans are one implementation copied and then locally edited — 64 tokens are still identical, in the same order in both files, with only local edits between them. The copies have already begun to drift, which is this row's finding: an edit made to one and not the other changes behaviour silently. Diff the two spans first to learn what genuinely differs, then extract the shared core into one module both sites use, passing the differences in as parameters — or, if one copy exists only because the other could not be imported from its context, make one of them the single source the other is generated or re-exported from. If one copy is no longer reachable, delete it rather than letting it shadow the live one.",
+   "class": "valid",
+   "reason": "Real duplication: a parse-then-look-up block copied across route modules (or two handlers of one module).",
+   "action": "repo fixed (d7b561a): parseIdWith, findDocument, xmlImport and fromYaml helpers",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/conversion/thumbnail-routes.ts",
+   "line": 29,
+   "message": "Duplicated block with local edits (8 matched lines × 2 locations): src/conversion/thumbnail-routes.ts:29 · src/shares/share-routes.ts:34 — the two spans are one implementation copied and then locally edited — 64 tokens are still identical, in the same order in both files, with only local edits between them. The copies have already begun to drift, which is this row's finding: an edit made to one and not the other changes behaviour silently. Diff the two spans first to learn what genuinely differs, then extract the shared core into one module both sites use, passing the differences in as parameters — or, if one copy exists only because the other could not be imported from its context, make one of them the single source the other is generated or re-exported from. If one copy is no longer reachable, delete it rather than letting it shadow the live one.",
+   "class": "valid",
+   "reason": "Real duplication: a parse-then-look-up block copied across route modules (or two handlers of one module).",
+   "action": "repo fixed (d7b561a): parseIdWith, findDocument, xmlImport and fromYaml helpers",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/search/search-routes.ts",
+   "line": 40,
+   "message": "Duplicated block (7 lines × 2 locations): src/search/search-routes.ts:40 · src/search/search-routes.ts:53 — all 2 copies are in the same file, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+   "class": "opinion-not-fact",
+   "reason": "The seven shared lines are the parse-and-search prelude every route has; the two handlers differ in what they answer, and one is the XSS-001 plant, which is not reshaped for a style finding.",
+   "action": "recorded as noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R2",
+   "file": "src/saved-searches/filter-tree.ts",
+   "line": 31,
+   "message": "Complex function validateNode (cyclomatic 16, cognitive 16): validateNode has cyclomatic complexity 16 and cognitive complexity 16; this row is raised above a cyclomatic bar of 10. The two numbers answer different questions and the gap between them is what decides whether to act: cyclomatic counts the independent arms through the body, cognitive counts what it costs to hold them in your head, so nesting and mixed boolean chains raise it while a flat run of independent arms does not. Cognitive is at or above cyclomatic here, so the branching is nested or entangled rather than laid out side by side — extracting each decision into its own named function is the change that pays. Measured by this repository's own parse of the file, so a body assembled at runtime, or generated, is counted as written rather than as it executes.",
+   "class": "valid",
+   "reason": "validateNode mixed group and comparison checks in one branchy function.",
+   "action": "repo fixed (d7b561a): split into validateOperands and validateComparison; TRP-024 depth check and recursion unchanged",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R6",
+   "file": "src/documents/card-renderer.ts",
+   "line": 1,
+   "message": "The declared test suite includes a file that cannot be loaded: This repository declares test tooling, and the ✓ above records that declaration — but src/documents/card-renderer.ts cannot be loaded at all: it imports a module that names no file in this repository, so the runner throws while collecting it and none of its cases execute. The wiring is present and the suite it points at does not run as written, which is why the tooling tick must not be read as a statement that the tests pass. Fix the unloadable file(s) — each one is reported with its failing import under Test Coverage — then the declared script exercises what it claims to.",
+   "class": "false-positive",
+   "reason": "Disproof: src/documents/card-renderer.ts is production code that loads in every test run and imports only nunjucks, node:url and a type; the scanner read `new URL('../../views/', import.meta.url)` (a directory URL resolved at run time) as an import.",
+   "action": "recorded as noise (the line later changed to import.meta.dirname for an unrelated test-environment reason, b8ff2ae)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "S1",
+   "file": "src/documents/etag.ts",
+   "line": 8,
+   "message": "Weak hash algorithm: MD5/SHA1 is computed here, and both are collision-broken. If this digest protects anything — a signature, an integrity or tamper check, a credential, or any value an attacker can influence — that is a real weakness: use SHA-256+ (`createHash(\"sha256\")`) for content integrity, or a KDF (bcrypt/Argon2/scrypt) for password storage. If it only derives a non-security identifier (a cache key, an avatar URL, an ETag), collision resistance carries no security consequence here; make that intent explicit instead — a non-cryptographic hash such as xxhash or murmurhash says it in code — since the algorithm alone cannot distinguish the two uses. Where a protocol this code does not own fixes the digest (a k-anonymity range query, a legacy signature format), the protocol decides; say so beside the call. This repository constructs a collision-broken hash (MD5/SHA1) at 2 sites, not one: `src/documents/etag.ts:8` (createHash(\"md5\")), `src/shares/share-password.ts:5` (createHash(\"md5\")). Each is a separate decision — fixing only the line this row cites leaves the others in place.",
+   "class": "false-positive",
+   "reason": "TRP-018 (contested truth, README). MD5 is used only as an HTTP ETag for cache validation of document cards; no security property depends on it.",
+   "action": "recorded as noise; site already trap TRP-018",
+   "iteration": 1
+  },
+  {
+   "ruleId": "X7",
+   "file": "web/src/recent-recipients.ts",
+   "line": 9,
+   "message": "Silent fallback default in catch: `recentRecipients` swallows every exception into `return []` — a data error becomes a silent behavior change with no trail. Log the failure or let it raise. If that constant is the correct answer rather than a stand-in for a value that could not be read, say so in a comment on the handler or in the docstring, and the row stops firing.",
+   "class": "valid",
+   "reason": "Uncertain resolves to valid: a corrupt stored value was ignored without a trace and stayed in storage.",
+   "action": "repo fixed (9b02b6b): logged and discarded, also in view settings",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D1",
+   "file": "src/reports/report-routes.ts",
+   "line": 42,
+   "message": "report-routes.reportRoutes (cyclomatic 20): report-routes.reportRoutes has cyclomatic complexity 20 (threshold 15). Most of this is not in the body itself: 4 of the 20 points are its own statements and the rest belongs to 4 function literals inside it that branch (lines 71, 92, 63, …). The decisions are inside those literals, which nothing outside this body can call, review or test on its own, so splitting the enclosing body is not the move available here. To reduce it, lift the literals' work into a named function or method at the enclosing scope and have each literal call it, then reduce whichever part then reads as the largest.",
+   "class": "opinion-not-fact",
+   "reason": "The message itself attributes most of the count to the named handlers declared inside the factory; each is a few statements. The count is right, the conclusion that the factory is complex is not supported.",
+   "action": "recorded as noise",
+   "iteration": 2
+  },
+  {
+   "ruleId": "D2",
+   "file": "src/reports/report-routes.ts",
+   "line": 42,
+   "message": "report-routes.reportRoutes (cognitive 22): report-routes.reportRoutes has cognitive complexity 22 (threshold 15). Drivers by points: if/else 10 (12 pts), boolean chains 7, error handling 2, ternaries 1 (nesting depth added 2). Most of this is not in the body itself: 3 of the 22 points are its own statements and the rest belongs to 4 function literals inside it that branch (lines 71, 92, 63, …). The decisions are inside those literals, which nothing outside this body can call, review or test on its own, so splitting the enclosing body is not the move available here. To reduce it, lift the literals' work into a named function or method at the enclosing scope and have each literal call it, then reduce whichever part then reads as the largest.",
+   "class": "opinion-not-fact",
+   "reason": "The message itself attributes most of the count to the named handlers declared inside the factory; each is a few statements. The count is right, the conclusion that the factory is complex is not supported.",
+   "action": "recorded as noise",
+   "iteration": 2
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/documents/find-document.ts",
+   "line": 1,
+   "message": "Low coverage: src/documents/find-document.ts: 0.0% line coverage (0/4).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "AC7",
+   "file": null,
+   "line": null,
+   "message": "Accessibility enforcement below the top rung: Accessibility checks run in tests (Verified) but aren't gated in CI — run the suite that holds those checks in your pipeline so an accessibility regression blocks the merge (Prevented). What was searched, so you can tell an absence from a miss: the 3 markup file(s) this pass actually assessed, the linter configuration checked in beside them, and this repository's test and CI files — matched by name against the accessibility checkers this dimension carries. An audit run outside the repository, a hosted scanner, or a check whose name is not one of those, is not seen here.",
+   "class": "false-positive",
+   "reason": "Disproof: .github/workflows/ci.yml step \"Test with coverage thresholds\" runs npm run test:coverage, i.e. vitest over web/tests/** including web/tests/accessibility.test.ts; a violation fails the build.",
+   "action": "recorded as noise",
+   "iteration": 2
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/imports/import-routes.ts",
+   "line": 24,
+   "message": "Duplicated block with local edits (16 matched lines × 2 locations): src/imports/import-routes.ts:24 · src/reports/report-routes.ts:92 — the two spans are one implementation copied and then locally edited — 84 tokens are still identical, in the same order in both files, with only local edits between them. The copies have already begun to drift, which is this row's finding: an edit made to one and not the other changes behaviour silently. Diff the two spans first to learn what genuinely differs, then extract the shared core into one module both sites use, passing the differences in as parameters — or, if one copy exists only because the other could not be imported from its context, make one of them the single source the other is generated or re-exported from. If one copy is no longer reachable, delete it rather than letting it shadow the live one.",
+   "class": "valid",
+   "reason": "The iteration-1 fix made two copies of one body-handling routine (XML and YAML factories).",
+   "action": "repo fixed (a72a3a8): src/http/text-body.ts answerTextBody used by both",
+   "iteration": 2
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/exports/export-routes.ts",
+   "line": 20,
+   "message": "Duplicated block with local edits (8 matched lines × 2 locations): src/exports/export-routes.ts:20 · src/exports/export-routes.ts:32 — the two spans are one implementation copied and then locally edited — 57 tokens are still identical, in the same order in both spans, with only local edits between them. The copies have already begun to drift, which is this row's finding: an edit made to one and not the other changes behaviour silently. Diff the two spans first to learn what genuinely differs, then extract the shared core into one module both sites use, passing the differences in as parameters — or, if one copy exists only because the other could not be imported from its context, make one of them the single source the other is generated or re-exported from. If one copy is no longer reachable, delete it rather than letting it shadow the live one.",
+   "class": "opinion-not-fact",
+   "reason": "What remains is the call sequence of the shared helpers (parse, look up, stop on a miss) followed by different work; five to eight lines.",
+   "action": "recorded as noise",
+   "iteration": 2
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/conversion/thumbnail-routes.ts",
+   "line": 29,
+   "message": "Duplicated block (6 lines × 2 locations): src/conversion/thumbnail-routes.ts:29 · src/shares/share-routes.ts:35 — the 2 copies are spread across 2 files, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+   "class": "opinion-not-fact",
+   "reason": "What remains is the call sequence of the shared helpers (parse, look up, stop on a miss) followed by different work; five to eight lines.",
+   "action": "recorded as noise",
+   "iteration": 2
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/reports/report-routes.ts",
+   "line": 47,
+   "message": "Duplicated block with local edits (5 matched lines × 2 locations): src/reports/report-routes.ts:47 · src/subscriptions/subscription-routes.ts:63 — the two spans are one implementation copied and then locally edited — 50 tokens are still identical, in the same order in both files, with only local edits between them. The copies have already begun to drift, which is this row's finding: an edit made to one and not the other changes behaviour silently. Diff the two spans first to learn what genuinely differs, then extract the shared core into one module both sites use, passing the differences in as parameters — or, if one copy exists only because the other could not be imported from its context, make one of them the single source the other is generated or re-exported from. If one copy is no longer reachable, delete it rather than letting it shadow the live one.",
+   "class": "opinion-not-fact",
+   "reason": "What remains is the call sequence of the shared helpers (parse, look up, stop on a miss) followed by different work; five to eight lines.",
+   "action": "recorded as noise",
+   "iteration": 2
+  },
+  {
+   "ruleId": "D2",
+   "file": "src/reports/report-routes.ts",
+   "line": 46,
+   "message": "report-routes.reportRoutes (cognitive 16): report-routes.reportRoutes has cognitive complexity 16 (threshold 15). Drivers by points: if/else 8 (9 pts), boolean chains 5, error handling 1, ternaries 1 (nesting depth added 1). Most of this is not in the body itself: 3 of the 16 points are its own statements and the rest belongs to 4 function literals inside it that branch (lines 75, 67, 60, …). The decisions are inside those literals, which nothing outside this body can call, review or test on its own, so splitting the enclosing body is not the move available here. To reduce it, lift the literals' work into a named function or method at the enclosing scope and have each literal call it, then reduce whichever part then reads as the largest.",
+   "class": "opinion-not-fact",
+   "reason": "The message itself attributes most of the count to the named handlers declared inside the factory; each is a few statements. The count is right, the conclusion that the factory is complex is not supported.",
+   "action": "recorded as noise",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/http/text-body.ts",
+   "line": 1,
+   "message": "Low coverage: src/http/text-body.ts: 0.0% line coverage (0/8).",
+   "class": "false-positive",
+   "reason": "The scanner installed with `npm ci --ignore-scripts`, which skips libxmljs2's install step (its prebuilt native binding), so every suite that imports the application fails to load and the route modules read as untested. With a normal install the suite covers 96.8 % of lines (87.5 % branches) and CI gates it with thresholds.",
+   "action": "recorded as noise; code kept",
+   "iteration": 3
+  },
+  {
+   "ruleId": "D15",
+   "file": "src/reports/report-routes.ts",
+   "line": 46,
+   "message": "Hotspot: src/reports/report-routes.ts: src/reports/report-routes.ts changed 2 times in last 90 days, and the most complex body those changes touched has cyclomatic complexity 15 in report-routes.reportRoutes at line 46. Frequent change and high complexity in one file compound: schedule the next change to it to include carving out the part being edited, with the area under test before it moves. Counted over 2026-07-09..2026-10-07, the 90 days ending at the analysed commit. Reproduce with `git log --since='2026-07-09 12:39:26 +02:00' --until='2026-10-07 12:39:26 +02:00' --full-history --no-merges -- src/reports/report-routes.ts`: merges are excluded because a merge re-states changes already counted at their own commits, and history is NOT path-simplified because a change that reached the file through a merged branch is still a change to it. That command counts raw commits and can read HIGHER than this row, which counts a cherry-picked re-land, and a revert together with the commit it undoes, once each — a difference of several commits on a file whose history was re-landed or reverted inside the window.",
+   "class": "opinion-not-fact",
+   "reason": "The two changes are this authoring loop's refactorings of a file written the same day; two commits are not churn.",
+   "action": "recorded as noise",
+   "iteration": 3
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/imports/import-routes.ts",
+   "line": 24,
+   "message": "Duplication concentrated across 8 sibling directories (5 clone groups): 5 duplicated blocks under src/ have copies in at least two of the sibling directories conversion, feeds, imports, reports, saved-searches, search (+2 more sibling(s) not listed) — 2 of them are reported below, and 3 are counted here but not reported individually: those copies match on shape but no longer clear R10's bar for an individually reported row — either they kept neither their own names nor their values, or what was copied is too small to stand on its own (it reports near-exact duplication only, and only of substantial extent). What this row states is the concentration, which the detector measured over all 5 and which does not depend on how exactly each block's copies still match. That concentration is one structural fact, not 5 local ones: the siblings replicate behaviour none of them owns, which is the shape of a missing shared module — a common library every sibling imports — rather than 5 separate extractions. Check first whether the siblings are deliberately standalone deliverables (scaffold templates, demo apps that must stay copy-pasteable); where they are, the duplication is the design and the per-block rows are the ones to act on.",
+   "class": "opinion-not-fact",
+   "reason": "Summary of the remaining groups, each judged opinion-not-fact.",
+   "action": "recorded as noise",
+   "iteration": 3
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/reports/report-routes.ts",
+   "line": 51,
+   "message": "Duplicated block with local edits (5 matched lines × 2 locations): src/reports/report-routes.ts:51 · src/subscriptions/subscription-routes.ts:63 — the two spans are one implementation copied and then locally edited — 50 tokens are still identical, in the same order in both files, with only local edits between them. The copies have already begun to drift, which is this row's finding: an edit made to one and not the other changes behaviour silently. Diff the two spans first to learn what genuinely differs, then extract the shared core into one module both sites use, passing the differences in as parameters — or, if one copy exists only because the other could not be imported from its context, make one of them the single source the other is generated or re-exported from. If one copy is no longer reachable, delete it rather than letting it shadow the live one.",
+   "class": "opinion-not-fact",
+   "reason": "What remains is the call sequence of the shared helpers (parse, look up, stop on a miss) followed by different work; five to eight lines.",
+   "action": "recorded as noise",
+   "iteration": 3
+  },
+  {
+   "ruleId": "X24",
+   "file": "web/src/document-preview.ts",
+   "line": 8,
+   "message": "Document value reaches a markup attribute unescaped: `title` carries text this program read out of a document — an attribute or a text node, which the DOM hands back already decoded, so an entity its author wrote is a live character again — and it is written straight into the text of an element of markup built here with nothing escaping it on the way. The value is chosen by whoever authored that document, not by this program, so it can close the attribute or element it sits in and open another — a crafted document becomes markup in what this code renders. Escape `title` at this site, or validate it against the shape the position accepts before interpolating it.",
+   "class": "redundant",
+   "reason": "X24 row at the XSS-002 site: title and description rows are one logical finding; one remediation (escaping the interpolated document values) clears both.",
+   "action": "counted once (the harness consumes one row as the TP, the other as redundant)",
+   "iteration": 1
+  }
+ ],
+ "falseNegatives": [
+  {
+   "entryId": "SQL-001",
+   "reason": "Search term interpolated into a quoted ILIKE literal of a node-postgres query (template literal passed to pool.query inside a repository method). No baked rule models node-postgres query text built from a method parameter; the taint rules need the request object in the same function."
+  },
+  {
+   "entryId": "SQL-002",
+   "reason": "Owner interpolated into a knex raw() template. node-knex-sqli did not fire: the value arrives as a repository parameter, not from req in the same function."
+  },
+  {
+   "entryId": "NOSQL-001",
+   "reason": "Unvalidated req.body fields used as a MongoDB deleteOne filter (operator injection). No baked rule for MongoDB filters built from a request body (the only CWE-943 rules are DynamoDB/AWS Lambda)."
+  },
+  {
+   "entryId": "CMD-001",
+   "reason": "Caller-chosen format spliced into a command line run by child_process.exec. detect-child-process only taints request values in the same function; here the value is a method parameter."
+  },
+  {
+   "entryId": "PATH-001",
+   "reason": "path.join(root, id, req.params.name) then readFile in an Express handler. The request-param-to-fs-read rule runs with taint_assume_safe_functions, so path.join drops the taint; express-path-join-resolve-traversal did not fire either."
+  },
+  {
+   "entryId": "XXE-001",
+   "reason": "libxmljs2 parseXml with noent: true on an uploaded document. express-libxml-noent needs the request in the same expression; the parse sits in a reader function called with a string."
+  },
+  {
+   "entryId": "DESER-001",
+   "reason": "YAML schema extended with a !!js/function tag that compiles the scalar, used to load uploaded layouts. No rule for js-yaml custom types; the scanner reported the new Function inside the tag as code injection (valid, counted as code-injection noise by the harness)."
+  },
+  {
+   "entryId": "CODE-001",
+   "reason": "vm.runInNewContext on a caller's formula. The vm-injection rules need the request in the same function."
+  },
+  {
+   "entryId": "PROTO-001",
+   "reason": "Recursive merge of req.body into stored preferences copies __proto__. The only CWE-1321 rule (prototype-lookup-request-key-js) needs req.body as the bracket key inside the handler; the merge is a generic function."
+  },
+  {
+   "entryId": "REDIR-001",
+   "reason": "res.redirect(303, next) where next is req.query.next when it is a string. The open-redirect rules source only req.get/req.header (request-accessor) or a default operand; a ternary over req.query is not modelled."
+  },
+  {
+   "entryId": "REDOS-001",
+   "reason": "new RegExp(pattern) on a caller-supplied pattern run over document text. No baked JS rule for dynamic RegExp construction."
+  },
+  {
+   "entryId": "LOG-001",
+   "reason": "Caller-chosen file name written into a plain-text audit line with appendFile. The only log-injection rule is Java's crlf-injection-logs."
+  },
+  {
+   "entryId": "HASH-001",
+   "reason": "Share-link passwords stored as unsalted MD5 (createHash('md5').update(password)). S1's weak-hash arm fired on the MD5 ETag trap but not here, and no password-hash/KDF row was raised for TypeScript."
+  },
+  {
+   "entryId": "PII-001",
+   "reason": "Subscriber e-mail address logged as a field of a pino record (logger.info({ email: subscription.email }, ...)). The personal-data-in-log rule did not match the object-literal field form."
+  },
+  {
+   "entryId": "PII-003",
+   "reason": "Recipient e-mail addresses stored in localStorage. personal-data-in-browser-storage did not fire: the stored value is a JSON array of addresses under a key without a personal-data name."
+  }
+ ],
+ "scoreBands": [
+  {
+   "entryId": "BND-001",
+   "outcome": "out",
+   "score": 80,
+   "band": [
+    30,
+    70
+   ]
+  },
+  {
+   "note": "No model-judged bands in this repository, so no --with-llm pass was run. S1 scored 80 in all three iterations; it does not assess server controls for TypeScript and its weak-hash arm missed the MD5 password store, so the band (web-security posture, set before the first scan) is kept and the miss recorded."
+  }
+ ],
+ "observations": [
+  "Recall 6/21 (28.6%). The hits are rules that see request data and the sink in one handler (SSRF from req.query to fetch, raw HTML format, personal data in a URL) plus the structural X-cards (X17 uncapped recursion, X24 document value into innerHTML) and one syntactic rule (assembled code string into new Function). Every miss is a sink reached through a function parameter (repositories, converters, readers, merge helpers) or a construct no baked rule models for JS/TS: node-postgres/knex text, MongoDB filters, vm, js-yaml custom types, dynamic RegExp, plain-text log lines, localStorage.",
+  "Trap resistance 20/25. Caught: TRP-011 (new Function over a fixed field table), TRP-015 (redirect behind a same-site path validator read as a default operand), TRP-018 (MD5 ETag), TRP-022 (email=true flag, as in C#), TRP-025 (named scopes, as in the TS baseline).",
+  "D8 measured 44% line coverage against the suite's 96.8%: the scanner installs with npm ci --ignore-scripts, so a dependency with a native binding fetched at install time (libxmljs2) cannot load and every suite that imports the app fails. Engine fact for the owner: coverage of any repository with such a dependency is misreported.",
+  "res-render-injection (registry rule) fires on any `.render(` call with request data in scope — three service methods named render here; R6 read `new URL('../../views/', import.meta.url)` as an unresolvable import.",
+  "Harness: the DESER-001 site was reported as code-injection and counted as noise; a deserialization/code-injection family (or a multi-concept entry) would let a scanner that names the code-execution consequence score the plant. New concepts nosql-injection and prototype-pollution were added for this repository (scanner-benchmark f933b50).",
+  "Repository fixes from valid findings: route duplication (helpers), reportRoutes and validateNode complexity, a silent localStorage fallback, and no accessibility check (axe-core added)."
+ ]
+}
