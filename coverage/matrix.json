@@ -2030,7 +2030,15 @@
         "secret-in-process-arguments",
         "cleartext-transmission",
         "dependency-release-cooldown-missing",
-        "sensitive-data-in-token-payload"
+        "sensitive-data-in-token-payload",
+        "log-injection",
+        "container-security-context-missing",
+        "host-path-mount",
+        "container-privilege-escalation-allowed",
+        "container-runs-as-root",
+        "container-confinement-profile-unset",
+        "privileged-container",
+        "overly-permissive-rbac"
       ],
       "requires": [
         "contained scan (external scanner baked in the analyzer image): semgrep"
@@ -2212,7 +2220,22 @@
         "download-without-integrity-check",
         "hardcoded-credential",
         "iac-misconfiguration",
-        "improper-certificate-validation"
+        "improper-certificate-validation",
+        "container-runs-as-root",
+        "privileged-container",
+        "host-namespace-sharing",
+        "host-path-mount",
+        "container-privilege-escalation-allowed",
+        "container-excess-capabilities",
+        "container-writable-root-filesystem",
+        "container-confinement-profile-unset",
+        "container-security-context-missing",
+        "missing-health-probes",
+        "missing-image-healthcheck",
+        "automounted-service-account-token",
+        "overly-permissive-rbac",
+        "image-not-from-allowed-registry",
+        "container-missing-resource-requests"
       ],
       "requires": [
         "contained scan (external scanner baked in the analyzer image): trivy config"

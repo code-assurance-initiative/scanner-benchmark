@@ -10,6 +10,9 @@ Mapping-level `ignore`: [{rule?, message?, reason}] — a result matching every 
 (`summary`), excluded from all matching and metrics. `family` on a concept groups siblings (see scoring.py).
 Contract 1.2: `scoreDimensions` on a concept names the dimensions whose SCORE measures it, for score-band lookup, when
 `dimensions` (which attribute findings) is broader; without it a band looks up `dimensions`.
+Contract 1.3: `parent` on a concept names its umbrella concept (a key entry naming the umbrella also matches the
+child's results, see scoring.py); a mapping-level `locationFromMessage` list [{rule, message?, pattern, source?}]
+gives a location-less result the `file` (and `line`) its message names.
 """
 import re
 
@@ -70,6 +73,7 @@ class Mapping:
         self.dims = {}       # concept -> [dimension]
         self.families = {}   # concept -> family id
         self.score_dims = {}  # concept -> [dimension] whose score measures it (1.2; default: dims)
+        self.parents = {}    # concept -> umbrella concept (1.3)
         for c, spec in doc["concepts"].items():
             where = f"concepts.{c}"
             if not isinstance(spec, dict):
@@ -97,6 +101,30 @@ class Mapping:
                 if not isinstance(spec["family"], str) or not spec["family"]:
                     raise MappingError(f"mapping: {where}.family must be a non-empty string")
                 self.families[c] = spec["family"]
+            if spec.get("parent") is not None:
+                if not isinstance(spec["parent"], str) or not spec["parent"]:
+                    raise MappingError(f"mapping: {where}.parent must be a non-empty concept id")
+                self.parents[c] = spec["parent"]
+        for c, p in self.parents.items():
+            if p not in self.concepts:
+                raise MappingError(f"mapping: concepts.{c}.parent names '{p}', which is not a concept of the mapping")
+            seen = {c}
+            while p is not None:
+                if p in seen:
+                    raise MappingError(f"mapping: concepts.{c}.parent forms a cycle through '{p}'")
+                seen.add(p)
+                p = self.parents.get(p)
+        self.location_from_message = []
+        for i, lm in enumerate(doc.get("locationFromMessage", []) or []):
+            w = f"locationFromMessage[{i}]"
+            if not isinstance(lm, dict) or "rule" not in lm or "pattern" not in lm:
+                raise MappingError(f"mapping: {w} needs a 'rule' regex and a 'pattern' regex")
+            pat = _rx(lm["pattern"], f"{w}.pattern")
+            if "file" not in pat.groupindex:
+                raise MappingError(f"mapping: {w}.pattern needs a named group 'file' (and optionally 'line')")
+            self.location_from_message.append((_rx(lm["rule"], f"{w}.rule"),
+                                               _rx(lm["message"], f"{w}.message", re.IGNORECASE)
+                                               if "message" in lm else None, pat))
         self.rule_dimension = []
         for i, rd in enumerate(doc.get("ruleDimension", []) or []):
             try:
@@ -132,6 +160,28 @@ class Mapping:
     def score_dimensions_of_concept(self, concept):
         """The dimensions whose score measures the concept: `scoreDimensions` when given, else `dimensions`."""
         return self.score_dims.get(concept, self.dims.get(concept, []))
+
+    def ancestors(self, concept):
+        """The umbrella concepts above `concept` (contract 1.3 `parent`), nearest first."""
+        out, p = [], self.parents.get(concept)
+        while p is not None:
+            out.append(p)
+            p = self.parents.get(p)
+        return out
+
+    def location_in_message(self, rule_id, message):
+        """(file, line or None) named by the message of a result, per the first `locationFromMessage` entry whose
+        rule (and message) regexes match and whose pattern finds a site; None when none does."""
+        if rule_id is None or not message:
+            return None
+        for rule, msg, pat in self.location_from_message:
+            if not rule.search(rule_id) or (msg is not None and not msg.search(message)):
+                continue
+            m = pat.search(message)
+            if m and m.group("file"):
+                line = m.groupdict().get("line")
+                return m.group("file"), (int(line) if line and line.isdigit() and int(line) >= 1 else None)
+        return None
 
     def family_of(self, concept):
         return self.families.get(concept)

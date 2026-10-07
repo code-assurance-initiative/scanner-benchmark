@@ -1,6 +1,31 @@
-# Harness contract (v1.2)
+# Harness contract (v1.3)
 
 The fixed interfaces between the parts of this harness. Change only with a version bump.
+
+## What changed in 1.3 (2026-10-07) — backward compatible
+
+Three finished results files (bench-csharp-security-injection, -iac, -dependencies) showed three gaps. A scanner that
+names a workflow finding's site only in its message (`release.yml:7`) could never match a located plant. A coarse
+concept let an unrelated row score a plant: a registry allow-list result on the container line was a TP for the
+missing-probes plant because both were `iac-misconfiguration`. And a scanner that reports a resource at line 1 for a
+plant at line 71 was only visible as an FN, never as "found the file, missed the line". 1.3 adds, all optional — every
+valid 1.0/1.1/1.2 key and mapping means the same under 1.3, and the answer-key format is unchanged:
+
+- **mapping** — `locationFromMessage` (mapping level): regexes that read a location-less result's site out of its
+  message (see Matching, "Location from the message"); per concept `parent` naming its umbrella concept (see Matching,
+  "Umbrella concepts").
+- **taxonomy** — a concept may carry `parent`: the umbrella concept it refines.
+- **metrics** — file-level recall, a SECONDARY diagnostic beside recall (see Metrics). It changes no outcome.
+- **report** — each result carries `locationSource` (`sarif` | `message` | `none`), the summary carries
+  `locationSources` (how many results took each), each must-fire entry row carries `fileLevel`, and every counts row
+  carries `fileLevelTp` and `fileLevelRecall`. The text table has a `fileRec*` column with its footnote.
+
+Watchdog mapping changes shipped with 1.3 (mapping data, no contract impact of their own): `weak-hash-algorithm` and
+`insufficient-password-hashing` are one family (`weak-password-hashing`); `watchdog-secret-interpolated-into-run` maps to
+`secret-in-process-arguments` (its own CWE-214; a secret expanded into a run script reaches the script file and the argv
+of the commands it launches, and no untrusted code receives it, which is what `ci-secret-exposure` denotes — the two are
+deliberately NOT a family); new concept `log-injection` (CWE-117) evidenced by D29 `crlf-injection-logs`; and
+`container-excessive-privilege` / `iac-misconfiguration` became umbrellas over fifteen precise concepts.
 
 ## What changed in 1.2 (2026-10-07) — backward compatible
 
@@ -77,7 +102,12 @@ The answer key holds LABELS; TP/FP/TN/FN are OUTCOMES of one scanner run against
 
 Scanner-neutral concepts. `{ "version": "1.0", "concepts": [ { "id": "hardcoded-credential", "title": "…",
 "cwe": "CWE-798" | null, "family": "security|codehealth|architecture|domain|testing|readiness|maturity|frontend|ops|compliance|ai",
-"kind": "finding|posture|metric|judged", "description": "…" } ] }`. Ids are kebab-case and never reused.
+"kind": "finding|posture|metric|judged", "description": "…", "parent": "…" } ] }`. Ids are kebab-case and never reused
+(so an id is never removed either: a concept that turns out too coarse becomes an umbrella).
+
+`parent` (1.3, optional) names the UMBRELLA concept this one refines (one level deep). The umbrella stays a concept: as a
+concept of its own it denotes what none of its children names (its residue), and an answer-key entry written against it
+keeps its meaning (see Matching, "Umbrella concepts"). New keys name the precise concept.
 
 ## `mappings/<scanner>.json`
 
@@ -97,6 +127,11 @@ Scanner-neutral concepts. `{ "version": "1.0", "concepts": [ { "id": "hardcoded-
       "family": "hardcoded-secret",         // 1.1, optional: sibling concepts (see Matching)
       "dimensions": ["D13", "D31"]          // the scanner's own grouping, for per-dimension reporting
     },
+    "privileged-container": {
+      "rules": [ … ],
+      "dimensions": ["D31"],
+      "parent": "container-excessive-privilege"  // 1.3, optional: the umbrella concept (see Matching)
+    },
     "dependencies-not-locked": {
       "rules": [ … ],
       "dimensions": ["D12", "D36", "SC1"],  // findings of all three are attributed to the concept …
@@ -106,9 +141,27 @@ Scanner-neutral concepts. `{ "version": "1.0", "concepts": [ { "id": "hardcoded-
   "ruleDimension": [ { "rule": "^(D\\d+)", "dimension": "$1" } ],  // ruleId → dimension
   "ignore": [                               // 1.1, optional: scanner roll-up rows
     { "rule": "^D28$", "message": "^Rotate the exposed credentials", "reason": "roll-up of the located rows" }
+  ],
+  "locationFromMessage": [                  // 1.3, optional: sites named only in the message
+    { "rule": "^D36$",                      // regex over the ruleId (required)
+      "message": "^Secret passed as",       // optional regex over the message (case-insensitive search)
+      "pattern": "(?P<file>[\\w./-]+\\.ya?ml):(?P<line>\\d+)",  // Python regex: named group `file` required, `line` optional
+      "source": "…" }                       // informational
   ]
 }
 ```
+
+`parent` names another concept of the mapping (no cycles); it should mirror the taxonomy's `parent`. Children are
+mapped so that each result still lands on ONE concept: the umbrella's own rules keep only the residue no child names.
+
+`locationFromMessage` entries are tried in order on every result that has **no SARIF location** (no artifact URI): the
+first entry whose `rule` (and `message`, if given) matches and whose `pattern` finds a match gives the result the
+`file` group as its path (normalised like a SARIF URI, then matched by the suffix rule) and the `line` group, when the
+pattern has one and it is a positive integer, as its line; without a line the result is located in the file only, so it
+matches whole-file entries and file-level recall, never a lined entry. A result with a SARIF location is never
+relocated. This is scanner-specific knowledge and deliberately generous: a scanner that names a location only in prose
+is given the benefit of that location, and the report says so (`locationSource: "message"`, `summary.locationSources`)
+so a reader can tell such matches from located ones. A message that names several sites gives the first one.
 
 A rule item accepts a result when its ruleId matches the rule regex, AND — if `messages` apply to it — at least one
 `messages` regex matches the result's `message.text` (case-insensitive search), AND — if `properties` apply — every
@@ -129,6 +182,19 @@ A mapping may also carry informational keys that the harness ignores: `notes` (p
 to it, so they map to no concept; recorded so the omission is visibly deliberate) and `unevidenced`
 (`[{concept, dimension, source}]`: a dimension listed for a concept although none of its results evidences it at
 this scanner version, so it has no rule item). They change no outcome, so they need no version bump.
+
+**Watchdog `locationFromMessage` (1.3).** D36's workflow rows (token permissions, secrets in env, advisory schedule,
+release gates) are written without a location but name `basename:line` sites; secret-argv rows name the workflow path
+only. Two entries cover them (`mappings/watchdog-build/discrim.py`, `LOCATION_FROM_MESSAGE`). A basename suffix-matches
+every file of that name, so two workflows of one name in different directories would both match it.
+
+**Watchdog umbrellas (1.3).** `container-excessive-privilege` is the parent of `container-runs-as-root`,
+`privileged-container`, `host-namespace-sharing`, `host-path-mount`, `container-privilege-escalation-allowed`,
+`container-excess-capabilities`, `container-writable-root-filesystem`, `container-confinement-profile-unset` and
+`container-security-context-missing`; `iac-misconfiguration` of `missing-health-probes`, `missing-image-healthcheck`,
+`automounted-service-account-token`, `overly-permissive-rbac`, `image-not-from-allowed-registry` and
+`container-missing-resource-requests`. The children partition the umbrellas' pre-split D31/D29 rule ids (asserted when
+the mapping is built), so a key naming an umbrella scores exactly as it did under 1.2.
 
 **Watchdog `scoreDimensions` (1.2).** `dependencies-not-locked` → SC1 (not D12, D36); `security-tooling-in-ci` → P3
 (not D36); `high-cognitive-complexity` → D2 (R2 raises rows on cyclomatic complexity only); `duplicated-code` → D4,
@@ -175,6 +241,18 @@ second result naming an already-found plant's subject is `redundant`, and a subj
 the scanner (FP). A location-less result that names the subject of a subject entry of its concept is never taken by a
 repository-level entry without a subject: the subject entry is its site. Without `subject`, matching is as in 1.1.
 
+**Location from the message (1.3).** Before matching, a result without a SARIF location takes the site its message
+names, per the mapping's `locationFromMessage` (see the mapping section). From then on it is matched like any located
+result — on a plant it is a TP, on a trap it is caught, in a clean region it is a clean FP, off every entry it is noise.
+
+**Umbrella concepts (1.3).** If the mapping gives concept C a `parent` P, a result of C also counts as P for matching,
+in the same pass as an exact match (it is not a family match): an entry naming P matches results of P and of every
+child of P, while an entry naming C is matched only by results of C — never by a sibling child, nor by a residue result
+of P itself. Coverage follows: a key that names P covers its children's results (they are noise off every entry, a
+`clean` region listing P catches them). The report lists the result's own concept under `concepts`; its
+`attributedConcept` is the one the key speaks about (P for a key written against the umbrella). Umbrellas and their
+children take no family.
+
 **History entries (1.1).** An entry with `commit` matches a result whose SARIF `properties.commitSha` starts with
 `commit` (case-insensitive), in the same file (suffix rule), at **any** line: in a history finding the commit, not the
 line, is the site. A result without `commitSha` never matches such an entry.
@@ -199,6 +277,13 @@ other (1.0).
   found. A dimension whose findings evidence the concept does not necessarily have a score that measures it (a
   dependency-hygiene score is dominated by vulnerable packages, not by lockfiles), which is what `scoreDimensions` is
   for.
+
+- file-level recall (1.3, SECONDARY) = must-fire entries found at file level / must-fire. A plant is found at file level
+  when it is a TP, or when any result of its concept (exactly, as a child of an umbrella it names, or as a family
+  sibling) is located anywhere in the plant's file, at any line; a repository-level plant only when it is a TP. It
+  changes no TP/FN: a result on the wrong line stays an FN (a scanner that points at line 1 for a resource at line 71
+  is imprecise, and recall says so). The gap between file-level recall and recall is the scanner's location
+  imprecision. Reported per concept, per dimension and in total, always labelled as secondary.
 
 Results whose concept the key does not cover at all are reported as `uncovered`, never as noise. `summary` rows
 (mapping `ignore`) are in no metric. A metric with a zero denominator is reported as n/a, never as 0 or 100 %.

@@ -32,6 +32,10 @@ holds exactly what its key says → freeze (tag `v<keyVersion>`, sha256 of the k
   (`Newtonsoft.Json`, `@angular/core`) or framework moniker (`net6.0`) a scanner names when it reports the package
   without a site. Use the full id, never a prefix or segment of it, and never the same subject on a plant and a trap
   of one concept.
+- Name the most precise concept that is true of the site. `container-excessive-privilege` and `iac-misconfiguration`
+  are umbrellas (contract 1.3 `parent`): use `privileged-container`, `host-namespace-sharing`, `missing-health-probes`,
+  … and keep an umbrella only for a defect none of its children names, or in a `clean` list (where it certifies the
+  region clean of every child too). A coarse concept lets an unrelated finding on the same lines score the plant.
 
 ## C# conventions (shared by every C# repository)
 

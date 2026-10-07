@@ -218,6 +218,14 @@
       "description": "JWT/security-token validation that skips signature verification or expiry/lifetime validation."
     },
     {
+      "id": "log-injection",
+      "title": "Log injection / log forging",
+      "cwe": "CWE-117",
+      "family": "security",
+      "kind": "finding",
+      "description": "Untrusted input written to a log without neutralising line breaks or other control characters, so an attacker can forge or split log entries and mislead whoever reads the log."
+    },
+    {
       "id": "sensitive-data-in-logs",
       "title": "Sensitive or personal data written to logs",
       "cwe": "CWE-532",
@@ -323,11 +331,92 @@
     },
     {
       "id": "container-excessive-privilege",
-      "title": "Container runs with excessive privilege",
+      "title": "Container runs with excessive privilege (umbrella)",
       "cwe": "CWE-250",
       "family": "security",
       "kind": "finding",
-      "description": "Container/workload running as root, privileged, with added capabilities, host namespaces or a writable root filesystem."
+      "description": "Umbrella of the precise container-privilege concepts (their `parent`): a container/workload running as root, privileged, with added capabilities, host namespaces, host paths, privilege escalation, no confinement profile or a writable root filesystem. As a concept of its own: such a privilege none of the precise concepts names (host ports, unsafe sysctls, custom SELinux options, /proc mount, privileged ports). New answer keys name the precise concept."
+    },
+    {
+      "id": "container-runs-as-root",
+      "title": "Container runs as root",
+      "cwe": "CWE-250",
+      "family": "security",
+      "kind": "finding",
+      "description": "A container image or workload whose process runs as root (UID 0) or with no non-root user enforced: no unprivileged USER in the final image stage, runAsNonRoot unset or false, runAsUser/runAsGroup 0 or a root group. Checks that demand a high (> 10000) UID or GID denote this concept too.",
+      "parent": "container-excessive-privilege"
+    },
+    {
+      "id": "privileged-container",
+      "title": "Privileged container",
+      "cwe": "CWE-250",
+      "family": "security",
+      "kind": "finding",
+      "description": "A container run with privileged: true (or as a Windows HostProcess container): every capability, every host device and no seccomp/AppArmor confinement.",
+      "parent": "container-excessive-privilege"
+    },
+    {
+      "id": "host-namespace-sharing",
+      "title": "Container shares a host namespace",
+      "cwe": "CWE-250",
+      "family": "security",
+      "kind": "finding",
+      "description": "A workload or compose service that joins the node's network, PID or IPC namespace (hostNetwork, hostPID, hostIPC, network_mode/pid/ipc: host), so it sees and reaches the host's processes, ports or shared memory and escapes network policy.",
+      "parent": "container-excessive-privilege"
+    },
+    {
+      "id": "host-path-mount",
+      "title": "Host path or runtime socket mounted into a container",
+      "cwe": "CWE-250",
+      "family": "security",
+      "kind": "finding",
+      "description": "A workload that mounts a directory or socket of the node's own filesystem (Kubernetes hostPath, a hostPath PersistentVolume, a bind mount of the Docker/containerd socket); a read-write mount or a runtime socket hands the container control of the node.",
+      "parent": "container-excessive-privilege"
+    },
+    {
+      "id": "container-privilege-escalation-allowed",
+      "title": "Container may escalate its privileges",
+      "cwe": "CWE-250",
+      "family": "security",
+      "kind": "finding",
+      "description": "A container whose processes can gain more privileges than they started with: allowPrivilegeEscalation not set to false, or a setuid/setgid binary granted in the image.",
+      "parent": "container-excessive-privilege"
+    },
+    {
+      "id": "container-excess-capabilities",
+      "title": "Container keeps or adds Linux capabilities it does not need",
+      "cwe": "CWE-250",
+      "family": "security",
+      "kind": "finding",
+      "description": "A container that does not drop the runtime's default Linux capabilities, or adds capabilities (SYS_ADMIN, NET_RAW, …) beyond what it uses.",
+      "parent": "container-excessive-privilege"
+    },
+    {
+      "id": "container-writable-root-filesystem",
+      "title": "Container root filesystem is writable",
+      "cwe": null,
+      "family": "security",
+      "kind": "finding",
+      "description": "A container whose root filesystem is not mounted read-only (readOnlyRootFilesystem not true), so a compromised process can modify the image's binaries and configuration.",
+      "parent": "container-excessive-privilege"
+    },
+    {
+      "id": "container-confinement-profile-unset",
+      "title": "Container has no seccomp or AppArmor profile",
+      "cwe": null,
+      "family": "security",
+      "kind": "finding",
+      "description": "A container/pod specification that sets no seccomp profile (or sets Unconfined) or no AppArmor profile, so the container's system calls are not filtered. The per-workload finding; workload-syscall-confinement is the repository-wide posture.",
+      "parent": "container-excessive-privilege"
+    },
+    {
+      "id": "container-security-context-missing",
+      "title": "Container declares no security context",
+      "cwe": "CWE-250",
+      "family": "security",
+      "kind": "finding",
+      "description": "A container or pod with no securityContext at all, so every runtime default applies: privilege escalation allowed, default capabilities kept, writable root filesystem, no non-root requirement.",
+      "parent": "container-excessive-privilege"
     },
     {
       "id": "container-missing-resource-limits",
@@ -347,11 +436,65 @@
     },
     {
       "id": "iac-misconfiguration",
-      "title": "Other infrastructure-as-code / container misconfiguration",
+      "title": "Infrastructure-as-code / container misconfiguration (umbrella)",
       "cwe": null,
       "family": "security",
       "kind": "finding",
-      "description": "A misconfiguration in Dockerfile, Kubernetes, Helm, Terraform or CloudFormation not covered by a more specific concept (missing healthcheck, exposed admin port, public bucket …)."
+      "description": "Umbrella of the precise IaC configuration concepts (their `parent`). As a concept of its own: a misconfiguration in Dockerfile, Kubernetes, Helm, Terraform or CloudFormation that no more specific concept covers (exposed admin port, public bucket, workload in the default namespace …). New answer keys name the precise concept."
+    },
+    {
+      "id": "missing-health-probes",
+      "title": "Kubernetes workload without liveness or readiness probes",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "finding",
+      "description": "A Kubernetes container that serves traffic or runs a loop but defines no liveness and/or readiness probe, so a hung process is never restarted and a rollout is not gated on the new pod being healthy.",
+      "parent": "iac-misconfiguration"
+    },
+    {
+      "id": "missing-image-healthcheck",
+      "title": "Container image without a HEALTHCHECK",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "finding",
+      "description": "A Dockerfile with no HEALTHCHECK instruction, for an image run by an engine that honours it (Docker, Compose, Swarm). Kubernetes ignores HEALTHCHECK: an image run only there is not missing one (its probes are missing-health-probes).",
+      "parent": "iac-misconfiguration"
+    },
+    {
+      "id": "automounted-service-account-token",
+      "title": "Service-account token mounted into a pod that does not need it",
+      "cwe": null,
+      "family": "security",
+      "kind": "finding",
+      "description": "A pod (template) that does not set automountServiceAccountToken: false and names no dedicated service account, so the namespace's API credential is mounted into a workload that never calls the Kubernetes API.",
+      "parent": "iac-misconfiguration"
+    },
+    {
+      "id": "overly-permissive-rbac",
+      "title": "Overly permissive RBAC role or binding",
+      "cwe": "CWE-269",
+      "family": "security",
+      "kind": "finding",
+      "description": "A Kubernetes Role/ClusterRole or binding that grants more than its subject needs: wildcard verbs or resources, secrets, pod exec/attach, RBAC escalate/bind/impersonate, admission webhooks, CSR approval or cluster-admin.",
+      "parent": "iac-misconfiguration"
+    },
+    {
+      "id": "image-not-from-allowed-registry",
+      "title": "Container image from a registry outside the allowed list",
+      "cwe": null,
+      "family": "security",
+      "kind": "finding",
+      "description": "A workload pulling its image from a registry that is not on the organisation's trusted-registry list.",
+      "parent": "iac-misconfiguration"
+    },
+    {
+      "id": "container-missing-resource-requests",
+      "title": "Workload without resource requests",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "finding",
+      "description": "A container/pod specification without CPU/memory requests, so the scheduler cannot place it sensibly (requests, not limits: container-missing-resource-limits is the limits concept).",
+      "parent": "iac-misconfiguration"
     },
     {
       "id": "vulnerable-dependency",

@@ -12,7 +12,7 @@ measures, per concept and per scanner dimension:
 
 This repository holds the harness: the answer-key schema, the scanner-neutral concept taxonomy (CWE-anchored where a
 CWE exists), one mapping per scanner, the scoring CLI, the registry of frozen benchmark repositories, and recorded
-results. The fixed formats and the exact matching rules are in [`docs/CONTRACT.md`](docs/CONTRACT.md) (contract 1.2).
+results. The fixed formats and the exact matching rules are in [`docs/CONTRACT.md`](docs/CONTRACT.md) (contract 1.3).
 
 ## Labels and outcomes
 

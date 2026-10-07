@@ -53,6 +53,234 @@ SPEC["D28"]["concepts"]["secret-in-version-history"] = [
 SPEC["SC1"] = dict(concepts=OrderedDict([("dependencies-not-locked", [
     dict(messages=[r"^(?:NuGet|JavaScript|Go module|Go) dependencies are not locked:"], source=SC1_SRC)])]), off=[])
 
+# ---- D31: IaC findings ("{severity} IaC: {rule id}: {detail}") -------------------------------------------------------
+# Contract 1.3 split: the two coarse concepts container-excessive-privilege and iac-misconfiguration are UMBRELLAS
+# (taxonomy/mapping `parent`) over precise concepts. Each rule id belongs to exactly one concept; an id an umbrella
+# claimed before the split and no precise concept takes stays on the umbrella itself (its residue). The umbrella lists
+# below are the pre-split definitions, kept verbatim so an entry naming an umbrella matches exactly what it matched
+# before (build.py asserts that the children partition them).
+D31_SRC = ('engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:914 (title "{severity} IaC: {trivy ID}"); '
+           'engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:1919 (title "{severity} IaC: {checkov check_id}")')
+
+
+def _iac_id(i):
+    """The title-id regex of one IaC rule id: trivy ids tolerate the AVD- prefix and any zero padding."""
+    m = re.fullmatch(r"(DS|KSV)-0*(\d+)", i)
+    if m:
+        return r"(?:AVD-)?" + m.group(1) + r"-?0*" + m.group(2) + ":"
+    return re.escape(i) + ":"
+
+
+def _iac_alt(ids):
+    return "|".join(_iac_id(i) for i in ids)
+
+
+def _ksv(*ns):
+    return ["KSV-%04d" % n for n in ns]
+
+
+CEP_ALL = (["DS-0002"] + _ksv(1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 14, 17, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 103, 104,
+                              105, 106, 117, 118)
+           + ["CKV_DOCKER_3", "CKV_DOCKER_8"] + ["CKV_K8S_%d" % n for n in (16, 17, 18, 19, 20, 22, 23, 25, 26, 27, 28,
+                                                                             29, 30, 31, 37, 39, 40)]
+           + ["WD-DOCKER-0006", "WD-DOCKER-0015", "WD-COMPOSE-0001", "WD-COMPOSE-0003", "WD-K8S-0001", "WD-K8S-0003"])
+LIMITS = _ksv(11, 18, 39, 40) + ["CKV_K8S_11", "CKV_K8S_13"]
+MUTABLE = ["DS-0001", "KSV-0013", "CKV_DOCKER_7", "CKV_K8S_14", "CKV_K8S_43", "WD-DOCKER-0003", "WD-COMPOSE-0002"]
+DOWNLOAD = ["WD-DOCKER-0001", "WD-DOCKER-0014"] + ["CKV2_DOCKER_%d" % n for n in (7, 8, 9, 10, 11)]
+CERT = ["WD-DOCKER-0009"] + ["CKV2_DOCKER_%d" % n for n in (2, 3, 4, 5, 6, 12, 13, 14, 15, 16)]
+SECRETS = ["DS-0031", "KSV-0109", "WD-K8S-0002", "WD-WRANGLER-0001"]
+D31_OFF = (["DS-%04d" % n for n in (5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25, 29)]
+           + ["CKV_DOCKER_%d" % n for n in (4, 5, 6, 9, 10, 11)] + ["WD-DOCKER-0008"])
+
+# Ids one rule id carries for two concepts: the detail decides. {id: [(concept, detail regex after "id: ")]}
+D31_SPLIT = {
+    "WD-COMPOSE-0003": [
+        ("privileged-container", r"Line \d+ gives service `[^`]*` every isolation mechanism"),
+        ("host-namespace-sharing", r"Line \d+ gives service `[^`]*` the host's (?:NETWORK|PID|IPC) namespace")],
+    "WD-K8S-0004": [("automounted-service-account-token", r"This pod (?:spec|template) sets")],
+}
+D31_SPLIT_SRC = {
+    "WD-COMPOSE-0003": "engine/src/Scanner/Security/D31/Scanners/ComposeHostNamespaceScan.cs:92-95,229-230 (one id for "
+                       "network_mode/pid/ipc: host and privileged: true; the detail names which)",
+    "WD-K8S-0004": "engine/src/Scanner/Security/D31/Scanners/AutomountedServiceAccountTokenScan.cs:358-363 (\"This pod "
+                   "spec sets neither `automountServiceAccountToken` …\" / \"This pod template sets "
+                   "`automountServiceAccountToken: true` …\"); the same id is claimed by UnresolvableImageReferenceScan.cs:56,232 "
+                   "(\"This manifest deploys a container image whose tag is an unsubstituted placeholder\"), which stays on "
+                   "iac-misconfiguration",
+}
+
+# Precise concepts: (concept, umbrella, ids, why) — ids from the vendor catalogs (trivy KSV/DS, checkov CKV) and the
+# engine's own WD- scans; each is a check of exactly the fact the concept names.
+D31_PRECISE = [
+    ("container-runs-as-root", "container-excessive-privilege",
+     ["DS-0002"] + _ksv(12, 20, 21, 29, 105) + ["CKV_DOCKER_3", "CKV_DOCKER_8", "CKV_K8S_23", "CKV_K8S_40",
+                                                 "WD-DOCKER-0006"],
+     "DS-0002 image user root, KSV-0012 runAsNonRoot unset, KSV-0020/0021 UID/GID <= 10000, KSV-0029 root GID, KSV-0105 "
+     "runAsUser 0; CKV_DOCKER_3 no user created, CKV_DOCKER_8 last USER root, CKV_K8S_23 root containers, CKV_K8S_40 "
+     "high UID; WD-DOCKER-0006 final stage without unprivileged USER (ContainerRuntimeHardeningScan.cs:136)"),
+    ("privileged-container", "container-excessive-privilege",
+     ["KSV-0017", "KSV-0103", "CKV_K8S_16", "WD-K8S-0001"],
+     "KSV-0017 privileged, KSV-0103 Windows HostProcess (the privileged equivalent), CKV_K8S_16 privileged; "
+     "WD-K8S-0001 privileged nameless workload (Shared/Scanners/NamelessWorkloadPrivilegedScan.cs:237); "
+     "WD-COMPOSE-0003 privileged: true (see the split)"),
+    ("host-namespace-sharing", "container-excessive-privilege",
+     _ksv(8, 9, 10) + ["CKV_K8S_17", "CKV_K8S_18", "CKV_K8S_19"],
+     "KSV-0008/0009/0010 host IPC/network/PID, CKV_K8S_17/18/19 host PID/IPC/network; WD-COMPOSE-0003 "
+     "network_mode/pid/ipc: host (see the split)"),
+    ("host-path-mount", "container-excessive-privilege",
+     _ksv(6, 23) + ["CKV_K8S_27", "WD-COMPOSE-0001", "WD-K8S-0003"],
+     "KSV-0006 docker.sock hostPath, KSV-0023 hostPath volumes, CKV_K8S_27 docker daemon socket; WD-COMPOSE-0001 "
+     "runtime socket bind mount (Shared/Scanners/ComposeRuntimeSocketMountScan.cs:163), WD-K8S-0003 hostPath "
+     "PersistentVolume (D31/Scanners/HostPathPersistentVolumeScan.cs:237)"),
+    ("container-privilege-escalation-allowed", "container-excessive-privilege",
+     ["KSV-0001", "CKV_K8S_20", "WD-DOCKER-0015"],
+     "KSV-0001 / CKV_K8S_20 allowPrivilegeEscalation not false; WD-DOCKER-0015 setuid bit granted in the image "
+     "(D31/Scanners/SetuidBinaryGrantScan.cs:195)"),
+    ("container-excess-capabilities", "container-excessive-privilege",
+     _ksv(3, 4, 5, 22, 106) + ["CKV_K8S_25", "CKV_K8S_28", "CKV_K8S_37", "CKV_K8S_39"],
+     "KSV-0003 default capabilities not dropped, KSV-0004 unused capabilities kept, KSV-0005 SYS_ADMIN, KSV-0022 "
+     "non-default capabilities added, KSV-0106 capabilities beyond NET_BIND_SERVICE; CKV_K8S_25 added capability, "
+     "CKV_K8S_28 NET_RAW, CKV_K8S_37 capabilities assigned, CKV_K8S_39 SYS_ADMIN"),
+    ("container-writable-root-filesystem", "container-excessive-privilege",
+     ["KSV-0014", "CKV_K8S_22"],
+     "KSV-0014 / CKV_K8S_22 readOnlyRootFilesystem not true"),
+    ("container-confinement-profile-unset", "container-excessive-privilege",
+     _ksv(2, 30, 104) + ["CKV_K8S_31"],
+     "KSV-0002 AppArmor profile, KSV-0030 seccomp RuntimeDefault, KSV-0104 seccomp disabled, CKV_K8S_31 seccomp "
+     "profile"),
+    ("container-security-context-missing", "container-excessive-privilege",
+     ["KSV-0118", "CKV_K8S_29", "CKV_K8S_30"],
+     "KSV-0118 default (empty) security context, CKV_K8S_29 pod and container security context, CKV_K8S_30 "
+     "container security context"),
+    ("missing-health-probes", "iac-misconfiguration",
+     ["CKV_K8S_8", "CKV_K8S_9"],
+     "CKV_K8S_8 liveness probe, CKV_K8S_9 readiness probe (Kubernetes workloads)"),
+    ("missing-image-healthcheck", "iac-misconfiguration",
+     ["DS-0026", "CKV_DOCKER_2", "WD-DOCKER-0007"],
+     "DS-0026 / CKV_DOCKER_2 no Dockerfile HEALTHCHECK; WD-DOCKER-0007 no HEALTHCHECK on an image that declares a "
+     "listening port (ContainerRuntimeHardeningScan.cs:154)"),
+    ("automounted-service-account-token", "iac-misconfiguration",
+     ["KSV-0036", "CKV_K8S_38"],
+     "KSV-0036 service account token mounted, CKV_K8S_38 service account tokens only where necessary; WD-K8S-0004 "
+     "automount row (see the split)"),
+    ("overly-permissive-rbac", "iac-misconfiguration",
+     _ksv(*range(41, 57), 111, 113, 114, 115) + ["CKV_K8S_49", "CKV_K8S_155", "CKV_K8S_156", "CKV_K8S_157",
+                                                 "CKV_K8S_158"] + ["CKV2_K8S_%d" % n for n in (1, 2, 3, 4, 5)],
+     "KSV-0041…0056 RBAC grants (secrets, pod logs, impersonation, wildcard verbs/resources, workloads, configmaps, "
+     "RBAC, bindings, exec/attach, networking), KSV-0111 cluster-admin binding, KSV-0113 namespace secrets, KSV-0114 "
+     "webhook configurations, KSV-0115 EKS aws-auth; CKV_K8S_49 wildcards, CKV_K8S_155-158 webhooks/CSR/bind/escalate, "
+     "CKV2_K8S_1-5 binding escalation, nodes/proxy and exec, impersonate, services/status, read all secrets"),
+    ("image-not-from-allowed-registry", "iac-misconfiguration",
+     ["KSV-0125"],
+     "KSV-0125 image from a registry outside the trusted list"),
+    ("container-missing-resource-requests", "iac-misconfiguration",
+     _ksv(15, 16) + ["CKV_K8S_10", "CKV_K8S_12"],
+     "KSV-0015 / CKV_K8S_10 CPU requests, KSV-0016 / CKV_K8S_12 memory requests (requests, not limits: "
+     "container-missing-resource-limits is the limits concept)"),
+]
+
+_split_ids = set(D31_SPLIT)
+_precise_ids = [i for _, _, ids, _ in D31_PRECISE for i in ids]
+assert len(_precise_ids) == len(set(_precise_ids)), "a D31 id is claimed by two precise concepts"
+for _c, _u, _ids, _ in D31_PRECISE:
+    if _u == "container-excessive-privilege":
+        assert set(_ids) <= set(CEP_ALL), (_c, set(_ids) - set(CEP_ALL))
+    else:  # iac-misconfiguration children: ids the pre-split catch-all held (claimed by no other concept, not off)
+        assert not set(_ids) & set(CEP_ALL + LIMITS + MUTABLE + DOWNLOAD + CERT + SECRETS + D31_OFF), _c
+CEP_RESIDUE = [i for i in CEP_ALL if i not in _precise_ids and i not in _split_ids]
+# every id the umbrellas (or other concepts) claim, for the catch-all's negative lookahead
+_D31_CLAIMED = (CEP_ALL + LIMITS + MUTABLE + DOWNLOAD + CERT + SECRETS + D31_OFF
+                + [i for i in _precise_ids if i not in CEP_ALL])
+
+
+def _iac(ids, extra=()):
+    alts = [_iac_alt(ids)] if ids else []
+    alts += list(extra)
+    return r"^\w+ IaC: (?:" + "|".join(alts) + ")"
+
+
+def _split_alts(concept):
+    return [re.escape(i) + ": " + rx for i, pairs in D31_SPLIT.items() for c, rx in pairs if c == concept]
+
+
+def _split_src(concept):
+    return "; ".join(D31_SPLIT_SRC[i] for i, pairs in D31_SPLIT.items() for c, _ in pairs if c == concept)
+
+
+D31_CONCEPTS = OrderedDict()
+for _c, _u, _ids, _why in D31_PRECISE:
+    _src = D31_SRC + "; " + _why + ((" — " + _split_src(_c)) if _split_alts(_c) else "")
+    D31_CONCEPTS[_c] = [dict(messages=[_iac(_ids, _split_alts(_c))], source=_src)]
+# the umbrella container-excessive-privilege: the pre-split ids no precise concept takes, and a WD-COMPOSE-0003 detail
+# that neither split variant names
+D31_CONCEPTS["container-excessive-privilege"] = [dict(
+    messages=[_iac(CEP_RESIDUE, [r"WD\-COMPOSE\-0003: (?!" + "|".join(rx for _, rx in D31_SPLIT["WD-COMPOSE-0003"])
+                                 + ")"])],
+    source=D31_SRC + "; umbrella residue (contract 1.3 parent of the precise container-privilege concepts): the "
+           "pre-split privilege ids no precise concept takes — KSV-0024 / CKV_K8S_26 host ports, KSV-0025 custom "
+           "SELinux options, KSV-0026 unsafe sysctls, KSV-0027 /proc mount, KSV-0117 privileged ports — from the vendor "
+           "catalogs")]
+D31_CONCEPTS["container-missing-resource-limits"] = [dict(
+    messages=[_iac(LIMITS)],
+    source=D31_SRC + "; KSV-0011 CPU / KSV-0018 memory not limited, KSV-0039 LimitRange / KSV-0040 ResourceQuota "
+           "(namespace-scoped, aggregated in engine/src/Scanner/Security/D31/Scanners/NamespaceScopedRuleAggregator.cs); "
+           "CKV_K8S_11/13 CPU/memory limits. Requests (KSV-0015/0016, CKV_K8S_10/12) are NOT limits: "
+           "container-missing-resource-requests")]
+D31_CONCEPTS["mutable-image-reference"] = [dict(
+    messages=[_iac(MUTABLE)],
+    source=D31_SRC + "; DS-0001 ':latest' tag, KSV-0013 image tag latest, CKV_DOCKER_7, CKV_K8S_14/43; WD-DOCKER-0003 "
+           "FROM by tag engine/src/Scanner/Security/D31/Scanners/MutableBaseImageScan.cs:55; WD-COMPOSE-0002 compose "
+           "image by tag D31/Scanners/ComposeMutableServiceImageScan.cs:49")]
+D31_CONCEPTS["download-without-integrity-check"] = [dict(
+    messages=[_iac(DOWNLOAD)],
+    source="WD-DOCKER-0001 curl|sh / unverified installer engine/src/Scanner/Security/Shared/Scanners/"
+           "UnverifiedRemoteInstallerScan.cs:121; WD-DOCKER-0014 trust anchor fetched and never verified "
+           "engine/src/Scanner/Security/D31/Scanners/UnverifiedTrustAnchorScan.cs:57; " + D31_SRC + " CKV2_DOCKER_7-11 "
+           "(apk --allow-untrusted, apt --allow-unauthenticated, yum nogpgcheck, rpm --nosignature, apt --force-yes: "
+           "package signature checking off)")]
+D31_CONCEPTS["improper-certificate-validation"] = [dict(
+    messages=[_iac(CERT)],
+    source="WD-DOCKER-0009 build-time fetch with certificate validation off (curl -k / wget --no-check-certificate) "
+           "engine/src/Scanner/Security/D31/Scanners/InsecureTransportFetchScan.cs:50; " + D31_SRC + " CKV2_DOCKER_2-6,"
+           "12-16 (curl/wget/pip/npm/git/yum TLS verification disabled, PYTHONHTTPSVERIFY, NODE_TLS_REJECT_UNAUTHORIZED); "
+           "no census row yet")]
+D31_CONCEPTS["hardcoded-credential"] = [dict(
+    messages=[_iac(SECRETS)],
+    source=D31_SRC + "; DS-0031 secrets in ENV/ARG (engine/src/Scanner/Security/D31/Scanners/DockerfileShapeRuleFilter.cs:79), "
+           "KSV-0109 ConfigMap with secrets; WD-K8S-0002 literal values in a committed kind: Secret "
+           "engine/src/Scanner/Security/Shared/Scanners/CommittedSecretManifestScan.cs:81; WD-WRANGLER-0001 "
+           "credential-named literal in wrangler vars Shared/Scanners/WranglerPlaintextVarScan.cs:61")]
+D31_CONCEPTS["iac-misconfiguration"] = [dict(
+    messages=[r"^\w+ IaC: (?!(?:" + _iac_alt(_D31_CLAIMED) + "|"
+              + "|".join(re.escape(i) + ": " + rx for i, pairs in D31_SPLIT.items() if i not in CEP_ALL
+                         for _, rx in pairs) + "))[A-Za-z0-9_-]+:"],
+    source=D31_SRC + "; umbrella residue (contract 1.3 parent of the precise IaC configuration concepts): every IaC id "
+           "not claimed by a more specific concept or by `off` — cloud checks (AWS-/AZU-/GCP-/CKV_AWS/CKV2_*), "
+           "namespace placement (CKV_K8S_21, KSV-0037, KSV-0110), image pull policy (CKV_K8S_15), secrets as env "
+           "vars (CKV_K8S_35), NGINX snippet annotations (CKV_K8S_153), DS-0004 port 22, DS-0010 sudo, KSV-01010 "
+           "sensitive (non-secret) ConfigMap content, CKV2_DOCKER_17 chpasswd, and WD-DOCKER-0002 build-time key "
+           "material (D31/Scanners/BuildTimeKeyMaterialScan.cs:62), -0004 unpinned toolchain install "
+           "(UnpinnedToolchainInstallScan.cs:110), -0005 mutable git clone (MutableGitCloneScan.cs:49), -0010 unscoped "
+           "COPY . (UnscopedBuildContextCopyScan.cs:55), -0011 safe.directory '*' (GitOwnershipCheckDisabledScan.cs:50), "
+           "-0012 world-writable owned path (WorldWritableOwnedPathScan.cs:64), -0013 EOL base image "
+           "(EndOfLifeBaseImageScan.cs:64), -0016 PEP 668 guard off (PythonInstallGuardDisabledScan.cs:59), -0017 "
+           "browser sandbox off (BrowserSandboxDisabledScan.cs:62), WD-K8S-0004 unsubstituted image placeholder "
+           "(UnresolvableImageReferenceScan.cs:232)")]
+D31_SPEC = dict(
+    concepts=D31_CONCEPTS,
+    off=[dict(message=_iac(D31_OFF),
+              source=D31_SRC + "; Dockerfile lint / image-size / build-hygiene rules with no security consequence: "
+                     "DS-0005 ADD vs COPY, -0006 COPY --from self, -0007 multiple ENTRYPOINT, -0008 port out of range, "
+                     "-0009 relative WORKDIR, -0011 COPY multi-arg, -0012 duplicate alias, -0013 RUN cd, -0014 "
+                     "wget+curl, -0015/-0016/-0019/-0020 package cache cleanup "
+                     "(engine/src/Scanner/Security/D31/Scanners/DockerfileShapeRuleFilter.cs:114-121), -0017 update "
+                     "alone, -0021 apt-get -y, -0022 MAINTAINER, -0023 multiple HEALTHCHECK, -0024 dist-upgrade, -0025 "
+                     "apk --no-cache, -0029 --no-install-recommends; CKV_DOCKER_4/5/6/9/10/11 (checkov twins); "
+                     "WD-DOCKER-0008 no-op tool shim (engine/src/Scanner/Security/D31/Scanners/NoOpToolShimScan.cs:55, "
+                     "CWE-754: a test/build tool neutered, a gate-honesty defect, not an IaC security misconfiguration)")])
+PRECISE_PARENT = {c: u for c, u, _, _ in D31_PRECISE}
+
+
 # Per-dimension tables: titles read from the analyzers named in each source, checked against the distinct messages of
 # ~8.5k local Watchdog SARIF outputs (every distinct message of each dimension lands on exactly one concept or one off regex).
 TABLE = {
@@ -418,41 +646,7 @@ TABLE = {
    dict(message="^Bound check compiled out of the shipping build:",
         source="engine/src/Scanner/Incompleteness/IC1/IncompletenessAnalyzer.cs:835 only a Debug.Assert establishes the length before indexing (CWE-617/129); not an incompleteness shape and not index-access-outside-bounds-guard (no emptiness test guards a sibling branch)"),
   ]),
- "D31": dict(
-  concepts=OrderedDict([
-   ("container-excessive-privilege", [
-    dict(messages=[r"^\w+ IaC: (?:(?:AVD-)?DS-?0*2:|(?:AVD-)?KSV-?0*1:|(?:AVD-)?KSV-?0*2:|(?:AVD-)?KSV-?0*3:|(?:AVD-)?KSV-?0*4:|(?:AVD-)?KSV-?0*5:|(?:AVD-)?KSV-?0*6:|(?:AVD-)?KSV-?0*8:|(?:AVD-)?KSV-?0*9:|(?:AVD-)?KSV-?0*10:|(?:AVD-)?KSV-?0*12:|(?:AVD-)?KSV-?0*14:|(?:AVD-)?KSV-?0*17:|(?:AVD-)?KSV-?0*20:|(?:AVD-)?KSV-?0*21:|(?:AVD-)?KSV-?0*22:|(?:AVD-)?KSV-?0*23:|(?:AVD-)?KSV-?0*24:|(?:AVD-)?KSV-?0*25:|(?:AVD-)?KSV-?0*26:|(?:AVD-)?KSV-?0*27:|(?:AVD-)?KSV-?0*29:|(?:AVD-)?KSV-?0*30:|(?:AVD-)?KSV-?0*103:|(?:AVD-)?KSV-?0*104:|(?:AVD-)?KSV-?0*105:|(?:AVD-)?KSV-?0*106:|(?:AVD-)?KSV-?0*117:|(?:AVD-)?KSV-?0*118:|CKV_DOCKER_3:|CKV_DOCKER_8:|CKV_K8S_16:|CKV_K8S_17:|CKV_K8S_18:|CKV_K8S_19:|CKV_K8S_20:|CKV_K8S_22:|CKV_K8S_23:|CKV_K8S_25:|CKV_K8S_26:|CKV_K8S_27:|CKV_K8S_28:|CKV_K8S_29:|CKV_K8S_30:|CKV_K8S_31:|CKV_K8S_37:|CKV_K8S_39:|CKV_K8S_40:|WD\-DOCKER\-0006:|WD\-DOCKER\-0015:|WD\-COMPOSE\-0001:|WD\-COMPOSE\-0003:|WD\-K8S\-0001:|WD\-K8S\-0003:)"],
-        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:914 (title "{severity} IaC: {trivy ID}"); engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:1919 (title "{severity} IaC: {checkov check_id}"); WD-DOCKER-0006 root final stage engine/src/Scanner/Security/D31/Scanners/ContainerRuntimeHardeningScan.cs:53,136; WD-DOCKER-0015 setuid grant D31/Scanners/SetuidBinaryGrantScan.cs:35; WD-COMPOSE-0001 runtime socket mount engine/src/Scanner/Security/Shared/Scanners/ComposeRuntimeSocketMountScan.cs:46; WD-COMPOSE-0003 host namespace / privileged D31/Scanners/ComposeHostNamespaceScan.cs:67; WD-K8S-0001 privileged nameless workload Shared/Scanners/NamelessWorkloadPrivilegedScan.cs:43; WD-K8S-0003 hostPath PersistentVolume D31/Scanners/HostPathPersistentVolumeScan.cs:62. trivy DS-0002, KSV-0001…0030/0103…0118 privilege ids and checkov CKV_DOCKER_3/8, CKV_K8S_16-31/37/39/40 from the vendor catalogs (seccomp/AppArmor/SELinux and low UID/GID counted as privilege of the running container)'),
-   ]),
-   ("container-missing-resource-limits", [
-    dict(messages=[r"^\w+ IaC: (?:(?:AVD-)?KSV-?0*11:|(?:AVD-)?KSV-?0*18:|(?:AVD-)?KSV-?0*39:|(?:AVD-)?KSV-?0*40:|CKV_K8S_11:|CKV_K8S_13:)"],
-        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:914 (title "{severity} IaC: {trivy ID}"); KSV-0011 CPU / KSV-0018 memory not limited, KSV-0039 LimitRange / KSV-0040 ResourceQuota (namespace-scoped, aggregated in engine/src/Scanner/Security/D31/Scanners/NamespaceScopedRuleAggregator.cs); engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:1919 (title "{severity} IaC: {checkov check_id}"); CKV_K8S_11/13 CPU/memory limits. Requests (KSV-0015/0016, CKV_K8S_10/12) are NOT limits and fall to iac-misconfiguration'),
-   ]),
-   ("mutable-image-reference", [
-    dict(messages=[r"^\w+ IaC: (?:(?:AVD-)?DS-?0*1:|(?:AVD-)?KSV-?0*13:|CKV_DOCKER_7:|CKV_K8S_14:|CKV_K8S_43:|WD\-DOCKER\-0003:|WD\-COMPOSE\-0002:)"],
-        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:914 (title "{severity} IaC: {trivy ID}") DS-0001 \':latest\' tag, KSV-0013 image tag latest; engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:1919 (title "{severity} IaC: {checkov check_id}") CKV_DOCKER_7, CKV_K8S_14/43; WD-DOCKER-0003 FROM by tag engine/src/Scanner/Security/D31/Scanners/MutableBaseImageScan.cs:55; WD-COMPOSE-0002 compose image by tag D31/Scanners/ComposeMutableServiceImageScan.cs:49'),
-   ]),
-   ("download-without-integrity-check", [
-    dict(messages=[r"^\w+ IaC: (?:WD\-DOCKER\-0001:|WD\-DOCKER\-0014:|CKV2_DOCKER_7:|CKV2_DOCKER_8:|CKV2_DOCKER_9:|CKV2_DOCKER_10:|CKV2_DOCKER_11:)"],
-        source='WD-DOCKER-0001 curl|sh / unverified installer engine/src/Scanner/Security/Shared/Scanners/UnverifiedRemoteInstallerScan.cs:121; WD-DOCKER-0014 trust anchor fetched and never verified engine/src/Scanner/Security/D31/Scanners/UnverifiedTrustAnchorScan.cs:57; engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:1919 (title "{severity} IaC: {checkov check_id}") CKV2_DOCKER_7-11 (apk --allow-untrusted, apt --allow-unauthenticated, yum nogpgcheck, rpm --nosignature, apt --force-yes: package signature checking off)'),
-   ]),
-   ("improper-certificate-validation", [
-    dict(messages=[r"^\w+ IaC: (?:WD\-DOCKER\-0009:|CKV2_DOCKER_2:|CKV2_DOCKER_3:|CKV2_DOCKER_4:|CKV2_DOCKER_5:|CKV2_DOCKER_6:|CKV2_DOCKER_12:|CKV2_DOCKER_13:|CKV2_DOCKER_14:|CKV2_DOCKER_15:|CKV2_DOCKER_16:)"],
-        source='WD-DOCKER-0009 build-time fetch with certificate validation off (curl -k / wget --no-check-certificate) engine/src/Scanner/Security/D31/Scanners/InsecureTransportFetchScan.cs:50; engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:1919 (title "{severity} IaC: {checkov check_id}") CKV2_DOCKER_2-6,12-16 (curl/wget/pip/npm/git/yum TLS verification disabled, PYTHONHTTPSVERIFY, NODE_TLS_REJECT_UNAUTHORIZED); no census row yet'),
-   ]),
-   ("hardcoded-credential", [
-    dict(messages=[r"^\w+ IaC: (?:(?:AVD-)?DS-?0*31:|(?:AVD-)?KSV-?0*109:|WD\-K8S\-0002:|WD\-WRANGLER\-0001:)"],
-        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:914 (title "{severity} IaC: {trivy ID}") DS-0031 secrets in ENV/ARG (engine/src/Scanner/Security/D31/Scanners/DockerfileShapeRuleFilter.cs:79), KSV-0109 ConfigMap with secrets; WD-K8S-0002 literal values in a committed kind: Secret engine/src/Scanner/Security/Shared/Scanners/CommittedSecretManifestScan.cs:81; WD-WRANGLER-0001 credential-named literal in wrangler vars Shared/Scanners/WranglerPlaintextVarScan.cs:61'),
-   ]),
-   ("iac-misconfiguration", [
-    dict(messages=[r"^\w+ IaC: (?!(?:(?:AVD-)?DS-?0*2:|(?:AVD-)?KSV-?0*1:|(?:AVD-)?KSV-?0*2:|(?:AVD-)?KSV-?0*3:|(?:AVD-)?KSV-?0*4:|(?:AVD-)?KSV-?0*5:|(?:AVD-)?KSV-?0*6:|(?:AVD-)?KSV-?0*8:|(?:AVD-)?KSV-?0*9:|(?:AVD-)?KSV-?0*10:|(?:AVD-)?KSV-?0*12:|(?:AVD-)?KSV-?0*14:|(?:AVD-)?KSV-?0*17:|(?:AVD-)?KSV-?0*20:|(?:AVD-)?KSV-?0*21:|(?:AVD-)?KSV-?0*22:|(?:AVD-)?KSV-?0*23:|(?:AVD-)?KSV-?0*24:|(?:AVD-)?KSV-?0*25:|(?:AVD-)?KSV-?0*26:|(?:AVD-)?KSV-?0*27:|(?:AVD-)?KSV-?0*29:|(?:AVD-)?KSV-?0*30:|(?:AVD-)?KSV-?0*103:|(?:AVD-)?KSV-?0*104:|(?:AVD-)?KSV-?0*105:|(?:AVD-)?KSV-?0*106:|(?:AVD-)?KSV-?0*117:|(?:AVD-)?KSV-?0*118:|CKV_DOCKER_3:|CKV_DOCKER_8:|CKV_K8S_16:|CKV_K8S_17:|CKV_K8S_18:|CKV_K8S_19:|CKV_K8S_20:|CKV_K8S_22:|CKV_K8S_23:|CKV_K8S_25:|CKV_K8S_26:|CKV_K8S_27:|CKV_K8S_28:|CKV_K8S_29:|CKV_K8S_30:|CKV_K8S_31:|CKV_K8S_37:|CKV_K8S_39:|CKV_K8S_40:|WD\-DOCKER\-0006:|WD\-DOCKER\-0015:|WD\-COMPOSE\-0001:|WD\-COMPOSE\-0003:|WD\-K8S\-0001:|WD\-K8S\-0003:|(?:AVD-)?KSV-?0*11:|(?:AVD-)?KSV-?0*18:|(?:AVD-)?KSV-?0*39:|(?:AVD-)?KSV-?0*40:|CKV_K8S_11:|CKV_K8S_13:|(?:AVD-)?DS-?0*1:|(?:AVD-)?KSV-?0*13:|CKV_DOCKER_7:|CKV_K8S_14:|CKV_K8S_43:|WD\-DOCKER\-0003:|WD\-COMPOSE\-0002:|WD\-DOCKER\-0001:|WD\-DOCKER\-0014:|CKV2_DOCKER_7:|CKV2_DOCKER_8:|CKV2_DOCKER_9:|CKV2_DOCKER_10:|CKV2_DOCKER_11:|WD\-DOCKER\-0009:|CKV2_DOCKER_2:|CKV2_DOCKER_3:|CKV2_DOCKER_4:|CKV2_DOCKER_5:|CKV2_DOCKER_6:|CKV2_DOCKER_12:|CKV2_DOCKER_13:|CKV2_DOCKER_14:|CKV2_DOCKER_15:|CKV2_DOCKER_16:|(?:AVD-)?DS-?0*31:|(?:AVD-)?KSV-?0*109:|WD\-K8S\-0002:|WD\-WRANGLER\-0001:|(?:AVD-)?DS-?0*5:|(?:AVD-)?DS-?0*6:|(?:AVD-)?DS-?0*7:|(?:AVD-)?DS-?0*8:|(?:AVD-)?DS-?0*9:|(?:AVD-)?DS-?0*11:|(?:AVD-)?DS-?0*12:|(?:AVD-)?DS-?0*13:|(?:AVD-)?DS-?0*14:|(?:AVD-)?DS-?0*15:|(?:AVD-)?DS-?0*16:|(?:AVD-)?DS-?0*17:|(?:AVD-)?DS-?0*19:|(?:AVD-)?DS-?0*20:|(?:AVD-)?DS-?0*21:|(?:AVD-)?DS-?0*22:|(?:AVD-)?DS-?0*23:|(?:AVD-)?DS-?0*24:|(?:AVD-)?DS-?0*25:|(?:AVD-)?DS-?0*29:|CKV_DOCKER_4:|CKV_DOCKER_5:|CKV_DOCKER_6:|CKV_DOCKER_9:|CKV_DOCKER_10:|CKV_DOCKER_11:|WD\-DOCKER\-0008:))[A-Za-z0-9_-]+:"],
-        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:914 (title "{severity} IaC: {trivy ID}"); engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:1919 (title "{severity} IaC: {checkov check_id}"); catch-all by the concept\'s own definition: every IaC id not claimed by a more specific concept or by `off` — cloud checks (AWS-/AZU-/GCP-/CKV_AWS/CKV2_*), RBAC/namespace/SA-token/registry/probe KSV & CKV_K8S checks, DS-0004 port 22, DS-0010 sudo, DS-0026 HEALTHCHECK, KSV-01010 sensitive (non-secret) ConfigMap content, CKV2_DOCKER_17 chpasswd, and WD-DOCKER-0002 build-time key material (D31/Scanners/BuildTimeKeyMaterialScan.cs:62), -0004 unpinned toolchain install (UnpinnedToolchainInstallScan.cs:110), -0005 mutable git clone (MutableGitCloneScan.cs:49), -0007 no HEALTHCHECK (ContainerRuntimeHardeningScan.cs:56), -0010 unscoped COPY . (UnscopedBuildContextCopyScan.cs:55), -0011 safe.directory \'*\' (GitOwnershipCheckDisabledScan.cs:50), -0012 world-writable owned path (WorldWritableOwnedPathScan.cs:64), -0013 EOL base image (EndOfLifeBaseImageScan.cs:64), -0016 PEP 668 guard off (PythonInstallGuardDisabledScan.cs:59), -0017 browser sandbox off (BrowserSandboxDisabledScan.cs:62), WD-K8S-0004 (BOTH AutomountedServiceAccountTokenScan.cs:73 and UnresolvableImageReferenceScan.cs:56 claim this id — same concept either way)'),
-   ]),
-  ]),
-  off=[
-   dict(message=r"^\w+ IaC: (?:(?:AVD-)?DS-?0*5:|(?:AVD-)?DS-?0*6:|(?:AVD-)?DS-?0*7:|(?:AVD-)?DS-?0*8:|(?:AVD-)?DS-?0*9:|(?:AVD-)?DS-?0*11:|(?:AVD-)?DS-?0*12:|(?:AVD-)?DS-?0*13:|(?:AVD-)?DS-?0*14:|(?:AVD-)?DS-?0*15:|(?:AVD-)?DS-?0*16:|(?:AVD-)?DS-?0*17:|(?:AVD-)?DS-?0*19:|(?:AVD-)?DS-?0*20:|(?:AVD-)?DS-?0*21:|(?:AVD-)?DS-?0*22:|(?:AVD-)?DS-?0*23:|(?:AVD-)?DS-?0*24:|(?:AVD-)?DS-?0*25:|(?:AVD-)?DS-?0*29:|CKV_DOCKER_4:|CKV_DOCKER_5:|CKV_DOCKER_6:|CKV_DOCKER_9:|CKV_DOCKER_10:|CKV_DOCKER_11:|WD\-DOCKER\-0008:)",
-        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:914 (title "{severity} IaC: {trivy ID}"); engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:1919 (title "{severity} IaC: {checkov check_id}"); Dockerfile lint / image-size / build-hygiene rules with no security consequence: DS-0005 ADD vs COPY, -0006 COPY --from self, -0007 multiple ENTRYPOINT, -0008 port out of range, -0009 relative WORKDIR, -0011 COPY multi-arg, -0012 duplicate alias, -0013 RUN cd, -0014 wget+curl, -0015/-0016/-0019/-0020 package cache cleanup (engine/src/Scanner/Security/D31/Scanners/DockerfileShapeRuleFilter.cs:114-121), -0017 update alone, -0021 apt-get -y, -0022 MAINTAINER, -0023 multiple HEALTHCHECK, -0024 dist-upgrade, -0025 apk --no-cache, -0029 --no-install-recommends; CKV_DOCKER_4/5/6/9/10/11 (checkov twins); WD-DOCKER-0008 no-op tool shim (engine/src/Scanner/Security/D31/Scanners/NoOpToolShimScan.cs:55, CWE-754: a test/build tool neutered, a gate-honesty defect, not an IaC security misconfiguration)'),
-  ]),
+ "D31": D31_SPEC,
  "D36": dict(
   concepts=OrderedDict([
    ("build-provenance-and-signing", [
@@ -615,7 +809,7 @@ TABLE = {
         source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665)'),
    ]),
    ("ci-secret-exposure", [
-    dict(messages=[r"^\w+: (?:(?:watchdog-)?checkout\-credential\-persisted\-in\-privileged\-job|(?:watchdog-)?comment\-command\-checks\-out\-and\-builds\-fork\-code|(?:watchdog-)?comment\-command\-builds\-fork\-code\-with\-secrets|(?:watchdog-)?privileged\-trigger\-secret\-to\-unpinned\-action|(?:watchdog-)?secret\-interpolated\-into\-run|(?:watchdog-)?secret\-into\-unpinned\-action|(?:watchdog-)?secret\-promoted\-to\-job\-env|pull\-request\-target\-code\-checkout|workflow\-run\-target\-code\-checkout|gha\-workflow\-env\-secret|secrets\-inherit):"],
+    dict(messages=[r"^\w+: (?:(?:watchdog-)?checkout\-credential\-persisted\-in\-privileged\-job|(?:watchdog-)?comment\-command\-checks\-out\-and\-builds\-fork\-code|(?:watchdog-)?comment\-command\-builds\-fork\-code\-with\-secrets|(?:watchdog-)?privileged\-trigger\-secret\-to\-unpinned\-action|(?:watchdog-)?secret\-into\-unpinned\-action|(?:watchdog-)?secret\-promoted\-to\-job\-env|pull\-request\-target\-code\-checkout|workflow\-run\-target\-code\-checkout|gha\-workflow\-env\-secret|secrets\-inherit):"],
         source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665)'),
    ]),
    ("unpinned-ci-action", [
@@ -635,12 +829,44 @@ TABLE = {
         source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665)'),
    ]),
    ("iac-misconfiguration", [
-    dict(messages=[r"^\w+: (?:aws\-ec2\-launch\-template\-metadata\-service\-v1\-enabled|aws\-elasticsearch\-nodetonode\-encryption\-not\-enabled|gcp\-sql\-database\-ssl\-insecure\-value\-postgres\-mysql|aws\-insecure\-cloudfront\-distribution\-tls\-version|azure\-appservice\-detailed\-errormessages\-enabled|aws\-lambda\-permission\-unrestricted\-source\-arn|gcp\-sql\-database\-ssl\-insecure\-value\-sqlserver|legacy\-api\-clusterrole\-excessive\-permissions|aws\-insecure\-redshift\-ssl\-configuration|aws\-sqs\-queue\-policy\-wildcard\-principal|aws\-elasticsearch\-insecure\-tls\-version|aws\-cloudwatch\-log\-group\-no\-retention|aws\-config\-aggregator\-not\-all\-regions|aws\-ecr\-repository\-wildcard\-principal|aws\-efs\-filesystem\-encrypted\-with\-cmk|awscdk\-bucket\-grantpublicaccessmethod|aws\-insecure\-api\-gateway\-tls\-version|aws\-ebs\-snapshot\-encrypted\-with\-cmk|aws\-lambda\-x\-ray\-tracing\-not\-active|azure\-mssql\-service\-mintls\-version|insecure\-load\-balancer\-tls\-version|appservice\-authentication\-enabled|aws\-codebuild\-project\-unencrypted|appservice\-use\-secure\-tls\-policy|aws\-documentdb\-auditing\-disabled|aws\-subnet\-has\-public\-ip\-address|azure\-appservice\-min\-tls\-version|aws\-glacier\-vault\-any\-principal|awscdk\-codebuild\-project\-public|unrestricted\-github\-oidc\-policy|appservice\-require\-client\-cert|aws\-dynamodb\-table\-unencrypted|aws\-kinesis\-stream\-unencrypted|aws\-kms\-key\-wildcard\-principal|azure\-mysql\-encryption\-enabled|aws\-iam\-admin\-policy\-ssoadmin|storage\-use\-secure\-tls\-policy|appservice\-enable\-https\-only|azure\-key\-no\-expiration\-date|gcp\-sql\-database\-require\-ssl|aws\-rds\-backup\-no\-retention|awscdk\-sqs\-unencryptedqueue|azure\-appservice\-https\-only|eks\-public\-endpoint\-enabled|aws\-db\-instance\-no\-logging|aws\-ebs\-volume\-unencrypted|aws\-ecr\-mutable\-image\-tags|azure\-mysql\-mintls\-version|public\-s3\-policy\-statement|aws\-cdk\-bucket\-enforcessl|gcp\-cloud\-storage\-logging|gcp\-dns\-key\-specs\-rsasha1|awscdk\-bucket\-encryption|appservice\-enable\-http2|gcp\-sql\-public\-database|aws\-ec2\-has\-public\-ip|s3\-unencrypted\-bucket|storage\-enforce\-https|aws\-iam\-admin\-policy|aws\-provisioner\-exec|wildcard\-assume\-role|aws\-ebs\-unencrypted|aws\-kms\-no\-rotation|ec2\-imdsv1\-optional|s3\-public\-rw\-bucket|public\-s3\-bucket):"],
+    dict(messages=[r"^\w+: (?:aws\-ec2\-launch\-template\-metadata\-service\-v1\-enabled|aws\-elasticsearch\-nodetonode\-encryption\-not\-enabled|gcp\-sql\-database\-ssl\-insecure\-value\-postgres\-mysql|aws\-insecure\-cloudfront\-distribution\-tls\-version|azure\-appservice\-detailed\-errormessages\-enabled|aws\-lambda\-permission\-unrestricted\-source\-arn|gcp\-sql\-database\-ssl\-insecure\-value\-sqlserver|aws\-insecure\-redshift\-ssl\-configuration|aws\-sqs\-queue\-policy\-wildcard\-principal|aws\-elasticsearch\-insecure\-tls\-version|aws\-cloudwatch\-log\-group\-no\-retention|aws\-config\-aggregator\-not\-all\-regions|aws\-ecr\-repository\-wildcard\-principal|aws\-efs\-filesystem\-encrypted\-with\-cmk|awscdk\-bucket\-grantpublicaccessmethod|aws\-insecure\-api\-gateway\-tls\-version|aws\-ebs\-snapshot\-encrypted\-with\-cmk|aws\-lambda\-x\-ray\-tracing\-not\-active|azure\-mssql\-service\-mintls\-version|insecure\-load\-balancer\-tls\-version|appservice\-authentication\-enabled|aws\-codebuild\-project\-unencrypted|appservice\-use\-secure\-tls\-policy|aws\-documentdb\-auditing\-disabled|aws\-subnet\-has\-public\-ip\-address|azure\-appservice\-min\-tls\-version|aws\-glacier\-vault\-any\-principal|awscdk\-codebuild\-project\-public|unrestricted\-github\-oidc\-policy|appservice\-require\-client\-cert|aws\-dynamodb\-table\-unencrypted|aws\-kinesis\-stream\-unencrypted|aws\-kms\-key\-wildcard\-principal|azure\-mysql\-encryption\-enabled|aws\-iam\-admin\-policy\-ssoadmin|storage\-use\-secure\-tls\-policy|appservice\-enable\-https\-only|azure\-key\-no\-expiration\-date|gcp\-sql\-database\-require\-ssl|aws\-rds\-backup\-no\-retention|awscdk\-sqs\-unencryptedqueue|azure\-appservice\-https\-only|eks\-public\-endpoint\-enabled|aws\-db\-instance\-no\-logging|aws\-ebs\-volume\-unencrypted|aws\-ecr\-mutable\-image\-tags|azure\-mysql\-mintls\-version|public\-s3\-policy\-statement|aws\-cdk\-bucket\-enforcessl|gcp\-cloud\-storage\-logging|gcp\-dns\-key\-specs\-rsasha1|awscdk\-bucket\-encryption|appservice\-enable\-http2|gcp\-sql\-public\-database|aws\-ec2\-has\-public\-ip|s3\-unencrypted\-bucket|storage\-enforce\-https|aws\-iam\-admin\-policy|aws\-provisioner\-exec|wildcard\-assume\-role|aws\-ebs\-unencrypted|aws\-kms\-no\-rotation|ec2\-imdsv1\-optional|s3\-public\-rw\-bucket|public\-s3\-bucket):"],
         source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665)'),
    ]),
+   ("overly-permissive-rbac", [
+    dict(messages=[r"^\w+: (?:legacy\-api\-clusterrole\-excessive\-permissions):"],
+        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665); a ClusterRole granting legacy-API wildcard permissions'),
+   ]),
+   ("log-injection", [
+    dict(messages=[r"^\w+: (?:crlf\-injection\-logs):"],
+        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665); registry java.lang.security.audit.crlf-injection-logs (baked in p/security-audit and p/owasp-top-ten): untrusted data put into a logger without neutralising CR/LF, so an attacker can forge log entries — CWE-117 by its own message (its metadata cites the parent CWE-93)'),
+   ]),
    ("container-excessive-privilege", [
-    dict(messages=[r"^\w+: (?:allow\-privilege\-escalation\-no\-securitycontext|(?:watchdog-)?docker\-socket\-mount\-in\-run|allow\-privilege\-escalation\-true|run\-as\-non\-root\-unsafe\-value|seccomp\-confinement\-disabled|allow\-privilege\-escalation|missing\-user\-entrypoint|no\-sudo\-in\-dockerfile|privileged\-service|last\-user\-is\-root|missing\-user):"],
-        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665)'),
+    dict(messages=[r"^\w+: (?:no\-sudo\-in\-dockerfile):"],
+        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665); umbrella residue (contract 1.3 parent): a Dockerfile that runs sudo — privilege, but none of the precise container concepts'),
+   ]),
+   ("container-security-context-missing", [
+    dict(messages=[r"^\w+: (?:allow\-privilege\-escalation\-no\-securitycontext):"],
+        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665); the container declares no securityContext at all'),
+   ]),
+   ("host-path-mount", [
+    dict(messages=[r"^\w+: (?:(?:watchdog-)?docker\-socket\-mount\-in\-run):"],
+        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665); a CI step bind-mounts the Docker socket into a container (engine/rulesets/semgrep/watchdog-sast.yml)'),
+   ]),
+   ("container-privilege-escalation-allowed", [
+    dict(messages=[r"^\w+: (?:allow\-privilege\-escalation\-true|allow\-privilege\-escalation):"],
+        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665); allowPrivilegeEscalation true or not set to false'),
+   ]),
+   ("container-runs-as-root", [
+    dict(messages=[r"^\w+: (?:run\-as\-non\-root\-unsafe\-value|missing\-user\-entrypoint|last\-user\-is\-root|missing\-user):"],
+        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665); runAsNonRoot false, no USER before ENTRYPOINT/CMD, last USER root, no USER'),
+   ]),
+   ("container-confinement-profile-unset", [
+    dict(messages=[r"^\w+: (?:seccomp\-confinement\-disabled):"],
+        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665); seccomp unconfined'),
+   ]),
+   ("privileged-container", [
+    dict(messages=[r"^\w+: (?:privileged\-service):"],
+        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665); docker-compose service with privileged: true'),
    ]),
    ("mutable-image-reference", [
     dict(messages=[r"^\w+: (?:(?:watchdog-)?mutable\-circleci\-executor\-image|(?:watchdog-)?mutable\-service\-container\-image|(?:watchdog-)?mutable\-job\-container\-image):"],
@@ -675,8 +901,8 @@ TABLE = {
         source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665)'),
    ]),
    ("secret-in-process-arguments", [
-    dict(messages=[r"^\w+: (?:(?:watchdog-)?secret\-in\-argv\-csharp|(?:watchdog-)?secret\-in\-argv\-go|(?:watchdog-)?secret\-in\-argv\-ts):"],
-        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665)'),
+    dict(messages=[r"^\w+: (?:(?:watchdog-)?secret\-in\-argv\-csharp|(?:watchdog-)?secret\-in\-argv\-go|(?:watchdog-)?secret\-in\-argv\-ts|(?:watchdog-)?secret\-interpolated\-into\-run):"],
+        source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665); watchdog-secret-interpolated-into-run (engine/rulesets/semgrep/watchdog-sast.yml:10303, metadata CWE-214 first, CWE-532) is HERE, not ci-secret-exposure: a secret expanded by `${{ }}` into a run script lands verbatim in the script file and in the argument vector of the commands it launches (its own message: "a `ps` listing of the commands it launches"); no untrusted code receives it, which is what ci-secret-exposure denotes'),
    ]),
    ("cleartext-transmission", [
     dict(messages=[r"^\w+: (?:(?:watchdog-)?cleartext\-subresource\-markup|request\-session\-http\-in\-with\-context|grpc\-client\-insecure\-connection|grpc\-nodejs\-insecure\-connection|grpc\-server\-insecure\-connection|http\-not\-https\-connection|request\-session\-with\-http|(?:react\-)?insecure\-request|httpget\-http\-request|plaintext\-http\-link|require\-encryption|unencrypted\-socket|insecure\-redirect|no\-auth\-over\-http|request\-with\-http|force\-ssl\-false|telnetlib|use\-tls):"],
@@ -694,8 +920,8 @@ TABLE = {
   off=[
    dict(message=r"^\w+: (?:(?:watchdog-)?global\-tilde\-expansion\-bound\-home\-rust|(?:watchdog-)?git\-ref\-parsed\-by\-fixed\-field\-index|(?:watchdog-)?empty\-glob\-character\-class\-rust|(?:watchdog-)?map\-order\-in\-rendered\-text\-go|(?:watchdog-)?map\-order\-in\-joined\-slice\-go|(?:watchdog-)?global\-tilde\-expansion\-rust|missing\-self\-transfer\-check\-ercx|insecure\-use\-string\-copy\-fn|system\-wildcard\-detected|check\-validation\-regex|detect\-buffer\-noassert|insecure\-use\-strcat\-fn|insecure\-use\-strtok\-fn|insecure\-use\-scanf\-fn|insecure\-use\-gets\-fn|bad\-hexa\-conversion|use\-of\-unsafe\-block|bash_reverse_shell|divide\-by\-zero|use\-after\-free|double\-free):",
         source='memory-safety, unsafe C/Go primitives, wildcard shell args, reverse-shell IOC, Solidity, Ruby anchor regex and other non-security correctness defects (CWE-119/242/415/416/676/704/369/155/185/330-map-order/41): no catalogue concept; engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61'),
-   dict(message=r"^\w+: (?:(?:watchdog-)?value\-interpolated\-into\-predicate\-format\-swift|dynamodb\-filter\-injection|dynamodb\-request\-object|http\-response\-splitting|insecure\-use\-printf\-fn|csv\-writer\-injection|crlf\-injection\-logs|request\-data\-write|header\-injection|twiml\-injection):",
-        source='header / log / CSV / TwiML / NoSQL / predicate-format injection - no matching injection concept (CWE-113/93/1236/91/943/134); engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61'),
+   dict(message=r"^\w+: (?:(?:watchdog-)?value\-interpolated\-into\-predicate\-format\-swift|dynamodb\-filter\-injection|dynamodb\-request\-object|http\-response\-splitting|insecure\-use\-printf\-fn|csv\-writer\-injection|request\-data\-write|header\-injection|twiml\-injection):",
+        source='header / CSV / TwiML / NoSQL / predicate-format injection - no matching injection concept (CWE-113/1236/91/943/134; log injection is the log-injection concept); engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61'),
    dict(message=r"^\w+: (?:(?:watchdog-)?decompression\-bomb\-zip\-entry\-go|potential\-dos\-via\-decompression\-bomb|(?:watchdog-)?http\-server\-no\-timeouts\-go|random\-fd\-exhaustion):",
         source='resource exhaustion (decompression bomb, missing server timeouts, fd exhaustion) - no catalogue concept; engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61'),
    dict(message=r"^\w+: (?:spring\-actuator\-dangerous\-endpoints\-enabled\-yaml|spring\-actuator\-dangerous\-endpoints\-enabled|spring\-actuator\-fully\-enabled\-yaml|(?:express\-)?check\-directory\-listing|http\-listener\-wildcard\-bindings|avoid_hardcoded_config_TESTING|spring\-actuator\-fully\-enabled|avoid\-bind\-to\-all\-interfaces|avoid_hardcoded_config_DEBUG|avoid_using_app_run_directly|avoid_app_run_with_bad_host|avoid_hardcoded_config_ENV|open\-directory\-listing|fs\-directory\-listing|insecure\-module\-used|pprof\-debug\-exposure|exported_activity|debug\-enabled|url\-rewriting|scalac\-debug|phpinfo\-use):",
@@ -755,5 +981,29 @@ for _d, _s in TABLE.items():
     SPEC[_d] = _s
 
 FAMILY = {c: "hardcoded-secret" for c in ("hardcoded-credential", "hardcoded-password", "hardcoded-cryptographic-key", "committed-private-key")}
+# A weak digest used on a password and a password stored without an adequate KDF are one defect seen from two rules
+# (an MD5 password hash is both): a scanner reporting the site under the sibling is credited at plants and charged at
+# traps (CONTRACT.md, Concept families). ci-secret-exposure and secret-in-process-arguments are NOT a family: the
+# taxonomy makes them disjoint (untrusted code receives the secret vs. the process list / script text shows it), and the
+# one rule that blurred them (watchdog-secret-interpolated-into-run) is mapped to the concept its CWE-214 names.
+FAMILY.update({c: "weak-password-hashing" for c in ("weak-hash-algorithm", "insufficient-password-hashing")})
 IGNORE = [OrderedDict(rule=r"^D28$", message=r"^Rotate the exposed credentials",
                       reason="D28's repository-level roll-up of its located history rows (engine/src/Scanner/Security/D28/SecretsHistoryAnalyzer.cs:392), not a separate finding")]
+
+# Contract 1.3 `locationFromMessage`: D36's workflow rows carry NO SARIF location (a posture row, one per pattern, not
+# per site) although their detail names the sites. The first site named becomes the location (D36 prints at most three,
+# FirstThree, SupplyChainProvenanceAnalyzer.cs:8818). Only a result with no SARIF location is relocated. A basename
+# ("release.yml:7") suffix-matches every file of that name, so two workflows of one name in different directories
+# would both match it — no frozen key has that.
+D36_SITE_SRC = ("engine/src/Scanner/SecurityPosture/D36/SupplyChainProvenanceAnalyzer.cs:8583,8603,8658,8673,8707,8726,"
+                "8747,8765,8785,8801 (\"{Path.GetFileName(file)}:{line} (…)\" sites in the detail of the token, secret, "
+                "release-gate and advisory-schedule rows; result written without a location, "
+                "engine/src/CodeHealth.Reporting/Sarif/SarifReportRenderer.cs:331-355)")
+LOCATION_FROM_MESSAGE = [
+    OrderedDict(rule=r"^D36$", message=r"^Secret passed as a command-line argument:",
+                pattern=r"logs a command line\): (?P<file>[^\s:;]+): ",
+                source="engine/src/Scanner/SecurityPosture/D36/SupplyChainProvenanceAnalyzer.cs:8690-8697 (detail "
+                       "lists \"{relative path}: {command line}\" sites, :8946) — the file, no line"),
+    OrderedDict(rule=r"^D36$", pattern=r"(?<![\w./-])(?P<file>[\w./-]+\.(?:ya?ml|toml|json)):(?P<line>\d+)\b",
+                source=D36_SITE_SRC),
+]

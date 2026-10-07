@@ -58,6 +58,12 @@ assert not missing, missing
 unused = set(concept_ids) - used
 assert not unused, unused
 assert set(SCORE_DIMS) <= set(concept_ids), set(SCORE_DIMS) - set(concept_ids)
+# contract 1.3 umbrellas: a parent exists, is not itself refined further, and is mapped on every dimension its
+# children are (an entry naming the umbrella must be able to meet every child's results in per-dimension matching)
+PARENT = {c["id"]: c["parent"] for c in C if "parent" in c}
+for cid, par in PARENT.items():
+    assert par in concept_ids, (cid, "parent is not a concept", par)
+    assert par not in PARENT, (cid, "umbrellas are one level deep", par)
 taxonomy = OrderedDict(version="1.0", concepts=C)
 for c in C:
     text = (c["id"] + " " + c["title"] + " " + c["description"]).lower()
@@ -76,7 +82,9 @@ def rule_for(ds):
 
 # Contract 1.1 discriminators (discrim.py): every multi-concept dimension decides its concept by message title.
 # DISCRIM: concept -> dimension -> [condition]; a dimension listed for a concept gets one rule object per condition.
-from discrim import SPEC, FAMILY, IGNORE
+from discrim import SPEC, FAMILY, IGNORE, LOCATION_FROM_MESSAGE, PRECISE_PARENT
+for cid, par in PRECISE_PARENT.items():  # discrim.py's D31 split and the taxonomy agree on every umbrella
+    assert next(c for c in C if c["id"] == cid).get("parent") == par, (cid, par)
 DISCRIM = OrderedDict()
 UNEVIDENCED, OFF = [], []
 for did, spec in SPEC.items():
@@ -111,7 +119,9 @@ mapping["notes"] = [
     "Per-result CWE taxa are present on security results (SarifReportRenderer.cs:154-168), but D13 stamps the dimension-wide pair CWE-798+CWE-259 on every row regardless of secret type (SecretScanningAnalyzer.cs:44, SecurityCweMap.cs:36), so CWE cannot discriminate D13 concepts.",
     "Contract 1.1: where one dimension maps to several concepts the message title decides. EVERY multi-concept in-scope dimension is fully discriminated (" + ", ".join(sorted(d for d in D if "oos" not in D[d] and len(D[d]["c"]) > 1)) + "), plus SC1: each of its concepts carries per-rule `messages` / `properties` conditions with a `source` naming the engine line the title format comes from (curated in mappings/watchdog-build/discrim.py). Titles a dimension really emits that denote none of its concepts are listed under `offConcept` (informational: such a result maps to no concept); (concept, dimension) pairs that no title of the dimension evidences at this rubric are listed under `unevidenced` and get no rule. Checked against the distinct messages of ~8.5k local Watchdog SARIF outputs: every one lands on exactly one concept or on an `offConcept` entry (D28's history rows also on secret-in-version-history, by design). Single-concept dimensions keep the bare ruleId rule, so their off-topic rows (if any) still count for their one concept.",
     "The four hardcoded-secret concepts form the family `hardcoded-secret`: a scanner that reports the right site under a sibling secret type (gitleaks generic-api-key on a planted password) is credited at plants and charged at traps (CONTRACT.md, Concept families).",
-    "Sub-rule ids are not unique in one place: two different D31 rules share WD-K8S-0004 (engine/src/Scanner/Security/D31/Scanners/AutomountedServiceAccountTokenScan.cs:73 and UnresolvableImageReferenceScan.cs:56). Both map to iac-misconfiguration, so this mapping is unaffected.",
+    "Sub-rule ids are not unique in one place: two different D31 rules share WD-K8S-0004 (engine/src/Scanner/Security/D31/Scanners/AutomountedServiceAccountTokenScan.cs:73 and UnresolvableImageReferenceScan.cs:56); the detail decides (\"This pod spec/template sets …\" -> automounted-service-account-token, the unsubstituted image placeholder -> iac-misconfiguration). WD-COMPOSE-0003 likewise carries host namespaces and privileged: true (host-namespace-sharing / privileged-container by detail).",
+    "Contract 1.3 umbrellas: container-excessive-privilege and iac-misconfiguration are the `parent` of precise concepts (container-runs-as-root, privileged-container, host-namespace-sharing, host-path-mount, container-privilege-escalation-allowed, container-excess-capabilities, container-writable-root-filesystem, container-confinement-profile-unset, container-security-context-missing; missing-health-probes, missing-image-healthcheck, automounted-service-account-token, overly-permissive-rbac, image-not-from-allowed-registry, container-missing-resource-requests). Each result still lands on ONE concept; an entry naming an umbrella also matches its children's results, so keys written before the split keep their meaning, while an entry naming a precise concept is matched only by that concept. The children partition the umbrella's pre-split D31 ids (asserted in discrim.py); the umbrella keeps the residue no precise concept names.",
+    "Contract 1.3 `locationFromMessage`: D36's workflow rows have no SARIF location but name their first site in the detail (\"release.yml:7\", or for secret argv rows the workflow path only); a location-less D36 result is given that site. The scanner named the location only in prose and is given the benefit of it; the report counts such results (summary.locationSources, result locationSource = message).",
     "Contract 1.2 `scoreDimensions`: a concept whose finding dimensions include one whose score does not measure it (D12 or D36 for dependencies-not-locked, D36 for security-tooling-in-ci, R2 for high-cognitive-complexity, X10 for duplicated-code) names the dimensions a score-band entry takes its score from (curated in mappings/watchdog-build/dims.py SCORE_DIMS); other concepts look up all of `dimensions`.",
     "D28's repository-level \"Rotate the exposed credentials\" row is a roll-up of its located rows and is listed under `ignore` (outcome summary, in no metric).",
     "Location: physicalLocation.artifactLocation.uri = Finding.FilePath (repo-relative) and region.startLine = LineNumber, with any non-positive or missing line written as 1 (SarifReportRenderer.cs:331-355). A file-level finding therefore matches only entries within lineTolerance of line 1; a repository-level finding has an empty locations array.",
@@ -140,9 +150,15 @@ for cid in concept_ids:
         spec["scoreDimensions"] = sd
     if cid in FAMILY:
         spec["family"] = FAMILY[cid]
+    if cid in PARENT:
+        par = PARENT[cid]
+        assert set(ds) <= set(by_concept[par]), (cid, "child mapped on a dimension its umbrella is not", par)
+        assert FAMILY.get(cid) is None and FAMILY.get(par) is None, (cid, "an umbrella and its children take no family")
+        spec["parent"] = par
     mapping["concepts"][cid] = spec
 mapping["ruleDimension"] = [OrderedDict(rule=r"^([A-Z]+[0-9]+)$", dimension="$1")]
 mapping["ignore"] = IGNORE
+mapping["locationFromMessage"] = LOCATION_FROM_MESSAGE
 mapping["offConcept"] = OFF
 mapping["unevidenced"] = UNEVIDENCED
 

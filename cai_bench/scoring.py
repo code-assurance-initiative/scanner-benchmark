@@ -20,6 +20,20 @@ family sibling on the site, family sibling by subject — so a stronger match is
 redundancy are one-to-one as for any other match. A location-less result that names the subject of an entry is never
 taken by a repository-level entry without a subject: the subject entry, not the repository, is its site.
 
+Umbrella concepts (contract 1.3): a mapping concept may name a `parent`. A result keeps the ONE concept its scanner
+row denotes, but for matching it also counts as each of that concept's ancestors (`matchConcepts`), in the same pass
+as an exact match: an entry naming the umbrella (written before the precise concepts existed) matches what it matched
+before, while an entry naming a precise concept is matched only by results of that concept — never by the umbrella's
+other children nor by a residue result of the umbrella itself.
+
+Location from the message (contract 1.3): a result with no SARIF location whose message names its site, per the
+mapping's `locationFromMessage`, is given that file (and line) before matching (`locationSource`: sarif | message |
+none). A SARIF location is never replaced.
+
+File-level recall (contract 1.3) is a SECONDARY diagnostic and changes no outcome: a must-fire entry is file-level
+found when it is a TP, or when any result of its concept (exactly, as an umbrella's child, or as a family sibling) is
+located anywhere in the entry's file. A repository-level entry is file-level found only when it is a TP.
+
 Precedence when one result could match several entries — the first that applies decides it:
   1. a `must-fire` entry it can be consumed by (one-to-one, key order, located entries before repository-level ones)
                                                                                                    -> tp
@@ -123,18 +137,23 @@ def _subject_hit(entry, result):
 PASSES = ((False, False), (False, True), (True, False), (True, True))
 
 
+def _mc(result):
+    """The concepts a result counts as for matching: its own, then their umbrella ancestors (contract 1.3)."""
+    return result.get("matchConcepts", result["concepts"])
+
+
 def _result_concepts_for(entry, result, family_of=None):
     """The result's concepts this entry speaks about (for "*": all of them, or (unmapped) when it has none). With
     `family_of`, the result's concepts that are siblings of a plant's/trap's concept instead."""
     cs = entry_concepts(entry)
     if cs == STAR:
-        return list(result["concepts"]) or [UNMAPPED]
+        return list(_mc(result)) or [UNMAPPED]
     if family_of is None:
-        return [c for c in result["concepts"] if c in cs]
+        return [c for c in _mc(result) if c in cs]
     if entry["label"] not in FAMILY_LABELS:
         return []
     fam = family_of(entry["concept"])
-    return [c for c in result["concepts"] if fam is not None and family_of(c) == fam] if fam else []
+    return [c for c in _mc(result) if fam is not None and family_of(c) == fam] if fam else []
 
 
 class Matcher:
@@ -208,7 +227,7 @@ class Matcher:
         mf = [e for e in self.entries if e["label"] == "must-fire"]
         mf = [e for e in mf if e["_file"]] + [e for e in mf if not e["_file"]]
         for e in mf:
-            ent_out[e["id"]] = {"outcome": "FN", "results": [], "redundant": []}
+            ent_out[e["id"]] = {"outcome": "FN", "results": [], "redundant": [], "fileLevel": False}
         for family, subject in PASSES:
             for e in mf:
                 if ent_out[e["id"]]["outcome"] == "TP":
@@ -217,7 +236,14 @@ class Matcher:
                             if res_out[i] is None and self.matches(e, r, family, subject)), None)
                 if hit is not None:
                     claim(hit, "tp", e, e["concept"])
-                    ent_out[e["id"]] = {"outcome": "TP", "results": [hit], "redundant": []}
+                    ent_out[e["id"]] = {"outcome": "TP", "results": [hit], "redundant": [], "fileLevel": True}
+        for e in mf:
+            if ent_out[e["id"]]["outcome"] != "TP" and e["_file"] is not None:
+                ent_out[e["id"]]["fileLevel"] = any(
+                    res_out[i] is None or res_out[i]["outcome"] != "summary"
+                    for i, r in enumerate(self.results)
+                    if r["file"] is not None and path_match(r["file"], e["_file"])
+                    and (_result_concepts_for(e, r) or _result_concepts_for(e, r, self.family_of)))
         hit_mf = [e for e in mf if ent_out[e["id"]]["outcome"] == "TP"]
         for i, r in enumerate(self.results):
             if res_out[i] is None:
@@ -241,7 +267,7 @@ class Matcher:
 
         for i, r in enumerate(self.results):
             if res_out[i] is None:
-                cov = [c for c in r["concepts"] if c in self.covered]
+                cov = [c for c in _mc(r) if c in self.covered]
                 if cov:
                     claim(i, "unmatched-fp", None, cov[0])
                 else:
@@ -257,19 +283,22 @@ def _ratio(n, d):
 
 def empty_counts():
     return {"tp": 0, "fn": 0, "fp": 0, "tn": 0, "trapFp": 0, "trapTn": 0,
-            "results": 0, "noise": 0, "redundant": 0, "uncovered": 0, "summaryRows": 0}
+            "results": 0, "noise": 0, "redundant": 0, "uncovered": 0, "summaryRows": 0, "fileLevelTp": 0}
 
 
 def finish(c):
     c["recall"] = _ratio(c["tp"], c["tp"] + c["fn"])
     c["trapResistance"] = _ratio(c["trapTn"], c["trapTn"] + c["trapFp"])
     c["noiseRate"] = _ratio(c["noise"], c["results"])
+    # SECONDARY diagnostic (contract 1.3): plants with a result of the concept anywhere in their file / plants
+    c["fileLevelRecall"] = _ratio(c["fileLevelTp"], c["tp"] + c["fn"])
     return c
 
 
-def add_entry(c, label, outcome):
+def add_entry(c, label, outcome, file_level=False):
     if label == "must-fire":
         c["tp" if outcome == "TP" else "fn"] += 1
+        c["fileLevelTp"] += 1 if file_level else 0
     else:
         c["fp" if outcome == "FP" else "tn"] += 1
         if label == "must-not-fire":
@@ -293,7 +322,8 @@ def add_result(c, outcome):
 def totals(matcher, out):
     c = empty_counts()
     for e in matcher.entries:
-        add_entry(c, e["label"], out["entries"][e["id"]]["outcome"])
+        o = out["entries"][e["id"]]
+        add_entry(c, e["label"], o["outcome"], o.get("fileLevel", False))
     for r in out["results"]:
         add_result(c, r["outcome"])
     return finish(c)
@@ -318,7 +348,7 @@ def by_concept(matcher, out):
         elif cs == STAR:
             add_entry(row(STAR), "clean", o["outcome"])
         else:
-            add_entry(row(e["concept"]), e["label"], o["outcome"])
+            add_entry(row(e["concept"]), e["label"], o["outcome"], o.get("fileLevel", False))
     for r in out["results"]:
         if r["outcome"] != "summary":
             add_result(row(r["concept"]), r["outcome"])
@@ -391,7 +421,16 @@ def score(key, results, mapping, scores=None):
         r["ignoreReason"] = mapping.ignored(r["ruleId"], r.get("message"))
         r["concepts"] = [] if r["ignoreReason"] else mapping.concepts_of(r["ruleId"], r.get("message"),
                                                                          r.get("properties"))
+        mc = list(r["concepts"])
+        for c in r["concepts"]:
+            mc += [a for a in mapping.ancestors(c) if a not in mc]
+        r["matchConcepts"] = mc
         r["dimension"] = mapping.dimension_of(r["ruleId"], r["concepts"])
+        r["locationSource"] = "sarif" if r["file"] is not None else "none"
+        if r["file"] is None and not r["ignoreReason"]:
+            loc = mapping.location_in_message(r["ruleId"], r.get("message"))
+            if loc is not None:
+                r["file"], r["line"], r["locationSource"] = norm(loc[0]), loc[1], "message"
     m = Matcher(entries, results, tol, mapping)
     out = m.run()
 
@@ -399,6 +438,8 @@ def score(key, results, mapping, scores=None):
     for e in m.entries:
         o = out["entries"][e["id"]]
         row = {"id": e["id"], "label": e["label"], "outcome": o["outcome"]}
+        if e["label"] == "must-fire":
+            row["fileLevel"] = o["fileLevel"]
         cs = entry_concepts(e)
         row["concept" if e["label"] != "clean" else "concepts"] = e["concept"] if e["label"] != "clean" else cs
         for k in ("file", "lines", "commit", "subject"):
@@ -415,9 +456,11 @@ def score(key, results, mapping, scores=None):
                             "attributedConcept": o["concept"], "ignoreReason": r.get("ignoreReason")})
 
     bands = score_bands(entries, scores or {}, mapping)
+    summary = totals(m, out)
+    summary["locationSources"] = {k: sum(r["locationSource"] == k for r in results) for k in ("sarif", "message", "none")}
     return {
         "lineTolerance": tol,
-        "summary": totals(m, out),
+        "summary": summary,
         "concepts": by_concept(m, out),
         "dimensions": by_dimension(entries, results, mapping, tol),
         "scoreBands": bands,
@@ -428,7 +471,8 @@ def score(key, results, mapping, scores=None):
 
 def _brief(r):
     return {"index": r["index"], "run": r["run"], "resultIndex": r["resultIndex"], "ruleId": r["ruleId"],
-            "file": r["file"], "line": r["line"], "commitSha": r.get("commitSha")}
+            "file": r["file"], "line": r["line"], "locationSource": r.get("locationSource"),
+            "commitSha": r.get("commitSha")}
 
 
 # --- text rendering -------------------------------------------------------------------------------------------------
@@ -439,19 +483,28 @@ def _pct(v):
 
 def render_table(title, rows):
     head = (f"{title:<28} {'recall':>7} {'trapRes':>7} {'noise':>7}  {'TP':>3} {'FN':>3} {'FP':>3} {'TN':>3}"
-            f"  {'res':>4} {'redund':>6} {'uncov':>5}")
+            f"  {'res':>4} {'redund':>6} {'uncov':>5}  {'fileRec*':>8}")
     lines = [head, "-" * len(head)]
     for k, c in rows.items():
         lines.append(f"{k[:28]:<28} {_pct(c['recall']):>7} {_pct(c['trapResistance']):>7} {_pct(c['noiseRate']):>7}"
                      f"  {c['tp']:>3} {c['fn']:>3} {c['fp']:>3} {c['tn']:>3}"
-                     f"  {c['results']:>4} {c['redundant']:>6} {c['uncovered']:>5}")
+                     f"  {c['results']:>4} {c['redundant']:>6} {c['uncovered']:>5}  {_pct(c['fileLevelRecall']):>8}")
     return "\n".join(lines)
+
+
+FILE_LEVEL_NOTE = ("* fileRec = file-level recall, a SECONDARY diagnostic: must-fire entries with a result of the concept "
+                   "anywhere in the same file / must-fire. It changes no TP or FN — a result on the wrong line stays "
+                   "an FN; the gap to recall is the scanner's location imprecision.")
 
 
 def render(report):
     parts = [render_table("concept", report["concepts"]), "",
              render_table("scanner dimension", report["dimensions"]), "",
-             render_table("TOTAL", {"all": report["summary"]})]
+             render_table("TOTAL", {"all": report["summary"]}), FILE_LEVEL_NOTE]
+    ls = report["summary"].get("locationSources") or {}
+    if ls.get("message"):
+        parts += [f"{ls['message']} result(s) located from the message (mapping `locationFromMessage`): the scanner "
+                  f"named the site only in prose and is given the benefit of that location."]
     if report["scoreBands"]:
         parts += ["", "score bands:"]
         for b in report["scoreBands"]:

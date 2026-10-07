@@ -1,7 +1,9 @@
 # Concept catalogue: (id, title, cwe, family, kind, description)
 C = []
-def c(id, title, cwe, family, kind, desc):
+def c(id, title, cwe, family, kind, desc, parent=None):
     C.append(dict(id=id, title=title, cwe=cwe, family=family, kind=kind, description=desc))
+    if parent is not None:  # contract 1.3: the umbrella concept this one refines
+        C[-1]["parent"] = parent
 
 # ---------------- security: secrets ----------------
 c("hardcoded-credential", "Hard-coded credential (API key, access token, service token)", "CWE-798", "security", "finding",
@@ -39,6 +41,8 @@ c("mass-assignment", "Mass assignment", "CWE-915", "security", "finding", "Bindi
 c("error-information-exposure", "Stack trace / error detail exposed to clients", "CWE-209", "security", "finding", "Exception details or stack traces returned in responses.")
 c("improper-certificate-validation", "Improper certificate validation", "CWE-295", "security", "finding", "TLS/X.509 validation disabled or replaced by a check that accepts invalid certificates.")
 c("token-signature-or-expiry-not-validated", "Security token signature or lifetime not validated", "CWE-347", "security", "finding", "JWT/security-token validation that skips signature verification or expiry/lifetime validation.")
+c("log-injection", "Log injection / log forging", "CWE-117", "security", "finding",
+  "Untrusted input written to a log without neutralising line breaks or other control characters, so an attacker can forge or split log entries and mislead whoever reads the log.")
 c("sensitive-data-in-logs", "Sensitive or personal data written to logs", "CWE-532", "security", "finding", "Personal data, credentials or tokens reaching a log or console sink.")
 c("sensitive-data-in-url", "Sensitive data in URL / query string", "CWE-598", "security", "finding", "Personal data or secrets placed in a URL, path or query string.")
 c("sensitive-data-in-browser-storage", "Sensitive data in unprotected browser storage", "CWE-922", "security", "finding", "Personal data or tokens persisted in localStorage/sessionStorage/IndexedDB or non-HttpOnly cookies.")
@@ -56,10 +60,44 @@ c("unpinned-ci-action", "Third-party CI action not pinned to an immutable refere
 c("download-without-integrity-check", "Remote code downloaded and executed without integrity check", "CWE-494", "security", "finding", "curl|sh, Invoke-WebRequest|iex or an unverified installer download in build scripts, Dockerfiles or CI.")
 c("missing-subresource-integrity", "Third-party script or stylesheet loaded without integrity check", "CWE-830", "security", "finding",
   "A page includes a script or stylesheet from a third-party origin (CDN, analytics, widget host) without a Subresource Integrity hash, so whatever that origin serves executes with the page's privileges.")
-c("container-excessive-privilege", "Container runs with excessive privilege", "CWE-250", "security", "finding", "Container/workload running as root, privileged, with added capabilities, host namespaces or a writable root filesystem.")
+c("container-excessive-privilege", "Container runs with excessive privilege (umbrella)", "CWE-250", "security", "finding",
+  "Umbrella of the precise container-privilege concepts (their `parent`): a container/workload running as root, privileged, with added capabilities, host namespaces, host paths, privilege escalation, no confinement profile or a writable root filesystem. As a concept of its own: such a privilege none of the precise concepts names (host ports, unsafe sysctls, custom SELinux options, /proc mount, privileged ports). New answer keys name the precise concept.")
+CEP = "container-excessive-privilege"
+c("container-runs-as-root", "Container runs as root", "CWE-250", "security", "finding",
+  "A container image or workload whose process runs as root (UID 0) or with no non-root user enforced: no unprivileged USER in the final image stage, runAsNonRoot unset or false, runAsUser/runAsGroup 0 or a root group. Checks that demand a high (> 10000) UID or GID denote this concept too.", parent=CEP)
+c("privileged-container", "Privileged container", "CWE-250", "security", "finding",
+  "A container run with privileged: true (or as a Windows HostProcess container): every capability, every host device and no seccomp/AppArmor confinement.", parent=CEP)
+c("host-namespace-sharing", "Container shares a host namespace", "CWE-250", "security", "finding",
+  "A workload or compose service that joins the node's network, PID or IPC namespace (hostNetwork, hostPID, hostIPC, network_mode/pid/ipc: host), so it sees and reaches the host's processes, ports or shared memory and escapes network policy.", parent=CEP)
+c("host-path-mount", "Host path or runtime socket mounted into a container", "CWE-250", "security", "finding",
+  "A workload that mounts a directory or socket of the node's own filesystem (Kubernetes hostPath, a hostPath PersistentVolume, a bind mount of the Docker/containerd socket); a read-write mount or a runtime socket hands the container control of the node.", parent=CEP)
+c("container-privilege-escalation-allowed", "Container may escalate its privileges", "CWE-250", "security", "finding",
+  "A container whose processes can gain more privileges than they started with: allowPrivilegeEscalation not set to false, or a setuid/setgid binary granted in the image.", parent=CEP)
+c("container-excess-capabilities", "Container keeps or adds Linux capabilities it does not need", "CWE-250", "security", "finding",
+  "A container that does not drop the runtime's default Linux capabilities, or adds capabilities (SYS_ADMIN, NET_RAW, …) beyond what it uses.", parent=CEP)
+c("container-writable-root-filesystem", "Container root filesystem is writable", None, "security", "finding",
+  "A container whose root filesystem is not mounted read-only (readOnlyRootFilesystem not true), so a compromised process can modify the image's binaries and configuration.", parent=CEP)
+c("container-confinement-profile-unset", "Container has no seccomp or AppArmor profile", None, "security", "finding",
+  "A container/pod specification that sets no seccomp profile (or sets Unconfined) or no AppArmor profile, so the container's system calls are not filtered. The per-workload finding; workload-syscall-confinement is the repository-wide posture.", parent=CEP)
+c("container-security-context-missing", "Container declares no security context", "CWE-250", "security", "finding",
+  "A container or pod with no securityContext at all, so every runtime default applies: privilege escalation allowed, default capabilities kept, writable root filesystem, no non-root requirement.", parent=CEP)
 c("container-missing-resource-limits", "Workload without resource limits", "CWE-770", "security", "finding", "A container/pod specification without CPU/memory limits.")
 c("mutable-image-reference", "Container image referenced by mutable tag", None, "security", "finding", "A base or runtime image referenced by ':latest' or another mutable tag instead of a pinned version/digest.")
-c("iac-misconfiguration", "Other infrastructure-as-code / container misconfiguration", None, "security", "finding", "A misconfiguration in Dockerfile, Kubernetes, Helm, Terraform or CloudFormation not covered by a more specific concept (missing healthcheck, exposed admin port, public bucket …).")
+c("iac-misconfiguration", "Infrastructure-as-code / container misconfiguration (umbrella)", None, "security", "finding",
+  "Umbrella of the precise IaC configuration concepts (their `parent`). As a concept of its own: a misconfiguration in Dockerfile, Kubernetes, Helm, Terraform or CloudFormation that no more specific concept covers (exposed admin port, public bucket, workload in the default namespace …). New answer keys name the precise concept.")
+IAC = "iac-misconfiguration"
+c("missing-health-probes", "Kubernetes workload without liveness or readiness probes", None, "readiness", "finding",
+  "A Kubernetes container that serves traffic or runs a loop but defines no liveness and/or readiness probe, so a hung process is never restarted and a rollout is not gated on the new pod being healthy.", parent=IAC)
+c("missing-image-healthcheck", "Container image without a HEALTHCHECK", None, "readiness", "finding",
+  "A Dockerfile with no HEALTHCHECK instruction, for an image run by an engine that honours it (Docker, Compose, Swarm). Kubernetes ignores HEALTHCHECK: an image run only there is not missing one (its probes are missing-health-probes).", parent=IAC)
+c("automounted-service-account-token", "Service-account token mounted into a pod that does not need it", None, "security", "finding",
+  "A pod (template) that does not set automountServiceAccountToken: false and names no dedicated service account, so the namespace's API credential is mounted into a workload that never calls the Kubernetes API.", parent=IAC)
+c("overly-permissive-rbac", "Overly permissive RBAC role or binding", "CWE-269", "security", "finding",
+  "A Kubernetes Role/ClusterRole or binding that grants more than its subject needs: wildcard verbs or resources, secrets, pod exec/attach, RBAC escalate/bind/impersonate, admission webhooks, CSR approval or cluster-admin.", parent=IAC)
+c("image-not-from-allowed-registry", "Container image from a registry outside the allowed list", None, "security", "finding",
+  "A workload pulling its image from a registry that is not on the organisation's trusted-registry list.", parent=IAC)
+c("container-missing-resource-requests", "Workload without resource requests", None, "readiness", "finding",
+  "A container/pod specification without CPU/memory requests, so the scheduler cannot place it sensibly (requests, not limits: container-missing-resource-limits is the limits concept).", parent=IAC)
 # ---------------- security: dependencies & supply chain ----------------
 c("vulnerable-dependency", "Dependency with a known vulnerability", "CWE-1395", "security", "finding", "A declared or locked third-party package version affected by a published advisory (CVE/GHSA/OSV).")
 c("malicious-dependency", "Known-malicious dependency", "CWE-506", "security", "finding", "A dependency whose version is classified as malicious by a malicious-package feed.")

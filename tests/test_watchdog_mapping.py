@@ -151,13 +151,13 @@ DIMENSION_CASES = [
     ('IC1', 'Commented-out code: A line of code has been commented out rather than removed — dead weight that rots and confuses. Delete it (version control remembers).', ['commented-out-code']),
     ('IC1', 'Disabled test: A test is skipped/ignored — coverage that looks present but never runs. Re-enable it or delete it so the green run means something.', ['skipped-test-without-reason']),
     ('IC1', 'Skipped test marks a known-real bug: A test is skipped with reason "Flaky: Marten projection timing — likely affected by Plan 11 outbox removal" — the behavior', []),
-    ('D31', "High IaC: DS-0002: Image user should not be 'root'. Specify at least 1 USER command in Dockerfile with non-root user as argument.", ['container-excessive-privilege']),
-    ('D31', "Medium IaC: KSV-0001: Can elevate its own privileges. Container 'mongo' of StatefulSet 'content-db' should set 'securityContext.allowPrivilegeEscalation' to false.", ['container-excessive-privilege']),
-    ('D31', "High IaC: WD-COMPOSE-0001: Line 171 bind-mounts `/var/run/docker.sock` — the container runtime's CONTROL SOCKET — into this service.", ['container-excessive-privilege']),
-    ('D31', 'Medium IaC: CKV_K8S_20: Containers should not run with allowPrivilegeEscalation', ['container-excessive-privilege']),
+    ('D31', "High IaC: DS-0002: Image user should not be 'root'. Specify at least 1 USER command in Dockerfile with non-root user as argument.", ['container-runs-as-root']),
+    ('D31', "Medium IaC: KSV-0001: Can elevate its own privileges. Container 'mongo' of StatefulSet 'content-db' should set 'securityContext.allowPrivilegeEscalation' to false.", ['container-privilege-escalation-allowed']),
+    ('D31', "High IaC: WD-COMPOSE-0001: Line 171 bind-mounts `/var/run/docker.sock` — the container runtime's CONTROL SOCKET — into this service.", ['host-path-mount']),
+    ('D31', 'Medium IaC: CKV_K8S_20: Containers should not run with allowPrivilegeEscalation', ['container-privilege-escalation-allowed']),
     ('D31', "Low IaC: KSV-0011: CPU not limited. Container 'app' of Pod 'secure-pod' should set 'resources.limits.cpu'.", ['container-missing-resource-limits']),
     ('D31', 'Medium IaC: CKV_K8S_13: Memory limits should be set', ['container-missing-resource-limits']),
-    ('D31', "Low IaC: KSV-0015: CPU requests not specified. Container 'app' of Pod 'secure-pod' should set 'resources.requests.cpu'.", ['iac-misconfiguration']),
+    ('D31', "Low IaC: KSV-0015: CPU requests not specified. Container 'app' of Pod 'secure-pod' should set 'resources.requests.cpu'.", ['container-missing-resource-requests']),
     ('D31', "Medium IaC: WD-DOCKER-0003: Line 2 builds this stage `FROM ubuntu:jammy` — a tag, which is a POINTER the image's publisher can move at any time", ['mutable-image-reference']),
     ('D31', "Medium IaC: DS-0001: ':latest' tag used. Specify a tag in the 'FROM' statement for image 'ruby'.", ['mutable-image-reference']),
     ('D31', 'Medium IaC: WD-COMPOSE-0002: Line 20 runs service `neo4j` from `neo4j:5.23-community`, pulled from a registry by a TAG', ['mutable-image-reference']),
@@ -167,17 +167,46 @@ DIMENSION_CASES = [
     ('D31', 'Critical IaC: DS-0031: Secrets passed via `build-args` or envs or copied secret files. Possible exposure of secret env "ARG_BASED_PASSWORD" in ENV.', ['hardcoded-credential']),
     ('D31', 'High IaC: WD-K8S-0002: This `kind: Secret` manifest commits its secret material as literal values in the file: `SECRET_KEY` (line 11)', ['hardcoded-credential']),
     ('D31', "High IaC: KSV-0109: ConfigMap with secrets. ConfigMap 'app-config' in 'microservices-app' namespace stores secrets in key(s) or value(s)", ['hardcoded-credential']),
-    ('D31', 'Low IaC: DS-0026: No HEALTHCHECK defined. Add HEALTHCHECK instruction in your Dockerfile.', ['iac-misconfiguration']),
+    ('D31', 'Low IaC: DS-0026: No HEALTHCHECK defined. Add HEALTHCHECK instruction in your Dockerfile.', ['missing-image-healthcheck']),
     ('D31', 'High IaC: AWS-0086: aws_s3_bucket.state: S3 Access block should block public ACL. No public access block so not blocking public acls.', ['iac-misconfiguration']),
-    ('D31', 'Medium IaC: KSV-0125: Restrict container images to trusted registries. Container filebeat in deployment filebeat (namespace: microservices-app)', ['iac-misconfiguration']),
+    ('D31', 'Medium IaC: KSV-0125: Restrict container images to trusted registries. Container filebeat in deployment filebeat (namespace: microservices-app)', ['image-not-from-allowed-registry']),
     ('D31', "Medium IaC: KSV-01010: ConfigMap with sensitive content. ConfigMap 'app-config' in 'microservices-app' namespace stores sensitive contents", ['iac-misconfiguration']),
-    ('D31', 'Medium IaC: WD-K8S-0004: This pod spec sets neither `automountServiceAccountToken` nor `serviceAccountName`.', ['iac-misconfiguration']),
+    ('D31', 'Medium IaC: WD-K8S-0004: This pod spec sets neither `automountServiceAccountToken` nor `serviceAccountName`.', ['automounted-service-account-token']),
     ('D31', 'High IaC: WD-DOCKER-0002: Line 18 generates an SSH private key at `/home/disco/.ssh/id_dsa` during the build', ['iac-misconfiguration']),
     ('D31', 'Medium IaC: WD-DOCKER-0004: Line 15 runs `npm install -g` on `yarn` without pinning a version', ['iac-misconfiguration']),
     ('D31', "Medium IaC: DS-0013: 'RUN cd ...' to change directory. RUN should not be used to change directory", []),
     ('D31', "High IaC: DS-0029: 'apt-get' missing '--no-install-recommends'. '--no-install-recommends' flag is missed", []),
     ('D31', "Medium IaC: CKV_DOCKER_9: Ensure that APT isn't used", []),
     ('D31', "High IaC: DS-0022: Deprecated MAINTAINER used. MAINTAINER should not be used: 'MAINTAINER gijs@pythonic.nl'.", []),
+    ('D31', "High IaC: KSV-0017: Privileged. Container 'fluent-bit' of DaemonSet 'node-agent' should set 'securityContext.privileged' to false.", ['privileged-container']),
+    ('D31', 'Medium IaC: CKV_K8S_16: Container should not be privileged', ['privileged-container']),
+    ('D31', "High IaC: WD-COMPOSE-0003: Line 9 gives service `agent` every isolation mechanism the runtime has (`privileged: true`). ", ['privileged-container']),
+    ('D31', "High IaC: WD-COMPOSE-0003: Line 16 gives service `apiserver` the host's NETWORK namespace (`network_mode: host`). Every port the containe", ['host-namespace-sharing']),
+    ('D31', "High IaC: KSV-0009: Access to host network. DaemonSet 'node-agent' should not set 'spec.template.spec.hostNetwork' to true.", ['host-namespace-sharing']),
+    ('D31', 'Medium IaC: CKV_K8S_19: Containers should not share the host network namespace', ['host-namespace-sharing']),
+    ('D31', "Medium IaC: KSV-0023: hostPath volumes mounted. DaemonSet 'node-agent' should not set 'spec.template.volumes.hostPath'.", ['host-path-mount']),
+    ('D31', "Low IaC: KSV-0003: Default capabilities: some containers do not drop all. Container 'reminders' of Deployment 'x' should add 'ALL'", ['container-excess-capabilities']),
+    ('D31', 'Medium IaC: CKV_K8S_28: Minimize the admission of containers with the NET_RAW capability', ['container-excess-capabilities']),
+    ('D31', "High IaC: KSV-0014: Root file system is not read-only. Container 'app' of Pod 'secure-pod' should set 'securityContext.readOnlyRootFilesystem' to true.", ['container-writable-root-filesystem']),
+    ('D31', "Medium IaC: KSV-0104: Seccomp policies disabled. container \"app\" of pod \"secure-pod\" in \"default\" namespace should specify a seccomp profile", ['container-confinement-profile-unset']),
+    ('D31', 'Medium IaC: CKV_K8S_31: Ensure that the seccomp profile is set to docker/default or runtime/default', ['container-confinement-profile-unset']),
+    ('D31', 'Medium IaC: CKV_K8S_29: Apply security context to your pods and containers', ['container-security-context-missing']),
+    ('D31', "Low IaC: KSV-0020: Runs with UID <= 10000. Container 'api' of Deployment 'depot-slots-api' should set 'securityContext.runAsUser' > 10000.", ['container-runs-as-root']),
+    ('D31', 'Medium IaC: CKV_K8S_40: Containers should run as a high UID to avoid host conflict', ['container-runs-as-root']),
+    ('D31', "High IaC: WD-DOCKER-0006: This image's final stage declares no unprivileged `USER`, so the entrypoint runs as root.", ['container-runs-as-root']),
+    ('D31', 'Medium IaC: CKV_K8S_8: Liveness Probe Should be Configured', ['missing-health-probes']),
+    ('D31', 'Medium IaC: CKV_K8S_9: Readiness Probe Should be Configured', ['missing-health-probes']),
+    ('D31', 'Low IaC: WD-DOCKER-0007: This image declares no `HEALTHCHECK`, and it declares a listening port for one to probe.', ['missing-image-healthcheck']),
+    ('D31', 'Medium IaC: CKV_K8S_38: Ensure that Service Account Tokens are only mounted where necessary', ['automounted-service-account-token']),
+    ('D31', 'Medium IaC: WD-K8S-0004: This pod template sets `automountServiceAccountToken: true`, so every pod it creates is given the ', ['automounted-service-account-token']),
+    ('D31', 'Medium IaC: WD-K8S-0004: This manifest deploys a container image whose tag is an unsubstituted placeholder: `app:${TAG}` (line 12). ', ['iac-misconfiguration']),
+    ('D31', 'Critical IaC: KSV-0044: No wildcard verb and resource roles. Role permits wildcard verb on wildcard resource.', ['overly-permissive-rbac']),
+    ('D31', "Medium IaC: KSV-0049: Manage configmaps. Role 'cost-collector' should not have access to resource 'configmaps'", ['overly-permissive-rbac']),
+    ('D31', 'Medium IaC: CKV2_K8S_5: No ServiceAccount/Node should be able to read all secrets', ['overly-permissive-rbac']),
+    ('D31', 'Medium IaC: CKV_K8S_10: CPU requests should be set', ['container-missing-resource-requests']),
+    ('D31', "Medium IaC: KSV-0024: Access to host ports. Container 'app' should not set host ports.", ['container-excessive-privilege']),
+    ('D31', 'Medium IaC: CKV_K8S_35: Prefer using secrets as files over secrets as environment variables', ['iac-misconfiguration']),
+    ('D31', 'Medium IaC: CKV_K8S_21: The default namespace should not be used', ['iac-misconfiguration']),
     ('D36', 'No SBOM: No SBOM generation or committed SBOM found — produce one with what your ecosystem ships', ['build-provenance-and-signing']),
     ('D36', 'No build provenance: No SLSA provenance generation or build attestation found in CI — nothing binds a released artifact to the build that produced it', ['build-provenance-and-signing']),
     ('D36', 'No artifact signing: No artifact signing found in CI — sign your released artifacts with whatever your ecosystem ships', ['build-provenance-and-signing']),
@@ -212,7 +241,17 @@ DIMENSION_CASES = [
     ('D29', "Medium: react-insecure-request: Unencrypted request over HTTP detected. Change the URL's scheme on this line to https and confirm the host serves it. ", ['cleartext-transmission']),
     ('D29', 'High: watchdog-assembled-code-string-evaluated-ts: This call evaluates a code string that was ASSEMBLED at runtime -- a value is spliced into JavaScri', ['code-injection']),
     ('D29', 'High: detect-child-process: Detected calls to child_process from a function argument `pid`. This could lead to a command injection if the input is use', ['command-injection']),
-    ('D29', 'Medium: allow-privilege-escalation-no-securitycontext: In Kubernetes, each pod runs in its own isolated environment with its own set of security polic', ['container-excessive-privilege']),
+    ('D29', 'Medium: allow-privilege-escalation-no-securitycontext: In Kubernetes, each pod runs in its own isolated environment with its own set of security polic', ['container-security-context-missing']),
+    ('D29', 'Medium: allow-privilege-escalation: In Kubernetes, each pod runs in its own isolated environment with its own set of security policies.', ['container-privilege-escalation-allowed']),
+    ('D29', 'Medium: privileged-service: Service is running in privileged mode.', ['privileged-container']),
+    ('D29', 'Medium: missing-user: By not specifying a USER, a program in the container may run as root.', ['container-runs-as-root']),
+    ('D29', 'High: watchdog-docker-socket-mount-in-run: This CI step mounts the Docker socket into a container', ['host-path-mount']),
+    ('D29', 'Medium: seccomp-confinement-disabled: Container is explicitly disabling seccomp confinement.', ['container-confinement-profile-unset']),
+    ('D29', 'Medium: no-sudo-in-dockerfile: Avoid using sudo in Dockerfiles.', ['container-excessive-privilege']),
+    ('D29', 'High: legacy-api-clusterrole-excessive-permissions: Semgrep detected a Kubernetes core API ClusterRole with excessive permissions.', ['overly-permissive-rbac']),
+    ('D29', 'Medium: crlf-injection-logs: When data from an untrusted source is put into a logger and not neutralized correctly, an attacker could forge log entries or include malicious content.', ['log-injection']),
+    ('D29', 'High: watchdog-secret-interpolated-into-run: A secret is interpolated straight into this `run:` script. Actions expands `${{ }}` BEFORE the shell exists', ['secret-in-process-arguments']),
+    ('D29', "High: header-injection: The application builds a response header from user-controlled data.", []),
     ('D29', 'Medium: react-dangerouslysetinnerhtml: Detection of dangerouslySetInnerHTML from non-constant definition. This can inadvertently expose users to cross', ['cross-site-scripting']),
     ('D29', 'High: dependabot-missing-cooldown: This Dependabot configuration does not set a cooldown period. Newly published packages can be malicious or unstable', ['dependency-release-cooldown-missing']),
     ('D29', 'High: watchdog-unverified-download-in-run: This CI step downloads a file over the network and then treats what came back as CODE — it unpacks it, mark', ['download-without-integrity-check']),
@@ -270,6 +309,63 @@ class WatchdogMapping(unittest.TestCase):
     def test_secret_concepts_are_one_family(self):
         self.assertEqual({M.family_of(c) for c in SECRET - {"secret-in-version-history"}}, {"hardcoded-secret"})
         self.assertIsNone(M.family_of("secret-in-version-history"))
+
+    def test_weak_digest_and_weak_password_storage_are_one_family(self):
+        self.assertEqual(M.family_of("weak-hash-algorithm"), "weak-password-hashing")
+        self.assertEqual(M.family_of("insufficient-password-hashing"), "weak-password-hashing")
+
+    def test_ci_secret_concepts_are_not_a_family(self):
+        # disjoint by the taxonomy: untrusted code receives the secret vs. the process list / script text shows it
+        self.assertIsNone(M.family_of("ci-secret-exposure"))
+        self.assertIsNone(M.family_of("secret-in-process-arguments"))
+
+    def test_umbrellas(self):
+        kids = {c: s["parent"] for c, s in DOC["concepts"].items() if "parent" in s}
+        self.assertEqual(set(kids.values()), {"container-excessive-privilege", "iac-misconfiguration"})
+        self.assertEqual(len(kids), 15)
+        for c, p in kids.items():
+            self.assertEqual(M.ancestors(c), [p])
+            self.assertLessEqual(set(DOC["concepts"][c]["dimensions"]), set(DOC["concepts"][p]["dimensions"]), c)
+            self.assertIsNone(M.family_of(c), c)
+
+    def test_umbrella_children_partition_the_pre_split_ids(self):
+        # every D31 id the umbrella claimed before the split lands on the umbrella or on one of its children, so an
+        # entry naming the umbrella matches exactly what it matched under contract 1.2
+        import sys
+        sys.path.insert(0, os.path.join(ROOT, "mappings", "watchdog-build"))
+        import discrim
+        for i in discrim.CEP_ALL:
+            msg = f"High IaC: {i}: detail"
+            if i in discrim.D31_SPLIT:
+                msg = f"High IaC: {i}: Line 3 gives service `x` something new"
+            got = M.concepts_of("D31", msg, {})
+            with self.subTest(id=i):
+                self.assertEqual(len(got), 1)
+                self.assertIn("container-excessive-privilege", got + M.ancestors(got[0]))
+        for i in ("CKV_K8S_8", "KSV-0125", "KSV-0036", "CKV_K8S_49", "KSV-0015", "DS-0026", "AWS-0086", "DS-0004"):
+            got = M.concepts_of("D31", f"Low IaC: {i}: detail", {})
+            with self.subTest(id=i):
+                self.assertEqual(len(got), 1)
+                self.assertIn("iac-misconfiguration", got + M.ancestors(got[0]))
+
+    def test_location_from_message_on_real_d36_rows(self):
+        grant = ("Workflow token grant is wider than its jobs use: 1 `permissions:` grant(s) are wider than the jobs that "
+                 "hold them use (release.yml:7 (write-all; held by images)). `write-all` grants every scope")
+        argv = ("Secret passed as a command-line argument: 2 CI command(s) pass a credential in the command line (as an "
+                "argument of its own, or attached to an option as `--flag=<secret>`), where it is visible in the runner's "
+                "process table to any other process on the host (and to anything that logs a command line): "
+                ".github/workflows/deploy.yml: kubectl --server \"$KUBE_SERVER\" --token \"${{ secrets.KUBE_DEPLOY_TOKEN }}\" "
+                "apply --recursive -f deploy/k8s; .github/workflows/deploy.yml: kubectl rollout status.")
+        advisory = ("Dependency advisory scan runs only on code events: 1 workflow(s) run a dependency advisory scanner "
+                    "over the locked dependency set, and no workflow in the repository runs one on a `schedule:` "
+                    "(ci.yml:38 (on: pull_request, push)).")
+        self.assertEqual(M.location_in_message("D36", grant), ("release.yml", 7))
+        self.assertEqual(M.location_in_message("D36", argv), (".github/workflows/deploy.yml", None))
+        self.assertEqual(M.location_in_message("D36", advisory), ("ci.yml", 38))
+        self.assertIsNone(M.location_in_message("D36", "Unpinned build actions: CI references GitHub Actions by a "
+                                                       "floating ref (@main / @tag) rather than a pinned commit SHA"))
+        self.assertIsNone(M.location_in_message("D12", "Vulnerable: x: see packages.lock.json:12"))
+        self.assertTrue(all(lm.get("source") for lm in DOC["locationFromMessage"]))
 
 
     def test_every_multi_concept_dimension_lands_each_message_on_one_concept_or_none(self):

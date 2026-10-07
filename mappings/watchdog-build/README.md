@@ -16,3 +16,11 @@ none, and the engine source line of every title format. `build.py` refuses to bu
 dimension has no entry, or if an entry's concepts differ from `dims.py`. To re-check against fresh scans, collect
 `(ruleId, message.text)` from local `report.sarif` files and confirm each distinct message of a discriminated
 dimension maps to one concept or one `offConcept` regex (tests/test_watchdog_mapping.py pins real shapes).
+
+Contract 1.3 additions, also in `discrim.py`: the D31 table is built from rule-id lists — `CEP_ALL` (the pre-split
+`container-excessive-privilege` ids), the other concepts' lists, `D31_PRECISE` (each precise concept, its umbrella, its
+ids and why) and `D31_SPLIT` (ids whose detail decides between concepts). Import-time assertions keep the children a
+partition of their umbrella's pre-split ids, so a key written against an umbrella scores as before; `build.py` copies
+each taxonomy `parent` into the mapping and checks a child is mapped on no dimension its umbrella is not.
+`LOCATION_FROM_MESSAGE` becomes the mapping's `locationFromMessage` (D36 workflow rows that name their site only in the
+message). `FAMILY` holds the families (`hardcoded-secret`, `weak-password-hashing`).
