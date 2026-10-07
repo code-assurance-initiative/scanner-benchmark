@@ -1,7 +1,7 @@
 {
   "repo": "code-assurance-initiative/bench-csharp-architecture",
-  "tag": "v1.0.0",
-  "commit": "7889757eb521cbc1af9c44f96f5e7e51dab18c17",
+  "tag": "v1.1.0",
+  "commit": "bcfb68f9b696acbe866844d1faa2fe9e98c9d3a0",
   "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc)",
   "scans": [
     {
@@ -76,6 +76,45 @@
         "uncovered": 21
       },
       "note": "host pass with --with-llm on the same commit as iteration 3; model-judged rows added (D19, D22, D24, D25, D26, M4, ED5)"
+    },
+    {
+      "iteration": 4,
+      "tag": "v1.1.0",
+      "date": "2026-10-07",
+      "sarifSha256": "5a9dc115b8af62fcb7648fd9870a7cd48854c7b715cc25a8e594578cc1dd0a5f",
+      "outcomes": {
+        "tp": 11,
+        "fn": 6,
+        "fp": 5,
+        "tn": 254,
+        "trapFp": 4,
+        "trapTn": 18,
+        "results": 24,
+        "noise": 11,
+        "redundant": 2,
+        "uncovered": 11
+      },
+      "note": "key v1.1.0 (repo commit c6a9e9e; code identical to v1.0.0): contained rescan, SARIF byte-identical to iteration 3; BLC-001 now an FN of an unmapped concept (business-logic-in-controller), scored under contract 1.4"
+    },
+    {
+      "iteration": 4,
+      "pass": "llm",
+      "tag": "v1.1.0",
+      "date": "2026-10-07",
+      "sarifSha256": "e2f932fae9d9ce13407a435f355013143d6b00e2e2f15573f5047f1de2df3dea",
+      "outcomes": {
+        "tp": 11,
+        "fn": 6,
+        "fp": 5,
+        "tn": 254,
+        "trapFp": 4,
+        "trapTn": 18,
+        "results": 24,
+        "noise": 11,
+        "redundant": 2,
+        "uncovered": 21
+      },
+      "note": "host pass with --with-llm on c6a9e9e; same rows as the iteration-3 model-judged pass except one re-worded D19 row; BND-008 D22 100 (in)"
     }
   ],
   "verdicts": [
@@ -792,6 +831,16 @@
       "reason": "The README never mentions Docker; line 39 refers to the C4 \"containers\" diagram in docs/architecture.md (## Containers). The model read the C4 term as Docker containerisation.",
       "action": "recorded as noise (model-judged pass)",
       "iteration": 3
+    },
+    {
+      "ruleId": "D19",
+      "file": "README.md",
+      "line": 1,
+      "message": "Documentation: no licence statement: The root README does not contain a license statement or reference to a LICENSE file. Add a standard license header or a link to the LICENSE file at the bottom of the README.",
+      "class": "false-positive",
+      "reason": "Re-worded restatement of the iteration-3 D19 row on unchanged code: README.md ends with a \"## License\" section reading \"MIT — see [LICENSE](LICENSE)\". The statement the finding says is missing is there.",
+      "action": "recorded as noise (model-judged pass, v1.1.0); the model's wording varies run to run, the claim does not",
+      "iteration": 4
     }
   ],
   "falseNegatives": [
@@ -809,7 +858,7 @@
     },
     {
       "entryId": "BLC-001",
-      "reason": "Pricing, overtime, parts markup and the approval limit are computed in WorkOrdersController.Approve. AX10 emits no findings (role share 40, in band); no lens reports business logic in a controller."
+      "reason": "Pricing, overtime, parts markup and the approval limit are computed in WorkOrdersController.Approve. AX10 emits no findings (role share 40, in band); no lens reports business logic in a controller. v1.1.0: relabelled to business-logic-in-controller, a concept the Watchdog mapping lists as unmapped (contract 1.4) — still an FN, now attributed to the concept it is."
     },
     {
       "entryId": "DOM-001",
@@ -906,6 +955,7 @@
     "Trap resistance 18/22: caught by TRP-002 (Contracts off the main sequence, a row that calls the shape healthy yet is still emitted), TRP-011 (singleton holding a stateless transient), TRP-021 (thin-project consolidation advice) and TRP-022 (documented CA2007 suppression). Held: Contracts as a stable hub, Infrastructure -> Domain, composition roots, test projects referencing everything (AX4/D5 did not flag the Application.Tests -> Infrastructure edge), dependency inversion, IServiceScopeFactory, ConcurrentDictionary/lock, composite role interface, cross-namespace but non-slice fields, cache-populating query, retrying decorator, acyclic diamond.",
     "Event-sourcing lens ED3 read seven Contracts DTOs (VehicleSummary, MaintenanceDue, a static ContractVersion) as events; recorded against NA-002.",
     "Five valid incidental findings were fixed in the repository during authoring (DM9 duplicated decision, X5 null-forgiving, IC1 placeholder defaults, P8 EnsureCreated, D8 coverage), and D11 caught a real nondeterministic report order; writing the coverage tests exposed a real bug (synchronous SaveChanges not audited).",
-    "Harness: taxonomy 1.0 has no finding-level concept for business logic in the presentation layer; BLC-001 uses the metric concept business-logic-share. boundary-type-leakage is NA here (one bounded context) and is better covered by the domain-events unit."
+    "Harness: taxonomy 1.0 has no finding-level concept for business logic in the presentation layer; BLC-001 uses the metric concept business-logic-share. boundary-type-leakage is NA here (one bounded context) and is better covered by the domain-events unit.",
+    "v1.1.0 (key-only): BLC-001 relabelled from the metric business-logic-share to the finding concept business-logic-in-controller (same site); 233 clean entries certify the new concept as well (not the plant's file nor FleetDashboardController.cs). The contained rescan is byte-identical to v1.0.0's final scan and every outcome is unchanged: recall 11/17, trap resistance 18/22, bands 7/8 (contained) and 8/8 scored in the model-judged pass except BND-001 out. BLC-001 remains an FN — no Watchdog rule maps the concept; AX10 still reports the share (40, BND-006 in band)."
   ]
 }
