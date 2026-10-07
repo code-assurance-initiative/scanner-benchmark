@@ -1,0 +1,599 @@
+{
+ "repo": "code-assurance-initiative/bench-ts-baseline-clean",
+ "tag": "v1.0.0",
+ "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc) + host --with-llm passes",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-07",
+   "sarifSha256": "5140c7208ff6a8b28cc8009f840854fa828b86da7aed7f2c847a396b1a70f04a",
+   "outcomes": {
+    "tp": 0,
+    "fn": 0,
+    "fp": 5,
+    "tn": 125,
+    "trapFp": 0,
+    "trapTn": 0,
+    "results": 6,
+    "noise": 6,
+    "redundant": 0,
+    "uncovered": 2
+   },
+   "note": "contained, repo at 302774c (scored against the key of that commit, before traps TRP-001..003 existed)"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "9c4d01bbefe9116a60c935b288a2d2b44e6fd3055f48a5584e4a5089f4ec67a0",
+   "outcomes": {
+    "tp": 0,
+    "fn": 0,
+    "fp": 2,
+    "tn": 134,
+    "trapFp": 2,
+    "trapTn": 1,
+    "results": 2,
+    "noise": 2,
+    "redundant": 0,
+    "uncovered": 1
+   },
+   "note": "contained, final, repo at 017cb1c (tag v1.0.0 = 017cb1c + journal entry only)"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "731290045d6e65cb883429afa8b9a548e5a8e25e06eea3c44dbf7b063412773a",
+   "outcomes": {
+    "tp": 0,
+    "fn": 0,
+    "fp": 2,
+    "tn": 134,
+    "trapFp": 2,
+    "trapTn": 1,
+    "results": 2,
+    "noise": 2,
+    "redundant": 0,
+    "uncovered": 40
+   },
+   "note": "host --with-llm pass 1 at 017cb1c"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "731290045d6e65cb883429afa8b9a548e5a8e25e06eea3c44dbf7b063412773a",
+   "outcomes": {
+    "tp": 0,
+    "fn": 0,
+    "fp": 2,
+    "tn": 134,
+    "trapFp": 2,
+    "trapTn": 1,
+    "results": 2,
+    "noise": 2,
+    "redundant": 0,
+    "uncovered": 40
+   },
+   "note": "host --with-llm pass 2 at 017cb1c; byte-identical to pass 1"
+  }
+ ],
+ "verdicts": [
+  {
+   "ruleId": "D8",
+   "file": "src/main.ts",
+   "line": 1,
+   "message": "Low coverage: src/main.ts: 0.0% line coverage (0/15).",
+   "class": "valid",
+   "reason": "True: the start-up failure path (fatal log, non-zero exit) and the signal-driven shutdown in the entry point had no test anywhere.",
+   "action": "repo fixed: start-up and signal handling moved to src/lifecycle.ts with tests; main.ts covered by an entry-point test (8860812)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/http/routes/catalog-routes.ts",
+   "line": 24,
+   "message": "Duplicated block (8 lines × 5 locations): src/http/routes/catalog-routes.ts:24 · src/http/routes/catalog-routes.ts:45 · src/http/routes/reservation-routes.ts:10 · src/http/routes/reservation-routes.ts:28 · +1 more site(s) not listed — the 3 copies sit in sibling files in one directory, so check first whether one of them (or an existing module there) already owns this behaviour and the others should call it; otherwise extract it into one module in that directory and have each site call it.",
+   "class": "valid",
+   "reason": "Every route handler repeated the same parse-then-respond block; five copies across three route files is duplication a reviewer would extract.",
+   "action": "repo fixed: src/http/handlers.ts (listPage, withParam, createFromBody) (6e22299)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/http/routes/catalog-routes.ts",
+   "line": 15,
+   "message": "Duplicated block (10 lines × 2 locations): src/http/routes/catalog-routes.ts:15 · src/http/routes/catalog-routes.ts:36 — all 2 copies are in the same file, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+   "class": "valid",
+   "reason": "Same parse-then-respond repetition between the SKU and bin list/get handlers.",
+   "action": "repo fixed with the handler helpers (6e22299)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/http/routes/stock-routes.ts",
+   "line": 17,
+   "message": "Duplicated block (8 lines × 2 locations): src/http/routes/stock-routes.ts:17 · src/http/routes/stock-routes.ts:26 — both copies are in the same file, so extract the block into one function there and call it from each site — the copies drift apart the first time only one of them is edited.",
+   "class": "valid",
+   "reason": "The receipt and count handlers were identical except for the service method.",
+   "action": "repo fixed: one stockMovement handler builder (6e22299)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/http/problem.ts",
+   "line": 24,
+   "message": "Duplicated block with local edits (7 matched lines × 2 locations): src/http/problem.ts:24 · src/http/problem.ts:32 — the two spans are one implementation copied and then locally edited — 59 tokens are still identical, in the same order in both spans, with only local edits between them. The copies have already begun to drift, which is this row's finding: an edit made to one and not the other changes behaviour silently. Diff the two spans first to learn what genuinely differs, then extract the shared core into one module both sites use, passing the differences in as parameters — or, if one copy exists only because the other could not be imported from its context, make one of them the single source the other is generated or re-exported from. If one copy is no longer reachable, delete it rather than letting it shadow the live one.",
+   "class": "valid",
+   "reason": "sendResult and sendCreated were one function copied and locally edited.",
+   "action": "repo fixed: one sendResult with an optional locationOf (6e22299)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/application/catalog/catalog-service.ts",
+   "line": 18,
+   "message": "Duplicated block (7 lines × 2 locations): src/application/catalog/catalog-service.ts:18 · src/application/catalog/catalog-service.ts:35 — all 2 copies are in the same file, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+   "class": "opinion-not-fact",
+   "reason": "The similarity is measured correctly, but the spans are the SKU and bin halves of parallel register/get/list accessors over different store methods, messages and log fields; extracting them would need three lambdas to say less, and divergence between two entity kinds is intended.",
+   "action": "recorded as noise; promoted to traps TRP-001 (lines 13-28) and TRP-002 (lines 30-45), duplicated-code must-not-fire; code kept. Caught by TRP-001 in iteration 2",
+   "iteration": 1
+  },
+  {
+   "ruleId": "C2",
+   "file": null,
+   "line": null,
+   "message": "No named authorization policies: Authorization IS enforced here (by route guards, auth middleware or checks that refuse a caller) — this is NOT a claim that endpoints are unprotected. What's missing is a NAMED rule set: who may do what is encoded inline where it is checked, so the rules can't be listed, reviewed or tested apart from the code that applies them. Recommendation, not a defect.",
+   "class": "false-positive",
+   "reason": "Disproof: src/http/scopes.ts names the three scopes and every /api route declares its scope with requireScope(Scopes.x) at registration (src/http/routes/*.ts), the equivalent of a named-policy attribute; the README lists the scope per endpoint. The rules are named and listable.",
+   "action": "promoted to trap TRP-003 (authorization-enforcement, repository-level must-not-fire); code kept. Caught by TRP-003 in iteration 2",
+   "iteration": 1
+  },
+  {
+   "ruleId": "P6",
+   "file": null,
+   "line": null,
+   "message": "Changelog looks stale/thin: The changelog this check read carries 2 versioned entries, against a bar of 3. Counted as either an `x.y.z` string or a version-shaped section heading (`## [1.2.0]`, `## V14.x.x`, `## Updates in 8.0.x`), whichever is the larger — so a log sectioned by minor series counts its sections, not its individual patch numbers. Entries recorded somewhere this check does not read — release notes generated at tag time from a generator config it did not recognise, or a log kept outside the repository — are not counted here, and this row is about what is re-findable in the tree rather than about how often you release.",
+   "class": "opinion-not-fact",
+   "reason": "One release so far; adding changelog entries to clear a bar of 3 would falsify the history.",
+   "action": "recorded as noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the service calls no other services — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims JWT_PUBLIC_KEY is required — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims JWT_AUDIENCE has a default value — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims NODE_ENV defaults to production — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims HOST defaults to 127.0.0.1 — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims PORT defaults to 8080 — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims TRUST_PROXY defaults to loopback — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims LOG_LEVEL defaults to info — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims RESERVATION_DEFAULT_HOLD_MINUTES defaults to 15 — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims RESERVATION_MAX_HOLD_MINUTES defaults to 1440 — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims RESERVATION_SWEEP_SECONDS defaults to 30 — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the service is a reference implementation keeping data in memory — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims data is lost on restart — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims it runs as a single instance — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims it handles no personal data — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims it calls no other services — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims configuration is validated at start-up — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the service refuses to start when a value is missing or malformed — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims TLS terminates at the reverse proxy — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims callers need an access token carrying scopes — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims errors are answered as RFC 9457 problem documents — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims tests/unit exercises application services, in-memory stores, configuration, token verification and expiry job — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims tests/integration drives every route with supertest and signed test tokens — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims ES256 key pair is generated per run and never written down — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims CI runs formatting, lint, type-check, build and tests with coverage thresholds — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims three layers under src/: http, application, infrastructure — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims src/http contains Express routes, request validation (zod), authentication and scope checks — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims src/application contains services with business rules and store interfaces — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims src/infrastructure contains in-memory store implementations and reservation expiry job — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims src/app.ts assembles the Express application — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims src/composition.ts wires services to stores — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims src/lifecycle.ts starts the server and stops it on SIGTERM/SIGINT — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims src/main.ts is the entry point — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims an ESLint rule keeps the application layer free of HTTP and infrastructure imports — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims contributors must pass CI: formatting, lint, type-check, build and full test suite — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims contributors must add or update tests with every behaviour change — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims contributors must record architectural changes as a new ADR — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims contributors must note user-visible changes in CHANGELOG.md — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the license is MIT — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Checked against the tree: the README statement holds (configuration defaults as in src/config.ts, layers/files/ESLint rule as described, tests and CI as stated, MIT licence). The scanner itself marks the row as an unverified model reading.",
+   "action": "recorded as noise; README and code kept",
+   "iteration": 2
+  }
+ ],
+ "falseNegatives": [],
+ "scoreBands": [
+  {
+   "entryId": "BND-017",
+   "outcome": "out",
+   "score": 70,
+   "band": [
+    80,
+    100
+   ],
+   "class": "false-positive",
+   "note": "C2 docks for 'no named authorization policies' although every route names its scope (TRP-003). Band kept."
+  },
+  {
+   "entryId": "BND-026",
+   "outcome": "out",
+   "score": 70,
+   "band": [
+    80,
+    100
+   ],
+   "class": "opinion-not-fact",
+   "note": "M2's top tier wants many more ADRs; the repository records its 3 real decisions plus a Mermaid architecture doc. Band set before the first scan and kept."
+  },
+  {
+   "entryId": "BND-032",
+   "outcome": "out",
+   "score": 30,
+   "band": [
+    70,
+    100
+   ],
+   "class": "false-positive",
+   "note": "P6 does not count package.json version 1.0.0 as a version stamp (on its scaffold-default list), although it matches the CHANGELOG's one release. Version not changed to suit the scanner."
+  },
+  {
+   "note": "BND-003 duplicated-code was out in iteration 1 (R10 81) for partly valid reasons; in band at 96 after the fix. Model-judged (two host passes, identical): D19 90, D20 100, D21 100, M4 60 - in band; D22, D24, D25, LA3, LA4 emitted no score. Unscored in the contained pass: D5 (instability/main sequence), D16/D34 (single-author history), D27, S1 (server controls not assessed for TypeScript; a clean S1 abstains), SC1 (never scored), D36 (publishes nothing), P4, P5, P7, P12, PF1, PF2."
+  }
+ ],
+ "observations": [
+  "A deliberately clean, idiomatic Node.js 22 + TypeScript API (1.1k LoC production, 1.1k test) drew 8 deterministic rows in iteration 1: 5 valid (an untested entry point, four duplicated route/problem blocks, all fixed), 1 false positive (C2 named policies), 2 opinion-not-fact (P6 changelog bar, R10 on parallel accessors). After the fixes only the recorded noise remained, two rows of it caught by traps promoted from it.",
+  "The scanner runs the vitest suite itself with v8 coverage (npm ci, then vitest --coverage) in contained mode; per-file coverage findings on TypeScript are real measurements.",
+  "The model-judged M4 pass reported 39 'README/code drift' rows that restate README sentences as claims (every configuration default, the licence, the contribution rules); every one holds. M4 still scored 60. This is the dominant noise source on this repository.",
+  "Two host --with-llm passes on the same tree produced byte-identical SARIF, which suggests reused model responses rather than determinism; the C# control saw run-to-run M4 variation.",
+  "P6 treats package.json version 1.0.0 as a scaffold default, so a genuine first release scores 30.",
+  "S1 does not assess server-side controls (helmet headers, HSTS, HTTPS enforcement, zod validation) for TypeScript and abstains on a clean repository: BND-018..020 cannot be scored for a Node service under this scanner version.",
+  "Not the instrument, for completeness: GitHub CodeQL raised js/user-controlled-bypass (authentication.ts, the result of a signature verification) and js/missing-rate-limiting (rate limiting is the gateway's job per SECURITY.md); both judged noise in the journal."
+ ]
+}
