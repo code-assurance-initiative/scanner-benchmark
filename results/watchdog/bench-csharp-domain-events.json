@@ -1,6 +1,6 @@
 {
   "repo": "code-assurance-initiative/bench-csharp-domain-events",
-  "tag": "v1.0.0",
+  "tag": "v1.1.0",
   "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc) + host --with-llm pass",
   "scans": [
     {
@@ -92,6 +92,63 @@
         "uncovered": 72
       },
       "note": "host --with-llm (model-judged pass), final; repository commit eb05046"
+    },
+    {
+      "iteration": 4,
+      "date": "2026-10-07",
+      "sarifSha256": "c5970b7d47a73cead3f805dcb2e21886ab627db150ae1e63adede7686f0527b5",
+      "outcomes": {
+        "tp": 22,
+        "fn": 6,
+        "fp": 15,
+        "tn": 226,
+        "trapFp": 2,
+        "trapTn": 24,
+        "results": 39,
+        "noise": 16,
+        "redundant": 1,
+        "uncovered": 71
+      },
+      "note": "v1.1 iteration 1, contained; repository commit 1caabf6 (key before the boundary-type-leakage entries)",
+      "tag": "v1.1.0"
+    },
+    {
+      "iteration": 5,
+      "date": "2026-10-07",
+      "sarifSha256": "bfe038c8e5dd63fc549d42ab8923d83e27b917f5dcf15ca5a443bde88ed7385e",
+      "outcomes": {
+        "tp": 22,
+        "fn": 8,
+        "fp": 15,
+        "tn": 228,
+        "trapFp": 2,
+        "trapTn": 25,
+        "results": 102,
+        "noise": 79,
+        "redundant": 1,
+        "uncovered": 11
+      },
+      "note": "v1.1 iteration 2, contained, final; repository commit 0adc685 (code = v1.1.0)",
+      "tag": "v1.1.0"
+    },
+    {
+      "iteration": 5,
+      "date": "2026-10-07",
+      "sarifSha256": "c03e4cf2e13d47bfb35115dddcec94686a1de20ce9806055c34cb9279c5888a6",
+      "outcomes": {
+        "tp": 22,
+        "fn": 8,
+        "fp": 7,
+        "tn": 236,
+        "trapFp": 2,
+        "trapTn": 25,
+        "results": 96,
+        "noise": 72,
+        "redundant": 2,
+        "uncovered": 14
+      },
+      "note": "v1.1 iteration 2, host --with-llm (model-judged pass), final; repository commit 0adc685",
+      "tag": "v1.1.0"
     }
   ],
   "verdicts": [
@@ -1271,6 +1328,222 @@
       "action": "recorded as noise",
       "iteration": 3,
       "pass": "model-judged"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RelocateEquipmentCommand..ctor — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Disproof: EquipmentId (src/Rentals.Lending.Domain/Catalogue/EquipmentId.cs) and RelocateEquipmentCommand (src/Rentals.Lending.Application/Catalogue/RelocateEquipmentCommand.cs) are the Lending context's domain and application layers; D23 attributes contexts per .NET project, so a context's own layers count as two contexts (same as the 56 v1.0.0 rows). One logical finding over three members.",
+      "action": "recorded as noise (location-less, so it does not reach the clean entry of the file)",
+      "iteration": 4,
+      "pass": "contained",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RelocateEquipmentCommand.EquipmentId — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Disproof: EquipmentId (src/Rentals.Lending.Domain/Catalogue/EquipmentId.cs) and RelocateEquipmentCommand (src/Rentals.Lending.Application/Catalogue/RelocateEquipmentCommand.cs) are the Lending context's domain and application layers; D23 attributes contexts per .NET project, so a context's own layers count as two contexts (same as the 56 v1.0.0 rows). One logical finding over three members.",
+      "action": "recorded as noise (location-less, so it does not reach the clean entry of the file)",
+      "iteration": 4,
+      "pass": "contained",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RelocateEquipmentCommand.Deconstruct — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Disproof: EquipmentId (src/Rentals.Lending.Domain/Catalogue/EquipmentId.cs) and RelocateEquipmentCommand (src/Rentals.Lending.Application/Catalogue/RelocateEquipmentCommand.cs) are the Lending context's domain and application layers; D23 attributes contexts per .NET project, so a context's own layers count as two contexts (same as the 56 v1.0.0 rows). One logical finding over three members.",
+      "action": "recorded as noise (location-less, so it does not reach the clean entry of the file)",
+      "iteration": 4,
+      "pass": "contained",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Billing.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Billing.Application's public surface via AccountBalanceQuery..ctor — couples the contexts.",
+      "class": "valid",
+      "reason": "The planted BTL-001: Billing's public AccountBalanceQuery is typed by Lending's domain MemberId (ADR 0005).",
+      "action": "planted BTL-001; not matched by the harness (D23 rows carry no SARIF location) — recorded as FN",
+      "iteration": 5,
+      "pass": "contained",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Billing.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Billing.Application's public surface via AccountBalanceQuery.MemberId — couples the contexts.",
+      "class": "redundant",
+      "reason": "Same leak, same type as the AccountBalanceQuery..ctor row (one logical finding per type: ctor, property and Deconstruct of one positional record).",
+      "action": "counted once with the ..ctor row",
+      "iteration": 5,
+      "pass": "contained",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Billing.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Billing.Application's public surface via AccountBalanceQuery.Deconstruct — couples the contexts.",
+      "class": "redundant",
+      "reason": "Same leak, same type as the AccountBalanceQuery..ctor row (one logical finding per type: ctor, property and Deconstruct of one positional record).",
+      "action": "counted once with the ..ctor row",
+      "iteration": 5,
+      "pass": "contained",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RelocateEquipmentCommand..ctor — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Disproof: EquipmentId (src/Rentals.Lending.Domain/Catalogue/EquipmentId.cs) and RelocateEquipmentCommand (src/Rentals.Lending.Application/Catalogue/RelocateEquipmentCommand.cs) are the Lending context's domain and application layers; D23 attributes contexts per .NET project, so a context's own layers count as two contexts (same as the 56 v1.0.0 rows). One logical finding over three members.",
+      "action": "recorded as noise (location-less, so it does not reach the clean entry of the file)",
+      "iteration": 5,
+      "pass": "contained",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RelocateEquipmentCommand.EquipmentId — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Disproof: EquipmentId (src/Rentals.Lending.Domain/Catalogue/EquipmentId.cs) and RelocateEquipmentCommand (src/Rentals.Lending.Application/Catalogue/RelocateEquipmentCommand.cs) are the Lending context's domain and application layers; D23 attributes contexts per .NET project, so a context's own layers count as two contexts (same as the 56 v1.0.0 rows). One logical finding over three members.",
+      "action": "recorded as noise (location-less, so it does not reach the clean entry of the file)",
+      "iteration": 5,
+      "pass": "contained",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RelocateEquipmentCommand.Deconstruct — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Disproof: EquipmentId (src/Rentals.Lending.Domain/Catalogue/EquipmentId.cs) and RelocateEquipmentCommand (src/Rentals.Lending.Application/Catalogue/RelocateEquipmentCommand.cs) are the Lending context's domain and application layers; D23 attributes contexts per .NET project, so a context's own layers count as two contexts (same as the 56 v1.0.0 rows). One logical finding over three members.",
+      "action": "recorded as noise (location-less, so it does not reach the clean entry of the file)",
+      "iteration": 5,
+      "pass": "contained",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Billing.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Billing.Application's public surface via AccountBalanceQuery..ctor — couples the contexts.",
+      "class": "valid",
+      "reason": "The planted BTL-001: Billing's public AccountBalanceQuery is typed by Lending's domain MemberId (ADR 0005).",
+      "action": "planted BTL-001; not matched by the harness (D23 rows carry no SARIF location) — recorded as FN",
+      "iteration": 5,
+      "pass": "host --with-llm",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Billing.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Billing.Application's public surface via AccountBalanceQuery.MemberId — couples the contexts.",
+      "class": "redundant",
+      "reason": "Same leak, same type as the AccountBalanceQuery..ctor row (one logical finding per type: ctor, property and Deconstruct of one positional record).",
+      "action": "counted once with the ..ctor row",
+      "iteration": 5,
+      "pass": "host --with-llm",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Billing.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Billing.Application's public surface via AccountBalanceQuery.Deconstruct — couples the contexts.",
+      "class": "redundant",
+      "reason": "Same leak, same type as the AccountBalanceQuery..ctor row (one logical finding per type: ctor, property and Deconstruct of one positional record).",
+      "action": "counted once with the ..ctor row",
+      "iteration": 5,
+      "pass": "host --with-llm",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RelocateEquipmentCommand..ctor — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Disproof: EquipmentId (src/Rentals.Lending.Domain/Catalogue/EquipmentId.cs) and RelocateEquipmentCommand (src/Rentals.Lending.Application/Catalogue/RelocateEquipmentCommand.cs) are the Lending context's domain and application layers; D23 attributes contexts per .NET project, so a context's own layers count as two contexts (same as the 56 v1.0.0 rows). One logical finding over three members.",
+      "action": "recorded as noise (location-less, so it does not reach the clean entry of the file)",
+      "iteration": 5,
+      "pass": "host --with-llm",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RelocateEquipmentCommand.EquipmentId — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Disproof: EquipmentId (src/Rentals.Lending.Domain/Catalogue/EquipmentId.cs) and RelocateEquipmentCommand (src/Rentals.Lending.Application/Catalogue/RelocateEquipmentCommand.cs) are the Lending context's domain and application layers; D23 attributes contexts per .NET project, so a context's own layers count as two contexts (same as the 56 v1.0.0 rows). One logical finding over three members.",
+      "action": "recorded as noise (location-less, so it does not reach the clean entry of the file)",
+      "iteration": 5,
+      "pass": "host --with-llm",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RelocateEquipmentCommand.Deconstruct — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Disproof: EquipmentId (src/Rentals.Lending.Domain/Catalogue/EquipmentId.cs) and RelocateEquipmentCommand (src/Rentals.Lending.Application/Catalogue/RelocateEquipmentCommand.cs) are the Lending context's domain and application layers; D23 attributes contexts per .NET project, so a context's own layers count as two contexts (same as the 56 v1.0.0 rows). One logical finding over three members.",
+      "action": "recorded as noise (location-less, so it does not reach the clean entry of the file)",
+      "iteration": 5,
+      "pass": "host --with-llm",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D19",
+      "file": "README.md",
+      "line": 1,
+      "message": "Documentation: no contributor guidance: The root README lacks a section or guidance for contributors on how to set up the development environment, run tests, or submit changes. Add a 'Contributing' section to the root README with steps for setting up the local environment, running the test suite, an…",
+      "class": "false-positive",
+      "reason": "Disproof: README.md has a `## Contributing` section (same claim as v1.0.0 iteration 2).",
+      "action": "recorded as noise",
+      "iteration": 5,
+      "pass": "host --with-llm",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "D20",
+      "file": "docs/adr/0003-event-sourced-member-account.md",
+      "line": 1,
+      "message": "The 'Consequences' section is incomplete; it lists constraints (determinism, immutability) but omits positive trade-offs, benefits, and negative impacts (e.g., complexity, performance implications, or operational overhead).…",
+      "class": "opinion-not-fact",
+      "reason": "The section states the consequences the decision imposes; listing benefits and costs is a style preference. Reworded from v1.0.0's row after the ADR's Decision section gained one sentence (serialised store).",
+      "action": "recorded as noise",
+      "iteration": 5,
+      "pass": "host --with-llm",
+      "tag": "v1.1.0"
+    },
+    {
+      "ruleId": "M4",
+      "file": null,
+      "line": null,
+      "message": "README/code drift: README claims the HTTP front end is a separate deployable and not part of this repository, but the evidence shows a `benchmark/` directory exists, which typically implies a separate project or component…",
+      "class": "false-positive",
+      "reason": "Disproof: `benchmark/` holds this repository's answer key, README and journal (benchmark/answer-key.json); it is not an HTTP front end, and the code has no HTTP entry point, so there is no drift.",
+      "action": "recorded as noise",
+      "iteration": 5,
+      "pass": "host --with-llm",
+      "tag": "v1.1.0"
     }
   ],
   "falseNegatives": [
@@ -1281,6 +1554,36 @@
     {
       "entryId": "ES1-002",
       "reason": "AccountBalanceProjection.When(PaymentReceived) stores DateTimeOffset.UtcNow, so a rebuilt read model differs. ES1 checks Apply/When folds on aggregates only; projection folds are outside its population."
+    },
+    {
+      "entryId": "VOM-001",
+      "reason": "StorageLocation (class, public setters, reference equality used by Equipment.Relocate) is a real mutable value object; value-object-mutability is unmapped for Watchdog (DM5 judges entity state only) and no rule fired on the type.",
+      "tag": "v1.1.0"
+    },
+    {
+      "entryId": "DEH-001",
+      "reason": "EquipmentRelocated is raised by Equipment.Relocate and handled nowhere; domain-event-never-handled is unmapped (ED1–ED5 judge handlers that exist).",
+      "tag": "v1.1.0"
+    },
+    {
+      "entryId": "DEH-002",
+      "reason": "MemberPersonalDataErased (present since v1.0.0) is raised and handled nowhere, so Billing never learns of an erasure; unmapped concept.",
+      "tag": "v1.1.0"
+    },
+    {
+      "entryId": "ESC-001",
+      "reason": "DepositHeld's stored property was renamed (96f0557) after events were persisted as JSON (9fe669e) with no version bump or upcaster; unmapped concept (no rule compares an event's schema across history).",
+      "tag": "v1.1.0"
+    },
+    {
+      "entryId": "BTL-001",
+      "reason": "Found in substance: D23 reported 'Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Billing.Application) … via AccountBalanceQuery.MemberId' (and ..ctor, Deconstruct). The rows carry no SARIF location (site only in prose: type and member), so under contract 1.4 they cannot match a located entry; they count as noise.",
+      "tag": "v1.1.0"
+    },
+    {
+      "entryId": "BTL-002",
+      "reason": "Found in substance: D23 reported 'Cross-context type ExtendLoanCommand (Rentals.Lending.Application → Rentals.Billing.Application) … via ChargeExtensionFeeHandler.HandleAsync' (the row judged valid in v1.0.0 iteration 1). Location-less, so unmatched.",
+      "tag": "v1.1.0"
     }
   ],
   "scoreBands": [
@@ -1400,6 +1703,10 @@
     "ED5 offline is a candidate list, not a verdict: 9 of 10 notes in the contained pass were guarded handlers; the model pass cleared 8 of them and confirmed the planted one plus a real concurrency gap (fixed).",
     "DM7 started reporting the four aggregate-root repository implementations as repositories for non-root entities after the infrastructure project gained the EF design-time package and migrations, in both modes; nothing in the domain types changed.",
     "The model-judged pass is not reproducible run to run: D19 changed claim between iterations 2 and 3 and an M4 row appeared only in iteration 3; theme results were identical.",
-    "Brief items with no taxonomy concept were not labelled: value objects with identity equality or mutable state, a domain event raised but never handled (ExtendLoanEvent is raised and never mapped), and an event-schema change without an upcaster."
+    "Brief items with no taxonomy concept were not labelled: value objects with identity equality or mutable state, a domain event raised but never handled (ExtendLoanEvent is raised and never mapped), and an event-schema change without an upcaster.",
+    "v1.1.0 (key 1.1.0): + VOM-001, DEH-001, DEH-002, ESC-001, BTL-001, BTL-002 (must-fire) and TRP-024 … TRP-027 (must-not-fire); recall 22/30 (73.3 %) on both passes, trap resistance 25/27. The two v1.0.0 misses (DM6-001, ES1-002) and the two caught traps (TRP-002, TRP-022) are unchanged.",
+    "The three new concepts are unmapped for Watchdog: their four plants are FNs by construction and their three traps TNs; no existing rule (DM5, ES2, ED5, DM*, D*) reacted to the new value object, events, serializer or handler, in either pass.",
+    "D23 attributes bounded contexts per .NET project without configuration, and it DID report both boundary leaks (BTL-001, BTL-002) — but every D23 row is location-less, so they match no located plant, and with boundary-type-leakage now covered the ~60 same-context D23 rows (one context's domain and application projects counted as two contexts) become noise (noise 16 → 79 in the contained pass). A harness mechanism to place D23 rows (the message names the type and member, not a file) or a located D23 row would turn BTL-001/002 into TPs and the false rows into clean-region FPs.",
+    "DEH-002 and BTL-002 label v1.0.0 code: both defects existed at v1.0.0 but had no concept in the key (the v1.0.0 observation already named the unhandled-event fact); v1.1.0's truthful key must say so."
   ]
 }
