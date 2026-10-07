@@ -394,6 +394,14 @@
       "description": "A dependency its publisher has marked deprecated."
     },
     {
+      "id": "prerelease-dependency",
+      "title": "Dependency resolved to a pre-release build",
+      "cwe": null,
+      "family": "readiness",
+      "kind": "finding",
+      "description": "A shipped dependency resolved to a pre-release version (a SemVer pre-release label such as -alpha, -beta, -preview or -rc), which carries no support policy and may change or be unlisted. A stable 0.x release is not a pre-release."
+    },
+    {
       "id": "license-policy-violation",
       "title": "Dependency license incompatible with policy",
       "cwe": null,

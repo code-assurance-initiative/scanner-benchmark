@@ -152,14 +152,16 @@ TABLE = {
     dict(messages=["^Deprecated: ", "^Deprecated module: ", "^Discontinued package: ", "^Abandoned package: ", "^Retired release: ", "^Yanked release: "],
         source="engine/src/Scanner/Dependencies/D12/DependencyHygieneAnalyzer.cs:451 (NuGet/npm deprecated), :2625 (Go deprecated module), :1974 (Dart discontinued), :2037 (Composer abandoned), :2244,2351 (Hex retired), :2106,2181 (Cargo/PyPI yanked) — all publisher-marked withdrawals"),
    ]),
+   ("prerelease-dependency", [
+    dict(messages=["^Prerelease dependency: "],
+        source="engine/src/Scanner/Dependencies/D12/DependencyHygieneAnalyzer.cs:462"),
+   ]),
    ("dependencies-not-locked", [
     dict(messages=[r"^No dependency lockfile committed \(", r"^No Package\.resolved committed \(", r"^No go\.sum committed \(", r"^No Gemfile\.lock committed by an application", "^Dependency not covered by the (?:lockfile|committed resolution): ", "^Floating (?:npm|git|source|branch) dependency: ", "^UPM dependency `[^`]+` is a git source with no revision", "^Dependency pinning: "],
         source='engine/src/Scanner/Dependencies/D12/DependencyHygieneAnalyzer.cs:3090-3196 (pinning-discipline titles: no lockfile :3102,3111,3143,3177; declaration outside the lockfile :3145,3179; dependency naming no releasable version :3093,3104,3147,3181; fallback "Dependency pinning") and :2985 (UPM git source with no revision)'),
    ]),
   ]),
   off=[
-   dict(message="^Prerelease dependency: ",
-        source="engine/src/Scanner/Dependencies/D12/DependencyHygieneAnalyzer.cs:462 — a prerelease build is neither vulnerable, outdated, deprecated nor unlocked"),
    dict(message="^Unbounded dependency requirement: ",
         source="engine/src/Scanner/Dependencies/D12/DependencyHygieneAnalyzer.cs:3183,3196 — a requirement with no upper bound beside a lockfile: upgrade risk, not an unlocked build"),
    dict(message="^One package at two majors across the workspace: ",

@@ -66,6 +66,7 @@ c("malicious-dependency", "Known-malicious dependency", "CWE-506", "security", "
 c("end-of-life-platform", "End-of-life runtime or framework", "CWE-1104", "security", "finding", "A pinned runtime (target framework, Node/Python version) or framework major past its vendor end-of-support date.")
 c("outdated-dependency", "Outdated dependency", None, "readiness", "finding", "A dependency several releases behind its latest version (staleness, not a known vulnerability).")
 c("deprecated-dependency", "Deprecated dependency", None, "readiness", "finding", "A dependency its publisher has marked deprecated.")
+c("prerelease-dependency", "Dependency resolved to a pre-release build", None, "readiness", "finding", "A shipped dependency resolved to a pre-release version (a SemVer pre-release label such as -alpha, -beta, -preview or -rc), which carries no support policy and may change or be unlisted. A stable 0.x release is not a pre-release.")
 c("license-policy-violation", "Dependency license incompatible with policy", None, "compliance", "finding", "A third-party package whose declared license is denied or copyleft-incompatible under the configured policy.")
 c("dependencies-not-locked", "Dependencies not locked", None, "security", "posture", "An ecosystem in the repository resolves dependencies without a lockfile or central version pinning, so builds are not reproducible.")
 c("dependency-release-cooldown-missing", "Dependency updates adopted without a release-age cooldown", None, "security", "finding",

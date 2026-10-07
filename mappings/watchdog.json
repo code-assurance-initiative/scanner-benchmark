@@ -947,6 +947,20 @@
         "D12"
       ]
     },
+    "prerelease-dependency": {
+      "rules": [
+        {
+          "rule": "^(?:D12)$",
+          "messages": [
+            "^Prerelease dependency: "
+          ],
+          "source": "engine/src/Scanner/Dependencies/D12/DependencyHygieneAnalyzer.cs:462"
+        }
+      ],
+      "dimensions": [
+        "D12"
+      ]
+    },
     "license-policy-violation": {
       "rules": [
         "^(?:D14)$"
@@ -2664,11 +2678,6 @@
       "rule": "^(?:D10)$",
       "message": "^Snapshot tests auto-approve: ",
       "source": "engine/src/Scanner/Testing/D10/TestQualityAnalyzer.cs:396 — a snapshot harness configured to accept its own output; no concept denotes it"
-    },
-    {
-      "rule": "^(?:D12)$",
-      "message": "^Prerelease dependency: ",
-      "source": "engine/src/Scanner/Dependencies/D12/DependencyHygieneAnalyzer.cs:462 — a prerelease build is neither vulnerable, outdated, deprecated nor unlocked"
     },
     {
       "rule": "^(?:D12)$",

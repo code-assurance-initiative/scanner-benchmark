@@ -40,7 +40,7 @@ D = {
  "D9":  dict(k="metric", c=["test-pyramid-distribution"], cs="yes", ts="yes", lb="assessed: test projects/frameworks; measured on 24 local TS scans", r=[CT], req=[TESTRUN]),
  "D10": dict(k="finding", c=["test-without-assertion", "skipped-test-without-reason", "excessive-mocking", "flaky-test"], cs="yes", ts="yes", lb="assessed: Roslyn per test; measured on 19 local TS scans", r=[CT, TH], req=[TESTRUN]),
  "D11": dict(k="finding", c=["flaky-test"], cs="yes", ts="yes", lb="assessed: re-runs the suite (DimensionMethods)", r=[CT], req=[TESTRUN]),
- "D12": dict(k="finding", c=["vulnerable-dependency", "outdated-dependency", "deprecated-dependency", "dependencies-not-locked"], cs="yes", ts="yes", lb=M, r=[CD, TD], req=["package restore (dotnet list package / npm metadata)"]),
+ "D12": dict(k="finding", c=["vulnerable-dependency", "outdated-dependency", "deprecated-dependency", "prerelease-dependency", "dependencies-not-locked"], cs="yes", ts="yes", lb=M, r=[CD, TD], req=["package restore (dotnet list package / npm metadata)"]),
  "D13": dict(k="finding", c=["hardcoded-credential", "hardcoded-password", "hardcoded-cryptographic-key", "committed-private-key"], cs="yes", ts="yes", lb=M + " (agnostic)", r=[CS, TS]),
  "D14": dict(k="finding", c=["license-policy-violation"], cs="yes", ts="yes", lb=M, r=[CD, TD], req=["package restore"]),
  "D15": dict(k="metric", c=["churn-complexity-hotspot"], cs="yes", ts="yes", lb="assessed: git x Roslyn/JS/Razor complexity (DimensionMethods)", r=[CM, EST], loc=True, req=[GIT, BUILD]),

@@ -811,6 +811,7 @@
         "vulnerable-dependency",
         "outdated-dependency",
         "deprecated-dependency",
+        "prerelease-dependency",
         "dependencies-not-locked"
       ],
       "requires": [

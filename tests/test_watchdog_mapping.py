@@ -70,7 +70,7 @@ DIMENSION_CASES = [
     ('D12', "Deprecated: xunit: xunit 2.4.1 — Legacy — the publisher's replacement is `xunit.v3`", ['deprecated-dependency']),
     ('D12', 'Dependency pinned to a stale untagged commit: github.com/flynn/go-shlex: Direct dependency `github.com/flynn/go-shlex` is required at `v0.0.0-20150515145356-3f9db97f8568`', ['outdated-dependency']),
     ('D12', 'No Package.resolved committed (Package.swift): Package.swift declares 1 dependency and no `.library` product, so it is an APPLICATION', ['dependencies-not-locked']),
-    ('D12', 'Prerelease dependency: StyleCop.Analyzers: StyleCop.Analyzers resolves to 1.2.0-beta.556, a prerelease build.', []),
+    ('D12', 'Prerelease dependency: StyleCop.Analyzers: StyleCop.Analyzers resolves to 1.2.0-beta.556, a prerelease build.', ['prerelease-dependency']),
     ('PF3', 'Sync-over-async blocking: 121 blocking call(s) on async work (.Wait()/.GetAwaiter().GetResult()) — these waste a thread', ['blocking-on-async-code']),
     ('PF3', 'Awaits without ConfigureAwait(false): Only 0/965 awaits use ConfigureAwait(false).', ['missing-configure-await']),
     ('R2', 'Cyclomatic Complexity: P95 cyclomatic 9 · 0 function(s) > 10 · 0 > 20 (of 34)', []),
