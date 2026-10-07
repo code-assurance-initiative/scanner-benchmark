@@ -1,353 +1,372 @@
 {
- "repo": "code-assurance-initiative/bench-csharp-security-dependencies",
- "tag": "v1.0.0",
- "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc)",
- "scans": [
-  {
-   "iteration": 1,
-   "date": "2026-10-07",
-   "sarifSha256": "d749a65fceffb1f8d77bf6388cc4badd3f2f53d9b5d4a20a09970adab56c003c",
-   "outcomes": {
-    "tp": 0,
-    "fn": 8,
-    "fp": 0,
-    "tn": 103,
-    "trapFp": 0,
-    "trapTn": 7,
-    "results": 11,
-    "noise": 11,
-    "redundant": 0,
-    "uncovered": 10,
-    "summaryRows": 0,
-    "recall": 0.0,
-    "trapResistance": 1.0,
-    "noiseRate": 1.0
-   },
-   "note": "contained, repo commit 9d0089f"
-  },
-  {
-   "iteration": 2,
-   "date": "2026-10-07",
-   "sarifSha256": "3d9b5cc384829300a89d1e872af64a37788e897235f94e3f805fd0fec25f1244",
-   "outcomes": {
-    "tp": 0,
-    "fn": 8,
-    "fp": 1,
-    "tn": 107,
-    "trapFp": 1,
-    "trapTn": 7,
-    "results": 12,
-    "noise": 12,
-    "redundant": 0,
-    "uncovered": 4,
-    "summaryRows": 0,
-    "recall": 0.0,
-    "trapResistance": 0.875,
-    "noiseRate": 1.0
-   },
-   "note": "contained, repo commit 99a9821, final (code identical at v1.0.0 2e3037f apart from the journal)"
-  }
- ],
- "judgedOutcomes": {
-  "note": "Per package, from the raw SARIF (the harness table reads 0 % recall because every dependency result is location-less).",
-  "tp": [
-   "DEP-001",
-   "DEP-002",
-   "DEP-003",
-   "DEP-004",
-   "DEP-005",
-   "DEP-007",
-   "DEP-008"
+  "repo": "code-assurance-initiative/bench-csharp-security-dependencies",
+  "tag": "v1.1.0",
+  "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc)",
+  "scans": [
+    {
+      "iteration": 1,
+      "date": "2026-10-07",
+      "sarifSha256": "d749a65fceffb1f8d77bf6388cc4badd3f2f53d9b5d4a20a09970adab56c003c",
+      "outcomes": {
+        "tp": 0,
+        "fn": 8,
+        "fp": 0,
+        "tn": 103,
+        "trapFp": 0,
+        "trapTn": 7,
+        "results": 11,
+        "noise": 11,
+        "redundant": 0,
+        "uncovered": 10,
+        "summaryRows": 0,
+        "recall": 0.0,
+        "trapResistance": 1.0,
+        "noiseRate": 1.0
+      },
+      "note": "contained, repo commit 9d0089f"
+    },
+    {
+      "iteration": 2,
+      "date": "2026-10-07",
+      "sarifSha256": "3d9b5cc384829300a89d1e872af64a37788e897235f94e3f805fd0fec25f1244",
+      "outcomes": {
+        "tp": 0,
+        "fn": 8,
+        "fp": 1,
+        "tn": 107,
+        "trapFp": 1,
+        "trapTn": 7,
+        "results": 12,
+        "noise": 12,
+        "redundant": 0,
+        "uncovered": 4,
+        "summaryRows": 0,
+        "recall": 0.0,
+        "trapResistance": 0.875,
+        "noiseRate": 1.0
+      },
+      "note": "contained, repo commit 99a9821, final (code identical at v1.0.0 2e3037f apart from the journal)"
+    },
+    {
+      "iteration": "2 (re-scored)",
+      "date": "2026-10-07",
+      "sarifSha256": "3d9b5cc384829300a89d1e872af64a37788e897235f94e3f805fd0fec25f1244",
+      "outcomes": {
+        "tp": 7,
+        "fn": 1,
+        "fp": 2,
+        "tn": 106,
+        "trapFp": 2,
+        "trapTn": 6,
+        "results": 12,
+        "noise": 2,
+        "redundant": 3,
+        "uncovered": 4
+      },
+      "note": "iteration-2 SARIF re-scored with key v1.1.0 (subjects, harness contract 1.2, scoreDimensions); matches the judged outcomes"
+    }
   ],
-  "fn": [
-   "DEP-006"
+  "judgedOutcomes": {
+    "note": "Per package, from the raw SARIF (the harness table reads 0 % recall because every dependency result is location-less).",
+    "tp": [
+      "DEP-001",
+      "DEP-002",
+      "DEP-003",
+      "DEP-004",
+      "DEP-005",
+      "DEP-007",
+      "DEP-008"
+    ],
+    "fn": [
+      "DEP-006"
+    ],
+    "trapFp": [
+      "TRP-003",
+      "TRP-008"
+    ],
+    "trapTn": [
+      "TRP-001",
+      "TRP-002",
+      "TRP-004",
+      "TRP-005",
+      "TRP-006",
+      "TRP-007"
+    ],
+    "recall": "7/8",
+    "trapResistance": "6/8"
+  },
+  "verdicts": [
+    {
+      "ruleId": "D12",
+      "file": null,
+      "line": null,
+      "message": "Vulnerable: Newtonsoft.Json: Newtonsoft.Json 12.0.3 — High severity. https://github.com/advisories/GHSA-5crp-9r3c-p9vr",
+      "class": "valid",
+      "reason": "DEP-001: Newtonsoft.Json 12.0.3 is affected by GHSA-5crp-9r3c-p9vr. expected hit, judged from the raw result: the harness cannot match it because the result carries no location (see observations)",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "DEP-001"
+    },
+    {
+      "ruleId": "D30",
+      "file": null,
+      "line": null,
+      "message": "High CVE: Newtonsoft.Json 12.0.3: Newtonsoft.Json 12.0.3 (direct) has a High advisory; affects 3 projects — one upgrade fixes all. https://github.com/advisories/GHSA-5crp-9r3c-p9vr — upgrade to 13.0.1",
+      "class": "redundant",
+      "reason": "DEP-001 again from the advisory dimension; same package, same upgrade (multi-lens of one logical finding, counted once).",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "DEP-001"
+    },
+    {
+      "ruleId": "D12",
+      "file": null,
+      "line": null,
+      "message": "Vulnerable: SharpZipLib: SharpZipLib 1.3.2 — High severity. https://github.com/advisories/GHSA-m22m-h4rf-pwq3",
+      "class": "valid",
+      "reason": "DEP-002: SharpZipLib 1.3.2, GHSA-m22m-h4rf-pwq3 et al. expected hit, judged from the raw result: the harness cannot match it because the result carries no location (see observations)",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "DEP-002"
+    },
+    {
+      "ruleId": "D30",
+      "file": null,
+      "line": null,
+      "message": "High CVE: SharpZipLib 1.3.2: SharpZipLib 1.3.2 (direct) has a High advisory. https://github.com/advisories/GHSA-m22m-h4rf-pwq3 — upgrade to 1.3.3. This one row stands for the 3 advisories this scan raises against SharpZipLib 1.3.2: GHSA-2x7h-96h5-rq84, GHSA-m22m-h4rf-pwq3, GHSA-mm6g-mmq6-53ff.",
+      "class": "redundant",
+      "reason": "DEP-002 again from the advisory dimension; one upgrade clears both.",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "DEP-002"
+    },
+    {
+      "ruleId": "D30",
+      "file": null,
+      "line": null,
+      "message": "High CVE: SixLabors.ImageSharp 1.0.4: SixLabors.ImageSharp 1.0.4 (transitive) has a High advisory; affects 5 projects — one upgrade fixes all. https://github.com/advisories/GHSA-2cmq-823j-5qj8 — upgrade to 2.1.10. This one row stands for the 7 advisories this scan raises against SixLabors.ImageSharp 1.0.4: GHSA-2cmq-823j-5qj8, GHSA-5x7m-6737-26cr, GHSA-63p8-c4ww-9cg7, GHSA-65x7-c272-7g7r, GHSA-g85r-6x2q-45w7, GHSA-qxrv-gp6x-rc23, GHSA-rxmq-m78w-7wmc.",
+      "class": "valid",
+      "reason": "DEP-003: transitive SixLabors.ImageSharp 1.0.4 via PdfSharpCore 1.3.67, seven advisories. expected hit, judged from the raw result: the harness cannot match it because the result carries no location (see observations)",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "DEP-003"
+    },
+    {
+      "ruleId": "D12",
+      "file": null,
+      "line": null,
+      "message": "Vulnerable: SharpCompress: SharpCompress 0.28.3 — Moderate severity. https://github.com/advisories/GHSA-jp7f-grcv-6mjf",
+      "class": "valid",
+      "reason": "DEP-004: test-only SharpCompress 0.28.3, GHSA-jp7f-grcv-6mjf / GHSA-6c8g-7p36-r338. expected hit, judged from the raw result: the harness cannot match it because the result carries no location (see observations)",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "DEP-004"
+    },
+    {
+      "ruleId": "D30",
+      "file": null,
+      "line": null,
+      "message": "Medium CVE: SharpCompress 0.28.3: SharpCompress 0.28.3 (direct) has a Medium advisory. https://github.com/advisories/GHSA-6c8g-7p36-r338 — upgrade to 0.48.0. This one row stands for the 2 advisories this scan raises against SharpCompress 0.28.3: GHSA-6c8g-7p36-r338, GHSA-jp7f-grcv-6mjf.",
+      "class": "redundant",
+      "reason": "DEP-004 again from the advisory dimension.",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "DEP-004"
+    },
+    {
+      "ruleId": "D12",
+      "file": null,
+      "line": null,
+      "message": "Deprecated: Polly.Extensions.Http: Polly.Extensions.Http 3.0.0 — Legacy — the publisher's replacement is `Microsoft.Extensions.Http.Resilience`; migrate the reference to it.",
+      "class": "valid",
+      "reason": "DEP-005: nuget.org deprecation (Legacy, alternate Microsoft.Extensions.Http.Resilience). expected hit, judged from the raw result: the harness cannot match it because the result carries no location (see observations)",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "DEP-005"
+    },
+    {
+      "ruleId": "D14",
+      "file": null,
+      "line": null,
+      "message": "Banned license: MySql.Data: `MySql.Data` 26.7.0 resolves to SPDX id GPL-2.0-only WITH Universal-FOSS-exception-1.0, and this run's banned set is AGPL-3.0, GPL-2.0, GPL-3.0, LGPL-3.0. The match is a SUBSTRING of the id, not an exact comparison — which is how variants like `-only` and `-or-later` are caught, and it is the rule to apply if you re-check this by hand. The set is policy, not law: it is configurable, so a licence banned here may be acceptable in your context, and the row is then something to record an exception for rather than to fix. ★ This arm reads the resolved package list and knows nothing about dependency SCOPE — it cannot tell a runtime dependency from a build- or test-only one, so unlike the Bundler arm it is NOT claiming this ships to your users. Check where it sits before acting. ★ DEPTH: this repository's MSBuild projects declare 24 direct `PackageReference`(s), and 177 further package(s) were reached beyond them by closing the graph over the committed `packages.lock.json` and nuget.org's own nuspec dependency graph — so a banned licence pulled in only by a dependency's OWN dependencies is inside this verdict. A package whose licence nuget.org could not be asked for is not graded, and version ranges are taken at their lower bound, so this is the closure as that graph states it rather than a restored consumer's exact resolution.",
+      "class": "valid",
+      "reason": "DEP-007: GPL-2.0-only WITH Universal-FOSS-exception-1.0 in a shipped component of a proprietary bundle; forbidden by docs/adr/0003. expected hit, judged from the raw result: the harness cannot match it because the result carries no location (see observations)",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "DEP-007"
+    },
+    {
+      "ruleId": "D44",
+      "file": null,
+      "line": null,
+      "message": "End-of-life runtime: .NET net6.0: tools/Invoicing.ArchiveExporter/Invoicing.ArchiveExporter.csproj declares .NET net6.0 as this project's target framework, and .NET 6 LTS, support ended 2024-11-12. An unsupported runtime receives no security patches, so every vulnerability disclosed in it since 2024-11-12 is present and unfixable without moving off it. This is a migration rather than an upgrade: there is no newer release of a runtime that has ended.",
+      "class": "valid",
+      "reason": "DEP-008: the exporter targets only net6.0; .NET 6 support ended 2024-11-12. expected hit, judged from the raw result: the harness cannot match it because the result carries no location (see observations)",
+      "action": "none (planted)",
+      "iteration": 1,
+      "entryId": "DEP-008"
+    },
+    {
+      "ruleId": "D14",
+      "file": null,
+      "line": null,
+      "message": "Banned license: iTextSharp.LGPLv2.Core: `iTextSharp.LGPLv2.Core` 3.8.6 resolves to SPDX id LGPL-2.0-only, and this run's banned set is AGPL-3.0, GPL-2.0, GPL-3.0, LGPL-3.0. The match is a SUBSTRING of the id, not an exact comparison — which is how variants like `-only` and `-or-later` are caught, and it is the rule to apply if you re-check this by hand. The set is policy, not law: it is configurable, so a licence banned here may be acceptable in your context, and the row is then something to record an exception for rather than to fix. ★ This arm reads the resolved package list and knows nothing about dependency SCOPE — it cannot tell a runtime dependency from a build- or test-only one, so unlike the Bundler arm it is NOT claiming this ships to your users. Check where it sits before acting. ★ DEPTH: this repository's MSBuild projects declare 24 direct `PackageReference`(s), and 177 further package(s) were reached beyond them by closing the graph over the committed `packages.lock.json` and nuget.org's own nuspec dependency graph — so a banned licence pulled in only by a dependency's OWN dependencies is inside this verdict. A package whose licence nuget.org could not be asked for is not graded, and version ranges are taken at their lower bound, so this is the closure as that graph states it rather than a restored consumer's exact resolution.",
+      "class": "false-positive",
+      "reason": "Disproof: the package licence is LGPL-2.0-only (nuspec licence expression), and the repository policy (docs/adr/0003-third-party-licence-policy.md) allows LGPL for an unmodified library consumed as a separate assembly, which a NuGet package loaded at run time is. The row is produced by a substring rule: the banned id \"GPL-2.0\" is a substring of \"LGPL-2.0-only\". Caught in trap TRP-003.",
+      "action": "recorded as noise (trap TRP-003 caught)",
+      "iteration": 1,
+      "entryId": "TRP-003"
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/Invoicing.Api/Signing/FileSigningCertificateSource.cs",
+      "line": 1,
+      "message": "Low coverage: src/Invoicing.Api/Signing/FileSigningCertificateSource.cs: 0.0% line coverage (0/16).",
+      "class": "valid",
+      "reason": "The certificate source had no test (0/16 lines).",
+      "action": "repo fixed: FileSigningCertificateSourceTests (commit 4c445fa)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/Invoicing.Api/Branding/BrandingServiceClient.cs",
+      "line": 1,
+      "message": "Low coverage: src/Invoicing.Api/Branding/BrandingServiceClient.cs: 0.0% line coverage (0/17).",
+      "class": "valid",
+      "reason": "The branding client had no test (0/17 lines).",
+      "action": "repo fixed: BrandingServiceClientTests (same commit)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/Invoicing.Worker/Jobs/InvoicePayload.cs",
+      "line": 1,
+      "message": "Low coverage: src/Invoicing.Worker/Jobs/InvoicePayload.cs: 0.0% line coverage (0/19).",
+      "class": "valid",
+      "reason": "The stored-payload mapping had no test (0/19 lines).",
+      "action": "repo fixed: InvoicePayloadTests (same commit)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/Invoicing.Worker/Jobs/MySqlRenderJobStore.cs",
+      "line": 1,
+      "message": "Low coverage: src/Invoicing.Worker/Jobs/MySqlRenderJobStore.cs: 0.0% line coverage (0/57).",
+      "class": "valid",
+      "reason": "The MySQL store had no test (0/57 lines). Its SQL needs a MySQL server, which the offline test rule excludes.",
+      "action": "repo partly fixed: failure-path tests (21 % in iteration 2); the remainder is a documented residual",
+      "iteration": 1
+    },
+    {
+      "ruleId": "X5",
+      "file": null,
+      "line": null,
+      "message": "Null-forgiving operator (`!`) suppressions reduce the NRT score: ~0.4 `!` suppressions per 1k syntax nodes — 4 suppression(s) across the 9392 syntax node(s) in code where nullable warnings are ENABLED, which is the only code a `!` can suppress anything in (a `!` under `#nullable disable` is inert and is not counted, and its file's nodes are not in the denominator). Each one tells the compiler to trust you about null, suppressing the very safety NRTs provide.",
+      "class": "valid",
+      "reason": "Four `!` operators in XmlInvoiceSigner and UblInvoiceWriter, against the repository convention.",
+      "action": "repo fixed: replaced by explicit null handling (same commit)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "X18",
+      "file": "tools/Invoicing.ArchiveExporter/PdfArchiveStamper.cs",
+      "line": 17,
+      "message": "Disposable created and abandoned in the method that made it: `stamper` is a `PdfStamper`, which implements `IDisposable`, and it is created here (line 17). Every use of it in `Stamp` reads a member through it — it is never returned, never stored, never handed to anything else, and never disposed — so this method both creates the value and is the last thing that can release it, and does not. Nothing announces the leak: the object holds its resource until finalization if its type has a finalizer, and until the process ends if it does not, so the cost accumulates once per CALL rather than showing up as a failure. Declare it with `using` (`using var stamper = …;`), which releases it at the end of the scope on every path including a throw.",
+      "class": "valid",
+      "reason": "The PdfStamper was closed but not disposed if stamping threw.",
+      "action": "repo fixed: using block (same commit)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D17",
+      "file": ".editorconfig",
+      "line": 37,
+      "message": "AnalyzerSeverityNone: CA2007 — this rule is switched off for every file the section matches, in every project under this directory, and the only record that it was ever switched off is this line: nothing at the sites it would have reported says so, so a reader of that code has no reason to look here, and code added years from now inherits the decision silently. Fix what the rule reports and delete the entry, or — where some sites really are legitimate — leave the rule on and suppress it at those sites with their reasons, so it keeps protecting the rest of the tree. If the rule is genuinely unwanted here, say why — on this line after the entry, or in the comment run directly above it: a comment that only repeats the rule's own title is read as no explanation at all and leaves this row in place.",
+      "class": "false-positive",
+      "reason": "Disproof: the reason is on .editorconfig:36 (tests must not use ConfigureAwait(false), xUnit1030) and src/.editorconfig and tools/.editorconfig re-enable CA2007 for all production code. The row claims no record of why exists.",
+      "action": "promoted to trap TRP-008 (suppressed-diagnostic); code kept",
+      "iteration": 1,
+      "entryId": "TRP-008"
+    },
+    {
+      "ruleId": "D29",
+      "file": "src/Invoicing.Rendering/Ubl/XmlInvoiceSigner.cs",
+      "line": 56,
+      "message": "Medium: watchdog-xmldocument-dtd-entity-expansion-csharp: Loading this `XmlDocument` hands the document to a reader that opens with DTD processing enabled. `LoadXml`, and the `Load` overloads that take a path, a `Stream` or a `TextReader`, build that reader inside the call; an `XmlTextReader` handed in already starts at `DtdProcessing.Parse` and reaches the same place. It is the opposite of the `XmlReaderSettings` default of `DtdProcessing.Prohibit` that `XmlReader.Create` starts from, so the loading path is the whole difference here: a document `XmlReader.Create` rejects outright is expanded on this line instead. An internal DTD subset may declare entities that refer to each other, and every level multiplies — ten entities each referring ten times to the level below reaches a million expansions in six short lines, and all of it expands in memory before this code sees a single element. Measured on .NET 10.0.10 through this exact shape, a 478-byte document produced 800,000 characters, and a 652-byte one ran until the runtime stopped it at its 10,000,000-character entity ceiling — so roughly 20 MB of memory out of a request the sender can repeat, which bounds the damage per document rather than removing it. Where the XML arrives from somewhere this program does not control — a downloaded manifest, an uploaded file, a package supplied by a third party — that is a document its sender can use to spend this process's memory and CPU. Note that `XmlResolver = null` answers a different question: it governs retrieval of EXTERNAL entities, which this runtime already refuses by default, and probed in exactly that spelling the internal subset still expanded to the same 800,000 characters. Because `XmlDocument` has no DTD switch of its own, the fix is to choose the loading path rather than to set a property on the document: build the reader with `XmlReader.Create`, whose `XmlReaderSettings` already default to `DtdProcessing.Prohibit`, and hand it to `Load(reader)`. Where a DTD genuinely has to be honoured, pair `DtdProcessing = DtdProcessing.Parse` with a `MaxCharactersFromEntities` bound — probed at 10,000, that same document is refused rather than expanded.",
+      "class": "false-positive",
+      "reason": "Disproof: XmlInvoiceSigner.cs:56 (58 after the iteration-1 fix) is `SignedXml.LoadXml(XmlElement)`, which takes an already-parsed element and parses no text; no XmlDocument is loaded from external input anywhere in the signer, which is only handed documents this code built.",
+      "action": "recorded as noise",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D29",
+      "file": "tools/Invoicing.ArchiveExporter/ArchiveExporter.cs",
+      "line": 32,
+      "message": "Medium: unsafe-path-combine: String argument sourceDirectory is used to read or write data from a file via Path.Combine without direct sanitization via Path.GetFileName. If the path is user-supplied data this can lead to path traversal.",
+      "class": "false-positive",
+      "reason": "Disproof: ArchiveExporter.cs:32 combines the operator's own --source argument (a CLI run by the administrator, the trust boundary) with an invoice number that ReadInvoices validated to [A-Z0-9-]{1,32} (ArchiveLayout.IsValidInvoiceNumber) before it is used.",
+      "action": "recorded as noise",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D5",
+      "file": null,
+      "line": null,
+      "message": "Off the main sequence: Invoicing.Contracts: Invoicing.Contracts: abstractness 0.00, instability 0.00, distance 1.00 — the shape a shared-kernel / building-block library has BY DESIGN — concrete and widely depended-on is what makes it useful, and this dimension does not penalise it (the distance is reported for completeness, not as a defect). Worth a look only if it has grown past one coherent kernel into an everything-bucket.",
+      "class": "opinion-not-fact",
+      "reason": "Main-sequence distance is a heuristic; the message itself says a concrete, widely used shared model library has this shape by design.",
+      "action": "recorded as noise",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/Invoicing.Worker/Jobs/MySqlRenderJobStore.cs",
+      "line": 1,
+      "message": "Low coverage: src/Invoicing.Worker/Jobs/MySqlRenderJobStore.cs: 21.1% line coverage (12/57).",
+      "class": "valid",
+      "reason": "Residual: 21.1 % (12/57) after the failure-path tests; the SQL paths need a MySQL server.",
+      "action": "documented residual (benchmark/journal.md, iteration 2); not fixable under the offline-test rule",
+      "iteration": 2
+    }
   ],
-  "trapFp": [
-   "TRP-003",
-   "TRP-008"
+  "falseNegatives": [
+    {
+      "entryId": "DEP-006",
+      "reason": "CsvHelper 12.1.2 (2019) is 21 majors behind 33.1.0. The scanner measured it (D12 outdated_count 5; findings.md: \"CsvHelper 12.1.2 → 33.1.0 available\") but emits outdated rows at Info level and no Info row reaches report.sarif, so no result reports it. Plant re-verified: no advisory, not deprecated."
+    }
   ],
-  "trapTn": [
-   "TRP-001",
-   "TRP-002",
-   "TRP-004",
-   "TRP-005",
-   "TRP-006",
-   "TRP-007"
+  "scoreBands": [
+    {
+      "entryId": "BND-001",
+      "concept": "dependencies-not-locked",
+      "band": [
+        80,
+        100
+      ],
+      "score": 37,
+      "inBand": false,
+      "note": "The score adapter supplies D12 (dominated by the planted vulnerabilities) for this concept; SC1, which measures locking, is advisory and publishes no score. Adapter artefact, not a repository property."
+    },
+    {
+      "entryId": "BND-002",
+      "concept": "build-provenance-and-signing",
+      "band": [
+        30,
+        100
+      ],
+      "score": null,
+      "inBand": null,
+      "note": "D36 withheld; unscored."
+    }
   ],
-  "recall": "7/8",
-  "trapResistance": "6/8"
- },
- "verdicts": [
-  {
-   "ruleId": "D12",
-   "file": null,
-   "line": null,
-   "message": "Vulnerable: Newtonsoft.Json: Newtonsoft.Json 12.0.3 — High severity. https://github.com/advisories/GHSA-5crp-9r3c-p9vr",
-   "class": "valid",
-   "reason": "DEP-001: Newtonsoft.Json 12.0.3 is affected by GHSA-5crp-9r3c-p9vr. expected hit, judged from the raw result: the harness cannot match it because the result carries no location (see observations)",
-   "action": "none (planted)",
-   "iteration": 1,
-   "entryId": "DEP-001"
-  },
-  {
-   "ruleId": "D30",
-   "file": null,
-   "line": null,
-   "message": "High CVE: Newtonsoft.Json 12.0.3: Newtonsoft.Json 12.0.3 (direct) has a High advisory; affects 3 projects — one upgrade fixes all. https://github.com/advisories/GHSA-5crp-9r3c-p9vr — upgrade to 13.0.1",
-   "class": "redundant",
-   "reason": "DEP-001 again from the advisory dimension; same package, same upgrade (multi-lens of one logical finding, counted once).",
-   "action": "none (planted)",
-   "iteration": 1,
-   "entryId": "DEP-001"
-  },
-  {
-   "ruleId": "D12",
-   "file": null,
-   "line": null,
-   "message": "Vulnerable: SharpZipLib: SharpZipLib 1.3.2 — High severity. https://github.com/advisories/GHSA-m22m-h4rf-pwq3",
-   "class": "valid",
-   "reason": "DEP-002: SharpZipLib 1.3.2, GHSA-m22m-h4rf-pwq3 et al. expected hit, judged from the raw result: the harness cannot match it because the result carries no location (see observations)",
-   "action": "none (planted)",
-   "iteration": 1,
-   "entryId": "DEP-002"
-  },
-  {
-   "ruleId": "D30",
-   "file": null,
-   "line": null,
-   "message": "High CVE: SharpZipLib 1.3.2: SharpZipLib 1.3.2 (direct) has a High advisory. https://github.com/advisories/GHSA-m22m-h4rf-pwq3 — upgrade to 1.3.3. This one row stands for the 3 advisories this scan raises against SharpZipLib 1.3.2: GHSA-2x7h-96h5-rq84, GHSA-m22m-h4rf-pwq3, GHSA-mm6g-mmq6-53ff.",
-   "class": "redundant",
-   "reason": "DEP-002 again from the advisory dimension; one upgrade clears both.",
-   "action": "none (planted)",
-   "iteration": 1,
-   "entryId": "DEP-002"
-  },
-  {
-   "ruleId": "D30",
-   "file": null,
-   "line": null,
-   "message": "High CVE: SixLabors.ImageSharp 1.0.4: SixLabors.ImageSharp 1.0.4 (transitive) has a High advisory; affects 5 projects — one upgrade fixes all. https://github.com/advisories/GHSA-2cmq-823j-5qj8 — upgrade to 2.1.10. This one row stands for the 7 advisories this scan raises against SixLabors.ImageSharp 1.0.4: GHSA-2cmq-823j-5qj8, GHSA-5x7m-6737-26cr, GHSA-63p8-c4ww-9cg7, GHSA-65x7-c272-7g7r, GHSA-g85r-6x2q-45w7, GHSA-qxrv-gp6x-rc23, GHSA-rxmq-m78w-7wmc.",
-   "class": "valid",
-   "reason": "DEP-003: transitive SixLabors.ImageSharp 1.0.4 via PdfSharpCore 1.3.67, seven advisories. expected hit, judged from the raw result: the harness cannot match it because the result carries no location (see observations)",
-   "action": "none (planted)",
-   "iteration": 1,
-   "entryId": "DEP-003"
-  },
-  {
-   "ruleId": "D12",
-   "file": null,
-   "line": null,
-   "message": "Vulnerable: SharpCompress: SharpCompress 0.28.3 — Moderate severity. https://github.com/advisories/GHSA-jp7f-grcv-6mjf",
-   "class": "valid",
-   "reason": "DEP-004: test-only SharpCompress 0.28.3, GHSA-jp7f-grcv-6mjf / GHSA-6c8g-7p36-r338. expected hit, judged from the raw result: the harness cannot match it because the result carries no location (see observations)",
-   "action": "none (planted)",
-   "iteration": 1,
-   "entryId": "DEP-004"
-  },
-  {
-   "ruleId": "D30",
-   "file": null,
-   "line": null,
-   "message": "Medium CVE: SharpCompress 0.28.3: SharpCompress 0.28.3 (direct) has a Medium advisory. https://github.com/advisories/GHSA-6c8g-7p36-r338 — upgrade to 0.48.0. This one row stands for the 2 advisories this scan raises against SharpCompress 0.28.3: GHSA-6c8g-7p36-r338, GHSA-jp7f-grcv-6mjf.",
-   "class": "redundant",
-   "reason": "DEP-004 again from the advisory dimension.",
-   "action": "none (planted)",
-   "iteration": 1,
-   "entryId": "DEP-004"
-  },
-  {
-   "ruleId": "D12",
-   "file": null,
-   "line": null,
-   "message": "Deprecated: Polly.Extensions.Http: Polly.Extensions.Http 3.0.0 — Legacy — the publisher's replacement is `Microsoft.Extensions.Http.Resilience`; migrate the reference to it.",
-   "class": "valid",
-   "reason": "DEP-005: nuget.org deprecation (Legacy, alternate Microsoft.Extensions.Http.Resilience). expected hit, judged from the raw result: the harness cannot match it because the result carries no location (see observations)",
-   "action": "none (planted)",
-   "iteration": 1,
-   "entryId": "DEP-005"
-  },
-  {
-   "ruleId": "D14",
-   "file": null,
-   "line": null,
-   "message": "Banned license: MySql.Data: `MySql.Data` 26.7.0 resolves to SPDX id GPL-2.0-only WITH Universal-FOSS-exception-1.0, and this run's banned set is AGPL-3.0, GPL-2.0, GPL-3.0, LGPL-3.0. The match is a SUBSTRING of the id, not an exact comparison — which is how variants like `-only` and `-or-later` are caught, and it is the rule to apply if you re-check this by hand. The set is policy, not law: it is configurable, so a licence banned here may be acceptable in your context, and the row is then something to record an exception for rather than to fix. ★ This arm reads the resolved package list and knows nothing about dependency SCOPE — it cannot tell a runtime dependency from a build- or test-only one, so unlike the Bundler arm it is NOT claiming this ships to your users. Check where it sits before acting. ★ DEPTH: this repository's MSBuild projects declare 24 direct `PackageReference`(s), and 177 further package(s) were reached beyond them by closing the graph over the committed `packages.lock.json` and nuget.org's own nuspec dependency graph — so a banned licence pulled in only by a dependency's OWN dependencies is inside this verdict. A package whose licence nuget.org could not be asked for is not graded, and version ranges are taken at their lower bound, so this is the closure as that graph states it rather than a restored consumer's exact resolution.",
-   "class": "valid",
-   "reason": "DEP-007: GPL-2.0-only WITH Universal-FOSS-exception-1.0 in a shipped component of a proprietary bundle; forbidden by docs/adr/0003. expected hit, judged from the raw result: the harness cannot match it because the result carries no location (see observations)",
-   "action": "none (planted)",
-   "iteration": 1,
-   "entryId": "DEP-007"
-  },
-  {
-   "ruleId": "D44",
-   "file": null,
-   "line": null,
-   "message": "End-of-life runtime: .NET net6.0: tools/Invoicing.ArchiveExporter/Invoicing.ArchiveExporter.csproj declares .NET net6.0 as this project's target framework, and .NET 6 LTS, support ended 2024-11-12. An unsupported runtime receives no security patches, so every vulnerability disclosed in it since 2024-11-12 is present and unfixable without moving off it. This is a migration rather than an upgrade: there is no newer release of a runtime that has ended.",
-   "class": "valid",
-   "reason": "DEP-008: the exporter targets only net6.0; .NET 6 support ended 2024-11-12. expected hit, judged from the raw result: the harness cannot match it because the result carries no location (see observations)",
-   "action": "none (planted)",
-   "iteration": 1,
-   "entryId": "DEP-008"
-  },
-  {
-   "ruleId": "D14",
-   "file": null,
-   "line": null,
-   "message": "Banned license: iTextSharp.LGPLv2.Core: `iTextSharp.LGPLv2.Core` 3.8.6 resolves to SPDX id LGPL-2.0-only, and this run's banned set is AGPL-3.0, GPL-2.0, GPL-3.0, LGPL-3.0. The match is a SUBSTRING of the id, not an exact comparison — which is how variants like `-only` and `-or-later` are caught, and it is the rule to apply if you re-check this by hand. The set is policy, not law: it is configurable, so a licence banned here may be acceptable in your context, and the row is then something to record an exception for rather than to fix. ★ This arm reads the resolved package list and knows nothing about dependency SCOPE — it cannot tell a runtime dependency from a build- or test-only one, so unlike the Bundler arm it is NOT claiming this ships to your users. Check where it sits before acting. ★ DEPTH: this repository's MSBuild projects declare 24 direct `PackageReference`(s), and 177 further package(s) were reached beyond them by closing the graph over the committed `packages.lock.json` and nuget.org's own nuspec dependency graph — so a banned licence pulled in only by a dependency's OWN dependencies is inside this verdict. A package whose licence nuget.org could not be asked for is not graded, and version ranges are taken at their lower bound, so this is the closure as that graph states it rather than a restored consumer's exact resolution.",
-   "class": "false-positive",
-   "reason": "Disproof: the package licence is LGPL-2.0-only (nuspec licence expression), and the repository policy (docs/adr/0003-third-party-licence-policy.md) allows LGPL for an unmodified library consumed as a separate assembly, which a NuGet package loaded at run time is. The row is produced by a substring rule: the banned id \"GPL-2.0\" is a substring of \"LGPL-2.0-only\". Caught in trap TRP-003.",
-   "action": "recorded as noise (trap TRP-003 caught)",
-   "iteration": 1,
-   "entryId": "TRP-003"
-  },
-  {
-   "ruleId": "D8",
-   "file": "src/Invoicing.Api/Signing/FileSigningCertificateSource.cs",
-   "line": 1,
-   "message": "Low coverage: src/Invoicing.Api/Signing/FileSigningCertificateSource.cs: 0.0% line coverage (0/16).",
-   "class": "valid",
-   "reason": "The certificate source had no test (0/16 lines).",
-   "action": "repo fixed: FileSigningCertificateSourceTests (commit 4c445fa)",
-   "iteration": 1
-  },
-  {
-   "ruleId": "D8",
-   "file": "src/Invoicing.Api/Branding/BrandingServiceClient.cs",
-   "line": 1,
-   "message": "Low coverage: src/Invoicing.Api/Branding/BrandingServiceClient.cs: 0.0% line coverage (0/17).",
-   "class": "valid",
-   "reason": "The branding client had no test (0/17 lines).",
-   "action": "repo fixed: BrandingServiceClientTests (same commit)",
-   "iteration": 1
-  },
-  {
-   "ruleId": "D8",
-   "file": "src/Invoicing.Worker/Jobs/InvoicePayload.cs",
-   "line": 1,
-   "message": "Low coverage: src/Invoicing.Worker/Jobs/InvoicePayload.cs: 0.0% line coverage (0/19).",
-   "class": "valid",
-   "reason": "The stored-payload mapping had no test (0/19 lines).",
-   "action": "repo fixed: InvoicePayloadTests (same commit)",
-   "iteration": 1
-  },
-  {
-   "ruleId": "D8",
-   "file": "src/Invoicing.Worker/Jobs/MySqlRenderJobStore.cs",
-   "line": 1,
-   "message": "Low coverage: src/Invoicing.Worker/Jobs/MySqlRenderJobStore.cs: 0.0% line coverage (0/57).",
-   "class": "valid",
-   "reason": "The MySQL store had no test (0/57 lines). Its SQL needs a MySQL server, which the offline test rule excludes.",
-   "action": "repo partly fixed: failure-path tests (21 % in iteration 2); the remainder is a documented residual",
-   "iteration": 1
-  },
-  {
-   "ruleId": "X5",
-   "file": null,
-   "line": null,
-   "message": "Null-forgiving operator (`!`) suppressions reduce the NRT score: ~0.4 `!` suppressions per 1k syntax nodes — 4 suppression(s) across the 9392 syntax node(s) in code where nullable warnings are ENABLED, which is the only code a `!` can suppress anything in (a `!` under `#nullable disable` is inert and is not counted, and its file's nodes are not in the denominator). Each one tells the compiler to trust you about null, suppressing the very safety NRTs provide.",
-   "class": "valid",
-   "reason": "Four `!` operators in XmlInvoiceSigner and UblInvoiceWriter, against the repository convention.",
-   "action": "repo fixed: replaced by explicit null handling (same commit)",
-   "iteration": 1
-  },
-  {
-   "ruleId": "X18",
-   "file": "tools/Invoicing.ArchiveExporter/PdfArchiveStamper.cs",
-   "line": 17,
-   "message": "Disposable created and abandoned in the method that made it: `stamper` is a `PdfStamper`, which implements `IDisposable`, and it is created here (line 17). Every use of it in `Stamp` reads a member through it — it is never returned, never stored, never handed to anything else, and never disposed — so this method both creates the value and is the last thing that can release it, and does not. Nothing announces the leak: the object holds its resource until finalization if its type has a finalizer, and until the process ends if it does not, so the cost accumulates once per CALL rather than showing up as a failure. Declare it with `using` (`using var stamper = …;`), which releases it at the end of the scope on every path including a throw.",
-   "class": "valid",
-   "reason": "The PdfStamper was closed but not disposed if stamping threw.",
-   "action": "repo fixed: using block (same commit)",
-   "iteration": 1
-  },
-  {
-   "ruleId": "D17",
-   "file": ".editorconfig",
-   "line": 37,
-   "message": "AnalyzerSeverityNone: CA2007 — this rule is switched off for every file the section matches, in every project under this directory, and the only record that it was ever switched off is this line: nothing at the sites it would have reported says so, so a reader of that code has no reason to look here, and code added years from now inherits the decision silently. Fix what the rule reports and delete the entry, or — where some sites really are legitimate — leave the rule on and suppress it at those sites with their reasons, so it keeps protecting the rest of the tree. If the rule is genuinely unwanted here, say why — on this line after the entry, or in the comment run directly above it: a comment that only repeats the rule's own title is read as no explanation at all and leaves this row in place.",
-   "class": "false-positive",
-   "reason": "Disproof: the reason is on .editorconfig:36 (tests must not use ConfigureAwait(false), xUnit1030) and src/.editorconfig and tools/.editorconfig re-enable CA2007 for all production code. The row claims no record of why exists.",
-   "action": "promoted to trap TRP-008 (suppressed-diagnostic); code kept",
-   "iteration": 1,
-   "entryId": "TRP-008"
-  },
-  {
-   "ruleId": "D29",
-   "file": "src/Invoicing.Rendering/Ubl/XmlInvoiceSigner.cs",
-   "line": 56,
-   "message": "Medium: watchdog-xmldocument-dtd-entity-expansion-csharp: Loading this `XmlDocument` hands the document to a reader that opens with DTD processing enabled. `LoadXml`, and the `Load` overloads that take a path, a `Stream` or a `TextReader`, build that reader inside the call; an `XmlTextReader` handed in already starts at `DtdProcessing.Parse` and reaches the same place. It is the opposite of the `XmlReaderSettings` default of `DtdProcessing.Prohibit` that `XmlReader.Create` starts from, so the loading path is the whole difference here: a document `XmlReader.Create` rejects outright is expanded on this line instead. An internal DTD subset may declare entities that refer to each other, and every level multiplies — ten entities each referring ten times to the level below reaches a million expansions in six short lines, and all of it expands in memory before this code sees a single element. Measured on .NET 10.0.10 through this exact shape, a 478-byte document produced 800,000 characters, and a 652-byte one ran until the runtime stopped it at its 10,000,000-character entity ceiling — so roughly 20 MB of memory out of a request the sender can repeat, which bounds the damage per document rather than removing it. Where the XML arrives from somewhere this program does not control — a downloaded manifest, an uploaded file, a package supplied by a third party — that is a document its sender can use to spend this process's memory and CPU. Note that `XmlResolver = null` answers a different question: it governs retrieval of EXTERNAL entities, which this runtime already refuses by default, and probed in exactly that spelling the internal subset still expanded to the same 800,000 characters. Because `XmlDocument` has no DTD switch of its own, the fix is to choose the loading path rather than to set a property on the document: build the reader with `XmlReader.Create`, whose `XmlReaderSettings` already default to `DtdProcessing.Prohibit`, and hand it to `Load(reader)`. Where a DTD genuinely has to be honoured, pair `DtdProcessing = DtdProcessing.Parse` with a `MaxCharactersFromEntities` bound — probed at 10,000, that same document is refused rather than expanded.",
-   "class": "false-positive",
-   "reason": "Disproof: XmlInvoiceSigner.cs:56 (58 after the iteration-1 fix) is `SignedXml.LoadXml(XmlElement)`, which takes an already-parsed element and parses no text; no XmlDocument is loaded from external input anywhere in the signer, which is only handed documents this code built.",
-   "action": "recorded as noise",
-   "iteration": 1
-  },
-  {
-   "ruleId": "D29",
-   "file": "tools/Invoicing.ArchiveExporter/ArchiveExporter.cs",
-   "line": 32,
-   "message": "Medium: unsafe-path-combine: String argument sourceDirectory is used to read or write data from a file via Path.Combine without direct sanitization via Path.GetFileName. If the path is user-supplied data this can lead to path traversal.",
-   "class": "false-positive",
-   "reason": "Disproof: ArchiveExporter.cs:32 combines the operator's own --source argument (a CLI run by the administrator, the trust boundary) with an invoice number that ReadInvoices validated to [A-Z0-9-]{1,32} (ArchiveLayout.IsValidInvoiceNumber) before it is used.",
-   "action": "recorded as noise",
-   "iteration": 1
-  },
-  {
-   "ruleId": "D5",
-   "file": null,
-   "line": null,
-   "message": "Off the main sequence: Invoicing.Contracts: Invoicing.Contracts: abstractness 0.00, instability 0.00, distance 1.00 — the shape a shared-kernel / building-block library has BY DESIGN — concrete and widely depended-on is what makes it useful, and this dimension does not penalise it (the distance is reported for completeness, not as a defect). Worth a look only if it has grown past one coherent kernel into an everything-bucket.",
-   "class": "opinion-not-fact",
-   "reason": "Main-sequence distance is a heuristic; the message itself says a concrete, widely used shared model library has this shape by design.",
-   "action": "recorded as noise",
-   "iteration": 1
-  },
-  {
-   "ruleId": "D8",
-   "file": "src/Invoicing.Worker/Jobs/MySqlRenderJobStore.cs",
-   "line": 1,
-   "message": "Low coverage: src/Invoicing.Worker/Jobs/MySqlRenderJobStore.cs: 21.1% line coverage (12/57).",
-   "class": "valid",
-   "reason": "Residual: 21.1 % (12/57) after the failure-path tests; the SQL paths need a MySQL server.",
-   "action": "documented residual (benchmark/journal.md, iteration 2); not fixable under the offline-test rule",
-   "iteration": 2
-  }
- ],
- "falseNegatives": [
-  {
-   "entryId": "DEP-006",
-   "reason": "CsvHelper 12.1.2 (2019) is 21 majors behind 33.1.0. The scanner measured it (D12 outdated_count 5; findings.md: \"CsvHelper 12.1.2 → 33.1.0 available\") but emits outdated rows at Info level and no Info row reaches report.sarif, so no result reports it. Plant re-verified: no advisory, not deprecated."
-  }
- ],
- "scoreBands": [
-  {
-   "entryId": "BND-001",
-   "concept": "dependencies-not-locked",
-   "band": [
-    80,
-    100
-   ],
-   "score": 37,
-   "inBand": false,
-   "note": "The score adapter supplies D12 (dominated by the planted vulnerabilities) for this concept; SC1, which measures locking, is advisory and publishes no score. Adapter artefact, not a repository property."
-  },
-  {
-   "entryId": "BND-002",
-   "concept": "build-provenance-and-signing",
-   "band": [
-    30,
-    100
-   ],
-   "score": null,
-   "inBand": null,
-   "note": "D36 withheld; unscored."
-  }
- ],
- "observations": [
-  "HARNESS GAP: every D12/D14/D30/D43/D44 result is repository-level (no artifact location). Located entries can only match located results, so the harness scores all eight plants FN and every dependency result as noise; repository-level entries would instead let any result consume any plant and could never catch a trap. A package discriminator is needed (e.g. an optional entry field naming ecosystem/package matched against the result message, which every Watchdog dependency title carries: \"Vulnerable: <pkg>\", \"High CVE: <pkg> <ver>\", \"Banned license: <pkg>\", \"End-of-life runtime: .NET <tfm>: <file>\"). Until then judgedOutcomes above is the truthful score. Each key rationale begins with the NuGet package id and version so a discriminator can use them.",
-  "D12 reports outdated packages only at Info level, which never reaches SARIF; the outdated plant and the FluentAssertions-7 trap (TRP-004) are therefore not exercised (TRP-004 TN is trivial).",
-  "D12 lists direct packages only; the transitive ImageSharp plant is found by D30 alone.",
-  "D14 bans by substring: \"GPL-2.0\" matches \"LGPL-2.0-only\" (caught TRP-003); LGPL-2.1 would not match. D14 also has no dependency scope: a GPL package used only by tests would be charged the same (not planted here).",
-  "Engine fact error, not exercised by this repository: ProductEolTable lists net9.0 as end of support 2026-05-12; Microsoft release metadata (releases-index.json) gives 2026-11-10 (STS extended to 24 months). A net9.0 project scanned before 2026-11-10 would get a false end-of-life finding.",
-  "D43 has no plant by design: a known-malicious NuGet package is removed from nuget.org and cannot be restored.",
-  "Harness change made for this repository: concept prerelease-dependency (scanner-benchmark 4c0f4a7); D12 \"Prerelease dependency:\" rows now map to it instead of being off-concept."
- ]
+  "observations": [
+    "HARNESS GAP: every D12/D14/D30/D43/D44 result is repository-level (no artifact location). Located entries can only match located results, so the harness scores all eight plants FN and every dependency result as noise; repository-level entries would instead let any result consume any plant and could never catch a trap. A package discriminator is needed (e.g. an optional entry field naming ecosystem/package matched against the result message, which every Watchdog dependency title carries: \"Vulnerable: <pkg>\", \"High CVE: <pkg> <ver>\", \"Banned license: <pkg>\", \"End-of-life runtime: .NET <tfm>: <file>\"). Until then judgedOutcomes above is the truthful score. Each key rationale begins with the NuGet package id and version so a discriminator can use them.",
+    "D12 reports outdated packages only at Info level, which never reaches SARIF; the outdated plant and the FluentAssertions-7 trap (TRP-004) are therefore not exercised (TRP-004 TN is trivial).",
+    "D12 lists direct packages only; the transitive ImageSharp plant is found by D30 alone.",
+    "D14 bans by substring: \"GPL-2.0\" matches \"LGPL-2.0-only\" (caught TRP-003); LGPL-2.1 would not match. D14 also has no dependency scope: a GPL package used only by tests would be charged the same (not planted here).",
+    "Engine fact error, not exercised by this repository: ProductEolTable lists net9.0 as end of support 2026-05-12; Microsoft release metadata (releases-index.json) gives 2026-11-10 (STS extended to 24 months). A net9.0 project scanned before 2026-11-10 would get a false end-of-life finding.",
+    "D43 has no plant by design: a known-malicious NuGet package is removed from nuget.org and cannot be restored.",
+    "Harness change made for this repository: concept prerelease-dependency (scanner-benchmark 4c0f4a7); D12 \"Prerelease dependency:\" rows now map to it instead of being off-concept.",
+    "Key v1.1.0: with package subjects the harness reproduces the judged outcome (recall 7/8, trap resistance 6/8). BND-001 dependencies-not-locked is now looked up only in SC1, which publishes no score -> unscored (was a misleading D12-based 'out')."
+  ]
 }

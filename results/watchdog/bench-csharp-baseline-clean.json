@@ -139,6 +139,7 @@
   ],
   "observations": [
     "A deliberately clean, idiomatic 1.1k-LoC service drew 3 deterministic rows (2 noise + 1 false positive on a documented suppression) and 2 model-judged rows (1 valid, 1 false positive).",
-    "The model-judged pass is not reproducible run-to-run: an identical tree produced a new M4 finding and moved M4 by 10 points."
+    "The model-judged pass is not reproducible run-to-run: an identical tree produced a new M4 finding and moved M4 by 10 points.",
+    "Harness 1.2 scoreDimensions: BND-038 dependencies-not-locked is looked up only in SC1 (publishes no score) -> unscored; it was 'in' on D12=100 before, which measured the wrong thing."
   ]
 }
