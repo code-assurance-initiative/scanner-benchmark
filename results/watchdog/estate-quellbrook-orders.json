@@ -885,6 +885,7 @@
   }
  ],
  "observations": [
+  "Healthy progress, measured per release tag (contained scans of clones at v0.1.0, v0.2.0 and the final tree): ED5 30 → 53 → 100 (Idempotency-Key on order placement), P9 96 → 97 → 100, D4 100 → 99 → 100 (a sprint-2 copied endpoint block removed in sprint 3), low-coverage rows 2 → 2 → 0, P2 90 → 100 → 100. DM2 drops to 77 at the final tree on Order.RequestKey (the idempotency key, a string by nature) — the one new row the repair brought.",
   "Integration-level key over a C# DDD service with a transactional outbox, scripted over three sprints (26 commits, tags v0.1.0..v0.3.0). Recall 0/2: both plants are real and were missed (DM5 on a non-root entity without an Id; X2 per-site rows never reach SARIF).",
   "Trap resistance 6/12. Caught: ED3 on an HTTP request record (as in other repositories), D17 on the documented CA2007 root suppression, D18 on a deliberate contracts project, DS-0026 on a Kubernetes-only image, D39 on an EF fluent mapping, DM2 on an idempotency key.",
   "ED3 reads every record in an Api/Contracts folder and the nested records of a published contract as events: 13 false positives in one small service.",

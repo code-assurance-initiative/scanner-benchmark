@@ -637,6 +637,7 @@
   }
  ],
  "observations": [
+  "Sprint trend (contained scan of a clone at v0.2.0 against the final tree): at v0.2.0 the key sits in the working tree and D28 reports it there ('binds a credential', WD-SECRET-0002, appsettings.json:15); at the final tree it is reported from history (gitleaks). D28 scores 90 in both: the dimension score does not distinguish a live credential in the tree from a removed one in history. P3 70 → 100 and the NotifierServices coverage row (0 %) gone are the sprint-3 repairs.",
   "This repository carries the estate's SECURITY INCIDENT: a real-format e-mail provider key (CSPRNG, authenticates nothing) committed in sprint 2 (a033c7c, appsettings.json:15) and removed in sprint 3 with the fix commits (key from the secret store via ExternalSecret, CI secret scan, ADR 0003, incident note). The contained scan finds it in history at the exact commit, file and line (D28, gitleaks sendgrid-api-token).",
   "The model-judged host pass cannot see the history secret (no gitleaks on the host): NTF-001 is a contained-mode finding.",
   "Recall 1/2 (NTF-001); NTF-002 missed because the PII log goes through a source-generated [LoggerMessage] method. Trap resistance 6/8 contained (TRP-005 D17, TRP-007 C4 caught), the model pass also catches TRP-008 (D20 on ADR 0001).",
