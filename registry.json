@@ -60,6 +60,13 @@
       "commit": "7889757eb521cbc1af9c44f96f5e7e51dab18c17",
       "keySha256": "caed14af7c59525ed523ca8c316ec36752c4a5e7af242b42935b208ad30aa01b",
       "frozenAt": "2026-10-07"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-csharp-domain-events",
+      "tag": "v1.0.0",
+      "commit": "64db80ed07aa5a17ef0431231cb9ac3c108feced",
+      "keySha256": "4a7da06596868ae3f41117b1253206ad8625eed26aac37f7012f027d8e1bcf4d",
+      "frozenAt": "2026-10-07"
     }
   ]
 }
