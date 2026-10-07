@@ -1,0 +1,911 @@
+{
+  "repo": "code-assurance-initiative/bench-csharp-architecture",
+  "tag": "v1.0.0",
+  "commit": "7889757eb521cbc1af9c44f96f5e7e51dab18c17",
+  "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc)",
+  "scans": [
+    {
+      "iteration": 1,
+      "date": "2026-10-07",
+      "sarifSha256": "2666d0c2eb2352041a8afead3b3a4599a88e20dc3a462f3356b6b60d283dd7fc",
+      "outcomes": {
+        "tp": 11,
+        "fn": 6,
+        "fp": 2,
+        "tn": 245,
+        "trapFp": 2,
+        "trapTn": 18,
+        "results": 16,
+        "noise": 3,
+        "redundant": 2,
+        "uncovered": 49
+      },
+      "note": "repo commit e6fde8a (first implementation)"
+    },
+    {
+      "iteration": 2,
+      "date": "2026-10-07",
+      "sarifSha256": "d74afc95b9a8431c8a56e2ac5d9dd85e4be164b0c68b292226cbdc169b3c4165",
+      "outcomes": {
+        "tp": 11,
+        "fn": 6,
+        "fp": 5,
+        "tn": 254,
+        "trapFp": 4,
+        "trapTn": 18,
+        "results": 24,
+        "noise": 11,
+        "redundant": 2,
+        "uncovered": 12
+      },
+      "note": "repo commit 683d9f5 (iteration-1 fixes: DM9, X5, IC1, P8, D8 tests; traps TRP-021/022, NA-002)"
+    },
+    {
+      "iteration": 3,
+      "date": "2026-10-07",
+      "sarifSha256": "5a9dc115b8af62fcb7648fd9870a7cd48854c7b715cc25a8e594578cc1dd0a5f",
+      "outcomes": {
+        "tp": 11,
+        "fn": 6,
+        "fp": 5,
+        "tn": 254,
+        "trapFp": 4,
+        "trapTn": 18,
+        "results": 24,
+        "noise": 11,
+        "redundant": 2,
+        "uncovered": 11
+      },
+      "note": "final; repo commit df6ea32 (iteration-2 fix: deterministic defect report); code identical to v1.0.0"
+    },
+    {
+      "iteration": 3,
+      "pass": "llm",
+      "date": "2026-10-07",
+      "sarifSha256": "5e0383a290aea96b7cd5add6a237f839c76fd4e7a0353ce2c227d92410af2e65",
+      "outcomes": {
+        "tp": 11,
+        "fn": 6,
+        "fp": 5,
+        "tn": 254,
+        "trapFp": 4,
+        "trapTn": 18,
+        "results": 24,
+        "noise": 11,
+        "redundant": 2,
+        "uncovered": 21
+      },
+      "note": "host pass with --with-llm on the same commit as iteration 3; model-judged rows added (D19, D22, D24, D25, D26, M4, ED5)"
+    }
+  ],
+  "verdicts": [
+    {
+      "ruleId": "D5",
+      "file": null,
+      "line": null,
+      "message": "Layer violation: Domain → Infrastructure: FleetOps.Domain (Domain) references FleetOps.Infrastructure.Telematics (Infrastructure) — dependencies must point inward (Web → Application → Domain; Infrastructure implements inner interfaces, nothing depends outward on it).",
+      "class": "redundant",
+      "reason": "Same Domain -> Infrastructure.Telematics reference as the D7 row that consumed LAY-001 (csproj line 8); a second lens on the same issue and site, counted once.",
+      "action": "recorded; LAY-001 already found",
+      "iteration": 1,
+      "entryId": "LAY-001"
+    },
+    {
+      "ruleId": "D5",
+      "file": null,
+      "line": null,
+      "message": "Off the main sequence: FleetOps.Contracts: FleetOps.Contracts: abstractness 0.00, instability 0.00, distance 1.00 — the shape a shared-kernel / building-block library has BY DESIGN — concrete and widely depended-on is what makes it useful, and this dimension does not penalise it (the distance is reported for completeness, not as a defect). Worth a look only if it has grown past one coherent kernel into an everything-bucket.",
+      "class": "opinion-not-fact",
+      "reason": "The metrics are right (A 0.00, I 0.00, D 1.00) and the row itself calls the shape healthy by design, yet it is still published as a finding: a contracts package of wire DTOs cannot be abstract and changes additively (ADR 0005); there is nothing to act on.",
+      "action": "recorded as noise; caught by trap TRP-002",
+      "iteration": 1,
+      "entryId": "TRP-002"
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Tyres/TyrePriceCache.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Tyres/TyrePriceCache.cs: 0.0% line coverage (0/11).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Tyres/TyreVendorClient.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Tyres/TyreVendorClient.cs: 0.0% line coverage (0/12).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Storage/FileSystemDocumentStore.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Storage/FileSystemDocumentStore.cs: 0.0% line coverage (0/23).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Scheduling/ReminderDispatcher.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Scheduling/ReminderDispatcher.cs: 0.0% line coverage (0/14).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Scheduling/ReminderScheduler.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Scheduling/ReminderScheduler.cs: 0.0% line coverage (0/21).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Reporting/FleetReporting.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Reporting/FleetReporting.cs: 0.0% line coverage (0/126).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Persistence/FleetReadModel.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Persistence/FleetReadModel.cs: 7.5% line coverage (5/67).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Parts/PartsCatalogueRefresher.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Parts/PartsCatalogueRefresher.cs: 0.0% line coverage (0/6).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Parts/PartsCatalogueSnapshot.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Parts/PartsCatalogueSnapshot.cs: 0.0% line coverage (0/21).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Parts/PartsSupplierClient.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Parts/PartsSupplierClient.cs: 0.0% line coverage (0/14).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Parts/PartsSupplierException.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Parts/PartsSupplierException.cs: 0.0% line coverage (0/9).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Geocoding/GeocodingCache.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Geocoding/GeocodingCache.cs: 0.0% line coverage (0/13).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Geocoding/GeocodingModels.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Geocoding/GeocodingModels.cs: 0.0% line coverage (0/15).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Geocoding/HttpGeocoder.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Geocoding/HttpGeocoder.cs: 0.0% line coverage (0/17).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/FuelCards/FuelCardApiException.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/FuelCards/FuelCardApiException.cs: 0.0% line coverage (0/9).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/FuelCards/FuelCardClient.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/FuelCards/FuelCardClient.cs: 0.0% line coverage (0/8).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/FuelCards/FuelCardImportService.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/FuelCards/FuelCardImportService.cs: 0.0% line coverage (0/30).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/FuelCards/FuelCardTransactionStore.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/FuelCards/FuelCardTransactionStore.cs: 0.0% line coverage (0/11).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/FuelCards/FuelPriceCache.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/FuelCards/FuelPriceCache.cs: 0.0% line coverage (0/18).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Email/EmailAddress.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Email/EmailAddress.cs: 0.0% line coverage (0/11).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Email/EmailDeliveryException.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Email/EmailDeliveryException.cs: 0.0% line coverage (0/9).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Email/PickupDirectoryEmailSender.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Email/PickupDirectoryEmailSender.cs: 0.0% line coverage (0/26).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Email/ReminderMailer.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Email/ReminderMailer.cs: 0.0% line coverage (0/10).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Documents/CsvDocument.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Documents/CsvDocument.cs: 0.0% line coverage (0/16).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Documents/InspectionCsvExporter.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Documents/InspectionCsvExporter.cs: 0.0% line coverage (0/13).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Documents/WorkOrderCsvExporter.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Documents/WorkOrderCsvExporter.cs: 0.0% line coverage (0/14).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Auditing/AuditTrail.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Auditing/AuditTrail.cs: 0.0% line coverage (0/12).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Domain/Common/DomainException.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Domain/Common/DomainException.cs: 33.3% line coverage (3/9).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure.Telematics/TelematicsClient.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure.Telematics/TelematicsClient.cs: 0.0% line coverage (0/23).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Application/Features/Vehicles/ListVehiclesHandler.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Application/Features/Vehicles/ListVehiclesHandler.cs: 0.0% line coverage (0/6).",
+      "class": "valid",
+      "reason": "True: the vendor clients, caches, storage, reminder path, reports and read model had no tests.",
+      "action": "repo fixed: 26 tests added (commit \"test: vendor clients, read model and reports, …\"); writing them also exposed a real bug (synchronous SaveChanges was not audited), fixed",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D17",
+      "file": ".editorconfig",
+      "line": 37,
+      "message": "AnalyzerSeverityNone: CA2007 — this rule is switched off for every file the section matches, in every project under this directory, and the only record that it was ever switched off is this line: nothing at the sites it would have reported says so, so a reader of that code has no reason to look here, and code added years from now inherits the decision silently. Fix what the rule reports and delete the entry, or — where some sites really are legitimate — leave the rule on and suppress it at those sites with their reasons, so it keeps protecting the rest of the tree. If the rule is genuinely unwanted here, say why — on this line after the entry, or in the comment run directly above it: a comment that only repeats the rule's own title is read as no explanation at all and leaves this row in place.",
+      "class": "false-positive",
+      "reason": ".editorconfig:36 is the comment that records why CA2007 is off (tests must not call ConfigureAwait(false), xUnit1030), and src/.editorconfig switches it back on as a warning for production code. The claim that nothing records the suppression is untrue.",
+      "action": "recorded as noise; promoted to trap TRP-022 (same verdict as bench-csharp-baseline-clean TRP-001)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D18",
+      "file": null,
+      "line": null,
+      "message": "Thin analysable surface across projects: 3 project(s) carry only a thin slice of real code (e.g. `FleetOps.ServiceDefaults` with 17 significant line(s)). The mean analysable-surface weight is 77 %, lowering Solution Shape by about 1.84 point(s). Consolidate thin projects or grow them into substantial, well-scoped assemblies.",
+      "class": "opinion-not-fact",
+      "reason": "Accurate count (ServiceDefaults has 17 significant lines; the other thin projects are the planted shell and a small adapter), but the advice to consolidate goes beyond the measurement: a shared host-defaults library is small by design and folding it into one host would duplicate it in the other.",
+      "action": "recorded as noise; promoted ServiceDefaults to trap TRP-021",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D39",
+      "file": "src/FleetOps.Infrastructure/InfrastructureServiceCollectionExtensions.cs",
+      "line": 28,
+      "message": "IL efficiency: 1 authored method(s) exceed the IL budget: 1 of 367 first-party methods compile to oversized IL bodies (> 250 instructions); worst: FleetOps.Infrastructure.InfrastructureServiceCollectionExtensions.AddFleetInfrastructure @ src/FleetOps.Infrastructure/InfrastructureServiceCollectionExtensions.cs:28, 253 IL instructions; that pulled this dimension to 9.9/10. These bodies are far past the JIT's inline budget, so splitting them does not make them inlinable — what moves the number is emitting less: collapsing LINQ chains and closures on hot paths, and interpolation built eagerly where it is only sometimes used.",
+      "class": "opinion-not-fact",
+      "reason": "True that AddFleetInfrastructure compiles to a large IL body (it registers every service of the god module), but it runs once at start-up; an IL-size \"efficiency\" concern has no runtime consequence there. The size itself is a symptom of GOD-001.",
+      "action": "recorded as noise",
+      "iteration": 1
+    },
+    {
+      "ruleId": "AX1",
+      "file": "src/FleetOps.Infrastructure/Scheduling/MaintenanceReminderPlanner.cs",
+      "line": 6,
+      "message": "Captive dependency: singleton MaintenanceReminderPlanner captures transient IReminderWindowCalculator: `MaintenanceReminderPlanner` is registered as a SINGLETON but its constructor takes `IReminderWindowCalculator windows`, which is registered as Transient. The singleton captures one instance of the transient dependency forever — defeating its lifetime (a per-request DbContext shared across all requests is a classic data-corruption/threading bug). Make the singleton resolve `IReminderWindowCalculator` per-use (inject `IServiceScopeFactory` or a factory func), or align the lifetimes.",
+      "class": "false-positive",
+      "reason": "MaintenanceReminderPlanner.cs:6 keeps a TRANSIENT IReminderWindowCalculator; ReminderWindowCalculator (Scheduling/ReminderWindowCalculator.cs) has no fields and is not disposable, so one kept instance behaves exactly like a fresh one per call. The finding's premise (a captured shorter-lived dependency whose lifetime matters) is untrue here; the container's own scope validation accepts it.",
+      "action": "recorded as noise; caught by trap TRP-011",
+      "iteration": 1,
+      "entryId": "TRP-011"
+    },
+    {
+      "ruleId": "AX4",
+      "file": null,
+      "line": null,
+      "message": "Dependency-rule violation: FleetOps.Domain (Domain) → FleetOps.Infrastructure.Telematics (Infrastructure): `FleetOps.Domain` is a Domain project but references `FleetOps.Infrastructure.Telematics`, a Infrastructure project. The clean-architecture rule is that dependencies point INWARD — the domain/application core must not depend on outer layers (infrastructure/web). Invert it: define the abstraction in the inner layer and implement it in the outer one.",
+      "class": "redundant",
+      "reason": "Same Domain -> Infrastructure.Telematics reference as LAY-001 (D7 row); counted once.",
+      "action": "recorded; LAY-001 already found",
+      "iteration": 1,
+      "entryId": "LAY-001"
+    },
+    {
+      "ruleId": "C1",
+      "file": null,
+      "line": null,
+      "message": "No data-protection/encryption: No data-protection or encryption usage (ASP.NET Data Protection, AES, column encryption, PBKDF2) was found — sensitive data at rest may be unprotected. If TDE/KMS/vault is delegated to infrastructure, ignore.",
+      "class": "shape-irrelevant",
+      "reason": "FleetOps stores vehicles, work orders, inspections and fuel purchases of company vehicles: no personal or secret data at rest. An at-rest encryption expectation is foreign to what it stores.",
+      "action": "recorded as noise",
+      "iteration": 1
+    },
+    {
+      "ruleId": "DM9",
+      "file": null,
+      "line": null,
+      "message": "Rule about [ApprovedTotal, OpenedAt] decided in 2 places: FleetOps.Domain.WorkOrders.WorkOrder's [ApprovedTotal, OpenedAt] are judged in FleetOps.Infrastructure.Persistence.FleetReadModel, FleetOps.Infrastructure.Reporting.FleetReporting — the same decision, restated. Every copy is a chance to drift, and copies drift silently because each one looks correct on its own. Move the judgement onto the type that owns the members and let the call sites ask it.",
+      "class": "valid",
+      "reason": "True: \"approved\" was decided as ApprovedTotal != null in two Infrastructure types (FleetReadModel.SumApprovedSinceAsync and FleetReporting.ApprovedIn). The read-model copy was unused.",
+      "action": "repo fixed: SumApprovedSinceAsync removed from IWorkOrderReadModel and FleetReadModel (commit \"fix: drop the unused approved-total read query…\")",
+      "iteration": 1
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/FleetOps.Contracts/ContractVersion.cs",
+      "line": 4,
+      "message": "Event not named in past tense: ContractVersion: `ContractVersion` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "The Contracts records are request/response DTOs and summaries (VehicleSummary, MaintenanceDue, ContractVersion is a static class of constants); none is an event, nothing publishes them as one.",
+      "action": "recorded as noise; NA-002 added (event-not-named-in-past-tense not applicable)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/FleetOps.Contracts/Inspections/InspectionSummary.cs",
+      "line": 3,
+      "message": "Event not named in past tense: InspectionSummary: `InspectionSummary` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "The Contracts records are request/response DTOs and summaries (VehicleSummary, MaintenanceDue, ContractVersion is a static class of constants); none is an event, nothing publishes them as one.",
+      "action": "recorded as noise; NA-002 added (event-not-named-in-past-tense not applicable)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/FleetOps.Contracts/Maintenance/MaintenanceDue.cs",
+      "line": 3,
+      "message": "Event not named in past tense: MaintenanceDue: `MaintenanceDue` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "The Contracts records are request/response DTOs and summaries (VehicleSummary, MaintenanceDue, ContractVersion is a static class of constants); none is an event, nothing publishes them as one.",
+      "action": "recorded as noise; NA-002 added (event-not-named-in-past-tense not applicable)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/FleetOps.Contracts/Vehicles/VehiclePosition.cs",
+      "line": 4,
+      "message": "Event not named in past tense: VehiclePosition: `VehiclePosition` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "The Contracts records are request/response DTOs and summaries (VehicleSummary, MaintenanceDue, ContractVersion is a static class of constants); none is an event, nothing publishes them as one.",
+      "action": "recorded as noise; NA-002 added (event-not-named-in-past-tense not applicable)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/FleetOps.Contracts/Vehicles/VehicleSummary.cs",
+      "line": 3,
+      "message": "Event not named in past tense: VehicleSummary: `VehicleSummary` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "The Contracts records are request/response DTOs and summaries (VehicleSummary, MaintenanceDue, ContractVersion is a static class of constants); none is an event, nothing publishes them as one.",
+      "action": "recorded as noise; NA-002 added (event-not-named-in-past-tense not applicable)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/FleetOps.Contracts/WorkOrders/WorkOrderLineSummary.cs",
+      "line": 4,
+      "message": "Event not named in past tense: WorkOrderLineSummary: `WorkOrderLineSummary` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "The Contracts records are request/response DTOs and summaries (VehicleSummary, MaintenanceDue, ContractVersion is a static class of constants); none is an event, nothing publishes them as one.",
+      "action": "recorded as noise; NA-002 added (event-not-named-in-past-tense not applicable)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "ED3",
+      "file": "src/FleetOps.Contracts/WorkOrders/WorkOrderSummary.cs",
+      "line": 3,
+      "message": "Event not named in past tense: WorkOrderSummary: `WorkOrderSummary` reads as an instruction, not a fact that happened. Events describe something that already occurred — name them in the past tense (e.g. `OrderPlaced`, `PaymentCaptured`) so the ubiquitous language stays clear.",
+      "class": "false-positive",
+      "reason": "The Contracts records are request/response DTOs and summaries (VehicleSummary, MaintenanceDue, ContractVersion is a static class of constants); none is an event, nothing publishes them as one.",
+      "action": "recorded as noise; NA-002 added (event-not-named-in-past-tense not applicable)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "ED5",
+      "file": "src/FleetOps.Application/Features/Inspections/RecordInspectionHandler.cs",
+      "line": 31,
+      "message": "Possible non-idempotent mutation (review): Inspections.RecordInspectionHandler.Handle: `Inspections.RecordInspectionHandler.Handle` mutates persistent state (a database save) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+      "class": "shape-irrelevant",
+      "reason": "RecordInspectionHandler is an in-process Mediator command handler called from an HTTP POST, not a message consumer with at-least-once redelivery; the idempotency-under-redelivery expectation belongs to message handlers.",
+      "action": "recorded as noise",
+      "iteration": 1
+    },
+    {
+      "ruleId": "IC1",
+      "file": "src/FleetOps.Infrastructure/Email/EmailOptions.cs",
+      "line": 14,
+      "message": "Placeholder data left in code: A placeholder e-mail address (\"fleetops@fleet.invalid\") is still in shipped code — its domain is reserved for documentation, so anything sent here is undeliverable by construction. Replace it with the real address, or take it from configuration.",
+      "class": "valid",
+      "reason": "True: the options classes defaulted to undeliverable .invalid addresses, so a missing configuration value would silently send reminders nowhere.",
+      "action": "repo fixed: no defaults, [Required, EmailAddress], addresses in host configuration (commit \"fix(config): …\")",
+      "iteration": 1
+    },
+    {
+      "ruleId": "IC1",
+      "file": "src/FleetOps.Infrastructure/Scheduling/SchedulingOptions.cs",
+      "line": 10,
+      "message": "Placeholder data left in code: A placeholder e-mail address (\"workshop@fleet.invalid\") is still in shipped code — its domain is reserved for documentation, so anything sent here is undeliverable by construction. Replace it with the real address, or take it from configuration.",
+      "class": "valid",
+      "reason": "True: the options classes defaulted to undeliverable .invalid addresses, so a missing configuration value would silently send reminders nowhere.",
+      "action": "repo fixed: no defaults, [Required, EmailAddress], addresses in host configuration (commit \"fix(config): …\")",
+      "iteration": 1
+    },
+    {
+      "ruleId": "P2",
+      "file": null,
+      "line": null,
+      "message": "Logging is not universal: Only 5/7 service-like projects use logging (pure contract/DTO projects are excluded — they have nothing to log). Of those 7, 1 ship a process this repository operates; the rest are libraries their consumer hosts, where the logging decision belongs to the host.",
+      "class": "opinion-not-fact",
+      "reason": "Accurate count, but the projects without logging are libraries (Domain, Contracts, Telematics adapter) whose consumer hosts own logging, as the row itself says; nothing to fix.",
+      "action": "recorded as noise",
+      "iteration": 1
+    },
+    {
+      "ruleId": "P6",
+      "file": null,
+      "line": null,
+      "message": "Changelog looks stale/thin: The changelog this check read carries 2 versioned entries, against a bar of 3. Counted as either an `x.y.z` string or a version-shaped section heading (`## [1.2.0]`, `## V14.x.x`, `## Updates in 8.0.x`), whichever is the larger — so a log sectioned by minor series counts its sections, not its individual patch numbers. Entries recorded somewhere this check does not read — release notes generated at tag time from a generator config it did not recognise, or a log kept outside the repository — are not counted here, and this row is about what is re-findable in the tree rather than about how often you release.",
+      "class": "opinion-not-fact",
+      "reason": "A project at its first release has one released version; a bar of three versions measures age, not changelog hygiene.",
+      "action": "recorded as noise",
+      "iteration": 1
+    },
+    {
+      "ruleId": "P8",
+      "file": "src/FleetOps.Infrastructure/Persistence/DatabaseInitializer.cs",
+      "line": 15,
+      "message": "Schema created with EnsureCreated() (no migration path): `EnsureCreated()` builds the schema once and can't evolve it — there's no upgrade path for an existing production database, and it bypasses the migrations history. Adopt a versioned schema-migration mechanism (with EF Core: `dotnet ef migrations add` + `Migrate()` on startup) so schema changes are versioned and applied safely.",
+      "class": "valid",
+      "reason": "True and important for a deployed SQLite database: EnsureCreated cannot evolve an existing schema.",
+      "action": "repo fixed: EF Core migrations (InitialSchema) applied by DatabaseInitializer via MigrateAsync (commit \"feat(persistence): versioned EF Core migrations…\")",
+      "iteration": 1
+    },
+    {
+      "ruleId": "PF1",
+      "file": null,
+      "line": null,
+      "message": "No performance benchmarks: No benchmark suite was found by the two searches this check runs. FIRST, a BenchmarkDotNet package reference in any project file — every project the workspace loaded, plus a walk of project files on disk that never loaded, because a benchmark suite is exactly the project a partial load drops. SECOND, a script harness: a file whose name contains `benchmark` and ends `.py`, `.sh`, `.ps1`, `.bash`, `.rb`, `.js` or `.mjs`, credited ONLY when this repository's CI text also mentions benchmarks — a harness no pipeline runs is read as a fixture, deliberately. Neither search can see a benchmark suite in another ecosystem's idiom (a Go `testing.B` file, a JMH or criterion project, a pytest-benchmark run), so this is 'no benchmark found by those two searches', not a verdict that the repository has none. Where code is performance-sensitive, a benchmark guards against silent regressions — but it's a bonus here, not a deduction.",
+      "class": "shape-irrelevant",
+      "reason": "A CRUD-style line-of-business service with no performance-critical path; benchmarks are not expected.",
+      "action": "recorded as noise",
+      "iteration": 1
+    },
+    {
+      "ruleId": "X5",
+      "file": null,
+      "line": null,
+      "message": "Null-forgiving operator (`!`) suppressions reduce the NRT score: ~0.2 `!` suppressions per 1k syntax nodes — 3 suppression(s) across the 19023 syntax node(s) in code where nullable warnings are ENABLED, which is the only code a `!` can suppress anything in (a `!` under `#nullable disable` is inert and is not counted, and its file's nodes are not in the denominator). Each one tells the compiler to trust you about null, suppressing the very safety NRTs provide.",
+      "class": "valid",
+      "reason": "Three `!` operators in production code (FleetReadModel x2, AuditSaveChangesInterceptor), against the repository convention.",
+      "action": "repo fixed: replaced by non-null paths (commit \"fix: … remove null-forgiving operators …\")",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Parts/PartsSupplierException.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Parts/PartsSupplierException.cs: 33.3% line coverage (3/9).",
+      "class": "opinion-not-fact",
+      "reason": "Accurate percentage, but the uncovered lines are the standard exception constructors the CA1032 convention requires (and, for GeocodingModels, the same for GeocodingException); untested boilerplate constructors carry no behaviour and no risk.",
+      "action": "recorded as noise",
+      "iteration": 2
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Geocoding/GeocodingModels.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Geocoding/GeocodingModels.cs: 40.0% line coverage (6/15).",
+      "class": "opinion-not-fact",
+      "reason": "Accurate percentage, but the uncovered lines are the standard exception constructors the CA1032 convention requires (and, for GeocodingModels, the same for GeocodingException); untested boilerplate constructors carry no behaviour and no risk.",
+      "action": "recorded as noise",
+      "iteration": 2
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/FuelCards/FuelCardApiException.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/FuelCards/FuelCardApiException.cs: 33.3% line coverage (3/9).",
+      "class": "opinion-not-fact",
+      "reason": "Accurate percentage, but the uncovered lines are the standard exception constructors the CA1032 convention requires (and, for GeocodingModels, the same for GeocodingException); untested boilerplate constructors carry no behaviour and no risk.",
+      "action": "recorded as noise",
+      "iteration": 2
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Infrastructure/Email/EmailDeliveryException.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Infrastructure/Email/EmailDeliveryException.cs: 33.3% line coverage (3/9).",
+      "class": "opinion-not-fact",
+      "reason": "Accurate percentage, but the uncovered lines are the standard exception constructors the CA1032 convention requires (and, for GeocodingModels, the same for GeocodingException); untested boilerplate constructors carry no behaviour and no risk.",
+      "action": "recorded as noise",
+      "iteration": 2
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/FleetOps.Domain/Common/DomainException.cs",
+      "line": 1,
+      "message": "Low coverage: src/FleetOps.Domain/Common/DomainException.cs: 33.3% line coverage (3/9).",
+      "class": "opinion-not-fact",
+      "reason": "Accurate percentage, but the uncovered lines are the standard exception constructors the CA1032 convention requires (and, for GeocodingModels, the same for GeocodingException); untested boilerplate constructors carry no behaviour and no risk.",
+      "action": "recorded as noise",
+      "iteration": 2
+    },
+    {
+      "ruleId": "D11",
+      "file": null,
+      "line": null,
+      "message": "Flaky test: FleetOps.Application.Tests::FleetOps.Application.Tests.Infrastructure.ReadSideTests.FleetOps.Application.Tests.Infrastructure.ReadSideTests.FleetAndInspectionReports: Passed 2×, failed 1× across repeated runs.",
+      "class": "valid",
+      "reason": "True: FleetReporting.MostCommonDefectsAsync ordered by count only, so ties came back in database order and the report (and its test) was not deterministic.",
+      "action": "repo fixed: ties broken by defect description (commit \"fix(reporting): break ties in the most-common-defects report…\")",
+      "iteration": 2
+    },
+    {
+      "ruleId": "D19",
+      "file": "README.md",
+      "line": 1,
+      "message": "Documentation: no licence statement: The root README does not contain a license statement or reference to a license file. Add a LICENSE section or a link to the repository's license file (e.g., MIT, Apache 2.0) at the end of the README.",
+      "class": "false-positive",
+      "reason": "README.md:49-51 is a \"## License\" section reading \"MIT — see [LICENSE](LICENSE)\". The statement the finding says is missing is there.",
+      "action": "recorded as noise (model-judged pass)",
+      "iteration": 3
+    },
+    {
+      "ruleId": "D24",
+      "file": "src/FleetOps.Infrastructure/InfrastructureServiceCollectionExtensions.cs",
+      "line": 39,
+      "message": "redundant comment: \"// Persistence\" — Remove the comment. The code `services.AddSingleton<AuditSaveChangesInterceptor>();` clearly indicates persistence-related functionality via the type name.",
+      "class": "opinion-not-fact",
+      "reason": "The comments are section headings inside a 70-line registration method (Persistence, E-mail and reminders, …); the type names say what each line registers, the headings group them for a reader. Removing them is taste, not a defect.",
+      "action": "recorded as noise (model-judged pass)",
+      "iteration": 3
+    },
+    {
+      "ruleId": "D24",
+      "file": "src/FleetOps.Infrastructure/InfrastructureServiceCollectionExtensions.cs",
+      "line": 54,
+      "message": "redundant comment: \"// E-mail and reminders\" — Remove the comment. The implementation type `PickupDirectoryEmailSender` makes the purpose obvious.",
+      "class": "opinion-not-fact",
+      "reason": "The comments are section headings inside a 70-line registration method (Persistence, E-mail and reminders, …); the type names say what each line registers, the headings group them for a reader. Removing them is taste, not a defect.",
+      "action": "recorded as noise (model-judged pass)",
+      "iteration": 3
+    },
+    {
+      "ruleId": "D24",
+      "file": "src/FleetOps.Infrastructure/InfrastructureServiceCollectionExtensions.cs",
+      "line": 67,
+      "message": "redundant comment: \"// Documents and storage\" — Remove the comment. `DocumentNameBuilder` is self-explanatory.",
+      "class": "opinion-not-fact",
+      "reason": "The comments are section headings inside a 70-line registration method (Persistence, E-mail and reminders, …); the type names say what each line registers, the headings group them for a reader. Removing them is taste, not a defect.",
+      "action": "recorded as noise (model-judged pass)",
+      "iteration": 3
+    },
+    {
+      "ruleId": "D24",
+      "file": "src/FleetOps.Infrastructure/InfrastructureServiceCollectionExtensions.cs",
+      "line": 73,
+      "message": "redundant comment: \"// Fuel cards\" — Remove the comment. The generic type parameter `FuelCardClient` defines the scope.",
+      "class": "opinion-not-fact",
+      "reason": "The comments are section headings inside a 70-line registration method (Persistence, E-mail and reminders, …); the type names say what each line registers, the headings group them for a reader. Removing them is taste, not a defect.",
+      "action": "recorded as noise (model-judged pass)",
+      "iteration": 3
+    },
+    {
+      "ruleId": "D24",
+      "file": "src/FleetOps.Infrastructure/InfrastructureServiceCollectionExtensions.cs",
+      "line": 86,
+      "message": "redundant comment: \"// Tyres and parts\" — Remove the comment. `TyreVendorClient` is self-documenting.",
+      "class": "opinion-not-fact",
+      "reason": "The comments are section headings inside a 70-line registration method (Persistence, E-mail and reminders, …); the type names say what each line registers, the headings group them for a reader. Removing them is taste, not a defect.",
+      "action": "recorded as noise (model-judged pass)",
+      "iteration": 3
+    },
+    {
+      "ruleId": "D24",
+      "file": "src/FleetOps.Infrastructure/InfrastructureServiceCollectionExtensions.cs",
+      "line": 95,
+      "message": "redundant comment: \"// Geocoding\" — Remove the comment. `GeocodingCache` is clear.",
+      "class": "opinion-not-fact",
+      "reason": "The comments are section headings inside a 70-line registration method (Persistence, E-mail and reminders, …); the type names say what each line registers, the headings group them for a reader. Removing them is taste, not a defect.",
+      "action": "recorded as noise (model-judged pass)",
+      "iteration": 3
+    },
+    {
+      "ruleId": "D24",
+      "file": "src/FleetOps.Infrastructure/InfrastructureServiceCollectionExtensions.cs",
+      "line": 100,
+      "message": "redundant comment: \"// Auditing, reporting, caching\" — Remove the comment. `IAuditTrail` and `AuditTrail` clearly indicate auditing. If reporting/caching are also handled here, the code should reflect that or the comment should be removed in favor of better naming.",
+      "class": "opinion-not-fact",
+      "reason": "The comments are section headings inside a 70-line registration method (Persistence, E-mail and reminders, …); the type names say what each line registers, the headings group them for a reader. Removing them is taste, not a defect.",
+      "action": "recorded as noise (model-judged pass)",
+      "iteration": 3
+    },
+    {
+      "ruleId": "ED5",
+      "file": "src/FleetOps.Application/Features/Inspections/RecordInspectionHandler.cs",
+      "line": 31,
+      "message": "Non-idempotent mutation: Inspections.RecordInspectionHandler.Handle: `Inspections.RecordInspectionHandler.Handle` mutates persistent state (a database save) with no idempotency guard, and the model confirms a re-run would double-apply it. A retry or at-least-once redelivery means it can run twice — add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+      "class": "shape-irrelevant",
+      "reason": "Same site and verdict as iteration 1: an in-process Mediator command handler behind an HTTP POST, not an at-least-once message consumer.",
+      "action": "recorded as noise (model-judged pass)",
+      "iteration": 3
+    },
+    {
+      "ruleId": "M4",
+      "file": null,
+      "line": null,
+      "message": "README/code drift: README omits several existing projects: Contracts, Diagnostics, Notifications, ServiceDefaults — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+      "class": "opinion-not-fact",
+      "reason": "True that the README does not enumerate the projects, but it does not claim to: it points to docs/architecture.md, which lists all ten. Omission from a summary is not drift.",
+      "action": "recorded as noise (model-judged pass)",
+      "iteration": 3
+    },
+    {
+      "ruleId": "M4",
+      "file": null,
+      "line": null,
+      "message": "README/code drift: README advertises Docker containerisation, but no Dockerfile/compose file exists — searched for: `dockerfile`, `docker-compose`, `compose.yaml`, `compose.yml`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+      "class": "false-positive",
+      "reason": "The README never mentions Docker; line 39 refers to the C4 \"containers\" diagram in docs/architecture.md (## Containers). The model read the C4 term as Docker containerisation.",
+      "action": "recorded as noise (model-judged pass)",
+      "iteration": 3
+    }
+  ],
+  "falseNegatives": [
+    {
+      "entryId": "SDP-001",
+      "reason": "Real SDP violation: FleetOps.ServiceDefaults (2 dependents, 1 dependency) references FleetOps.Diagnostics (5 dependencies, 1 production dependent; I = 0.83 over production edges). The unstable-hub gate uses raw instability with test projects counted as dependents; the architecture test project references Diagnostics, so 5/7 = 0.71 stays under 0.8. (Main-sequence distance already discounts test edges; the unstable-hub rule does not.)"
+    },
+    {
+      "entryId": "CYC-001",
+      "reason": "Namespace cycle FleetOps.Infrastructure.Scheduling <-> FleetOps.Infrastructure.Email (ReminderDispatcher -> ReminderMailer -> QuietHours). Only project-reference cycles are read (D5/D7/AX3); a C# namespace-level cycle has no detector."
+    },
+    {
+      "entryId": "IND-001",
+      "reason": "WorkOrderFacade forwards every call unchanged to the mediator. D27 has no per-site pass-through detection; its sampled interface-call fraction stayed low (score 90-92)."
+    },
+    {
+      "entryId": "BLC-001",
+      "reason": "Pricing, overtime, parts markup and the approval limit are computed in WorkOrdersController.Approve. AX10 emits no findings (role share 40, in band); no lens reports business logic in a controller."
+    },
+    {
+      "entryId": "DOM-001",
+      "reason": "MaintenanceDueEvaluator (FleetOps.Domain) takes ITelematicsClient (HTTP adapter) and calls the vendor API. The domain-infrastructure lens (DM6) did not report it; D7/AX4/D5 report the reference as a layer violation (LAY-001/002), which is a different concept."
+    },
+    {
+      "entryId": "ARU-001",
+      "reason": "ADR 0003 states a checkable rule (slices must not reference each other's types) with enforcement: prose. D7 only reports ADRs that declare no enforcement, claim test/analyzer enforcement without one, or carry a broken enforcement_link; a prose-enforced checkable rule is not reported."
+    }
+  ],
+  "scoreBands": [
+    {
+      "entryId": "BND-001",
+      "outcome": "out",
+      "score": 100,
+      "band": [
+        40,
+        90
+      ],
+      "note": "Out: D5 scored 100 while reporting a layer violation itself; the SDP plant (SDP-001) went undetected (test edges counted as dependents), so the coupling score shows no deduction. Band kept (set before the first scan)."
+    },
+    {
+      "entryId": "BND-002",
+      "outcome": "in",
+      "score": 82,
+      "band": [
+        50,
+        90
+      ]
+    },
+    {
+      "entryId": "BND-003",
+      "outcome": "in",
+      "score": 89,
+      "band": [
+        50,
+        90
+      ]
+    },
+    {
+      "entryId": "BND-004",
+      "outcome": "in",
+      "score": 90,
+      "band": [
+        40,
+        90
+      ],
+      "note": "92 in iteration 1 (out), 90 in iterations 2-3 (in, at the edge): the pass-through facade does not move the sampled interface fraction much."
+    },
+    {
+      "entryId": "BND-005",
+      "outcome": "in",
+      "score": 100,
+      "band": [
+        50,
+        100
+      ]
+    },
+    {
+      "entryId": "BND-006",
+      "outcome": "in",
+      "score": 40,
+      "band": [
+        0,
+        50
+      ]
+    },
+    {
+      "entryId": "BND-007",
+      "outcome": "in",
+      "score": 100,
+      "band": [
+        80,
+        100
+      ]
+    },
+    {
+      "entryId": "BND-008",
+      "outcome": "in",
+      "score": 100,
+      "band": [
+        40,
+        100
+      ],
+      "note": "D22 is model-judged: unscored offline, 100 in the LLM pass (in band)."
+    },
+    {
+      "note": "Model-judged pass (host, --with-llm, one run): D22 100 (BND-008 in band 40-100), D19 90, D20 96, D21 100, D24 20 (seven section-heading comments called redundant), D25 100, M4 80. The LLM D26 'Split FleetOps.Infrastructure' row is a second hit on GOD-001. One run only, so run-to-run variance is not measured here."
+    }
+  ],
+  "observations": [
+    "Recall 11/17 (64.7 %) on architecture plants: ADR-conformance (D7) found both declared-rule violations including the controller -> DbContext bypass, and the broken enforcement_link; AX1/AX2/AX6/AX7/AX9 each found their Roslyn-shaped plant; D18 found the shell project and D26 the god module (location-less, matched by subject).",
+    "Misses cluster where a defect is not a project-graph or single-type fact: a namespace cycle, a pass-through layer, business logic in a controller, a prose-enforced checkable ADR, and an SDP violation hidden by test-project edges.",
+    "Trap resistance 18/22: caught by TRP-002 (Contracts off the main sequence, a row that calls the shape healthy yet is still emitted), TRP-011 (singleton holding a stateless transient), TRP-021 (thin-project consolidation advice) and TRP-022 (documented CA2007 suppression). Held: Contracts as a stable hub, Infrastructure -> Domain, composition roots, test projects referencing everything (AX4/D5 did not flag the Application.Tests -> Infrastructure edge), dependency inversion, IServiceScopeFactory, ConcurrentDictionary/lock, composite role interface, cross-namespace but non-slice fields, cache-populating query, retrying decorator, acyclic diamond.",
+    "Event-sourcing lens ED3 read seven Contracts DTOs (VehicleSummary, MaintenanceDue, a static ContractVersion) as events; recorded against NA-002.",
+    "Five valid incidental findings were fixed in the repository during authoring (DM9 duplicated decision, X5 null-forgiving, IC1 placeholder defaults, P8 EnsureCreated, D8 coverage), and D11 caught a real nondeterministic report order; writing the coverage tests exposed a real bug (synchronous SaveChanges not audited).",
+    "Harness: taxonomy 1.0 has no finding-level concept for business logic in the presentation layer; BLC-001 uses the metric concept business-logic-share. boundary-type-leakage is NA here (one bounded context) and is better covered by the domain-events unit."
+  ]
+}
