@@ -56,6 +56,45 @@
     "uncovered": 45
    },
    "note": "final; repo commit 314f907 (code and key identical to v1.0.0 aff1ad7, which adds only the journal)"
+  },
+  {
+   "iteration": "final-llm",
+   "date": "2026-10-07",
+   "tag": "v1.0.0",
+   "sarifSha256": "5e6aab4d562d40b1527092fd2a0a605d9f3ab56e96cdbc766cda024c62097eba",
+   "outcomes": {
+    "tp": 2,
+    "fn": 19,
+    "fp": 2,
+    "tn": 125,
+    "trapFp": 2,
+    "trapTn": 23,
+    "results": 6,
+    "noise": 2,
+    "redundant": 2,
+    "uncovered": 55,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 2,
+    "recall": 0.09523809523809523,
+    "trapResistance": 0.92,
+    "noiseRate": 0.3333333333333333,
+    "fileLevelRecall": 0.09523809523809523,
+    "locationSources": {
+     "sarif": 49,
+     "message": 0,
+     "none": 12
+    },
+    "pathMatches": {
+     "exact": 49,
+     "suffix": 0
+    }
+   },
+   "configuration": {
+    "mode": "host --with-llm",
+    "note": "re-run with the TS sidecar repaired; earlier host passes lacked the TS code model"
+   },
+   "note": "freestanding clone of v1.0.0 (aff1ad7) at _frozen/v1.0.0/bench-ts-security-injection; TypeScript sidecar ran (no SidecarModelFailures, ProductionSourceUnmodelled false). First host pass for this repository (no model-judged band). Host mode runs no semgrep/gitleaks/OSV, so D29/D32 rows are absent and recall 2/21 is an artefact of the host environment; contained iteration 3 (6/21) stays the measurement of record. BND-001 S1 80 -> out, unchanged. New: M4 x8, D19, D20, D26 (model rows; judged below). D8 low-coverage rows recur (same npm ci --ignore-scripts / libxmljs2 mechanism as judged in iteration 1)."
   }
  ],
  "verdicts": [
@@ -798,6 +837,116 @@
    "reason": "X24 row at the XSS-002 site: title and description rows are one logical finding; one remediation (escaping the interpolated document values) clears both.",
    "action": "counted once (the harness consumes one row as the TP, the other as redundant)",
    "iteration": 1
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims 'src/app.ts' assembles the application. Evidence does not show 'src/app.ts' in the source file inventory (only directories are listed, but 'src/app.ts' is a specific file claim. The evidence lists directories under src. It does not list files. However, the evidence says '118 source file(s)'. It does not explicitly list every file. But it lists directories. If 'src/app.ts' doesn't exist, it's a drift. But I can't confirm it doesn't exist from directory tree alone. However, the README lists specific feature folders that DO NOT EXIST in the directory tree. This is the strongest drift. — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Disproof: the file the README names exists - src/app.ts, src/composition.ts and src/lifecycle.ts are all in the tree and do what the README says; the model saw a directory listing only and reported the file as missing (the row says it was not checked).",
+   "action": "Recorded as noise (frozen repository unchanged).",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims 'src/composition.ts' connects the stores. Evidence does not show this file. — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Disproof: the file the README names exists - src/app.ts, src/composition.ts and src/lifecycle.ts are all in the tree and do what the README says; the model saw a directory listing only and reported the file as missing (the row says it was not checked).",
+   "action": "Recorded as noise (frozen repository unchanged).",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims 'src/lifecycle.ts' starts and stops the server. Evidence does not show this file. — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Disproof: the file the README names exists - src/app.ts, src/composition.ts and src/lifecycle.ts are all in the tree and do what the README says; the model saw a directory listing only and reported the file as missing (the row says it was not checked).",
+   "action": "Recorded as noise (frozen repository unchanged).",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the API handles 'report templates' and 'retention schedules'. Evidence shows 'src/reports' exists but no specific evidence of template/schedule handling logic in the directory structure or manifest. — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "Disproof: src/templates/ (template-routes.ts, template-store.ts) serves report templates and src/imports/retention-schedule-reader.ts reads retention schedules.",
+   "action": "Recorded as noise (frozen repository unchanged).",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims 'web/' holds the small upload page. Evidence shows 'web/' directory exists. — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "The row reports drift while stating in the same sentence that the README's claim holds (the directory exists and contains what the README says). There is no drift.",
+   "action": "Recorded as noise (frozen repository unchanged).",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims 'tests/unit' exercises stores against a recording SQL client. Evidence shows 'tests/unit' exists. — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "The row reports drift while stating in the same sentence that the README's claim holds (the directory exists and contains what the README says). There is no drift.",
+   "action": "Recorded as noise (frozen repository unchanged).",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims 'tests/integration' drives every route with supertest. Evidence shows 'tests/integration' exists. — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "The row reports drift while stating in the same sentence that the README's claim holds (the directory exists and contains what the README says). There is no drift.",
+   "action": "Recorded as noise (frozen repository unchanged).",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims 'web/tests' runs upload page modules under happy-dom. Evidence shows 'web/tests' exists. — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "false-positive",
+   "reason": "The row reports drift while stating in the same sentence that the README's claim holds (the directory exists and contains what the README says). There is no drift.",
+   "action": "Recorded as noise (frozen repository unchanged).",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "D19",
+   "file": "README.md",
+   "line": 1,
+   "message": "Documentation: no contributor guidance: The document outline lists a 'Contributing' section, but the visible text does not contain guidance for contributors (e.g., how to submit PRs, coding standards, or issue reporting). Ensure the 'Contributing' section in the README contains clear instructions for new contributors.",
+   "class": "false-positive",
+   "reason": "Disproof: README.md:64-68 '## Contributing' says to open an issue before larger work, that PRs target main and must pass CI (formatting, lint, type-check, build, tests with coverage thresholds), to add tests with every behaviour change, record ADRs and note changes in CHANGELOG.md.",
+   "action": "Recorded as noise (frozen repository unchanged).",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "D20",
+   "file": "docs/adr/0003-outbound-requests.md",
+   "line": 1,
+   "message": "The ADR lacks a clear problem statement or motivation explaining why these specific constraints are necessary (e.g., security risks, performance issues, or compliance requirements).: Add a 'Problem' or 'Motivation' section before 'Context' that explicitly states the risks or issues this decision addresses, such as preventing SSRF attacks, ensuring data privacy, or managing latency.",
+   "class": "valid",
+   "reason": "Accurate: docs/adr/0003-outbound-requests.md lists the four outbound request kinds (Context) and the constraints (Decision) but never says why they are constrained (server-side request forgery, data exposure, slow hosts). Minor documentation gap; uncertain resolves to valid, consistent with the D20 'valid' verdicts on bench-csharp-readiness and bench-csharp-blazor-a11y.",
+   "action": "valid, found after freeze - candidate for next key version. Repository NOT changed (frozen at v1.0.0).",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "D26",
+   "file": null,
+   "line": null,
+   "message": "Split (repository root): The project contains 153 public types spread across 18 distinct namespaces that represent unrelated functional domains (such as reports, subscriptions, search, imports, and documents) rather than layers of a single responsibility. Suggested: Split into separate projects for `src/reports`, `src/subscriptions`, `src/http`, `src/exports`, `src/search`, `src/imports`, `src/saved-searches`, `web/src`, `src/documents`, `src/shares`, `src/feeds`, `src/conversion`, `src/preferences`, and `src/templates`.",
+   "class": "opinion-not-fact",
+   "reason": "Counts are accurate (one package, ~150 public types, feature folders); the call to split a single small service organised by feature folders (ADR 0001) into separate projects is not supported by the measurement. Same judgement as the contained D26 row of iteration 1.",
+   "action": "Recorded as noise (frozen repository unchanged).",
+   "scan": "final-llm"
   }
  ],
  "falseNegatives": [
@@ -882,6 +1031,7 @@
   "D8 measured 44% line coverage against the suite's 96.8%: the scanner installs with npm ci --ignore-scripts, so a dependency with a native binding fetched at install time (libxmljs2) cannot load and every suite that imports the app fails. Engine fact for the owner: coverage of any repository with such a dependency is misreported.",
   "res-render-injection (registry rule) fires on any `.render(` call with request data in scope — three service methods named render here; R6 read `new URL('../../views/', import.meta.url)` as an unresolvable import.",
   "Harness: the DESER-001 site was reported as code-injection and counted as noise; a deserialization/code-injection family (or a multi-concept entry) would let a scanner that names the code-execution consequence score the plant. New concepts nosql-injection and prototype-pollution were added for this repository (scanner-benchmark f933b50).",
-  "Repository fixes from valid findings: route duplication (helpers), reportRoutes and validateNode complexity, a silent localStorage fallback, and no accessibility check (axe-core added)."
+  "Repository fixes from valid findings: route duplication (helpers), reportRoutes and validateNode complexity, a silent localStorage fallback, and no accessibility check (axe-core added).",
+  "Final host pass (TS sidecar repaired): model rows add 8 M4 false positives (files and directories the README names do exist), a D19 false positive (the Contributing section exists), a D26 split opinion, and one D20 row judged valid: ADR 0003 states no motivation for its outbound-request constraints. That is recorded as valid, found after freeze - candidate for next key version; the frozen repository is not changed."
  ]
 }

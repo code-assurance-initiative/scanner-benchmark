@@ -50,6 +50,45 @@
         "fileLevelRecall": 0.46153846153846156
       },
       "note": "contained, repo commit 3c0b6fb, final (code identical at v1.0.0 3e4041b apart from the journal); SARIF byte-identical to iteration 1"
+    },
+    {
+      "iteration": "final-llm",
+      "date": "2026-10-07",
+      "tag": "v1.0.0",
+      "sarifSha256": "7d1b79f5ce21e5f6907bda556bba8ff491a359fa1ae2b528b94504a97e201439",
+      "outcomes": {
+        "tp": 1,
+        "fn": 12,
+        "fp": 3,
+        "tn": 90,
+        "trapFp": 2,
+        "trapTn": 12,
+        "results": 4,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 1,
+        "summaryRows": 0,
+        "summaryOfConcept": 0,
+        "fileLevelTp": 1,
+        "recall": 0.07692307692307693,
+        "trapResistance": 0.8571428571428571,
+        "noiseRate": 0.75,
+        "fileLevelRecall": 0.07692307692307693,
+        "locationSources": {
+          "sarif": 2,
+          "message": 0,
+          "none": 3
+        },
+        "pathMatches": {
+          "exact": 2,
+          "suffix": 0
+        }
+      },
+      "configuration": {
+        "mode": "host --with-llm",
+        "note": "re-run with the TS sidecar repaired; earlier host passes lacked the TS code model"
+      },
+      "note": "freestanding clone of v1.0.0 (3e4041b) at _frozen/v1.0.0/bench-ts-security-dependencies; TypeScript sidecar ran (no SidecarModelFailures, ProductionSourceUnmodelled false). First host pass for this repository (no model-judged band). Host mode runs no OSV/semgrep, so D30 rows are absent and recall 1/13 is an artefact of the host environment; contained iteration 2 stays the measurement of record. BND-003 D12 98 / R5 93 -> out, unchanged. New: one D19 row (judged below)."
     }
   ],
   "judgedOutcomes": {
@@ -191,6 +230,16 @@
       "action": "promoted to trap TRP-013 (nullable-analysis-disabled, repository level); code kept",
       "iteration": 1,
       "entryId": "TRP-013"
+    },
+    {
+      "ruleId": "D19",
+      "file": "README.md",
+      "line": 1,
+      "message": "Documentation: no contributor guidance: The root README lacks guidance for contributors, such as how to set up a development environment, run tests, or submit pull requests. Add a 'Contributing' section to the root README.md with steps for setting up the dev environment, running tests, and submitting changes.",
+      "class": "opinion-not-fact",
+      "reason": "True that README.md has no Contributing section, but its examples overstate: '## Build and run' (npm ci, start) and '## Testing' (npm test, the tools/manifest-export suite) give the dev setup and test commands. For a small single-team service the conclusion that contributor guidance is missing goes beyond the measurement (D19 still 90); same judgement as bench-ts-codehealth's D19 row.",
+      "action": "Recorded as noise (frozen repository unchanged).",
+      "scan": "final-llm"
     }
   ],
   "falseNegatives": [
@@ -266,6 +315,7 @@
     "R8 found the test-only production dependency but located it at the importing test file; it missed an unused production dependency (uuid) and an import of an undeclared runtime package whose @types package is declared (ms).",
     "X5 does not resolve tsconfig `extends` (TRP-013); C2 repeats the baseline false positive on scope-guarded routes (TRP-014).",
     "D43: no plant by design (a malicious npm package cannot be installed); trap TRP-005 (@tsconfig/node22) left alone.",
-    "Repository built with no Dependabot (as the C# twin): an update bot would rewrite the frozen plants and an ignore list would itself be a finding."
+    "Repository built with no Dependabot (as the C# twin): an update bot would rewrite the frozen plants and an ignore list would itself be a finding.",
+    "Final host pass (TS sidecar repaired): no band moved; the only new result is a D19 'no contributor guidance' opinion. Dependency advisories are contained-only, so the host pass is not a recall measurement here."
   ]
 }

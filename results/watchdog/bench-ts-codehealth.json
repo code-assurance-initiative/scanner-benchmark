@@ -74,6 +74,45 @@
         "uncovered": 8
       },
       "note": "contained; repo 024770a; byte-identical SARIF to iteration 2; final (tag v1.0.0 = 69cd173, journal only after it)"
+    },
+    {
+      "iteration": "final-llm",
+      "date": "2026-10-07",
+      "tag": "v1.0.0",
+      "sarifSha256": "3bad72cec418efc82799dca4264ea631db59eab35e87b0bbbdc7230b8d227fd7",
+      "outcomes": {
+        "tp": 29,
+        "fn": 22,
+        "fp": 6,
+        "tn": 113,
+        "trapFp": 6,
+        "trapTn": 30,
+        "results": 38,
+        "noise": 8,
+        "redundant": 1,
+        "uncovered": 17,
+        "summaryRows": 0,
+        "summaryOfConcept": 0,
+        "fileLevelTp": 29,
+        "recall": 0.5686274509803921,
+        "trapResistance": 0.8333333333333334,
+        "noiseRate": 0.21052631578947367,
+        "fileLevelRecall": 0.5686274509803921,
+        "locationSources": {
+          "sarif": 43,
+          "message": 0,
+          "none": 12
+        },
+        "pathMatches": {
+          "exact": 43,
+          "suffix": 0
+        }
+      },
+      "configuration": {
+        "mode": "host --with-llm",
+        "note": "re-run with the TS sidecar repaired; earlier host passes lacked the TS code model"
+      },
+      "note": "freestanding clone of v1.0.0 (69cd173) at _frozen/v1.0.0/bench-ts-codehealth; TypeScript sidecar ran (no SidecarModelFailures, ProductionSourceUnmodelled false). With the TypeScript code model the host pass reproduces the contained iteration 3 result for result (tp 29, fn 22, fp 6, 38 results): the 10 must-fires the iteration-2 host pass lost (CH-002/003/004/005/007/021/029/042/043/044) are found, and TRP-036 (R2 parseAddress, judged opinion-not-fact in iteration 3) recurs. Bands: BND-002 (D2 84) and BND-004 (D6 93) unscored -> in, BND-001 out (R2 99 with D1 93) unchanged, BND-008 D21 100 out unchanged, BND-009 unscored. P6 30 -> 80 from the v1.0.0 tag (no band)."
     }
   ],
   "verdicts": [
@@ -666,6 +705,7 @@
     "R4/R6 report every importer of `country-zones.generated.ts` as 'cannot be loaded: names no file' (5 rows): the generated file is dropped from the scanner's file set and its imports then read as unresolvable. The file exists and loads in every test run.",
     "Model-judged dimensions on TypeScript: D21 samples C# symbols only, so it scored 100 on an empty sample (BND-008 out, recorded as a score without evidence); D24 produced no score. M4 raised 8 README-drift false positives (name-only matching, as in the other repositories).",
     "Harness: added concepts floating-promise (X1 dropped-promise rows, previously off-concept) and unchecked-any-external-data (R1, unevidenced) in scanner-benchmark b63206f. Location-less roll-ups (X2) still cannot match a located plant (CH-030), as recorded for bench-csharp-codehealth. D10's 'No assertions' on a swallowed-failure test lands as noise because test-without-assertion and test-failure-swallowed are not a family.",
-    "Not the instrument: GitHub CodeQL on the same commits raised js/http-to-file-access ×2 (by design), js/user-controlled-bypass (same false positive as the baseline) and js/missing-rate-limiting ×2 (gateway's job). CI green."
+    "Not the instrument: GitHub CodeQL on the same commits raised js/http-to-file-access ×2 (by design), js/user-controlled-bypass (same false positive as the baseline) and js/missing-rate-limiting ×2 (gateway's job). CI green.",
+    "Final host pass (TS sidecar repaired): the iteration-2 host pass's 'no D1/D2/D3/D6 scores' was the missing TypeScript code model, not a host-mode limitation: with it the host pass equals the contained iteration 3 (same 38 results, same outcomes), and BND-002/BND-004 are scored in host mode too. Model-judged rows (M4 63, D19 90, D20 95, D21 100) raised no new result; BND-008 stays out."
   ]
 }

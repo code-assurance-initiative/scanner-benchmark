@@ -80,6 +80,88 @@
     "uncovered": 9
    },
    "note": "host --with-llm with CODEHEALTH_COMPLIANCE_FRAMEWORKS=gdpr-tech (NOT the default configuration; secondary), repository commit a1e3218; SARIF byte-identical to the default host pass; no LA1 card"
+  },
+  {
+   "iteration": "final-llm",
+   "date": "2026-10-07",
+   "tag": "v1.0.1",
+   "sarifSha256": "eaa21a3dc428fcf1272c3a0b27e8b003624dbedd99a369d5e27032845325834f",
+   "outcomes": {
+    "tp": 4,
+    "fn": 7,
+    "fp": 1,
+    "tn": 152,
+    "trapFp": 1,
+    "trapTn": 13,
+    "results": 9,
+    "noise": 5,
+    "redundant": 0,
+    "uncovered": 10,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 4,
+    "recall": 0.36363636363636365,
+    "trapResistance": 0.9285714285714286,
+    "noiseRate": 0.5555555555555556,
+    "fileLevelRecall": 0.36363636363636365,
+    "locationSources": {
+     "sarif": 9,
+     "message": 0,
+     "none": 10
+    },
+    "pathMatches": {
+     "exact": 9,
+     "suffix": 0
+    }
+   },
+   "configuration": {
+    "mode": "host --with-llm",
+    "note": "re-run with the TS sidecar repaired; earlier host passes lacked the TS code model"
+   },
+   "note": "freestanding clone of v1.0.1 (c96b81d) at _frozen/v1.0.1/bench-ts-domain-privacy; TypeScript sidecar ran (no SidecarModelFailures, ProductionSourceUnmodelled false). Replaces the iteration-2 host passes' 0/11 (sidecar exited): recall 4/11 (AGG-001 DM1, STI-001 DM2, CSC-001 AX7, BTL-001 D23 via subject), trap TRP-014 (DM4 InvoiceLine) and the ClassSession DM4 / MemberId D23 rows recur as in the contained pass; D32 is contained-only. Bands BND-001..004 unchanged (C1 65, C3 75, C4 50, C5 40, all in); BND-005 unscored (no LA1 in the default configuration). New: D26 split row (judged below)."
+  },
+  {
+   "iteration": "final-llm",
+   "date": "2026-10-07",
+   "tag": "v1.0.1",
+   "sarifSha256": "b56129d26e198d0bd86a0f0f340fc65ecdc878cf9670be9c47dbddc9e7b4feec",
+   "outcomes": {
+    "tp": 4,
+    "fn": 7,
+    "fp": 1,
+    "tn": 152,
+    "trapFp": 1,
+    "trapTn": 13,
+    "results": 9,
+    "noise": 5,
+    "redundant": 0,
+    "uncovered": 43,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 4,
+    "recall": 0.36363636363636365,
+    "trapResistance": 0.9285714285714286,
+    "noiseRate": 0.5555555555555556,
+    "fileLevelRecall": 0.36363636363636365,
+    "locationSources": {
+     "sarif": 42,
+     "message": 0,
+     "none": 10
+    },
+    "pathMatches": {
+     "exact": 42,
+     "suffix": 0
+    }
+   },
+   "configuration": {
+    "mode": "host --with-llm",
+    "note": "re-run with the TS sidecar repaired; earlier host passes lacked the TS code model",
+    "label": "gdpr-tech",
+    "env": {
+     "CODEHEALTH_COMPLIANCE_FRAMEWORKS": "gdpr-tech"
+    }
+   },
+   "note": "freestanding clone of v1.0.1 (c96b81d) at _frozen/v1.0.1/bench-ts-domain-privacy; TypeScript sidecar ran (no SidecarModelFailures, ProductionSourceUnmodelled false). Same rows as the default pass plus 33 LA1 personal-data rows; LA1 20 -> BND-005 (band 10-70) unscored -> in."
   }
  ],
  "verdicts": [
@@ -443,6 +525,346 @@
    "iterations": [
     2
    ]
+  },
+  {
+   "ruleId": "D26",
+   "file": null,
+   "line": null,
+   "message": "Split (repository root): The project is large with 159 public types spread across 33 namespaces covering distinct business domains like membership, billing, and platform infrastructure, indicating multiple unrelated responsibilities. Suggested: Split into `src/membership`, `src/billing`, and `src/platform` projects based on their respective namespace groupings.",
+   "class": "opinion-not-fact",
+   "reason": "Counts are accurate (one package, ~159 public types); the conclusion that a single service already split into two bounded contexts and vertical slices by folder should become separate projects is not supported by the measurement. Same judgement as the contained D26 row.",
+   "action": "Recorded as noise (frozen repository unchanged). Also in the gdpr-tech pass.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/billing/db/billing-account-store.ts",
+   "line": 13,
+   "message": "Personal data: BillingAccountRow.holder_email: `BillingAccountRow.holder_email` (member 'holder_email' on class 'BillingAccountRow') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/billing/db/billing-account-store.ts",
+   "line": 14,
+   "message": "Personal data: BillingAccountRow.date_of_birth: `BillingAccountRow.date_of_birth` (member 'date_of_birth' on class 'BillingAccountRow') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/billing/domain/accounts/billing-account.ts",
+   "line": 12,
+   "message": "Personal data: AccountHolder.email: `AccountHolder.email` (member 'email' of type 'string' on class 'AccountHolder') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/billing/domain/accounts/billing-account.ts",
+   "line": 13,
+   "message": "Personal data: AccountHolder.birthDate: `AccountHolder.birthDate` (member 'birthDate' of type 'HolderBirthDate' on class 'AccountHolder') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/contracts/integration-events.ts",
+   "line": 14,
+   "message": "Personal data: MemberRegisteredPayload.firstName: `MemberRegisteredPayload.firstName` (member 'firstName' of type 'string' on class 'MemberRegisteredPayload') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/contracts/integration-events.ts",
+   "line": 15,
+   "message": "Personal data: MemberRegisteredPayload.lastName: `MemberRegisteredPayload.lastName` (member 'lastName' of type 'string' on class 'MemberRegisteredPayload') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/contracts/integration-events.ts",
+   "line": 16,
+   "message": "Personal data: MemberRegisteredPayload.email: `MemberRegisteredPayload.email` (member 'email' of type 'string' on class 'MemberRegisteredPayload') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/contracts/integration-events.ts",
+   "line": 18,
+   "message": "Personal data: MemberRegisteredPayload.dateOfBirth: `MemberRegisteredPayload.dateOfBirth` (member 'dateOfBirth' of type 'string' on class 'MemberRegisteredPayload') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/db/member-store.ts",
+   "line": 31,
+   "message": "Personal data: MemberRow.first_name: `MemberRow.first_name` (member 'first_name' on class 'MemberRow') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/db/member-store.ts",
+   "line": 32,
+   "message": "Personal data: MemberRow.last_name: `MemberRow.last_name` (member 'last_name' on class 'MemberRow') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/db/member-store.ts",
+   "line": 33,
+   "message": "Personal data: MemberRow.email: `MemberRow.email` (member 'email' on class 'MemberRow') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/db/member-store.ts",
+   "line": 34,
+   "message": "Personal data: MemberRow.phone_encrypted: `MemberRow.phone_encrypted` (member 'phone_encrypted' on class 'MemberRow') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/db/member-store.ts",
+   "line": 35,
+   "message": "Personal data: MemberRow.date_of_birth_encrypted: `MemberRow.date_of_birth_encrypted` (member 'date_of_birth_encrypted' on class 'MemberRow') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/domain/members/member.ts",
+   "line": 21,
+   "message": "Personal data: PersonalData.email: `PersonalData.email` (member 'email' of type 'EmailAddress' on class 'PersonalData') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/domain/members/member.ts",
+   "line": 22,
+   "message": "Personal data: PersonalData.phone: `PersonalData.phone` (member 'phone' on class 'PersonalData') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/domain/members/member.ts",
+   "line": 23,
+   "message": "Personal data: PersonalData.dateOfBirth: `PersonalData.dateOfBirth` (member 'dateOfBirth' of type 'DateOfBirth' on class 'PersonalData') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/domain/members/member.ts",
+   "line": 104,
+   "message": "Personal data: Member.email: `Member.email` (member 'email' of type 'EmailAddress' on class 'Member') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/domain/members/member.ts",
+   "line": 108,
+   "message": "Personal data: Member.phone: `Member.phone` (member 'phone' on class 'Member') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/domain/members/member.ts",
+   "line": 112,
+   "message": "Personal data: Member.dateOfBirth: `Member.dateOfBirth` (member 'dateOfBirth' of type 'DateOfBirth' on class 'Member') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/domain/members/person-name.ts",
+   "line": 19,
+   "message": "Personal data: PersonName.firstName: `PersonName.firstName` (member 'firstName' of type 'string' on class 'PersonName') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/domain/members/person-name.ts",
+   "line": 23,
+   "message": "Personal data: PersonName.lastName: `PersonName.lastName` (member 'lastName' of type 'string' on class 'PersonName') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/domain/members/person-name.ts",
+   "line": 27,
+   "message": "Personal data: PersonName.fullName: `PersonName.fullName` (member 'fullName' of type 'string' on class 'PersonName') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/features/export-member-data/export-member-data.ts",
+   "line": 10,
+   "message": "Personal data: MemberDataExport.firstName: `MemberDataExport.firstName` (member 'firstName' of type 'string' on class 'MemberDataExport') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/features/export-member-data/export-member-data.ts",
+   "line": 11,
+   "message": "Personal data: MemberDataExport.lastName: `MemberDataExport.lastName` (member 'lastName' of type 'string' on class 'MemberDataExport') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/features/export-member-data/export-member-data.ts",
+   "line": 12,
+   "message": "Personal data: MemberDataExport.email: `MemberDataExport.email` (member 'email' of type 'string' on class 'MemberDataExport') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/features/export-member-data/export-member-data.ts",
+   "line": 13,
+   "message": "Personal data: MemberDataExport.phone: `MemberDataExport.phone` (member 'phone' on class 'MemberDataExport') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/features/export-member-data/export-member-data.ts",
+   "line": 14,
+   "message": "Personal data: MemberDataExport.dateOfBirth: `MemberDataExport.dateOfBirth` (member 'dateOfBirth' of type 'string' on class 'MemberDataExport') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "valid",
+   "reason": "Accurate inventory measurement: the field holds genuine member/account-holder personal data, as BND-005's rationale lists (name, e-mail, phone, date of birth; Billing's holder name, e-mail and date of birth). Not a defect: the key scores this concept only as band BND-005.",
+   "action": "Recorded (gdpr-tech secondary configuration); repository unchanged.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "src/membership/features/send-class-reminders/send-class-reminders.ts",
+   "line": 22,
+   "message": "Personal data: SendClassRemindersHandler.email: `SendClassRemindersHandler.email` (member 'email' of type 'EmailGateway' on class 'SendClassRemindersHandler') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "false-positive",
+   "reason": "Disproof: SendClassRemindersHandler.email is the injected EmailGateway service (send-class-reminders.ts:22), not an e-mail address; the field name was read as personal data.",
+   "action": "Recorded as noise (frozen repository unchanged). gdpr-tech secondary configuration.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "tests/support/test-app.ts",
+   "line": 55,
+   "message": "Personal data: MemberInput.firstName: `MemberInput.firstName` (member 'firstName' of type 'string' on class 'MemberInput') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "false-positive",
+   "reason": "Disproof: tests/support/test-app.ts is test support; MemberInput only carries the fictional fixture values the integration tests post, so no genuine personal data is handled there (the concept, personal-data-inventory, excludes fictional/test values).",
+   "action": "Recorded as noise (frozen repository unchanged). gdpr-tech secondary configuration.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "tests/support/test-app.ts",
+   "line": 56,
+   "message": "Personal data: MemberInput.lastName: `MemberInput.lastName` (member 'lastName' of type 'string' on class 'MemberInput') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "false-positive",
+   "reason": "Disproof: tests/support/test-app.ts is test support; MemberInput only carries the fictional fixture values the integration tests post, so no genuine personal data is handled there (the concept, personal-data-inventory, excludes fictional/test values).",
+   "action": "Recorded as noise (frozen repository unchanged). gdpr-tech secondary configuration.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "tests/support/test-app.ts",
+   "line": 57,
+   "message": "Personal data: MemberInput.email: `MemberInput.email` (member 'email' of type 'string' on class 'MemberInput') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "false-positive",
+   "reason": "Disproof: tests/support/test-app.ts is test support; MemberInput only carries the fictional fixture values the integration tests post, so no genuine personal data is handled there (the concept, personal-data-inventory, excludes fictional/test values).",
+   "action": "Recorded as noise (frozen repository unchanged). gdpr-tech secondary configuration.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "tests/support/test-app.ts",
+   "line": 58,
+   "message": "Personal data: MemberInput.phone: `MemberInput.phone` (member 'phone' of type 'string' on class 'MemberInput') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "false-positive",
+   "reason": "Disproof: tests/support/test-app.ts is test support; MemberInput only carries the fictional fixture values the integration tests post, so no genuine personal data is handled there (the concept, personal-data-inventory, excludes fictional/test values).",
+   "action": "Recorded as noise (frozen repository unchanged). gdpr-tech secondary configuration.",
+   "scan": "final-llm"
+  },
+  {
+   "ruleId": "LA1",
+   "file": "tests/support/test-app.ts",
+   "line": 59,
+   "message": "Personal data: MemberInput.dateOfBirth: `MemberInput.dateOfBirth` (member 'dateOfBirth' of type 'string' on class 'MemberInput') handles personal data. For GDPR Art. 25/32, confirm a lawful basis, data minimisation, a retention limit, and that it is encrypted and access-controlled.",
+   "class": "false-positive",
+   "reason": "Disproof: tests/support/test-app.ts is test support; MemberInput only carries the fictional fixture values the integration tests post, so no genuine personal data is handled there (the concept, personal-data-inventory, excludes fictional/test values).",
+   "action": "Recorded as noise (frozen repository unchanged). gdpr-tech secondary configuration.",
+   "scan": "final-llm"
   }
  ],
  "falseNegatives": [
@@ -497,7 +919,7 @@
      "score": 65
     }
    ],
-   "source": "iteration 2 contained; identical in both host passes"
+   "source": "iteration 2 contained; identical in both host passes; identical in the final-llm passes"
   },
   {
    "entryId": "BND-002",
@@ -513,7 +935,7 @@
      "score": 75
     }
    ],
-   "source": "iteration 2 contained; identical in both host passes"
+   "source": "iteration 2 contained; identical in both host passes; identical in the final-llm passes"
   },
   {
    "entryId": "BND-003",
@@ -529,7 +951,7 @@
      "score": 50
     }
    ],
-   "source": "iteration 2 contained; identical in both host passes",
+   "source": "iteration 2 contained; identical in both host passes; identical in the final-llm passes",
    "note": "50: the row misses the purge job and the retention limit (false-positive), but the score lands in band"
   },
   {
@@ -546,7 +968,7 @@
      "score": 40
     }
    ],
-   "source": "iteration 2 contained; identical in both host passes",
+   "source": "iteration 2 contained; identical in both host passes; identical in the final-llm passes",
    "note": "40, at the band floor: export and consent not recognised (false-positive ticks)"
   },
   {
@@ -559,7 +981,7 @@
    "outcome": "unscored",
    "scores": [],
    "source": "iteration 2 contained + both host passes",
-   "note": "No LA1 card in any pass: contained mode has no model and does not pass the framework variable; both host passes (default and CODEHEALTH_COMPLIANCE_FRAMEWORKS=gdpr-tech) ran without a TypeScript code model (sidecar exits with ERR_MODULE_NOT_FOUND in host mode), which LA1 reads."
+   "note": "No LA1 card in any pass: contained mode has no model and does not pass the framework variable; both host passes (default and CODEHEALTH_COMPLIANCE_FRAMEWORKS=gdpr-tech) ran without a TypeScript code model (sidecar exits with ERR_MODULE_NOT_FOUND in host mode), which LA1 reads. final-llm gdpr-tech pass at v1.0.1 (TS sidecar repaired): LA1 20 -> in (secondary configuration; unscored in the default one)."
   }
  ],
  "observations": [
@@ -569,6 +991,7 @@
   "X10 independently reported the scattered good-standing predicate (SDR-001); mapping X10 rows over a domain type's members to scattered-domain-rule would credit it (coordinator decision).",
   "C4 and C5 recognise retention, export and consent by fixed identifier vocabularies (purgeExpired…, ExportPersonalData…, Consent+Gdpr in one file): a purge job named after lapsed members and an export named after member data are not seen; both scores still land in band.",
   "The host --with-llm passes on this box have no TypeScript code model (the sidecar's node modules are not installed beside the host engine): every DM/AX7/D23 card disappears and recall drops to 0/11. Model-judged rows (M4 100, D19 90, D21 100) raised nothing; the default and gdpr-tech host passes are byte-identical. LA1 could not be measured in either configuration.",
-  "Harness: concept consent-not-checked added (scanner-benchmark fff4381), unmapped for Watchdog."
+  "Harness: concept consent-not-checked added (scanner-benchmark fff4381), unmapped for Watchdog.",
+  "Final host passes at v1.0.1 (TS sidecar repaired): the iteration-2 host recall of 0/11 was the missing code model - the host pass now finds the same 4/11 as the contained pass (DM1, DM2, AX7, D23) and the gdpr-tech pass composes LA1 (20, in band). Of the 33 LA1 rows, 27 are accurate inventory, 5 are a test-support input type and 1 is a gateway field named 'email' (false positives). No valid defect found after freeze."
  ]
 }

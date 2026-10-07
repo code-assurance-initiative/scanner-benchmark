@@ -74,6 +74,45 @@
     "uncovered": 40
    },
    "note": "host --with-llm pass 2 at 017cb1c; byte-identical to pass 1"
+  },
+  {
+   "iteration": "final-llm",
+   "date": "2026-10-07",
+   "tag": "v1.0.0",
+   "sarifSha256": "55bdfa25d9fe13eec903356593b334cd20de96648d688fd8d369b8629b6c5442",
+   "outcomes": {
+    "tp": 0,
+    "fn": 0,
+    "fp": 2,
+    "tn": 134,
+    "trapFp": 2,
+    "trapTn": 1,
+    "results": 2,
+    "noise": 2,
+    "redundant": 0,
+    "uncovered": 40,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 0,
+    "recall": null,
+    "trapResistance": 0.3333333333333333,
+    "noiseRate": 1.0,
+    "fileLevelRecall": null,
+    "locationSources": {
+     "sarif": 1,
+     "message": 0,
+     "none": 41
+    },
+    "pathMatches": {
+     "exact": 1,
+     "suffix": 0
+    }
+   },
+   "configuration": {
+    "mode": "host --with-llm",
+    "note": "re-run with the TS sidecar repaired; earlier host passes lacked the TS code model"
+   },
+   "note": "freestanding clone of v1.0.0 (7ebcfbd) at _frozen/v1.0.0/bench-ts-baseline-clean; TypeScript sidecar ran (no SidecarModelFailures, ProductionSourceUnmodelled false). Same 2 results as the iteration-2 host passes (C2 trap row TRP-003 and the 40 already-judged M4 rows); no new result. The code model now composes D1, D2, D6, D26, D35, AX5 and AX10 in the host pass with the contained values, so BND-001/002/006/012/013/015/016 read in-band in the host pass too. P6 30 -> 80 (BND-032 out -> in) because the frozen clone carries the v1.0.0 tag ('versioning: git tags'); the iteration-2 passes ran on 017cb1c before the tag existed. Model-judged M1 80, M2 70, M4 60, D19 90, D20 100, D21 100 unchanged."
   }
  ],
  "verdicts": [
@@ -581,7 +620,7 @@
     100
    ],
    "class": "false-positive",
-   "note": "P6 does not count package.json version 1.0.0 as a version stamp (on its scaffold-default list), although it matches the CHANGELOG's one release. Version not changed to suit the scanner."
+   "note": "P6 does not count package.json version 1.0.0 as a version stamp (on its scaffold-default list), although it matches the CHANGELOG's one release. Version not changed to suit the scanner. final-llm pass at the frozen tag: P6 80 (versioning credited from the git tag v1.0.0, changelog still 'thin') -> in; the iteration-2 'out' was taken before the tag existed."
   },
   {
    "note": "BND-003 duplicated-code was out in iteration 1 (R10 81) for partly valid reasons; in band at 96 after the fix. Model-judged (two host passes, identical): D19 90, D20 100, D21 100, M4 60 - in band; D22, D24, D25, LA3, LA4 emitted no score. Unscored in the contained pass: D5 (instability/main sequence), D16/D34 (single-author history), D27, S1 (server controls not assessed for TypeScript; a clean S1 abstains), SC1 (never scored), D36 (publishes nothing), P4, P5, P7, P12, PF1, PF2."
@@ -594,6 +633,7 @@
   "Two host --with-llm passes on the same tree produced byte-identical SARIF, which suggests reused model responses rather than determinism; the C# control saw run-to-run M4 variation.",
   "P6 treats package.json version 1.0.0 as a scaffold default, so a genuine first release scores 30.",
   "S1 does not assess server-side controls (helmet headers, HSTS, HTTPS enforcement, zod validation) for TypeScript and abstains on a clean repository: BND-018..020 cannot be scored for a Node service under this scanner version.",
-  "Not the instrument, for completeness: GitHub CodeQL raised js/user-controlled-bypass (authentication.ts, the result of a signature verification) and js/missing-rate-limiting (rate limiting is the gateway's job per SECURITY.md); both judged noise in the journal."
+  "Not the instrument, for completeness: GitHub CodeQL raised js/user-controlled-bypass (authentication.ts, the result of a signature verification) and js/missing-rate-limiting (rate limiting is the gateway's job per SECURITY.md); both judged noise in the journal.",
+  "Final host pass (2026-10-07, TS sidecar repaired): no new result and no model-judged band moved. The repaired code model adds the D1/D2/D6/D26/D35/AX* cards to the host pass (same values as the contained pass). The only score change, P6 30 -> 80 (BND-032 out -> in), comes from scanning the tagged commit, not from the model."
  ]
 }

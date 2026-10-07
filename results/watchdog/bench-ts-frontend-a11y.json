@@ -214,6 +214,88 @@
       },
       "note": "v1.1.0 iteration 2: host --with-llm with CODEHEALTH_COMPLIANCE_FRAMEWORKS=wcag-2.2 (NOT the default configuration; informative), repo at 503b290; LA6 not measured this pass (judge answered a batch short)",
       "tag": "v1.1.0"
+    },
+    {
+      "iteration": "final-llm",
+      "date": "2026-10-07",
+      "tag": "v1.1.0",
+      "sarifSha256": "8482edd9b934be1d0702e5389c35f03cd9a40b2c8ae30b7c519f0cef263c66b3",
+      "outcomes": {
+        "tp": 12,
+        "fn": 12,
+        "fp": 3,
+        "tn": 90,
+        "trapFp": 3,
+        "trapTn": 19,
+        "results": 15,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 1,
+        "summaryRows": 0,
+        "summaryOfConcept": 0,
+        "fileLevelTp": 12,
+        "recall": 0.5,
+        "trapResistance": 0.8636363636363636,
+        "noiseRate": 0.2,
+        "fileLevelRecall": 0.5,
+        "locationSources": {
+          "sarif": 14,
+          "message": 0,
+          "none": 2
+        },
+        "pathMatches": {
+          "exact": 14,
+          "suffix": 0
+        }
+      },
+      "configuration": {
+        "mode": "host --with-llm",
+        "note": "re-run with the TS sidecar repaired; earlier host passes lacked the TS code model"
+      },
+      "note": "freestanding clone of v1.1.0 (09b0b16) at _frozen/v1.1.0/bench-ts-frontend-a11y; TypeScript sidecar ran (no SidecarModelFailures, ProductionSourceUnmodelled false). Result set identical to the v1.1.0 iteration-2 default host pass (15 results, no new row). The code model now composes D1/D2/D3/D26/D35/AX* in the host pass (all 100, AX10 90). Bands unchanged: BND-001 AC7 40 out, BND-002 R1 100 in, BND-003..005 unscored in the default configuration."
+    },
+    {
+      "iteration": "final-llm",
+      "date": "2026-10-07",
+      "tag": "v1.1.0",
+      "sarifSha256": "0d195382163d6fc5ef565b42c3c3b85300344f92fec5e5696c562fa581e08f74",
+      "outcomes": {
+        "tp": 14,
+        "fn": 10,
+        "fp": 3,
+        "tn": 90,
+        "trapFp": 3,
+        "trapTn": 19,
+        "results": 17,
+        "noise": 3,
+        "redundant": 0,
+        "uncovered": 1,
+        "summaryRows": 0,
+        "summaryOfConcept": 0,
+        "fileLevelTp": 14,
+        "recall": 0.5833333333333334,
+        "trapResistance": 0.8636363636363636,
+        "noiseRate": 0.17647058823529413,
+        "fileLevelRecall": 0.5833333333333334,
+        "locationSources": {
+          "sarif": 16,
+          "message": 0,
+          "none": 2
+        },
+        "pathMatches": {
+          "exact": 16,
+          "suffix": 0
+        }
+      },
+      "configuration": {
+        "mode": "host --with-llm",
+        "note": "re-run with the TS sidecar repaired; earlier host passes lacked the TS code model",
+        "label": "wcag-2.2",
+        "env": {
+          "CODEHEALTH_COMPLIANCE_FRAMEWORKS": "wcag-2.2"
+        }
+      },
+      "note": "freestanding clone of v1.1.0 (09b0b16) at _frozen/v1.1.0/bench-ts-frontend-a11y; TypeScript sidecar ran (no SidecarModelFailures, ProductionSourceUnmodelled false). Result set identical to the v1.1.0 iteration-2 WCAG pass (17 results, no new row). LA2 75 in, LA5 95 in, and LA6 now measured: 100 -> BND-005 in (it went unmeasured in the previous WCAG pass when the judge answered a batch short)."
     }
   ],
   "verdicts": [
@@ -416,7 +498,7 @@
         80,
         100
       ],
-      "note": "LA6 not composed in the default configuration. With the WCAG framework: 100 -> in. v1.1.0 WCAG pass: LA6 not measured (the scanner's judge answered a batch short and the re-ask did not complete) -> unscored in that pass."
+      "note": "LA6 not composed in the default configuration. With the WCAG framework: 100 -> in. v1.1.0 WCAG pass: LA6 not measured (the scanner's judge answered a batch short and the re-ask did not complete) -> unscored in that pass. final-llm WCAG pass (TS sidecar repaired): LA6 100 -> in."
     }
   ],
   "observations": [
@@ -432,6 +514,7 @@
     "v1.1.0 added the plants the author had omitted for lack of concepts (A11Y-021 index key on a reorderable list, A11Y-022 effect with a missing dependency, A11Y-023 in-place state mutation, A11Y-024 unassociated form error) and their look-alikes (TRP-018 index key on a static list, TRP-019 complete memo deps, TRP-020 splice on a copy, TRP-021 associated form error, TRP-022 native dialog focus). All four plants are FNs on concepts the Watchdog mapping lists as unmapped; all five traps held. Six of the 24 plants now sit on unmapped concepts (no scanner rule).",
     "Writing the new feature made Watchdog's R10 report real duplication (a checkbox field copied into a third form, label-plus-input repeated): judged valid and fixed with shared CheckboxField/TextField components. The duplication-free v1.0.0 tree had the checkbox markup twice, below R10's bar.",
     "Model passes at v1.1.0: the M4 'README/code drift' false positive of v1.0.0 did not recur in either host pass (M4 90 without a finding, README unchanged) and LA6 went unmeasured in the WCAG pass (judge batch answered short). Both are instrument variance, not repository changes.",
-    "react-hooks/exhaustive-deps is 'warn' in eslint-plugin-react-hooks 7.1.1's recommended-latest preset, so the planted missing dependency leaves `npm run lint` green with one warning; no rule was changed or demoted and nothing is suppressed. The compiler-based react-hooks/immutability rule does not flag the A11Y-023 mutation."
+    "react-hooks/exhaustive-deps is 'warn' in eslint-plugin-react-hooks 7.1.1's recommended-latest preset, so the planted missing dependency leaves `npm run lint` green with one warning; no rule was changed or demoted and nothing is suppressed. The compiler-based react-hooks/immutability rule does not flag the A11Y-023 mutation.",
+    "Final host passes at v1.1.0 (TS sidecar repaired): no new result in either configuration; the only band change is BND-005 (LA6 100, in) in the WCAG pass, where the previous pass had not measured LA6. The missing TypeScript code model had not affected any a11y result row."
   ]
 }
