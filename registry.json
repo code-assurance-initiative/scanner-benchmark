@@ -44,6 +44,15 @@
       "commit": "19d0cf36ab86f9422a1f696a193118c66af07000",
       "keySha256": "bc73c82fa1d3650877efd03cd5bb2086bc805f1124f66fd3b1ee1fa83551cc8b",
       "frozenAt": "2026-10-07"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-csharp-security-iac",
+      "tag": "v1.1.0",
+      "commit": "7f489b14e75f6afa270f94a1d1d6ecb6c287d0f1",
+      "keySha256": "7fc4112abbb6273650f755c684dee5fe373c87781d3cde0195bbd460a593b455",
+      "frozenAt": "2026-10-07",
+      "supersedes": "v1.0.0",
+      "change": "precise IaC concepts (contract 1.3); code unchanged"
     }
   ]
 }
