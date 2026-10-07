@@ -74,6 +74,13 @@
       "commit": "d9f2e3e986f5a95f435322a445da5bf5df680279",
       "keySha256": "581497cf5d0d939a1d4704c8b28cea79c0cad2b59b1203021a06d6267a455fdb",
       "frozenAt": "2026-10-07"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-csharp-tests",
+      "tag": "v1.0.0",
+      "commit": "a2dce40268f1a26379f7ba3828aec9e9f93e999e",
+      "keySha256": "53bdee5a56ae27d7376992b5ea1491d6a99f9430a63b95463da0b43491e1cbb7",
+      "frozenAt": "2026-10-07"
     }
   ]
 }
