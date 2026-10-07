@@ -154,6 +154,13 @@
       "languages": [
         "csharp"
       ]
+    },
+    "bench-ts-readiness": {
+      "tag": "v1.0.0",
+      "keySha256": "166acf1fb645c488927ab58d16bff5b2059fb90168b83ca24fa01bd00eae85e9",
+      "languages": [
+        "typescript"
+      ]
     }
   },
   "coverageSource": "contract 1.4: a frozen repository's labels are read from its key at the registered tag (source 'key vX.Y.Z'; entries = entries per label; wildcardClean = its \"*\" clean regions, which measure noise on every concept and are not counted as a label); repositories not frozen yet keep the planned labels (source 'plan'). frozenCoverageGaps = the languages for which no frozen repository carries a measuring label on the row; frozenCoverageCleanOnly = the languages whose only measuring labels on the row are concept-specific clean regions (noise is measured, recall and trap resistance are not).",
@@ -262,6 +269,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -373,6 +393,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -501,6 +534,19 @@
             "clean": 71
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 63
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -619,6 +665,19 @@
             "score-band": 1
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -736,6 +795,21 @@
             "clean": 166
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-not-fire": 2,
+            "clean": 86
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -848,6 +922,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -962,6 +1049,21 @@
             "clean": 166
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-not-fire": 2,
+            "clean": 65
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -1070,6 +1172,21 @@
             "score-band": 1
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -1161,6 +1278,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -1291,6 +1421,23 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 2,
+            "must-not-fire": 3,
+            "clean": 106
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -1387,11 +1534,26 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 2,
+            "must-not-fire": 3,
+            "clean": 19
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -1507,6 +1669,19 @@
             "clean": 55
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 109
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -1636,6 +1811,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 88
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -1748,6 +1936,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 22
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -1856,6 +2057,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -1961,6 +2175,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -2131,6 +2358,23 @@
             "must-not-fire": 1
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 4,
+            "clean": 147
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -2230,6 +2474,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -2324,6 +2583,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -2417,6 +2689,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -2521,6 +2806,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -2612,6 +2910,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -2737,6 +3048,19 @@
             "clean": 135
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -2840,6 +3164,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -2938,6 +3275,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 19
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -3031,6 +3381,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -3127,6 +3490,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -3259,6 +3635,19 @@
             "clean": 51
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 110
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -3606,6 +3995,23 @@
             "clean": 136
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 3,
+            "must-not-fire": 11,
+            "clean": 1142
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -3717,6 +4123,19 @@
             "clean": 11
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 22
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -3917,6 +4336,23 @@
             "clean": 79
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 7,
+            "clean": 463
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -4047,6 +4483,19 @@
             "clean": 137
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 63
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -4154,6 +4603,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -4260,6 +4722,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -4396,6 +4871,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 195,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -4500,6 +4990,21 @@
             "score-band": 1
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -4598,6 +5103,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -4690,11 +5210,28 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 3,
+            "clean": 20,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -4784,11 +5321,26 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-not-fire",
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-not-fire": 1,
+            "clean": 21,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -4878,11 +5430,28 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 20,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -4986,6 +5555,19 @@
             "clean": 11
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 22
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -5095,6 +5677,19 @@
             "clean": 11
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 22
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -5210,6 +5805,21 @@
             "clean": 136
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -5323,6 +5933,21 @@
             "must-not-fire": 2,
             "clean": 136
           },
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -5438,6 +6063,21 @@
             "clean": 136
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -5552,6 +6192,21 @@
             "clean": 136
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -5665,6 +6320,21 @@
             "must-not-fire": 2,
             "clean": 136
           },
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -5782,6 +6452,21 @@
             "clean": 136
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 63,
+            "not-applicable": 3
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -5892,6 +6577,21 @@
             "score-band": 1
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -5987,6 +6687,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -6080,6 +6795,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 22
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -6191,6 +6919,19 @@
             "clean": 83
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 22
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -6299,6 +7040,21 @@
             "clean": 83
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-not-fire": 2,
+            "clean": 22
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -6388,6 +7144,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -6497,6 +7266,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -6610,6 +7392,21 @@
             "clean": 137
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -6703,6 +7500,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 22
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -6799,6 +7609,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -6890,6 +7715,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -7382,6 +8220,21 @@
             "score-band": 1
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -7500,6 +8353,23 @@
             "must-not-fire": 1
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-not-fire",
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-not-fire": 1,
+            "clean": 19,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -7603,6 +8473,19 @@
           "entries": {
             "score-band": 1
           },
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -7710,6 +8593,19 @@
             "score-band": 1
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -7813,6 +8709,21 @@
           "entries": {
             "score-band": 1
           },
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -7926,6 +8837,21 @@
             "clean": 137
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -8038,6 +8964,21 @@
             "clean": 137
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -8133,6 +9074,21 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -8255,6 +9211,21 @@
             "must-not-fire": 1
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -8365,6 +9336,21 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -8492,6 +9478,21 @@
             "clean": 137
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -8604,6 +9605,21 @@
             "clean": 137
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -8701,6 +9717,21 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -8814,6 +9845,21 @@
             "clean": 136
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -8925,6 +9971,21 @@
             "must-not-fire": 1,
             "clean": 137
           },
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -9038,6 +10099,21 @@
             "clean": 136
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -9134,6 +10210,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -9229,6 +10320,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -9327,6 +10431,21 @@
             "not-applicable": 1
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -9436,6 +10555,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -9531,6 +10665,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -9633,6 +10780,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -9731,6 +10891,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -9828,6 +11003,21 @@
             "not-applicable": 1
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -9928,6 +11118,21 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -10036,6 +11241,19 @@
             "must-fire": 1,
             "clean": 83
           },
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 22
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -10216,6 +11434,19 @@
             "clean": 498
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 129
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -10321,6 +11552,21 @@
           "entries": {
             "score-band": 1
           },
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -10436,6 +11682,21 @@
             "score-band": 1
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -10518,6 +11779,19 @@
             "score-band": 1
           },
           "wildcardClean": 134
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -10609,6 +11883,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -10724,6 +12011,21 @@
             "score-band": 1
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -10838,6 +12140,21 @@
             "score-band": 1
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -10930,6 +12247,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -11021,6 +12351,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -11126,6 +12469,19 @@
             "score-band": 1
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -11222,6 +12578,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 20
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -11302,6 +12671,21 @@
             "score-band": 1
           },
           "wildcardClean": 134
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -11386,6 +12770,23 @@
             "score-band": 1
           },
           "wildcardClean": 134
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "clean": 20,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -11466,6 +12867,21 @@
             "score-band": 1
           },
           "wildcardClean": 134
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -11558,6 +12974,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -11649,6 +13080,19 @@
             "score-band": 1
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -11746,6 +13190,21 @@
             "score-band": 1
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -11830,6 +13289,25 @@
             "score-band": 1
           },
           "wildcardClean": 134
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 2,
+            "clean": 20,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -11916,11 +13394,28 @@
             "score-band": 1
           },
           "wildcardClean": 134
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 3,
+            "clean": 19,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -12011,6 +13506,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -12095,11 +13605,28 @@
             "score-band": 1
           },
           "wildcardClean": 134
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 2,
+            "must-not-fire": 2,
+            "clean": 16,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -12191,11 +13718,28 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 20,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -12289,6 +13833,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -12369,6 +13928,19 @@
             "score-band": 1
           },
           "wildcardClean": 134
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -12458,6 +14030,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -12571,6 +14156,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 43,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -12679,6 +14279,21 @@
             "not-applicable": 1
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "clean": 42
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -12794,6 +14409,19 @@
             "clean": 20
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 42
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -12918,6 +14546,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -13023,6 +14664,21 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -13138,6 +14794,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 22
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -13230,6 +14899,19 @@
             "not-applicable": 1
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -13341,6 +15023,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-not-fire": 4,
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -13436,6 +15133,19 @@
             "clean": 33
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 66
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -13546,6 +15256,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 22
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -13665,6 +15388,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -13772,6 +15508,21 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-not-fire": 2,
+            "clean": 22
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -13965,6 +15716,21 @@
             "clean": 137
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 294,
+            "score-band": 2
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -14068,6 +15834,21 @@
             "score-band": 1
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "score-band": 1
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -14180,6 +15961,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 66
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -14288,6 +16082,21 @@
             "clean": 8
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "clean": 20
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -14407,6 +16216,23 @@
             "clean": 166
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "clean": 63,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -14519,6 +16345,23 @@
             "clean": 9
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 20
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -14641,6 +16484,21 @@
             "must-not-fire": 1
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 63,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -14749,6 +16607,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -14859,6 +16730,19 @@
             "must-not-fire": 1,
             "clean": 83
           },
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -14972,6 +16856,21 @@
             "clean": 136
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -15064,11 +16963,26 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 20
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -15177,6 +17091,19 @@
             "must-not-fire": 2,
             "clean": 83
           },
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -15288,6 +17215,19 @@
             "clean": 83
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 22
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -15396,6 +17336,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -15507,6 +17460,19 @@
             "clean": 99
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 22
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -15612,6 +17578,19 @@
           "entries": {
             "not-applicable": 1
           },
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -15722,6 +17701,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -15831,6 +17823,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -15937,6 +17942,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -16047,6 +18065,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -16138,6 +18169,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -16231,6 +18275,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -16323,6 +18380,21 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -16430,6 +18502,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -16572,6 +18657,19 @@
             "clean": 136
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -16677,6 +18775,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -16769,6 +18880,21 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -16864,6 +18990,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -16957,6 +19096,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -17063,6 +19215,19 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -17154,6 +19319,19 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21
+          },
+          "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -17286,6 +19464,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "clean": 21,
+            "not-applicable": 1
+          },
+          "wildcardClean": 102,
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -17322,6 +19515,15 @@
             "clean"
           ],
           "source": "key v1.0.0"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0"
         }
       ]
     },
@@ -17351,6 +19553,15 @@
             "clean"
           ],
           "source": "key v1.0.0"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0"
         }
       ]
     },
@@ -17378,6 +19589,15 @@
             "clean"
           ],
           "source": "key v1.0.0"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0"
         }
       ]
     },
@@ -17397,6 +19617,15 @@
             "clean"
           ],
           "source": "key v1.1.0"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0"
         }
       ]
     },
@@ -17416,6 +19645,15 @@
             "clean"
           ],
           "source": "key v1.1.0"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0"
         }
       ]
     },
@@ -17435,6 +19673,15 @@
             "clean"
           ],
           "source": "key v1.1.0"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0"
         }
       ]
     },
@@ -17453,6 +19700,14 @@
             "clean"
           ],
           "source": "key v1.1.0"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0"
         }
       ]
     },
@@ -17472,6 +19727,14 @@
             "clean"
           ],
           "source": "key v1.1.1"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0"
         }
       ]
     },
@@ -17491,6 +19754,14 @@
             "clean"
           ],
           "source": "key v1.1.1"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0"
         }
       ]
     },
@@ -17510,6 +19781,14 @@
             "clean"
           ],
           "source": "key v1.1.1"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean"
+          ],
+          "source": "key v1.0.0"
         }
       ]
     },
@@ -17529,6 +19808,15 @@
             "clean"
           ],
           "source": "key v1.0.1"
+        },
+        {
+          "repo": "bench-ts-readiness",
+          "phase": 3,
+          "labels": [
+            "clean",
+            "not-applicable"
+          ],
+          "source": "key v1.0.0"
         }
       ]
     }

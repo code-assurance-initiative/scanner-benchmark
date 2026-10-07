@@ -197,6 +197,13 @@
       "commit": "fc4090774c0e6275973199566dbddeb7c439d448",
       "keySha256": "b27fff90b3df91789073f0c8147a963bbe27f45eab2698093464b3e93f9b4eeb",
       "frozenAt": "2026-10-07"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-ts-readiness",
+      "tag": "v1.0.0",
+      "commit": "1c9ad0a6f5d8bf686d64a2fd278336b234f02192",
+      "keySha256": "166acf1fb645c488927ab58d16bff5b2059fb90168b83ca24fa01bd00eae85e9",
+      "frozenAt": "2026-10-07"
     }
   ]
 }
