@@ -30,7 +30,7 @@ Labels: MF must-fire · MNF must-not-fire · CL clean · NA not-applicable · SB
 | **D20** | ADR Quality | Maturity | judged | yes | yes | WNS | LLM | adr-quality | in-scope | **★**`csharp-baseline-clean` SB<br>`ts-baseline-clean` SB<br>`csharp-maturity-history` CL/SB<br>`csharp-readiness` CL | --with-llm pass (model-judged; abstains offline) |
 | **D21** | Naming Consistency | Maturity | judged | yes | yes | WNS | LLM | inconsistent-naming | in-scope | **★**`csharp-baseline-clean` SB<br>`ts-baseline-clean` SB<br>`csharp-codehealth` SB<br>`ts-codehealth` SB<br>`csharp-readiness` CL | --with-llm pass (model-judged; abstains offline) |
 | **D22** | Internal API Consistency | Architecture | judged | yes | partial | WNS | LLM | internal-api-inconsistency | in-scope | **★**`csharp-baseline-clean` SB<br>`ts-baseline-clean` SB<br>`csharp-architecture` SB<br>`csharp-readiness` CL | --with-llm pass (model-judged; abstains offline) |
-| **D23** | Boundary Type-Coupling | Architecture | finding | yes | partial | WNS | — | boundary-type-leakage | in-scope | **★**`csharp-baseline-clean` —<br>`ts-baseline-clean` —<br>`csharp-architecture` NA<br>`csharp-readiness` CL | a .NET tree that builds (abstains build-less: DimensionEditions.WithheldNotSelfSufficient) |
+| **D23** | Boundary Type-Coupling | Architecture | finding | yes | partial | WNS | — | boundary-type-leakage | in-scope | **★**`csharp-baseline-clean` —<br>`ts-baseline-clean` —<br>`csharp-architecture` NA<br>`csharp-domain-events` MF/MNF/CL<br>`csharp-readiness` CL | a .NET tree that builds (abstains build-less: DimensionEditions.WithheldNotSelfSufficient) |
 | **D24** | Comment Value | Maturity | judged | yes | yes | WNS | LLM | low-value-comments | in-scope | **★**`csharp-baseline-clean` SB<br>`ts-baseline-clean` SB<br>`csharp-codehealth` SB<br>`ts-codehealth` SB<br>`csharp-readiness` CL | --with-llm pass (model-judged; abstains offline) |
 | **D25** | ADR Conformance | Maturity | judged | yes | yes | WNS | LLM | adr-conformance | in-scope | **★**`csharp-baseline-clean` SB<br>`ts-baseline-clean` SB<br>`csharp-maturity-history` MF/MNF/CL/SB<br>`csharp-readiness` CL | --with-llm pass (model-judged; abstains offline) |
 | **D26** | Project Cohesion | Architecture | metric | yes | yes | WC | — | oversized-module | in-scope | **★**`csharp-baseline-clean` SB<br>`ts-baseline-clean` SB<br>`csharp-architecture` MF/CL/SB<br>`csharp-readiness` CL | — |
@@ -66,7 +66,7 @@ Labels: MF must-fire · MNF must-not-fire · CL clean · NA not-applicable · SB
 | **AX7** | Slice cohesion | Architecture | finding | yes | partial | WC | — | cross-slice-coupling | in-scope | **★**`csharp-baseline-clean` NA<br>`ts-baseline-clean` NA<br>`csharp-architecture` MF/MNF/CL<br>`csharp-readiness` CL | — |
 | **AX8** | Test isolation | Architecture | finding | yes | no | WC | — | production-depends-on-test-code | in-scope | **★**`csharp-baseline-clean` —<br>`ts-baseline-clean` CL<br>`csharp-tests` MF/MNF/CL<br>`csharp-readiness` CL | — |
 | **AX9** | CQS / query purity | Architecture | finding | yes | no | WC | — | query-with-side-effects | in-scope | **★**`csharp-baseline-clean` —<br>`ts-baseline-clean` NA<br>`csharp-architecture` MF/MNF/CL<br>`csharp-readiness` CL | — |
-| **AX10** | Code composition | Architecture | metric | yes | yes | WC | — | business-logic-share | in-scope | **★**`csharp-baseline-clean` SB<br>`ts-baseline-clean` SB<br>`csharp-architecture` MF/CL/SB<br>`csharp-readiness` CL | — |
+| **AX10** | Code composition | Architecture | metric | yes | yes | WC | — | business-logic-share | in-scope | **★**`csharp-baseline-clean` SB<br>`ts-baseline-clean` SB<br>`csharp-architecture` CL/SB<br>`csharp-readiness` CL | — |
 | **AXA1** | Runtime unauthenticated reachability | Security | runtime | yes | yes | WNS | — | unauthenticated-reachable-endpoint | out-of-scope | **OUT:** runtime card: needs the application BOOTED in the no-coupling sandbox (scan.py --runtime-evidence, nested dockerd); v1 does not boot, so the card is not built | — |
 | **AXB1** | Runtime evidence locked — no reproducible boot | Maturity | runtime | yes | yes | WNS | — | reproducible-boot | out-of-scope | **OUT:** runtime-tier card: built only when the Runtime Evidence module is switched on (scan.py --runtime-evidence; without it AXB1/AXB2/AXR1 build no card at all — scan.py docstring); v1 does not enable the module | — |
 | **AXB2** | Runtime readiness | Maturity | runtime | yes | yes | WNS | — | reproducible-boot | out-of-scope | **OUT:** runtime card: needs the application BOOTED in the no-coupling sandbox (scan.py --runtime-evidence, nested dockerd); v1 does not boot, so the card is not built | — |
@@ -193,7 +193,7 @@ Labels: MF must-fire · MNF must-not-fire · CL clean · NA not-applicable · SB
 In-scope rows where no FROZEN repository of the language carries a measuring label (planned repositories do not count), and rows whose only frozen measuring labels are concept-specific clean regions (noise is measured there, recall and trap resistance are not).
 
 - **csharp** — no frozen measuring label (0): none
-- **csharp** — clean-only (12): D23, AC1, AC2, AC3, AC4, AC5, AC6, AC7, LA2, LA5, LA6, X8
+- **csharp** — clean-only (11): AC1, AC2, AC3, AC4, AC5, AC6, AC7, LA2, LA5, LA6, X8
 - **typescript** — no frozen measuring label (21): D11, D23, D40, D41, D42, AX7, C1, C3, C4, C5, DM1, DM2, DM6, DM7, DM9, DM10, DM11, P8, P10, P11, X9
 - **typescript** — clean-only (0): none
 
@@ -203,16 +203,16 @@ Taxonomy concepts no rule of the reference scanner detects (mapping `unmapped`):
 
 | Concept | CWE | Family | Repositories (labels) |
 |---|---|---|---|
-| **form-error-not-associated** Form error not programmatically associated with its field | — | frontend | `ts-frontend-a11y` MF *(plan: next key version)* |
-| **modal-focus-not-managed** Modal dialog does not manage focus | — | frontend | `ts-frontend-a11y` MF *(plan: next key version)* |
-| **autoplay-media-without-control** Media plays automatically with no way to stop it | — | frontend | `ts-frontend-a11y` MF *(plan: next key version)* |
-| **react-index-as-key** List item keyed by its array index | — | frontend | `ts-frontend-a11y` MF *(plan: next key version: reorderable list keyed by index)* |
-| **react-hook-missing-dependency** Effect or memoised callback with a missing dependency | — | frontend | `ts-frontend-a11y` MF *(plan: next key version)* |
-| **react-state-mutation** Component state mutated in place | — | frontend | `ts-frontend-a11y` MF *(plan: next key version)* |
-| **business-logic-in-controller** Business logic in a controller | — | architecture | `csharp-architecture` MF *(plan: v1.1.0: relabel BLC-001 (WorkOrdersController.Approve) from business-logic-share)* |
-| **value-object-mutability** Value object that is mutable or compared by identity | — | domain | `csharp-domain-events` MF *(plan: v1.1.0: add a plant (mutable / identity-equality value object))* |
-| **domain-event-never-handled** Domain event raised but never handled | — | domain | `csharp-domain-events` MF *(plan: v1.1.0: add a plant)* |
-| **event-schema-change-without-upcaster** Persisted event schema changed without an upcaster | — | domain | `csharp-domain-events` MF *(plan: v1.1.0: add a plant)* |
+| **form-error-not-associated** Form error not programmatically associated with its field | — | frontend | `ts-frontend-a11y` MF/MNF/CL |
+| **modal-focus-not-managed** Modal dialog does not manage focus | — | frontend | `ts-frontend-a11y` MF/MNF/CL |
+| **autoplay-media-without-control** Media plays automatically with no way to stop it | — | frontend | `ts-frontend-a11y` MF/CL |
+| **react-index-as-key** List item keyed by its array index | — | frontend | `ts-frontend-a11y` MF/MNF/CL |
+| **react-hook-missing-dependency** Effect or memoised callback with a missing dependency | — | frontend | `ts-frontend-a11y` MF/MNF/CL |
+| **react-state-mutation** Component state mutated in place | — | frontend | `ts-frontend-a11y` MF/MNF/CL |
+| **business-logic-in-controller** Business logic in a controller | — | architecture | `csharp-architecture` MF/CL |
+| **value-object-mutability** Value object that is mutable or compared by identity | — | domain | `csharp-domain-events` MF/MNF/CL |
+| **domain-event-never-handled** Domain event raised but never handled | — | domain | `csharp-domain-events` MF/MNF/CL |
+| **event-schema-change-without-upcaster** Persisted event schema changed without an upcaster | — | domain | `csharp-domain-events` MF/MNF/CL |
 
 ## Per repository
 
@@ -220,7 +220,7 @@ Taxonomy concepts no rule of the reference scanner detects (mapping `unmapped`):
 - `bench-csharp-security-secrets` (phase 1, 6 dims): D13, D28, D29, D31, D37, S1
 - `bench-csharp-architecture` (phase 2, 22 dims): D5, D7, D17, D18, D22, D26, D27, D29, AX1, AX2, AX3, AX4, AX5, AX6, AX7, AX9, AX10, DM6, IC1, M3, R9, R11
 - `bench-csharp-codehealth` (phase 2, 45 dims): D1, D2, D3, D4, D6, D10, D17, D21, D24, D29, D39, GD1, IC1, PF2, PF3, R2, R3, R7, R10, X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X12, X13, X16, X18, X19, X20, X21, X22, X23, X25, X26, X27, X28, X29, X30, X32
-- `bench-csharp-domain-events` (phase 2, 25 dims): C1, C3, C4, C5, DM1, DM2, DM3, DM4, DM5, DM6, DM7, DM8, DM9, DM10, DM11, DM12, ED1, ED2, ED3, ED4, ED5, ES1, ES2, ES3, LA1
+- `bench-csharp-domain-events` (phase 2, 26 dims): D23, C1, C3, C4, C5, DM1, DM2, DM3, DM4, DM5, DM6, DM7, DM8, DM9, DM10, DM11, DM12, ED1, ED2, ED3, ED4, ED5, ES1, ES2, ES3, LA1
 - `bench-csharp-maturity-history` (phase 2, 14 dims): D15, D16, D17, D19, D20, D25, D34, D35, IC1, M1, M2, M3, M4, P6
 - `bench-csharp-readiness` (phase 2, 154 dims): D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D12, D13, D14, D15, D16, D17, D18, D19, D20, D21, D22, D23, D24, D25, D26, D27, D28, D29, D30, D31, D32, D34, D35, D36, D37, D39, D40, D41, D42, D43, D44, AC1, AC2, AC3, AC4, AC5, AC6, AC7, AX1, AX2, AX3, AX4, AX5, AX6, AX7, AX8, AX9, AX10, C1, C2, C3, C4, C5, DM1, DM2, DM3, DM4, DM5, DM6, DM7, DM8, DM9, DM10, DM11, DM12, ED1, ED2, ED3, ED4, ED5, ES1, ES2, ES3, GD1, IC1, LA1, LA2, LA3, LA4, LA5, LA6, M1, M2, M3, M4, P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, PF1, PF2, PF3, R1, R2, R3, R4, R5, R6, R7, R8, R9, R10, R11, S1, SC1, X1, X2, X3, X4, X5, X6, X7, X8, X9, X10, X12, X13, X14, X15, X16, X17, X18, X19, X20, X21, X22, X23, X24, X25, X26, X27, X28, X29, X30, X32
 - `bench-csharp-security-dependencies` (phase 2, 12 dims): D12, D14, D17, D29, D30, D31, D36, D43, D44, IC1, R5, SC1

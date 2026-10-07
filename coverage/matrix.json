@@ -58,15 +58,15 @@
       ]
     },
     "bench-csharp-architecture": {
-      "tag": "v1.0.0",
-      "keySha256": "caed14af7c59525ed523ca8c316ec36752c4a5e7af242b42935b208ad30aa01b",
+      "tag": "v1.1.0",
+      "keySha256": "85b26bbaf25a9e8919717505c345f88a28d9fc2998b87fd39088cdfb36deb65e",
       "languages": [
         "csharp"
       ]
     },
     "bench-csharp-domain-events": {
-      "tag": "v1.0.0",
-      "keySha256": "4a7da06596868ae3f41117b1253206ad8625eed26aac37f7012f027d8e1bcf4d",
+      "tag": "v1.1.1",
+      "keySha256": "869366f155f9e2b197c1d2e5e57ceee9a60ad469e2c994f62e99d3a51a20b35a",
       "languages": [
         "csharp"
       ]
@@ -121,8 +121,8 @@
       ]
     },
     "bench-ts-frontend-a11y": {
-      "tag": "v1.0.0",
-      "keySha256": "2a6eff790a82e65d28f82dbe4ed4fc12b61d46014f876269b16aa221ed4f7f89",
+      "tag": "v1.1.0",
+      "keySha256": "42fa35bd5f46bec202af374ce3c633014df7f812a105b49bf35d507b04426c1a",
       "languages": [
         "typescript"
       ]
@@ -480,11 +480,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 66
+            "clean": 71
           },
           "note": "not planned for this dimension; labelled by the frozen key"
         }
@@ -686,7 +686,7 @@
             "clean",
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 5,
             "must-not-fire": 9,
@@ -913,7 +913,7 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 6,
             "must-not-fire": 9,
@@ -2083,7 +2083,7 @@
           "labels": [
             "must-not-fire"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-not-fire": 1
           },
@@ -2196,7 +2196,7 @@
             "clean",
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 2,
@@ -2582,7 +2582,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "score-band": 1
           }
@@ -2674,10 +2674,26 @@
           "labels": [
             "not-applicable"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "not-applicable": 1
           }
+        },
+        {
+          "repo": "bench-csharp-domain-events",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.1.1",
+          "entries": {
+            "must-fire": 2,
+            "must-not-fire": 1,
+            "clean": 209
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         },
         {
           "repo": "bench-csharp-readiness",
@@ -2696,9 +2712,7 @@
       "frozenCoverageGaps": [
         "typescript"
       ],
-      "frozenCoverageCleanOnly": [
-        "csharp"
-      ],
+      "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
       ]
@@ -2971,7 +2985,7 @@
             "clean",
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "clean": 234,
@@ -3066,7 +3080,7 @@
             "clean",
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
@@ -3444,7 +3458,7 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 2,
@@ -3493,11 +3507,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 66
+            "clean": 71
           },
           "note": "not planned for this dimension; labelled by the frozen key"
         },
@@ -5083,11 +5097,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 2,
             "must-not-fire": 2,
-            "clean": 66
+            "clean": 71
           }
         },
         {
@@ -5183,11 +5197,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 2,
             "must-not-fire": 2,
-            "clean": 66
+            "clean": 71
           }
         },
         {
@@ -5283,11 +5297,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 2,
             "must-not-fire": 1,
-            "clean": 66
+            "clean": 71
           }
         },
         {
@@ -5383,11 +5397,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
-            "must-fire": 4,
+            "must-fire": 3,
             "must-not-fire": 5,
-            "clean": 66
+            "clean": 71
           }
         },
         {
@@ -5483,11 +5497,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 66
+            "clean": 71
           }
         },
         {
@@ -5585,11 +5599,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
-            "must-fire": 4,
+            "must-fire": 3,
             "must-not-fire": 4,
-            "clean": 66
+            "clean": 71
           }
         },
         {
@@ -5684,7 +5698,7 @@
             "must-fire",
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "score-band": 1
@@ -5782,7 +5796,7 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 2,
@@ -5876,7 +5890,7 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 2,
@@ -5970,7 +5984,7 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
@@ -6080,7 +6094,7 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 3,
             "must-not-fire": 6,
@@ -6186,7 +6200,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "score-band": 1
           }
@@ -6278,7 +6292,7 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
@@ -6389,7 +6403,7 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
@@ -6580,7 +6594,7 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
@@ -6670,13 +6684,11 @@
           "repo": "bench-csharp-architecture",
           "phase": 2,
           "labels": [
-            "must-fire",
             "clean",
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
-            "must-fire": 1,
             "clean": 234,
             "score-band": 1
           }
@@ -7154,7 +7166,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "score-band": 1
           },
@@ -7367,7 +7379,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "score-band": 1
           }
@@ -7461,7 +7473,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "score-band": 1
           }
@@ -7557,7 +7569,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "score-band": 1
           }
@@ -7653,11 +7665,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 2,
-            "clean": 203
+            "clean": 213
           }
         },
         {
@@ -7751,11 +7763,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 204
+            "clean": 214
           }
         },
         {
@@ -7849,11 +7861,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 204
+            "clean": 214
           }
         },
         {
@@ -7945,11 +7957,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 2,
-            "clean": 203
+            "clean": 213
           }
         },
         {
@@ -8054,11 +8066,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 2,
             "must-not-fire": 2,
-            "clean": 202
+            "clean": 212
           }
         },
         {
@@ -8165,11 +8177,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 2,
             "must-not-fire": 1,
-            "clean": 203
+            "clean": 213
           }
         },
         {
@@ -8179,7 +8191,7 @@
             "must-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "clean": 234
@@ -8277,11 +8289,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 2,
             "must-not-fire": 1,
-            "clean": 203
+            "clean": 213
           }
         },
         {
@@ -8377,10 +8389,10 @@
             "clean",
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
-            "clean": 205,
+            "clean": 215,
             "score-band": 1
           }
         },
@@ -8473,11 +8485,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 205
+            "clean": 215
           }
         },
         {
@@ -8571,11 +8583,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 204
+            "clean": 214
           }
         },
         {
@@ -8669,11 +8681,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 2,
-            "clean": 203
+            "clean": 213
           }
         },
         {
@@ -8767,11 +8779,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 204
+            "clean": 214
           }
         },
         {
@@ -8863,11 +8875,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 204
+            "clean": 214
           }
         },
         {
@@ -8959,11 +8971,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 204
+            "clean": 214
           }
         },
         {
@@ -9057,11 +9069,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 204
+            "clean": 214
           }
         },
         {
@@ -9070,7 +9082,7 @@
           "labels": [
             "not-applicable"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "not-applicable": 1
           },
@@ -9165,11 +9177,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 204
+            "clean": 214
           }
         },
         {
@@ -9263,11 +9275,11 @@
             "clean",
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 204,
+            "clean": 214,
             "score-band": 1
           }
         },
@@ -9362,11 +9374,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 2,
             "must-not-fire": 1,
-            "clean": 204
+            "clean": 214
           }
         },
         {
@@ -9460,11 +9472,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 204
+            "clean": 214
           }
         },
         {
@@ -9561,11 +9573,11 @@
             "clean",
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 204,
+            "clean": 214,
             "score-band": 1
           }
         },
@@ -9806,7 +9818,7 @@
           "labels": [
             "must-not-fire"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-not-fire": 1
           },
@@ -9945,7 +9957,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.1",
           "entries": {
             "score-band": 1
           }
@@ -10040,7 +10052,7 @@
             "must-fire",
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "score-band": 1
@@ -10314,7 +10326,7 @@
             "must-fire",
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "score-band": 1
@@ -10413,7 +10425,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "score-band": 1
           }
@@ -10691,7 +10703,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "score-band": 1
           }
@@ -12257,7 +12269,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "score-band": 1
           }
@@ -12481,11 +12493,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 66
+            "clean": 71
           }
         },
         {
@@ -13123,7 +13135,7 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
@@ -13349,7 +13361,7 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 3,
             "must-not-fire": 6,
@@ -16115,11 +16127,11 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.0.0",
+          "source": "key v1.1.0",
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 66
+            "clean": 71
           },
           "note": "not planned for this dimension; labelled by the frozen key"
         }
@@ -16857,10 +16869,11 @@
           "repo": "bench-ts-frontend-a11y",
           "phase": 3,
           "labels": [
-            "must-fire"
+            "must-fire",
+            "must-not-fire",
+            "clean"
           ],
-          "source": "plan",
-          "note": "next key version"
+          "source": "key v1.1.0"
         }
       ]
     },
@@ -16875,10 +16888,11 @@
           "repo": "bench-ts-frontend-a11y",
           "phase": 3,
           "labels": [
-            "must-fire"
+            "must-fire",
+            "must-not-fire",
+            "clean"
           ],
-          "source": "plan",
-          "note": "next key version"
+          "source": "key v1.1.0"
         }
       ]
     },
@@ -16893,10 +16907,10 @@
           "repo": "bench-ts-frontend-a11y",
           "phase": 3,
           "labels": [
-            "must-fire"
+            "must-fire",
+            "clean"
           ],
-          "source": "plan",
-          "note": "next key version"
+          "source": "key v1.1.0"
         }
       ]
     },
@@ -16911,10 +16925,11 @@
           "repo": "bench-ts-frontend-a11y",
           "phase": 3,
           "labels": [
-            "must-fire"
+            "must-fire",
+            "must-not-fire",
+            "clean"
           ],
-          "source": "plan",
-          "note": "next key version: reorderable list keyed by index"
+          "source": "key v1.1.0"
         }
       ]
     },
@@ -16929,10 +16944,11 @@
           "repo": "bench-ts-frontend-a11y",
           "phase": 3,
           "labels": [
-            "must-fire"
+            "must-fire",
+            "must-not-fire",
+            "clean"
           ],
-          "source": "plan",
-          "note": "next key version"
+          "source": "key v1.1.0"
         }
       ]
     },
@@ -16947,10 +16963,11 @@
           "repo": "bench-ts-frontend-a11y",
           "phase": 3,
           "labels": [
-            "must-fire"
+            "must-fire",
+            "must-not-fire",
+            "clean"
           ],
-          "source": "plan",
-          "note": "next key version"
+          "source": "key v1.1.0"
         }
       ]
     },
@@ -16965,10 +16982,10 @@
           "repo": "bench-csharp-architecture",
           "phase": 2,
           "labels": [
-            "must-fire"
+            "must-fire",
+            "clean"
           ],
-          "source": "plan",
-          "note": "v1.1.0: relabel BLC-001 (WorkOrdersController.Approve) from business-logic-share"
+          "source": "key v1.1.0"
         }
       ]
     },
@@ -16983,10 +17000,11 @@
           "repo": "bench-csharp-domain-events",
           "phase": 2,
           "labels": [
-            "must-fire"
+            "must-fire",
+            "must-not-fire",
+            "clean"
           ],
-          "source": "plan",
-          "note": "v1.1.0: add a plant (mutable / identity-equality value object)"
+          "source": "key v1.1.1"
         }
       ]
     },
@@ -17001,10 +17019,11 @@
           "repo": "bench-csharp-domain-events",
           "phase": 2,
           "labels": [
-            "must-fire"
+            "must-fire",
+            "must-not-fire",
+            "clean"
           ],
-          "source": "plan",
-          "note": "v1.1.0: add a plant"
+          "source": "key v1.1.1"
         }
       ]
     },
@@ -17019,10 +17038,11 @@
           "repo": "bench-csharp-domain-events",
           "phase": 2,
           "labels": [
-            "must-fire"
+            "must-fire",
+            "must-not-fire",
+            "clean"
           ],
-          "source": "plan",
-          "note": "v1.1.0: add a plant"
+          "source": "key v1.1.1"
         }
       ]
     }

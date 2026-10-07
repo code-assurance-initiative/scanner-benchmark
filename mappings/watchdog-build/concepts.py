@@ -288,7 +288,7 @@ c("form-error-not-associated", "Form error not programmatically associated with 
 c("modal-focus-not-managed", "Modal dialog does not manage focus", None, "frontend", "finding",
   "A modal dialog that, on opening, does not move focus into itself, does not keep focus inside while open, or does not return focus to the triggering control on close, so keyboard and screen-reader users act on content behind it (WCAG 2.4.3).")
 c("autoplay-media-without-control", "Media plays automatically with no way to stop it", None, "frontend", "finding",
-  "Audio, or video with sound, starts playing on load for more than a few seconds without a control to pause, stop or mute it (WCAG 1.4.2, 2.2.2).")
+  "Media starts playing on load without a control to pause or stop it: audio, or video with sound, for more than 3 seconds without a pause/mute control (WCAG 1.4.2), or moving video - muted or not - for more than 5 seconds without a pause/stop/hide control (WCAG 2.2.2).")
 c("react-index-as-key", "List item keyed by its array index", None, "frontend", "finding",
   "Items of a list that can be reordered, filtered or have items inserted are rendered with their array index as the reconciliation key, so component state and DOM (inputs, focus) stay attached to the wrong item after the list changes.")
 c("react-hook-missing-dependency", "Effect or memoised callback with a missing dependency", None, "frontend", "finding",

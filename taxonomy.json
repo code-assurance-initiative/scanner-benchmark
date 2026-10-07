@@ -1816,7 +1816,7 @@
       "cwe": null,
       "family": "frontend",
       "kind": "finding",
-      "description": "Audio, or video with sound, starts playing on load for more than a few seconds without a control to pause, stop or mute it (WCAG 1.4.2, 2.2.2)."
+      "description": "Media starts playing on load without a control to pause or stop it: audio, or video with sound, for more than 3 seconds without a pause/mute control (WCAG 1.4.2), or moving video - muted or not - for more than 5 seconds without a pause/stop/hide control (WCAG 2.2.2)."
     },
     {
       "id": "react-index-as-key",
