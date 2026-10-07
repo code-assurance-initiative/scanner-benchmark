@@ -1,0 +1,1405 @@
+{
+  "repo": "code-assurance-initiative/bench-csharp-domain-events",
+  "tag": "v1.0.0",
+  "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc) + host --with-llm pass",
+  "scans": [
+    {
+      "iteration": 1,
+      "date": "2026-10-07",
+      "sarifSha256": "cf5a625cdb92ed22cb52e6efd797df931d9d09f2bb31d47b8d2f477ac48bf1aa",
+      "outcomes": {
+        "tp": 22,
+        "fn": 2,
+        "fp": 12,
+        "tn": 205,
+        "trapFp": 2,
+        "trapTn": 21,
+        "results": 36,
+        "noise": 13,
+        "redundant": 1,
+        "uncovered": 73
+      },
+      "note": "contained; repository commit 9d844ca"
+    },
+    {
+      "iteration": 2,
+      "date": "2026-10-07",
+      "sarifSha256": "e484dfe5bdd4aaa6d7f838e3f337577b31c89193568d5da2dbc969ea3830c756",
+      "outcomes": {
+        "tp": 22,
+        "fn": 2,
+        "fp": 15,
+        "tn": 212,
+        "trapFp": 2,
+        "trapTn": 21,
+        "results": 39,
+        "noise": 16,
+        "redundant": 1,
+        "uncovered": 69
+      },
+      "note": "contained; repository commit d897c9a"
+    },
+    {
+      "iteration": 2,
+      "date": "2026-10-07",
+      "sarifSha256": "e3a468f7116eb3effbe0f03c13daada160ee5a8ed4fd90641408104de2b5fb3f",
+      "outcomes": {
+        "tp": 22,
+        "fn": 2,
+        "fp": 7,
+        "tn": 220,
+        "trapFp": 2,
+        "trapTn": 21,
+        "results": 33,
+        "noise": 9,
+        "redundant": 2,
+        "uncovered": 71
+      },
+      "note": "host --with-llm (model-judged pass); repository commit d897c9a"
+    },
+    {
+      "iteration": 3,
+      "date": "2026-10-07",
+      "sarifSha256": "c60aa0f38b0990e33d8ab242f261978e78d3ada108b69e17822bf8c499168454",
+      "outcomes": {
+        "tp": 22,
+        "fn": 2,
+        "fp": 15,
+        "tn": 214,
+        "trapFp": 2,
+        "trapTn": 21,
+        "results": 39,
+        "noise": 16,
+        "redundant": 1,
+        "uncovered": 69
+      },
+      "note": "contained, final; repository commit eb05046"
+    },
+    {
+      "iteration": 3,
+      "date": "2026-10-07",
+      "sarifSha256": "e6cd818267dcbcbd4e978be84dfc1e035efb592c2846e33169eceeac394ee847",
+      "outcomes": {
+        "tp": 22,
+        "fn": 2,
+        "fp": 7,
+        "tn": 222,
+        "trapFp": 2,
+        "trapTn": 21,
+        "results": 33,
+        "noise": 9,
+        "redundant": 2,
+        "uncovered": 72
+      },
+      "note": "host --with-llm (model-judged pass), final; repository commit eb05046"
+    }
+  ],
+  "verdicts": [
+    {
+      "ruleId": "D4",
+      "file": "src/Rentals.Billing.Application/Handlers/LoanOpenedHandler.cs",
+      "line": 19,
+      "message": "Duplicated block (10 lines × 2): src/Rentals.Billing.Application/Handlers/LoanOpenedHandler.cs:19-28 | src/Rentals.Billing.Application/Handlers/LoanReturnedHandler.cs:17-26 — the copies sit in sibling files of one directory, so a shared home is within easy reach: extract the block into a single shared function the call sites can all reach — a file they already depend on, or a new one alongside them — and call it from both call sites, so a change lands once. Read the line range as the matched WINDOW rather than a finished unit: at `src/Rentals.Billing.Application/Handlers/LoanOpenedHandler.cs:19` it does not close everything it opens, so those exact lines cannot be lifted as they stand — widen the region to the smallest complete statement or declaration that contains it, and extract that. Note first that the copies are not typed on the same thing: the declarations holding them bind `integrationEvent` to `LoanOpenedIntegrationEvent` in one and `LoanReturnedIntegrationEvent` in another, and the duplicated lines use it. The extracted unit therefore needs a parameter type that fits BOTH — their common supertype where they have one, or a new abstraction over them where they do not — and settling that is the step that comes BEFORE the extraction above. Where the two types are deliberately unrelated, the duplication is the price of that separation and the honest resolution is to record the decision rather than to extract.",
+      "class": "valid",
+      "reason": "The account lookup and its error were repeated across five Billing consumers.",
+      "action": "repo fixed in 94f0c50 (LoadRequiredAsync extension)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/Rentals.Lending.Application/NotFoundException.cs",
+      "line": 1,
+      "message": "Low coverage: src/Rentals.Lending.Application/NotFoundException.cs: 0.0% line coverage (0/10).",
+      "class": "valid",
+      "reason": "The not-found path, entity equality and the event store's concurrency and inbox checks had no tests.",
+      "action": "repo fixed in 94f0c50 / e3313f3 (tests added)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/Rentals.SharedKernel/DomainRuleViolationException.cs",
+      "line": 1,
+      "message": "Low coverage: src/Rentals.SharedKernel/DomainRuleViolationException.cs: 33.3% line coverage (3/9).",
+      "class": "valid",
+      "reason": "The not-found path, entity equality and the event store's concurrency and inbox checks had no tests.",
+      "action": "repo fixed in 94f0c50 / e3313f3 (tests added)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/Rentals.SharedKernel/Entity.cs",
+      "line": 1,
+      "message": "Low coverage: src/Rentals.SharedKernel/Entity.cs: 40.0% line coverage (2/5).",
+      "class": "valid",
+      "reason": "The not-found path, entity equality and the event store's concurrency and inbox checks had no tests.",
+      "action": "repo fixed in 94f0c50 / e3313f3 (tests added)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/Rentals.Billing.Domain/EventSourcing/ConcurrencyException.cs",
+      "line": 1,
+      "message": "Low coverage: src/Rentals.Billing.Domain/EventSourcing/ConcurrencyException.cs: 0.0% line coverage (0/9).",
+      "class": "valid",
+      "reason": "The not-found path, entity equality and the event store's concurrency and inbox checks had no tests.",
+      "action": "repo fixed in 94f0c50 / e3313f3 (tests added)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/Rentals.Worker/Rentals.Worker.csproj",
+      "line": 1,
+      "message": "No test project references Rentals.Worker: No test project in this repository references Rentals.Worker (1 production source file(s)), so `dotnet test` never loads it and no coverage tool can measure it — its code is absent from the 90.2% above rather than counted at zero. This is the whole assembly, not a gap within one: add a test project that references it (or a ProjectReference from an existing suite) and its coverage starts being measured.",
+      "class": "valid",
+      "reason": "The composition root was untested.",
+      "action": "repo fixed in 908424c (RentalsHost.AddRentals, tested end to end)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D17",
+      "file": ".editorconfig",
+      "line": 37,
+      "message": "AnalyzerSeverityNone: CA2007 — this rule is switched off for every file the section matches, in every project under this directory, and the only record that it was ever switched off is this line: nothing at the sites it would have reported says so, so a reader of that code has no reason to look here, and code added years from now inherits the decision silently. Fix what the rule reports and delete the entry, or — where some sites really are legitimate — leave the rule on and suppress it at those sites with their reasons, so it keeps protecting the rest of the tree. If the rule is genuinely unwanted here, say why — on this line after the entry, or in the comment run directly above it: a comment that only repeats the rule's own title is read as no explanation at all and leaves this row in place.",
+      "class": "false-positive",
+      "reason": "\"The only record that it was ever switched off is this line\" is untrue: the comment on the line above states the reason (and src/.editorconfig re-enables CA2007 for production code). Same finding as in bench-csharp-baseline-clean.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D17",
+      "file": "tests/.editorconfig",
+      "line": 3,
+      "message": "AnalyzerSeverityNone: CA1707 — this rule is switched off for every file the section matches, in every project under this directory, and the only record that it was ever switched off is this line: nothing at the sites it would have reported says so, so a reader of that code has no reason to look here, and code added years from now inherits the decision silently. Fix what the rule reports and delete the entry, or — where some sites really are legitimate — leave the rule on and suppress it at those sites with their reasons, so it keeps protecting the rest of the tree. If the rule is genuinely unwanted here, say why — on this line after the entry, or in the comment run directly above it: a comment that only repeats the rule's own title is read as no explanation at all and leaves this row in place.",
+      "class": "false-positive",
+      "reason": "\"The only record that it was ever switched off is this line\" is untrue: the comment on the line above states the reason (and src/.editorconfig re-enables CA2007 for production code). Same finding as in bench-csharp-baseline-clean.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D18",
+      "file": null,
+      "line": null,
+      "message": "Thin analysable surface across projects: 2 project(s) carry only a thin slice of real code (e.g. `Rentals.Worker` with 23 significant line(s)). The mean analysable-surface weight is 91 %, lowering Solution Shape by about 0.74 point(s). Consolidate thin projects or grow them into substantial, well-scoped assemblies.",
+      "class": "opinion-not-fact",
+      "reason": "Rentals.Worker is a host whose composition root is thin by design.",
+      "action": "recorded as noise",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type ExtendLoanCommand (Rentals.Lending.Application → Rentals.Billing.Application): ExtendLoanCommand (context Rentals.Lending.Application) is exposed in Rentals.Billing.Application's public surface via ChargeExtensionFeeHandler.HandleAsync — couples the contexts.",
+      "class": "valid",
+      "reason": "Billing.Application compiles against Lending.Application's ExtendLoanCommand: the cross-context coupling behind the planted ED2-001 (multi-lens, not redundant).",
+      "action": "kept: it is the planted ED2-001 defect",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentDamageReportedIntegrationEvent (Rentals.Contracts → Rentals.Billing.Application): EquipmentDamageReportedIntegrationEvent (context Rentals.Contracts) is exposed in Rentals.Billing.Application's public surface via EquipmentDamageReportedHandler.HandleAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MessageContext (Rentals.Messaging → Rentals.Billing.Application): MessageContext (context Rentals.Messaging) is exposed in Rentals.Billing.Application's public surface via EquipmentDamageReportedHandler.HandleAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type LoanOpenedIntegrationEvent (Rentals.Contracts → Rentals.Billing.Application): LoanOpenedIntegrationEvent (context Rentals.Contracts) is exposed in Rentals.Billing.Application's public surface via LoanOpenedHandler.HandleAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MessageContext (Rentals.Messaging → Rentals.Billing.Application): MessageContext (context Rentals.Messaging) is exposed in Rentals.Billing.Application's public surface via LoanOpenedHandler.HandleAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type LoanReturnedIntegrationEvent (Rentals.Contracts → Rentals.Billing.Application): LoanReturnedIntegrationEvent (context Rentals.Contracts) is exposed in Rentals.Billing.Application's public surface via LoanReturnedHandler.HandleAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MessageContext (Rentals.Messaging → Rentals.Billing.Application): MessageContext (context Rentals.Messaging) is exposed in Rentals.Billing.Application's public surface via LoanReturnedHandler.HandleAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberRegisteredIntegrationEvent (Rentals.Contracts → Rentals.Billing.Application): MemberRegisteredIntegrationEvent (context Rentals.Contracts) is exposed in Rentals.Billing.Application's public surface via MemberRegisteredHandler.HandleAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MessageContext (Rentals.Messaging → Rentals.Billing.Application): MessageContext (context Rentals.Messaging) is exposed in Rentals.Billing.Application's public surface via MemberRegisteredHandler.HandleAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberSuspendedIntegrationEvent (Rentals.Contracts → Rentals.Billing.Application): MemberSuspendedIntegrationEvent (context Rentals.Contracts) is exposed in Rentals.Billing.Application's public surface via MemberSuspendedHandler.HandleAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MessageContext (Rentals.Messaging → Rentals.Billing.Application): MessageContext (context Rentals.Messaging) is exposed in Rentals.Billing.Application's public surface via MemberSuspendedHandler.HandleAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type StoredEvent (Rentals.Billing.Domain → Rentals.Billing.Application): StoredEvent (context Rentals.Billing.Domain) is exposed in Rentals.Billing.Application's public surface via AccountBalanceProjection.Project — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberAccountOpened (Rentals.Billing.Domain → Rentals.Billing.Application): MemberAccountOpened (context Rentals.Billing.Domain) is exposed in Rentals.Billing.Application's public surface via AccountBalanceProjection.When — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type ChargePosted (Rentals.Billing.Domain → Rentals.Billing.Application): ChargePosted (context Rentals.Billing.Domain) is exposed in Rentals.Billing.Application's public surface via AccountBalanceProjection.When — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type LateFeeCharged (Rentals.Billing.Domain → Rentals.Billing.Application): LateFeeCharged (context Rentals.Billing.Domain) is exposed in Rentals.Billing.Application's public surface via AccountBalanceProjection.When — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type DepositHeld (Rentals.Billing.Domain → Rentals.Billing.Application): DepositHeld (context Rentals.Billing.Domain) is exposed in Rentals.Billing.Application's public surface via AccountBalanceProjection.When — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type InboxReceipt (Rentals.Billing.Domain → Rentals.Billing.Infrastructure): InboxReceipt (context Rentals.Billing.Domain) is exposed in Rentals.Billing.Infrastructure's public surface via InMemoryEventStore.AppendAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentDamageReportedIntegrationEvent (Rentals.Contracts → Rentals.Lending.Application): EquipmentDamageReportedIntegrationEvent (context Rentals.Contracts) is exposed in Rentals.Lending.Application's public surface via MarkUnitDamagedHandler.HandleAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MessageContext (Rentals.Messaging → Rentals.Lending.Application): MessageContext (context Rentals.Messaging) is exposed in Rentals.Lending.Application's public surface via MarkUnitDamagedHandler.HandleAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MaintenanceRecordId (Rentals.Lending.Domain → Rentals.Lending.Application): MaintenanceRecordId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RecordMaintenanceCommand..ctor — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentUnitId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentUnitId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RecordMaintenanceCommand..ctor — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MaintenanceRecordId (Rentals.Lending.Domain → Rentals.Lending.Application): MaintenanceRecordId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RecordMaintenanceCommand.RecordId — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentUnitId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentUnitId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RecordMaintenanceCommand.UnitId — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MaintenanceRecordId (Rentals.Lending.Domain → Rentals.Lending.Application): MaintenanceRecordId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RecordMaintenanceCommand.Deconstruct — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentUnitId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentUnitId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RecordMaintenanceCommand.Deconstruct — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RegisterEquipmentCommand..ctor — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RegisterEquipmentCommand.EquipmentId — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RegisterEquipmentCommand.Deconstruct — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via CheckoutEquipmentCommand..ctor — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentUnitId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentUnitId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via CheckoutEquipmentCommand..ctor — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via CheckoutEquipmentCommand.MemberId — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentUnitId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentUnitId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via CheckoutEquipmentCommand.UnitId — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via CheckoutEquipmentCommand.Deconstruct — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentUnitId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentUnitId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via CheckoutEquipmentCommand.Deconstruct — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type LoanId (Rentals.Lending.Domain → Rentals.Lending.Application): LoanId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via ExtendLoanCommand..ctor — couples the contexts.",
+      "class": "valid",
+      "reason": "Billing.Application compiles against Lending.Application's ExtendLoanCommand: the cross-context coupling behind the planted ED2-001 (multi-lens, not redundant).",
+      "action": "kept: it is the planted ED2-001 defect",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via ExtendLoanCommand..ctor — couples the contexts.",
+      "class": "valid",
+      "reason": "Billing.Application compiles against Lending.Application's ExtendLoanCommand: the cross-context coupling behind the planted ED2-001 (multi-lens, not redundant).",
+      "action": "kept: it is the planted ED2-001 defect",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type LoanId (Rentals.Lending.Domain → Rentals.Lending.Application): LoanId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via ExtendLoanCommand.LoanId — couples the contexts.",
+      "class": "valid",
+      "reason": "Billing.Application compiles against Lending.Application's ExtendLoanCommand: the cross-context coupling behind the planted ED2-001 (multi-lens, not redundant).",
+      "action": "kept: it is the planted ED2-001 defect",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via ExtendLoanCommand.MemberId — couples the contexts.",
+      "class": "valid",
+      "reason": "Billing.Application compiles against Lending.Application's ExtendLoanCommand: the cross-context coupling behind the planted ED2-001 (multi-lens, not redundant).",
+      "action": "kept: it is the planted ED2-001 defect",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type LoanId (Rentals.Lending.Domain → Rentals.Lending.Application): LoanId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via ExtendLoanCommand.Deconstruct — couples the contexts.",
+      "class": "valid",
+      "reason": "Billing.Application compiles against Lending.Application's ExtendLoanCommand: the cross-context coupling behind the planted ED2-001 (multi-lens, not redundant).",
+      "action": "kept: it is the planted ED2-001 defect",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via ExtendLoanCommand.Deconstruct — couples the contexts.",
+      "class": "valid",
+      "reason": "Billing.Application compiles against Lending.Application's ExtendLoanCommand: the cross-context coupling behind the planted ED2-001 (multi-lens, not redundant).",
+      "action": "kept: it is the planted ED2-001 defect",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type LoanId (Rentals.Lending.Domain → Rentals.Lending.Application): LoanId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via ReturnEquipmentCommand..ctor — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type LoanId (Rentals.Lending.Domain → Rentals.Lending.Application): LoanId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via ReturnEquipmentCommand.LoanId — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type LoanId (Rentals.Lending.Domain → Rentals.Lending.Application): LoanId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via ReturnEquipmentCommand.Deconstruct — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via EraseMemberPersonalDataCommand..ctor — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via EraseMemberPersonalDataCommand.MemberId — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via EraseMemberPersonalDataCommand.Deconstruct — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RenewMembershipCommand..ctor — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RenewMembershipCommand.MemberId — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via RenewMembershipCommand.Deconstruct — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via SuspendMemberCommand..ctor — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via SuspendMemberCommand.MemberId — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via SuspendMemberCommand.Deconstruct — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type ReservationId (Rentals.Lending.Domain → Rentals.Lending.Application): ReservationId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via ReservationService.ReserveAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type MemberId (Rentals.Lending.Domain → Rentals.Lending.Application): MemberId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via ReservationService.ReserveAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type EquipmentId (Rentals.Lending.Domain → Rentals.Lending.Application): EquipmentId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via ReservationService.ReserveAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type ReservationId (Rentals.Lending.Domain → Rentals.Lending.Application): ReservationId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via ReservationService.ConfirmAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D23",
+      "file": null,
+      "line": null,
+      "message": "Cross-context type ReservationId (Rentals.Lending.Domain → Rentals.Lending.Application): ReservationId (context Rentals.Lending.Domain) is exposed in Rentals.Lending.Application's public surface via ReservationService.CancelAsync — couples the contexts.",
+      "class": "false-positive",
+      "reason": "Each project is treated as a bounded context: a Lending.Domain type used by Lending.Application is one context's domain used by its own application layer; integration events from Rentals.Contracts are the published contract; MessageContext is the shared messaging kernel. None crosses a bounded context.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D39",
+      "file": "src/Rentals.Lending.Infrastructure/Persistence/Configurations/ReservationConfiguration.cs",
+      "line": 13,
+      "message": "IL efficiency: 3 authored method(s) exceed the IL budget: 3 of 296 first-party methods compile to oversized IL bodies (> 250 instructions); worst: Rentals.Lending.Infrastructure.Persistence.Configurations.ReservationConfiguration.Configure @ src/Rentals.Lending.Infrastructure/Persistence/Configurations/ReservationConfiguration.cs:13, 285 IL instructions; that pulled this dimension to 9.8/10. These bodies are far past the JIT's inline budget, so splitting them does not make them inlinable — what moves the number is emitting less: collapsing LINQ chains and closures on hot paths, and interpolation built eagerly where it is only sometimes used.",
+      "class": "opinion-not-fact",
+      "reason": "The oversized methods are EF Core model configuration, run once at start-up.",
+      "action": "recorded as noise",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "C1",
+      "file": null,
+      "line": null,
+      "message": "No data-protection/encryption: No data-protection or encryption usage (ASP.NET Data Protection, AES, column encryption, PBKDF2) was found — sensitive data at rest may be unprotected. If TDE/KMS/vault is delegated to infrastructure, ignore.",
+      "class": "valid",
+      "reason": "Personal data at rest is unencrypted and no data-protection API is used; deliberate and out of theme.",
+      "action": "key: score band BND-008 (data-encryption-controls 0-40) records the posture",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "C3",
+      "file": null,
+      "line": null,
+      "message": "Partial audit-trail evidence: An audit mechanism is present, but the trail is not yet complete — missing: a dedicated audit read-model (an audit-log/-trail/-entry projection) over the sensitive event streams.",
+      "class": "opinion-not-fact",
+      "reason": "Score 90 credits Billing's event stream as an audit trail of sensitive data; the sensitive data is the member's personal data in Lending, whose changes are recorded nowhere, and no event records who made a change. The row's own text (missing audit read-model) is true but the score overstates.",
+      "action": "recorded; BND-001 out of band",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "C5",
+      "file": null,
+      "line": null,
+      "message": "Partial data-subject-rights support: Corroborated rights: erasure ✓ · export ✗ · consent ✗. Each tick means this scan found code in the repository implementing that right — a deletion/anonymisation path for erasure, a data-export or portability path for export, and consent state recorded alongside the personal data it authorises. A ✗ therefore means no such code was recognised HERE, not that the right is unsupported: a capability provided by a platform, a manual runbook, or code spelled in a way this scan does not match is not visible to it. Confirm before treating a cross as a gap; where it is one, the right has to be fulfilled manually.",
+      "class": "valid",
+      "reason": "Erasure without export or consent is the deliberate posture BND-003 records.",
+      "action": "deliberate (BND-003 in band)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "DM1",
+      "file": "src/Rentals.Lending.Domain/Catalogue/Equipment.cs",
+      "line": 8,
+      "message": "Aggregate holds a reference to another aggregate: Equipment._units: `Equipment` references the aggregate root `EquipmentUnit` directly (via `_units`) — hold its `EquipmentUnitId` instead.",
+      "class": "false-positive",
+      "reason": "TRP-002. EquipmentUnit has no repository, is created only by Equipment.AddUnit and reached only through Equipment (Equipment.cs); the structural rule takes any entity with a private setter and a mutating method in a Domain namespace for an aggregate root.",
+      "action": "recorded as noise; site is trap TRP-002",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "DM1",
+      "file": "src/Rentals.Lending.Domain/Catalogue/Equipment.cs",
+      "line": 35,
+      "message": "Aggregate holds a reference to another aggregate: Equipment.Units: `Equipment` references the aggregate root `EquipmentUnit` directly (via `Units`) — hold its `EquipmentUnitId` instead.",
+      "class": "false-positive",
+      "reason": "TRP-002. EquipmentUnit has no repository, is created only by Equipment.AddUnit and reached only through Equipment (Equipment.cs); the structural rule takes any entity with a private setter and a mutating method in a Domain namespace for an aggregate root.",
+      "action": "recorded as noise; site is trap TRP-002",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "DM1",
+      "file": "src/Rentals.Lending.Domain/Loans/Loan.cs",
+      "line": 19,
+      "message": "Aggregate holds a reference to another aggregate: Loan.Borrower: `Loan` references the aggregate root `Member` directly (via `Borrower`) — hold its `MemberId` instead.",
+      "class": "redundant",
+      "reason": "Second DM1 row on the same planted reference (the backing field and its property are one reference); DM1-001 already consumed the first.",
+      "action": "counted once",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "DM8",
+      "file": "src/Rentals.Billing.Domain/Accounts/MemberAccount.cs",
+      "line": 35,
+      "message": "Primitive data clump: [currency, holderemail, holderfullname]: The parameters [currency, holderemail, holderfullname] travel together across 3 signatures — that's a missing value object. Extracting them into one type (e.g. `Address`, `Money`, `Coordinate`) removes repetition, prevents argument-order mistakes, and gives the concept a home for its rules.",
+      "class": "valid",
+      "reason": "Uncertain resolved as valid: holder name and e-mail travelled loose through MemberAccount.Open and the event (the third \"signature\" is the event record's compiler-generated Deconstruct).",
+      "action": "repo fixed in 0a53bb6 (AccountHolder value object for Open; the event stays flat)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "ED5",
+      "file": "src/Rentals.Billing.Application/Handlers/ChargeExtensionFeeHandler.cs",
+      "line": 13,
+      "message": "Possible non-idempotent mutation (review): Handlers.ChargeExtensionFeeHandler.HandleAsync: `Handlers.ChargeExtensionFeeHandler.HandleAsync` mutates persistent state (a database save) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+      "class": "false-positive",
+      "reason": "Guarded: the fee is posted only if the account has no charge with the same reason (loan id + new due date), HasChargeWithReason in ChargeExtensionFeeHandler.cs.",
+      "action": "recorded as noise; file stays certified clean",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "ED5",
+      "file": "src/Rentals.Lending.Application/Catalogue/MarkUnitDamagedHandler.cs",
+      "line": 12,
+      "message": "Possible non-idempotent mutation (review): Catalogue.MarkUnitDamagedHandler.HandleAsync: `Catalogue.MarkUnitDamagedHandler.HandleAsync` mutates persistent state (a database save) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+      "class": "false-positive",
+      "reason": "Fixed-value write: the unit condition is set to the reported condition; a second delivery sets the same value (EquipmentUnit.ReportDamage).",
+      "action": "recorded as noise; file stays certified clean",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "ED5",
+      "file": "src/Rentals.Lending.Application/Catalogue/RecordMaintenanceHandler.cs",
+      "line": 11,
+      "message": "Possible non-idempotent mutation (review): Catalogue.RecordMaintenanceHandler.HandleAsync: `Catalogue.RecordMaintenanceHandler.HandleAsync` mutates persistent state (a database save) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+      "class": "false-positive",
+      "reason": "Caller-chosen record id with an existence check (records.GetAsync) before the insert; a retry returns early.",
+      "action": "recorded as noise; file stays certified clean",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "ED5",
+      "file": "src/Rentals.Lending.Application/Catalogue/RegisterEquipmentHandler.cs",
+      "line": 11,
+      "message": "Possible non-idempotent mutation (review): Catalogue.RegisterEquipmentHandler.HandleAsync: `Catalogue.RegisterEquipmentHandler.HandleAsync` mutates persistent state (a database save) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+      "class": "false-positive",
+      "reason": "Caller-chosen equipment id with an existence check (equipment.GetAsync) before the insert; a retry returns early.",
+      "action": "recorded as noise; file stays certified clean",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "ED5",
+      "file": "src/Rentals.Lending.Application/Loans/CheckoutEquipmentHandler.cs",
+      "line": 18,
+      "message": "Possible non-idempotent mutation (review): Loans.CheckoutEquipmentHandler.HandleAsync: `Loans.CheckoutEquipmentHandler.HandleAsync` mutates persistent state (a database save) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+      "class": "false-positive",
+      "reason": "A retry of a committed checkout is refused (the unit is on an open loan, UnitAvailabilityService); concurrent duplicates cannot both commit since 610d7d9 (unique filtered index ux_loans_open_unit).",
+      "action": "recorded as noise; file stays certified clean",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "ED5",
+      "file": "src/Rentals.Lending.Application/Loans/ExtendLoanHandler.cs",
+      "line": 11,
+      "message": "Possible non-idempotent mutation (review): Loans.ExtendLoanHandler.HandleAsync: `Loans.ExtendLoanHandler.HandleAsync` mutates persistent state (a database save) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+      "class": "false-positive",
+      "reason": "Loan.Extend to the due date the loan already has returns without change; the command carries the target date, not a delta.",
+      "action": "recorded as noise; file stays certified clean",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "ED5",
+      "file": "src/Rentals.Lending.Application/Members/RegisterMemberHandler.cs",
+      "line": 11,
+      "message": "Possible non-idempotent mutation (review): Members.RegisterMemberHandler.HandleAsync: `Members.RegisterMemberHandler.HandleAsync` mutates persistent state (a database save) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+      "class": "false-positive",
+      "reason": "Natural key: lookup by e-mail; the same person retrying is accepted as a no-op (HasSameContact), another person is refused.",
+      "action": "recorded as noise; file stays certified clean",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "ED5",
+      "file": "src/Rentals.Lending.Application/Members/SuspendMemberHandler.cs",
+      "line": 12,
+      "message": "Possible non-idempotent mutation (review): Members.SuspendMemberHandler.HandleAsync: `Members.SuspendMemberHandler.HandleAsync` mutates persistent state (a database save) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+      "class": "false-positive",
+      "reason": "Early return when the member is already suspended; Member.Suspend is itself a no-op on a suspended member.",
+      "action": "recorded as noise; file stays certified clean",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "ED5",
+      "file": "src/Rentals.Lending.Infrastructure/Messaging/OutboxDispatcher.cs",
+      "line": 58,
+      "message": "Possible non-idempotent mutation (review): Messaging.OutboxDispatcher.ExecuteAsync: `Messaging.OutboxDispatcher.ExecuteAsync` mutates persistent state (a database save one hop away, in OutboxDispatcher.DispatchPendingAsync) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+      "class": "false-positive",
+      "reason": "A relay, not a consumer: it republishes a message only if the delete did not commit, with the outbox row id as MessageId, which consumers de-duplicate on; at-least-once by design (ADR 0002).",
+      "action": "recorded as noise; file stays certified clean",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "ES3",
+      "file": "src/Rentals.Contracts/IntegrationEvents/MemberRegisteredIntegrationEvent.cs",
+      "line": 6,
+      "message": "PII in event: MemberRegisteredIntegrationEvent: Persisted event carries personal data (Email) — no crypto-shredding strategy covers it, so it collides with the GDPR right-to-erasure.",
+      "class": "false-positive",
+      "reason": "TRP-022. An integration message: it sits in outbox_messages only until OutboxDispatcher.DispatchPendingAsync removes the row after publishing; nothing appends it to an event store, so it is erasable.",
+      "action": "recorded as noise; site is trap TRP-022",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "P2",
+      "file": null,
+      "line": null,
+      "message": "Logging is not universal: Only 3/7 service-like projects use logging (pure contract/DTO projects are excluded — they have nothing to log). Of those 7, 0 ship a process this repository operates; the rest are libraries their consumer hosts, where the logging decision belongs to the host.",
+      "class": "valid",
+      "reason": "The two application projects made decisions (redeliveries, charges, suspensions, checkouts, returns) without logging.",
+      "action": "repo fixed in 94f0c50 / e3313f3 (structured logging)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "P6",
+      "file": null,
+      "line": null,
+      "message": "Changelog looks stale/thin: The changelog this check read carries 2 versioned entries, against a bar of 3. Counted as either an `x.y.z` string or a version-shaped section heading (`## [1.2.0]`, `## V14.x.x`, `## Updates in 8.0.x`), whichever is the larger — so a log sectioned by minor series counts its sections, not its individual patch numbers. Entries recorded somewhere this check does not read — release notes generated at tag time from a generator config it did not recognise, or a log kept outside the repository — are not counted here, and this row is about what is re-findable in the tree rather than about how often you release.",
+      "class": "opinion-not-fact",
+      "reason": "A 1.0.0 project has one release in its changelog.",
+      "action": "recorded as noise",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "P8",
+      "file": "src/Rentals.Worker/Program.cs",
+      "line": 26,
+      "message": "Schema created with EnsureCreated() (no migration path): `EnsureCreated()` builds the schema once and can't evolve it — there's no upgrade path for an existing production database, and it bypasses the migrations history. Adopt a versioned schema-migration mechanism (with EF Core: `dotnet ef migrations add` + `Migrate()` on startup) so schema changes are versioned and applied safely.",
+      "class": "valid",
+      "reason": "The schema was created with EnsureCreated and had no migration path.",
+      "action": "repo fixed in 908424c (EF Core migrations applied by the worker)",
+      "iteration": 1,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/Rentals.Lending.Application/NotFoundException.cs",
+      "line": 1,
+      "message": "Low coverage: src/Rentals.Lending.Application/NotFoundException.cs: 40.0% line coverage (4/10).",
+      "class": "opinion-not-fact",
+      "reason": "The uncovered lines are the standard exception constructors CA1032 requires; every path that throws these exceptions is tested.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 2,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D8",
+      "file": "src/Rentals.Billing.Domain/EventSourcing/ConcurrencyException.cs",
+      "line": 1,
+      "message": "Low coverage: src/Rentals.Billing.Domain/EventSourcing/ConcurrencyException.cs: 33.3% line coverage (3/9).",
+      "class": "opinion-not-fact",
+      "reason": "The uncovered lines are the standard exception constructors CA1032 requires; every path that throws these exceptions is tested.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 2,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D17",
+      "file": "src/Rentals.Lending.Infrastructure/Persistence/DesignTimeLendingDbContextFactory.cs",
+      "line": 7,
+      "message": "Dead code: DesignTimeLendingDbContextFactory: NamedType DesignTimeLendingDbContextFactory — Roslyn's SymbolFinder walked every project the solution loads, including Rentals.Lending.Infrastructure, and found no reference to it. That walk cannot see three kinds of caller, so check them before removing it: code outside the solution file (a solution is a curated list, not the repository — a sibling test tree with its own .sln is invisible), a call resolved by reflection or dependency injection from the symbol's name, and any project the workspace could not load. This is 'no caller found by this walk', not a verdict that the symbol is unused.",
+      "class": "false-positive",
+      "reason": "dotnet ef discovers and instantiates IDesignTimeDbContextFactory<T> implementations by reflection; the type is used by the migrations tooling.",
+      "action": "recorded as noise (uncovered concept)",
+      "iteration": 2,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D18",
+      "file": null,
+      "line": null,
+      "message": "Thin analysable surface across projects: 2 project(s) carry only a thin slice of real code (e.g. `Rentals.Worker` with 37 significant line(s)). The mean analysable-surface weight is 94 %, lowering Solution Shape by about 0.46 point(s). Consolidate thin projects or grow them into substantial, well-scoped assemblies.",
+      "class": "opinion-not-fact",
+      "reason": "Rentals.Worker is a host whose composition root is thin by design.",
+      "action": "recorded as noise",
+      "iteration": 2,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D39",
+      "file": "src/Rentals.Lending.Infrastructure/Persistence/Configurations/ReservationConfiguration.cs",
+      "line": 13,
+      "message": "IL efficiency: 3 authored method(s) exceed the IL budget: 3 of 302 first-party methods compile to oversized IL bodies (> 250 instructions); worst: Rentals.Lending.Infrastructure.Persistence.Configurations.ReservationConfiguration.Configure @ src/Rentals.Lending.Infrastructure/Persistence/Configurations/ReservationConfiguration.cs:13, 285 IL instructions; that pulled this dimension to 9.8/10. These bodies are far past the JIT's inline budget, so splitting them does not make them inlinable — what moves the number is emitting less: collapsing LINQ chains and closures on hot paths, and interpolation built eagerly where it is only sometimes used.",
+      "class": "opinion-not-fact",
+      "reason": "The oversized methods are EF Core model configuration, run once at start-up.",
+      "action": "recorded as noise",
+      "iteration": 2,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "DM7",
+      "file": "src/Rentals.Lending.Infrastructure/Persistence/Repositories/EquipmentRepository.cs",
+      "line": 6,
+      "message": "Repository for a non-root entity: EquipmentRepository → Equipment: `EquipmentRepository` is a repository over `Equipment`, which is an entity but not an aggregate root. Repositories should be per aggregate ROOT — loading/saving a child entity independently lets callers bypass the root's invariants. Access `Equipment` through its owning aggregate instead.",
+      "class": "false-positive",
+      "reason": "Equipment, Loan, Member and Reservation all derive from AggregateRoot<TId> (e.g. Member.cs:8) and are the roots their repositories serve. Appeared only after the infrastructure project gained the EF design-time package and migrations.",
+      "action": "recorded as noise; file stays certified clean",
+      "iteration": 2,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "DM7",
+      "file": "src/Rentals.Lending.Infrastructure/Persistence/Repositories/LoanRepository.cs",
+      "line": 7,
+      "message": "Repository for a non-root entity: LoanRepository → Loan: `LoanRepository` is a repository over `Loan`, which is an entity but not an aggregate root. Repositories should be per aggregate ROOT — loading/saving a child entity independently lets callers bypass the root's invariants. Access `Loan` through its owning aggregate instead.",
+      "class": "false-positive",
+      "reason": "Equipment, Loan, Member and Reservation all derive from AggregateRoot<TId> (e.g. Member.cs:8) and are the roots their repositories serve. Appeared only after the infrastructure project gained the EF design-time package and migrations.",
+      "action": "recorded as noise; file stays certified clean",
+      "iteration": 2,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "DM7",
+      "file": "src/Rentals.Lending.Infrastructure/Persistence/Repositories/MemberRepository.cs",
+      "line": 6,
+      "message": "Repository for a non-root entity: MemberRepository → Member: `MemberRepository` is a repository over `Member`, which is an entity but not an aggregate root. Repositories should be per aggregate ROOT — loading/saving a child entity independently lets callers bypass the root's invariants. Access `Member` through its owning aggregate instead.",
+      "class": "false-positive",
+      "reason": "Equipment, Loan, Member and Reservation all derive from AggregateRoot<TId> (e.g. Member.cs:8) and are the roots their repositories serve. Appeared only after the infrastructure project gained the EF design-time package and migrations.",
+      "action": "recorded as noise; file stays certified clean",
+      "iteration": 2,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "DM7",
+      "file": "src/Rentals.Lending.Infrastructure/Persistence/Repositories/ReservationRepository.cs",
+      "line": 7,
+      "message": "Repository for a non-root entity: ReservationRepository → Reservation: `ReservationRepository` is a repository over `Reservation`, which is an entity but not an aggregate root. Repositories should be per aggregate ROOT — loading/saving a child entity independently lets callers bypass the root's invariants. Access `Reservation` through its owning aggregate instead.",
+      "class": "false-positive",
+      "reason": "Equipment, Loan, Member and Reservation all derive from AggregateRoot<TId> (e.g. Member.cs:8) and are the roots their repositories serve. Appeared only after the infrastructure project gained the EF design-time package and migrations.",
+      "action": "recorded as noise; file stays certified clean",
+      "iteration": 2,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "ED5",
+      "file": "src/Rentals.Lending.Application/Loans/CheckoutEquipmentHandler.cs",
+      "line": 20,
+      "message": "Possible non-idempotent mutation (review): Loans.CheckoutEquipmentHandler.HandleAsync: `Loans.CheckoutEquipmentHandler.HandleAsync` mutates persistent state (a database save) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+      "class": "false-positive",
+      "reason": "A retry of a committed checkout is refused (the unit is on an open loan, UnitAvailabilityService); concurrent duplicates cannot both commit since 610d7d9 (unique filtered index ux_loans_open_unit).",
+      "action": "recorded as noise; file stays certified clean",
+      "iteration": 2,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "ED5",
+      "file": "src/Rentals.Lending.Application/Members/SuspendMemberHandler.cs",
+      "line": 14,
+      "message": "Possible non-idempotent mutation (review): Members.SuspendMemberHandler.HandleAsync: `Members.SuspendMemberHandler.HandleAsync` mutates persistent state (a database save) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+      "class": "false-positive",
+      "reason": "Early return when the member is already suspended; Member.Suspend is itself a no-op on a suspended member.",
+      "action": "recorded as noise; file stays certified clean",
+      "iteration": 2,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "P2",
+      "file": null,
+      "line": null,
+      "message": "Logging is not universal: Only 5/7 service-like projects use logging (pure contract/DTO projects are excluded — they have nothing to log). Of those 7, 0 ship a process this repository operates; the rest are libraries their consumer hosts, where the logging decision belongs to the host.",
+      "class": "opinion-not-fact",
+      "reason": "The two projects without logging are the domain projects, which deliberately take no infrastructure dependency.",
+      "action": "recorded as noise",
+      "iteration": 2,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D19",
+      "file": "README.md",
+      "line": 1,
+      "message": "Documentation: no contributor guidance: The root README lacks a section or guidance for contributors on how to set up the development environment, run tests, or submit changes. Add a 'Contributing' section to the root README.md with steps for setting up the .NET SDK, running the test suite, and guidelines for submitting pull requests.",
+      "class": "false-positive",
+      "reason": "README.md has a \"## Contributing\" section.",
+      "action": "recorded as noise",
+      "iteration": 2,
+      "pass": "model-judged"
+    },
+    {
+      "ruleId": "D20",
+      "file": "docs/adr/0003-event-sourced-member-account.md",
+      "line": 1,
+      "message": "The Consequences section is incomplete; it lists constraints (determinism, immutability) but omits positive benefits (auditability, replayability) and negative trade-offs (complexity, performance overhead of replay) which are crucial for a balanced ADR.: Expand the Consequences section to explicitly list the benefits (e.g., full audit trail, ability to reconstruct state at any point in time) and drawbacks (e.g., increased complexity in application logic, potential performance impact from replaying large event streams) to provide a complete trade-off analysis.",
+      "class": "opinion-not-fact",
+      "reason": "ADR 0003 records its consequences; a fuller trade-off list is a preference.",
+      "action": "recorded as noise",
+      "iteration": 2,
+      "pass": "model-judged"
+    },
+    {
+      "ruleId": "ED5",
+      "file": "src/Rentals.Lending.Application/Loans/CheckoutEquipmentHandler.cs",
+      "line": 20,
+      "message": "Non-idempotent mutation: Loans.CheckoutEquipmentHandler.HandleAsync: `Loans.CheckoutEquipmentHandler.HandleAsync` mutates persistent state (a database save) with no idempotency guard, and the model confirms a re-run would double-apply it. A retry or at-least-once redelivery means it can run twice — add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+      "class": "valid",
+      "reason": "Uncertain resolved as valid: a sequential retry was refused, but two concurrent deliveries could both pass the availability check; nothing in the database prevented two open loans for one unit.",
+      "action": "repo fixed in 610d7d9 (unique filtered index ux_loans_open_unit + migration + falsified test)",
+      "iteration": 2,
+      "pass": "model-judged"
+    },
+    {
+      "ruleId": "ES3",
+      "file": "src/Rentals.Billing.Domain/Accounts/Events/MemberAccountOpened.cs",
+      "line": 5,
+      "message": "PII in event: MemberAccountOpened: Persisted event carries personal data (HolderFullName) — classified as REAL personal data (not fictional) by the model. Append-only events can't be erased, so this needs a crypto-shredding/pseudonymisation strategy — none covering this event was detected.",
+      "class": "redundant",
+      "reason": "Model-adjudicated second row on MemberAccountOpened (HolderFullName); same event and same remedy as ES3-001.",
+      "action": "counted once",
+      "iteration": 2,
+      "pass": "model-judged"
+    },
+    {
+      "ruleId": "ES3",
+      "file": "src/Rentals.Contracts/IntegrationEvents/MemberRegisteredIntegrationEvent.cs",
+      "line": 6,
+      "message": "PII in event: MemberRegisteredIntegrationEvent: Persisted event carries personal data (FullName) — classified as REAL personal data (not fictional) by the model. Append-only events can't be erased, so this needs a crypto-shredding/pseudonymisation strategy — none covering this event was detected.",
+      "class": "false-positive",
+      "reason": "TRP-022. An integration message: it sits in outbox_messages only until OutboxDispatcher.DispatchPendingAsync removes the row after publishing; nothing appends it to an event store, so it is erasable.",
+      "action": "recorded as noise; site is trap TRP-022",
+      "iteration": 2,
+      "pass": "model-judged"
+    },
+    {
+      "ruleId": "D39",
+      "file": "src/Rentals.Lending.Infrastructure/Persistence/Configurations/LoanConfiguration.cs",
+      "line": 12,
+      "message": "IL efficiency: 3 authored method(s) exceed the IL budget: 3 of 302 first-party methods compile to oversized IL bodies (> 250 instructions); worst: Rentals.Lending.Infrastructure.Persistence.Configurations.LoanConfiguration.Configure @ src/Rentals.Lending.Infrastructure/Persistence/Configurations/LoanConfiguration.cs:12, 322 IL instructions; that pulled this dimension to 9.8/10. These bodies are far past the JIT's inline budget, so splitting them does not make them inlinable — what moves the number is emitting less: collapsing LINQ chains and closures on hot paths, and interpolation built eagerly where it is only sometimes used.",
+      "class": "opinion-not-fact",
+      "reason": "The oversized methods are EF Core model configuration, run once at start-up.",
+      "action": "recorded as noise",
+      "iteration": 3,
+      "pass": "contained"
+    },
+    {
+      "ruleId": "D19",
+      "file": "README.md",
+      "line": 1,
+      "message": "Documentation: no contributor guidance: The document outline lists a 'Contributing' section, but the visible content does not include guidance for contributors (e.g., how to submit PRs, coding standards, or local development setup beyond build commands). Add a 'Contributing' section with clear instructions on how to contribute to the project, including coding standards, testing requirements, and the pull request process.",
+      "class": "opinion-not-fact",
+      "reason": "The Contributing section exists and states the process (pull request against main, CI runs every test); wanting coding standards there is an opinion.",
+      "action": "recorded as noise",
+      "iteration": 3,
+      "pass": "model-judged"
+    },
+    {
+      "ruleId": "M4",
+      "file": null,
+      "line": null,
+      "message": "README/code drift: README mentions a separate HTTP front end deployable not part of this repository — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+      "class": "false-positive",
+      "reason": "The README states that the HTTP front end is a separate deployable outside this repository, and the code has no HTTP entry point: there is no drift between the two.",
+      "action": "recorded as noise",
+      "iteration": 3,
+      "pass": "model-judged"
+    }
+  ],
+  "falseNegatives": [
+    {
+      "entryId": "DM6-001",
+      "reason": "[Index(nameof(Email), IsUnique = true)] on Member is EF Core's Microsoft.EntityFrameworkCore.IndexAttribute: the domain project references the ORM for a mapping concern. DM6 reads member signatures and method bodies, never attributes."
+    },
+    {
+      "entryId": "ES1-002",
+      "reason": "AccountBalanceProjection.When(PaymentReceived) stores DateTimeOffset.UtcNow, so a rebuilt read model differs. ES1 checks Apply/When folds on aggregates only; projection folds are outside its population."
+    }
+  ],
+  "scoreBands": [
+    {
+      "entryId": "BND-001",
+      "outcome": "out",
+      "score": 90,
+      "band": [
+        0,
+        60
+      ],
+      "modelPass": {
+        "outcome": "out",
+        "score": 90
+      },
+      "note": "C3 credits the Billing event stream as an audit trail; member personal-data changes in Lending are unaudited (opinion-not-fact)."
+    },
+    {
+      "entryId": "BND-002",
+      "outcome": "unscored",
+      "score": null,
+      "band": [
+        0,
+        40
+      ],
+      "modelPass": {
+        "outcome": "unscored",
+        "score": null
+      },
+      "note": "C4 publishes no score: no retention token in the repository (NotEvidenced)."
+    },
+    {
+      "entryId": "BND-003",
+      "outcome": "in",
+      "score": 40,
+      "band": [
+        10,
+        50
+      ],
+      "modelPass": {
+        "outcome": "in",
+        "score": 40
+      }
+    },
+    {
+      "entryId": "BND-004",
+      "outcome": "unscored",
+      "score": null,
+      "band": [
+        20,
+        80
+      ],
+      "modelPass": {
+        "outcome": "unscored",
+        "score": null
+      },
+      "note": "LA1 builds no card unless a GDPR framework is configured (CODEHEALTH_COMPLIANCE_FRAMEWORKS); scan.py does not set it."
+    },
+    {
+      "entryId": "BND-005",
+      "outcome": "out",
+      "score": 96,
+      "band": [
+        40,
+        95
+      ],
+      "modelPass": {
+        "outcome": "out",
+        "score": 96
+      },
+      "note": "One clump among many qualifying signatures scores 96 on the adoption curve (floor 7); the band, set before the scan, said not perfect. Out by one point."
+    },
+    {
+      "entryId": "BND-006",
+      "outcome": "in",
+      "score": 59,
+      "band": [
+        20,
+        85
+      ],
+      "modelPass": {
+        "outcome": "out",
+        "score": 92
+      },
+      "note": "Contained 59 (offline heuristic: 9 of 10 at-risk notes are false positives); model pass 92 (the model clears most guarded handlers). The two passes straddle the band."
+    },
+    {
+      "entryId": "BND-008",
+      "outcome": "in",
+      "score": 0,
+      "band": [
+        0,
+        40
+      ],
+      "modelPass": {
+        "outcome": "in",
+        "score": 0
+      }
+    },
+    {
+      "entryId": "BND-007",
+      "outcome": "in",
+      "score": 55,
+      "band": [
+        0,
+        75
+      ],
+      "modelPass": {
+        "outcome": "in",
+        "score": 50
+      }
+    }
+  ],
+  "observations": [
+    "Recall 22/24 (91.7 %) on every pass, trap resistance 21/23; both misses are population gaps (attributes are not read; projection folds are not folds to ES1).",
+    "Both traps caught are classification errors upstream of the rule: a child entity with behaviour is taken for an aggregate root (DM1), and an integration event is taken for a persisted event (ES3).",
+    "ED5 offline is a candidate list, not a verdict: 9 of 10 notes in the contained pass were guarded handlers; the model pass cleared 8 of them and confirmed the planted one plus a real concurrency gap (fixed).",
+    "DM7 started reporting the four aggregate-root repository implementations as repositories for non-root entities after the infrastructure project gained the EF design-time package and migrations, in both modes; nothing in the domain types changed.",
+    "The model-judged pass is not reproducible run to run: D19 changed claim between iterations 2 and 3 and an M4 row appeared only in iteration 3; theme results were identical.",
+    "Brief items with no taxonomy concept were not labelled: value objects with identity equality or mutable state, a domain event raised but never handled (ExtendLoanEvent is raised and never mapped), and an event-schema change without an upcaster."
+  ]
+}
