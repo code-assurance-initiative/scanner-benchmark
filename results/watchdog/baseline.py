@@ -78,6 +78,18 @@ FN_SHORT = {
     "iac-ci-check-absent": "IaC / CI check absent from the pinned rule sets",
 }
 
+# Benchmark defects found AFTER the freeze. The baseline keeps the numbers as measured at the frozen tags; each erratum
+# is marked (†) wherever the affected FN is counted, with the adjusted figure once the corrected key is re-scored.
+ERRATA = [
+    {"id": "E1", "repo": "bench-csharp-security-iac", "entryId": "IAC-017", "kind": "broken-plant",
+     "file": ".github/workflows/pr-preview.yml",
+     "note": "1 of the 152 FNs (IAC-017) is a benchmark defect, not a scanner miss: line 34 of "
+             ".github/workflows/pr-preview.yml is invalid YAML, so neither GitHub nor semgrep parses the file; with the "
+             "line quoted, Watchdog's existing pull-request-target-code-checkout rule fires at line 16",
+     "correctedIn": "bench-csharp-security-iac v1.2.0", "adjustedRecall": "233/384 once re-scored"},
+]
+FN_BACKLOG_SESSION = "2026-10-07-scanner-benchmark-recall"
+
 # Repeated host --with-llm passes over the same code (same commit, or a commit whose code is identical), from the
 # results files' scans[] notes. Each pair is (repository, pass dir A, pass dir B, why the code is the same).
 REPEAT_PAIRS = [
@@ -206,6 +218,19 @@ def verdict_index(results_dir, name):
         by_site[(v["ruleId"], v.get("file"), v.get("line"))] = v["class"]  # the latest verdict wins
         by_msg[(v["ruleId"], (v.get("message") or "")[:120])] = v["class"]
     return by_site, by_msg
+
+
+def fn_backlog(workspace):
+    """The recall (FalseNegative) backlog filed from this baseline's FNs: filed ids when the filing has finished,
+    else the draft."""
+    filed = os.path.join(workspace, "_scans", "fn-backlog-filed.json")
+    draft = os.path.join(workspace, "_scans", "fn-backlog-draft.md")
+    out = {"originSessionKey": FN_BACKLOG_SESSION, "newItems": 91, "amendedItems": 8,
+           "filed": None, "draft": "_scans/fn-backlog-draft.md" if os.path.exists(draft) else None}
+    if os.path.exists(filed):
+        out["filed"] = "_scans/fn-backlog-filed.json"
+        out["ids"] = load(filed)
+    return out
 
 
 def short(text, n=150):
@@ -358,6 +383,10 @@ def build(a):
             "bands": (b or {}).get("bands", []),
             "bandCounts": (b or {}).get("bandCounts") or {"in": 0, "out": 0, "unscored": 0},
         }
+        hit = sorted({er["id"] for er in ERRATA for f in x["fnSites"]
+                      if (f["repo"], f["id"]) == (er["repo"], er["entryId"])})
+        if hit:
+            entry["errata"] = hit
         if d == NO_RULE:
             un = collections.Counter()
             for repo in final["repos"]:
@@ -454,6 +483,8 @@ def build(a):
         "repos": repo_rows,
         "byLens": by_lens,
         "byDimension": by_dim,
+        "errata": ERRATA,
+        "fnBacklog": fn_backlog(a.workspace),
         "zeroRecallDimensions": zero,
         "worstByRecall": worst,
         "neverFiringDimensions": never,
@@ -488,20 +519,28 @@ def md_tables(b):
     t = b["totals"]
     L.append("| Slice | Repos | Recall TP/(TP+FN) | Trap resistance | Noise share | File-level recall |")
     L.append("|---|---|---|---|---|---|")
-    L.append(f"| **All** | {t['repositories']} | **{t['tp']}/{t['tp'] + t['fn']} ({pct(t['recall'])})** | "
+    dag = " †" if b["errata"] else ""
+    L.append(f"| **All** | {t['repositories']} | **{t['tp']}/{t['tp'] + t['fn']} ({pct(t['recall'])})**{dag} | "
              f"**{t['trapTn']}/{t['trapTn'] + t['trapFp']} ({pct(t['trapResistance'])})** | "
              f"**{t['noise']}/{t['results']} ({pct(t['noiseShare'])})** | {pct(t['fileLevelRecall'])} |")
     for lang in LANGS:
         x = b["byLanguage"][lang]
         n = sum(1 for r in b["repos"] if r["language"] == lang)
-        L.append(f"| {LANG_LABEL[lang]} | {n} | {x['tp']}/{x['tp'] + x['fn']} ({pct(x['recall'])}) | "
+        lag = " †" if any(r["language"] == lang and r["name"] == er["repo"] for r in b["repos"] for er in b["errata"]) else ""
+        L.append(f"| {LANG_LABEL[lang]} | {n} | {x['tp']}/{x['tp'] + x['fn']} ({pct(x['recall'])}){lag} | "
                  f"{x['trapTn']}/{x['trapTn'] + x['trapFp']} ({pct(x['trapResistance'])}) | "
                  f"{x['noise']}/{x['results']} ({pct(x['noiseShare'])}) | {pct(x['fileLevelRecall'])} |")
     for fam, x in b["byFamily"].items():
         n = sum(1 for r in b["repos"] if r["family"] == fam)
-        L.append(f"| family: {fam} | {n} | {x['tp']}/{x['tp'] + x['fn']} ({pct(x['recall'])}) | "
+        fag = " †" if any(r["family"] == fam and r["name"] == er["repo"] for r in b["repos"] for er in b["errata"]) else ""
+        L.append(f"| family: {fam} | {n} | {x['tp']}/{x['tp'] + x['fn']} ({pct(x['recall'])}){fag} | "
                  f"{x['trapTn']}/{x['trapTn'] + x['trapFp']} ({pct(x['trapResistance'])}) | "
                  f"{x['noise']}/{x['results']} ({pct(x['noiseShare'])}) | {pct(x['fileLevelRecall'])} |")
+    for er in b["errata"]:
+        L.append("")
+        L.append(f"† **Erratum {er['id']}** ({er['repo']} {er['entryId']}): {er['note']}. Corrected in "
+                 f"{er['correctedIn']}; adjusted recall {er['adjustedRecall']}. The numbers above stay as measured at "
+                 f"the frozen tags.")
     flush("headline")
 
     L.append("| Lens | Dims in scope / with plants | Planted | TP | FN | Recall | Traps held / total | Trap resistance "
@@ -511,6 +550,8 @@ def md_tables(b):
         e = b["byLens"][key]
         x = e["all"]
         lbl = e["label"] if key != NO_RULE else "(no scanner rule) ‡"
+        if any(de.get("errata") and de["lens"] == key for de in b["byDimension"].values()):
+            lbl += " †"
         dims = f"{e['dimensionsInScope']} / {e['dimensionsWithPlants']}" if key != NO_RULE else "—"
         L.append(f"| **{lbl}** | {dims} | {x['tp'] + x['fn']} | {x['tp']} | "
                  f"{x['fn']} | **{pct(x['recall'])}** | {x['trapTn']} / {x['trapTn'] + x['trapFp']} | "
@@ -548,6 +589,8 @@ def md_tables(b):
             name = e["name"] + (" (out of scope)" if e["status"] == "out-of-scope" else "")
             if e["evaluator"] == "llm":
                 name += " ◆"
+            if e.get("errata"):
+                name += " †" + ",".join(e["errata"])
             reps = len(set(e["reposLabelling"]) | set(e["reposMeasuring"]))
             elsewhere = sum(e["fnFoundByOtherDimension"].values())
             bc = e["bandCounts"]
@@ -581,6 +624,10 @@ def md_tables(b):
             elif e["all"]["noise"]:
                 v = ", ".join(f"{k} {n}" for k, n in e["noiseVerdicts"].items())
                 noise = f"no backlog item (final-scan noise rows judged: {v})"
+            if e.get("errata"):
+                miss = (miss + "; " if miss else "") + "† " + ", ".join(
+                    f"{er['id']}: {er['entryId']} is a broken plant, not a scanner miss" for er in b["errata"]
+                    if er["id"] in e["errata"])
             if e.get("unmappedConcepts"):
                 miss = "concepts no Watchdog rule maps: " + ", ".join(
                     f"{c} {n}" for c, n in e["unmappedConcepts"].items())
@@ -596,8 +643,9 @@ def md_tables(b):
              "Bands in/out/uns |")
     L.append("|---|---|---|---|---|---|---|---|---|---|")
     for r in b["repos"]:
+        rag = "".join(f" †{er['id']}" for er in b["errata"] if er["repo"] == r["name"])
         L.append(f"| {r['name']} | {r['tag']} | `{r['commit'][:7]}` | {LANG_LABEL[r['language']]} | {r['family']} | "
-                 f"{r['tp']}/{r['tp'] + r['fn']} ({pct(r['recall'])}) | "
+                 f"{r['tp']}/{r['tp'] + r['fn']} ({pct(r['recall'])}){rag} | "
                  f"{r['trapTn']}/{r['trapTn'] + r['trapFp']} ({pct(r['trapResistance'])}) | "
                  f"{r['noise']}/{r['results']} ({pct(r['noiseShare'])}) | {pct(r['fileLevelRecall'])} | "
                  f"{r['bands']['in']}/{r['bands']['out']}/{r['bands']['unscored']} |")

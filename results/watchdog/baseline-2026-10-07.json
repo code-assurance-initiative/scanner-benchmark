@@ -11340,7 +11340,10 @@
     "in": 0,
     "out": 0,
     "unscored": 0
-   }
+   },
+   "errata": [
+    "E1"
+   ]
   },
   "D30": {
    "name": "Dependency Vulnerabilities",
@@ -12477,7 +12480,10 @@
     "in": 7,
     "out": 0,
     "unscored": 4
-   }
+   },
+   "errata": [
+    "E1"
+   ]
   },
   "D37": {
    "name": "Vulnerability-disclosure Policy",
@@ -25822,6 +25828,25 @@
     "unscored": 0
    }
   }
+ },
+ "errata": [
+  {
+   "id": "E1",
+   "repo": "bench-csharp-security-iac",
+   "entryId": "IAC-017",
+   "kind": "broken-plant",
+   "file": ".github/workflows/pr-preview.yml",
+   "note": "1 of the 152 FNs (IAC-017) is a benchmark defect, not a scanner miss: line 34 of .github/workflows/pr-preview.yml is invalid YAML, so neither GitHub nor semgrep parses the file; with the line quoted, Watchdog's existing pull-request-target-code-checkout rule fires at line 16",
+   "correctedIn": "bench-csharp-security-iac v1.2.0",
+   "adjustedRecall": "233/384 once re-scored"
+  }
+ ],
+ "fnBacklog": {
+  "originSessionKey": "2026-10-07-scanner-benchmark-recall",
+  "newItems": 91,
+  "amendedItems": 8,
+  "filed": null,
+  "draft": "_scans/fn-backlog-draft.md"
  },
  "zeroRecallDimensions": [
   "X2",
