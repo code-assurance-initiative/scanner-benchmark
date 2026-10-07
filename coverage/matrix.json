@@ -147,6 +147,13 @@
       "languages": [
         "typescript"
       ]
+    },
+    "bench-csharp-blazor-a11y": {
+      "tag": "v1.0.0",
+      "keySha256": "b27fff90b3df91789073f0c8147a963bbe27f45eab2698093464b3e93f9b4eeb",
+      "languages": [
+        "csharp"
+      ]
     }
   },
   "coverageSource": "contract 1.4: a frozen repository's labels are read from its key at the registered tag (source 'key vX.Y.Z'; entries = entries per label; wildcardClean = its \"*\" clean regions, which measure noise on every concept and are not counted as a label); repositories not frozen yet keep the planned labels (source 'plan'). frozenCoverageGaps = the languages for which no frozen repository carries a measuring label on the row; frozenCoverageCleanOnly = the languages whose only measuring labels on the row are concept-specific clean regions (noise is measured, recall and trap resistance are not).",
@@ -3583,6 +3590,22 @@
             "clean": 137
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 136
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -5171,12 +5194,26 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 2,
+            "must-not-fire": 2,
+            "clean": 136
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
-      "frozenCoverageCleanOnly": [
-        "csharp"
-      ],
+      "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
       ]
@@ -5271,12 +5308,26 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 2,
+            "must-not-fire": 2,
+            "clean": 136
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
-      "frozenCoverageCleanOnly": [
-        "csharp"
-      ],
+      "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
       ]
@@ -5371,12 +5422,26 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 2,
+            "must-not-fire": 2,
+            "clean": 136
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
-      "frozenCoverageCleanOnly": [
-        "csharp"
-      ],
+      "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
       ]
@@ -5471,12 +5536,26 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 3,
+            "must-not-fire": 3,
+            "clean": 136
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
-      "frozenCoverageCleanOnly": [
-        "csharp"
-      ],
+      "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
       ]
@@ -5571,12 +5650,26 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 2,
+            "clean": 136
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
-      "frozenCoverageCleanOnly": [
-        "csharp"
-      ],
+      "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
       ]
@@ -5673,12 +5766,26 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 5,
+            "must-not-fire": 5,
+            "clean": 136
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
-      "frozenCoverageCleanOnly": [
-        "csharp"
-      ],
+      "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
       ]
@@ -5771,12 +5878,24 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "score-band": 1
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
-      "frozenCoverageCleanOnly": [
-        "csharp"
-      ],
+      "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
       ]
@@ -10301,12 +10420,26 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "clean": 136,
+            "score-band": 1
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
-      "frozenCoverageCleanOnly": [
-        "csharp"
-      ],
+      "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
       ]
@@ -10575,12 +10708,26 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "clean": 136,
+            "score-band": 1
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
-      "frozenCoverageCleanOnly": [
-        "csharp"
-      ],
+      "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
       ]
@@ -10673,12 +10820,28 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean",
+            "score-band"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 136,
+            "score-band": 1
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
-      "frozenCoverageCleanOnly": [
-        "csharp"
-      ],
+      "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
       ]
@@ -14793,12 +14956,26 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 2,
+            "must-not-fire": 2,
+            "clean": 136
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
-      "frozenCoverageCleanOnly": [
-        "csharp"
-      ],
+      "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
       ]
@@ -16379,6 +16556,22 @@
             "clean": 71
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 136
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -17119,6 +17312,16 @@
             "clean"
           ],
           "source": "key v1.1.0"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0"
         }
       ]
     },
@@ -17138,6 +17341,16 @@
             "clean"
           ],
           "source": "key v1.1.0"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0"
         }
       ]
     },
@@ -17156,6 +17369,15 @@
             "clean"
           ],
           "source": "key v1.1.0"
+        },
+        {
+          "repo": "bench-csharp-blazor-a11y",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0"
         }
       ]
     },

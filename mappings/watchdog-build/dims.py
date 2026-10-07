@@ -15,6 +15,8 @@ CR, CM, CT = "bench-csharp-readiness", "bench-csharp-maturity-history", "bench-c
 TB, TS, TI = "bench-ts-baseline-clean", "bench-ts-security-secrets", "bench-ts-security-injection"
 TD, TA, TH = "bench-ts-security-dependencies", "bench-ts-frontend-a11y", "bench-ts-codehealth"
 TP = "bench-ts-domain-privacy"
+TR, CZ = "bench-ts-readiness", "bench-csharp-blazor-a11y"  # coverage-gap repos added in Phase 3
+ESTATE = [f"estate-quellbrook-{s}" for s in ("gateway", "orders", "dispatch", "notifier", "web")]
 EST = "estate-<company>-<service>"
 
 M = "dimension-language-matrix.json"
@@ -233,7 +235,8 @@ SCORE_DIMS = {
 
 # Which C# repo themes are Phase 1
 PHASE = {CB: 1, CS: 1, CI: 2, CD: 2, CX: 2, CH: 2, CA: 2, CE: 2, CR: 2, CM: 2, CT: 2,
-         TB: 3, TS: 3, TI: 3, TD: 3, TA: 3, TH: 3, TP: 3, EST: 4}
+         TB: 3, TS: 3, TI: 3, TD: 3, TA: 3, TH: 3, TP: 3, TR: 3, CZ: 2, EST: 4,
+         **{e: 4 for e in ESTATE}}
 
 # Contract 1.4: repositories planned to plant the concepts no Watchdog dimension maps (concepts.UNMAPPED). Frozen
 # keys that label them are read by build.py; these are the plans for the next key versions.
