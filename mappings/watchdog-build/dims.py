@@ -210,6 +210,26 @@ D = {
  "X32": dict(k="finding", c=["type-lookup-by-simple-name"], cs="yes", ts="no", lb="assessed: Roslyn syntax (GetAssemblies/GetTypes)", r=[CH]),
 }
 
+# Contract 1.2 `scoreDimensions`: for a concept whose `dimensions` (finding attribution) include a dimension whose SCORE
+# does not measure the concept, the dimensions a score-band entry of the concept may take its score from. Concepts not
+# listed take their score from all of `dimensions`. Audited against every score-band concept in the frozen keys
+# (2026-10-07); kept on `dimensions` after the audit: high-cyclomatic-complexity (D1, and R2 whose rows are raised on the
+# cyclomatic bar alone), test-coverage (D8 measured, R4 static reachability: both measure coverage),
+# security-response-headers (AXH1 observes the headers; S1 checks them statically), and every single-dimension concept.
+SCORE_DIMS = {
+    # D12's score is dominated by vulnerable/outdated/deprecated packages and D36's by provenance, signing and pinned
+    # actions/images; SC1 is the dimension whose score measures lockfiles (reproducible, pinned dependency restore).
+    "dependencies-not-locked": ["SC1"],
+    # D36 is supply-chain provenance & signing; P3 is the posture that scores SAST/secret/dependency scanning in CI.
+    "security-tooling-in-ci": ["P3"],
+    # R2 raises a row only on the cyclomatic bar (discrim.py, ComplexityDimensionBuilder.cs:18), so its score never
+    # measures cognitive complexity.
+    "high-cognitive-complexity": ["D2"],
+    # X10 reports one exact-duplicate predicate at a time; its score is not a duplication measure. D4 (C#) and R10
+    # (JS/TS) are the clone metrics.
+    "duplicated-code": ["D4", "R10"],
+}
+
 # Which C# repo themes are Phase 1
 PHASE = {CB: 1, CS: 1, CI: 2, CD: 2, CX: 2, CH: 2, CA: 2, CE: 2, CR: 2, CM: 2, CT: 2,
          TB: 3, TS: 3, TI: 3, TD: 3, TA: 3, TH: 3, EST: 4}

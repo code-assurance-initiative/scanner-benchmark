@@ -12,6 +12,14 @@ concept count as covered). `clean` and `not-applicable` entries match their list
 An entry with a `commit` matches a result whose SARIF properties.commitSha starts with it (case-insensitive) in the
 same file, at any line — the commit, not the line, is the site of a history finding.
 
+Subjects (contract 1.2): an entry with a `subject` (a package id, a framework moniker, …) also matches a result of its
+concept that has no location, or whose location is a dependency manifest (MANIFEST_NAMES), when the subject occurs in
+the result's message as a whole token (subject_in). A located subject entry still matches on its site as before; a
+repository-level one needs the subject. Matching goes in passes — exact concept on the site, exact concept by subject,
+family sibling on the site, family sibling by subject — so a stronger match is always preferred, and consumption and
+redundancy are one-to-one as for any other match. A location-less result that names the subject of an entry is never
+taken by a repository-level entry without a subject: the subject entry, not the repository, is its site.
+
 Precedence when one result could match several entries — the first that applies decides it:
   1. a `must-fire` entry it can be consumed by (one-to-one, key order, located entries before repository-level ones)
                                                                                                    -> tp
@@ -23,6 +31,8 @@ Precedence when one result could match several entries — the first that applie
   7. a result of a concept the key does not cover at all                                           -> uncovered
 Outcomes 3–6 are noise. `redundant` is neither a hit nor noise. `uncovered` is reported, never counted as noise.
 """
+import re
+
 from .keyfile import entry_concepts, line_tolerance
 from .mapping import UNMAPPED
 from .paths import norm, path_match
@@ -59,6 +69,59 @@ def _covers(entry, result, tol):
 
 FAMILY_LABELS = ("must-fire", "must-not-fire")
 
+# Dependency manifests and lock files (lower-case basenames). A dependency/licence/EOL result located in one of them
+# names its package in the message; the line is often 1 or the first reference, not the planted declaration.
+MANIFEST_NAMES = frozenset("""
+directory.packages.props directory.build.props directory.build.targets packages.config packages.lock.json global.json
+nuget.config paket.dependencies paket.lock package.json package-lock.json npm-shrinkwrap.json yarn.lock pnpm-lock.yaml
+bun.lockb deno.json deno.lock requirements.txt pipfile pipfile.lock pyproject.toml poetry.lock uv.lock setup.py setup.cfg
+go.mod go.sum cargo.toml cargo.lock pom.xml build.gradle build.gradle.kts settings.gradle settings.gradle.kts
+gradle.lockfile gemfile gemfile.lock composer.json composer.lock mix.exs mix.lock pubspec.yaml pubspec.lock
+package.swift package.resolved
+""".split())
+MANIFEST_SUFFIXES = (".csproj", ".fsproj", ".vbproj", ".sqlproj")
+_REQUIREMENTS = re.compile(r"^requirements[\w.-]*\.(?:txt|in)$")
+
+
+def is_manifest(path):
+    """True when the (normalised) path names a dependency manifest or lock file."""
+    if not path:
+        return False
+    name = path.rsplit("/", 1)[-1].lower()
+    return name in MANIFEST_NAMES or name.endswith(MANIFEST_SUFFIXES) or bool(_REQUIREMENTS.match(name))
+
+
+_SUBJECT_RX = {}
+
+
+def subject_in(subject, text):
+    """True when `subject` occurs in `text` as a whole token, case-insensitively. A token is bounded by anything but
+    a word character, and a `.`, `-` or `/` counts as part of the token when a word character is on its far side:
+    "GPL-2.0" is not in "LGPL-2.0" nor in "GPL-2.0-only", "Newtonsoft.Json" is not in "Newtonsoft.Json.Bson", but
+    "Newtonsoft.Json" is in "Newtonsoft.Json 12.0.3", "Newtonsoft.Json@12.0.3", "(Newtonsoft.Json)" and at the end
+    of a sentence ("… Newtonsoft.Json.")."""
+    if not text or not subject:
+        return False
+    rx = _SUBJECT_RX.get(subject)
+    if rx is None:
+        rx = _SUBJECT_RX[subject] = re.compile(
+            r"(?<!\w)(?<!\w[.\-/])" + re.escape(subject.strip()) + r"(?!\w)(?![.\-/]\w)", re.IGNORECASE)
+    return rx.search(text) is not None
+
+
+def _subject_hit(entry, result):
+    """The entry's subject is named by a result that has no location or sits in a manifest (concepts not checked)."""
+    subject = entry.get("subject")
+    if not subject:
+        return False
+    if result["file"] is not None and not is_manifest(result["file"]):
+        return False
+    return subject_in(subject, result.get("message"))
+
+
+# The passes of matching, strongest first: (family sibling?, by subject?).
+PASSES = ((False, False), (False, True), (True, False), (True, True))
+
 
 def _result_concepts_for(entry, result, family_of=None):
     """The result's concepts this entry speaks about (for "*": all of them, or (unmapped) when it has none). With
@@ -82,6 +145,7 @@ class Matcher:
         self.tol = tol
         self.family_of = mapping.family_of if mapping is not None else (lambda c: None)
         self.located = [e for e in self.entries if e["_file"] is not None]
+        self.subjected = [e for e in self.entries if e.get("subject")]
         covered = set()
         for e in self.entries:
             cs = entry_concepts(e)
@@ -92,16 +156,30 @@ class Matcher:
             covered.update(c for c, f in mapping.families.items() if f in fams)
         self.covered = covered
 
-    def matches(self, entry, result, family=False):
+    def _outside_located(self, result, concepts):
+        """The result lies outside every located entry of (one of) its concepts."""
+        return any(not any(_covers(L, result, self.tol) for L in self.located if _applies(L, c)) for c in concepts)
+
+    def matches(self, entry, result, family=False, subject=False):
         concepts = _result_concepts_for(entry, result, self.family_of if family else None)
         if not concepts:
             return False
+        if subject:
+            if not _subject_hit(entry, result) and not (
+                    entry["_file"] is None and entry.get("subject")
+                    and subject_in(entry["subject"], result.get("message"))
+                    and self._outside_located(result, concepts)):
+                return False
+            return True
         if entry["_file"] is not None:
             return _covers(entry, result, self.tol)
-        if result["file"] is None:
-            return True
-        # repository-level: the result's location is outside every located entry of (one of) its concepts
-        return any(not any(_covers(L, result, self.tol) for L in self.located if _applies(L, c)) for c in concepts)
+        if entry.get("subject"):
+            return False  # a repository-level entry with a subject matches only by its subject
+        # repository-level: the result is outside every located entry of (one of) its concepts, and names the subject
+        # of no subject entry of that concept (that entry, not the repository, is its site)
+        return any(not any(_covers(L, result, self.tol) for L in self.located if _applies(L, c))
+                   and not any(_subject_hit(S, result) for S in self.subjected if _applies(S, c))
+                   for c in concepts)
 
     def run(self):
         """{"entries": {id: outcome}, "results": [outcome]} — see the module docstring for the outcome names."""
@@ -120,20 +198,23 @@ class Matcher:
             return _result_concepts_for(entry, r)[0]
 
         def first(group, r):
-            """The first entry of `group` matching r on its own concept; failing that, as a family sibling."""
-            return (next((e for e in group if self.matches(e, r)), None)
-                    or next((e for e in group if self.matches(e, r, family=True)), None))
+            """The first entry of `group` matching r in the strongest pass that matches any (see PASSES)."""
+            for family, subject in PASSES:
+                e = next((e for e in group if self.matches(e, r, family, subject)), None)
+                if e:
+                    return e
+            return None
 
         mf = [e for e in self.entries if e["label"] == "must-fire"]
         mf = [e for e in mf if e["_file"]] + [e for e in mf if not e["_file"]]
         for e in mf:
             ent_out[e["id"]] = {"outcome": "FN", "results": [], "redundant": []}
-        for family in (False, True):
+        for family, subject in PASSES:
             for e in mf:
                 if ent_out[e["id"]]["outcome"] == "TP":
                     continue
                 hit = next((i for i, r in enumerate(self.results)
-                            if res_out[i] is None and self.matches(e, r, family)), None)
+                            if res_out[i] is None and self.matches(e, r, family, subject)), None)
                 if hit is not None:
                     claim(hit, "tp", e, e["concept"])
                     ent_out[e["id"]] = {"outcome": "TP", "results": [hit], "redundant": []}
@@ -279,7 +360,8 @@ def _natural(s):
 
 
 def score_bands(entries, scores, mapping):
-    """Each score-band entry: the score found for its concept (else for its concept's dimensions) and in/out."""
+    """Each score-band entry: the score found for its concept (else for the dimensions whose score measures the concept:
+    the mapping's `scoreDimensions`, defaulting to `dimensions`) and in/out."""
     out = []
     for e in entries:
         if e["label"] != "score-band":
@@ -289,7 +371,7 @@ def score_bands(entries, scores, mapping):
         if e["concept"] in scores:
             found.append((e["concept"], scores[e["concept"]]))
         else:
-            found += [(d, scores[d]) for d in mapping.dimensions_of_concept(e["concept"]) if d in scores]
+            found += [(d, scores[d]) for d in mapping.score_dimensions_of_concept(e["concept"]) if d in scores]
         if not found:
             outcome = "unscored"
         else:
@@ -319,7 +401,7 @@ def score(key, results, mapping, scores=None):
         row = {"id": e["id"], "label": e["label"], "outcome": o["outcome"]}
         cs = entry_concepts(e)
         row["concept" if e["label"] != "clean" else "concepts"] = e["concept"] if e["label"] != "clean" else cs
-        for k in ("file", "lines", "commit"):
+        for k in ("file", "lines", "commit", "subject"):
             if k in e:
                 row[k] = e[k]
         row["results"] = [_brief(results[i]) for i in o["results"]]

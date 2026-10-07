@@ -28,6 +28,10 @@ holds exactly what its key says → freeze (tag `v<keyVersion>`, sha256 of the k
   keyboard runs, never an excuse word (`example sample dummy placeholder changeme your_ …`) on a planted line unless
   the site is a trap.
 - Lines in the key are 1-based and inclusive. Re-check every `lines` entry after each edit of a file.
+- Dependency, licence, vulnerability and end-of-life entries carry a `subject` (contract 1.2): the exact package id
+  (`Newtonsoft.Json`, `@angular/core`) or framework moniker (`net6.0`) a scanner names when it reports the package
+  without a site. Use the full id, never a prefix or segment of it, and never the same subject on a plant and a trap
+  of one concept.
 
 ## C# conventions (shared by every C# repository)
 

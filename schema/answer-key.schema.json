@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/code-assurance-initiative/scanner-benchmark/schema/answer-key.schema.json",
   "title": "Scanner benchmark answer key",
-  "description": "The labels of one benchmark repository (docs/CONTRACT.md, v1.1). Labels are not outcomes: TP/FP/TN/FN are produced by scoring a scanner run against these labels. Constraints JSON Schema cannot express (unique entry ids, concepts that exist in taxonomy.json, cwe agreeing with the taxonomy, must-fire/must-not-fire/clean entries that collide on one concept and site) are enforced by `python3 -m cai_bench validate`.",
+  "description": "The labels of one benchmark repository (docs/CONTRACT.md, v1.2). Labels are not outcomes: TP/FP/TN/FN are produced by scoring a scanner run against these labels. Constraints JSON Schema cannot express (unique entry ids, concepts that exist in taxonomy.json, cwe agreeing with the taxonomy, must-fire/must-not-fire/clean entries that collide on one concept and site) are enforced by `python3 -m cai_bench validate`.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -21,7 +21,8 @@
     "schemaVersion": {
       "enum": [
         "1.0",
-        "1.1"
+        "1.1",
+        "1.2"
       ]
     },
     "repo": {
@@ -128,6 +129,12 @@
           "type": "string",
           "pattern": "^[0-9a-fA-F]{7,40}$",
           "description": "Contract 1.1: pins a history finding to a commit. The entry matches a result whose SARIF properties.commitSha starts with this (case-insensitive) in the same file, at any line. Only on must-fire / must-not-fire; requires file."
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S",
+          "description": "Contract 1.2: what the entry is about when a scanner reports it without a site — a package id (NuGet/npm/…) or a framework moniker such as net6.0. Besides matching on its site, the entry matches a result of its concept that has no location or is located in a dependency manifest when the subject occurs in the result's message as a whole token, case-insensitive. Only on must-fire / must-not-fire / clean."
         },
         "band": {
           "type": "array",
@@ -294,6 +301,28 @@
             "not": {
               "required": [
                 "commit"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "label": {
+                "enum": [
+                  "not-applicable",
+                  "score-band"
+                ]
+              }
+            },
+            "required": [
+              "label"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "subject"
               ]
             }
           }

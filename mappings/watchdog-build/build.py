@@ -7,7 +7,7 @@ from collections import OrderedDict, defaultdict
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from concepts import C
-from dims import D, PHASE, CB, TB, CS
+from dims import D, PHASE, CB, TB, CS, SCORE_DIMS
 
 KENNEL = os.environ.get("WATCHDOG_SOURCE", "/home/jimmy/RiderProjects/kennel.canine.dev")  # the Watchdog engine checkout (read only)
 OUT = os.path.dirname(os.path.dirname(HERE))  # this repository
@@ -57,6 +57,7 @@ missing = used - set(concept_ids)
 assert not missing, missing
 unused = set(concept_ids) - used
 assert not unused, unused
+assert set(SCORE_DIMS) <= set(concept_ids), set(SCORE_DIMS) - set(concept_ids)
 taxonomy = OrderedDict(version="1.0", concepts=C)
 for c in C:
     text = (c["id"] + " " + c["title"] + " " + c["description"]).lower()
@@ -111,6 +112,7 @@ mapping["notes"] = [
     "Contract 1.1: where one dimension maps to several concepts the message title decides. EVERY multi-concept in-scope dimension is fully discriminated (" + ", ".join(sorted(d for d in D if "oos" not in D[d] and len(D[d]["c"]) > 1)) + "), plus SC1: each of its concepts carries per-rule `messages` / `properties` conditions with a `source` naming the engine line the title format comes from (curated in mappings/watchdog-build/discrim.py). Titles a dimension really emits that denote none of its concepts are listed under `offConcept` (informational: such a result maps to no concept); (concept, dimension) pairs that no title of the dimension evidences at this rubric are listed under `unevidenced` and get no rule. Checked against the distinct messages of ~8.5k local Watchdog SARIF outputs: every one lands on exactly one concept or on an `offConcept` entry (D28's history rows also on secret-in-version-history, by design). Single-concept dimensions keep the bare ruleId rule, so their off-topic rows (if any) still count for their one concept.",
     "The four hardcoded-secret concepts form the family `hardcoded-secret`: a scanner that reports the right site under a sibling secret type (gitleaks generic-api-key on a planted password) is credited at plants and charged at traps (CONTRACT.md, Concept families).",
     "Sub-rule ids are not unique in one place: two different D31 rules share WD-K8S-0004 (engine/src/Scanner/Security/D31/Scanners/AutomountedServiceAccountTokenScan.cs:73 and UnresolvableImageReferenceScan.cs:56). Both map to iac-misconfiguration, so this mapping is unaffected.",
+    "Contract 1.2 `scoreDimensions`: a concept whose finding dimensions include one whose score does not measure it (D12 or D36 for dependencies-not-locked, D36 for security-tooling-in-ci, R2 for high-cognitive-complexity, X10 for duplicated-code) names the dimensions a score-band entry takes its score from (curated in mappings/watchdog-build/dims.py SCORE_DIMS); other concepts look up all of `dimensions`.",
     "D28's repository-level \"Rotate the exposed credentials\" row is a roll-up of its located rows and is listed under `ignore` (outcome summary, in no metric).",
     "Location: physicalLocation.artifactLocation.uri = Finding.FilePath (repo-relative) and region.startLine = LineNumber, with any non-positive or missing line written as 1 (SarifReportRenderer.cs:331-355). A file-level finding therefore matches only entries within lineTolerance of line 1; a repository-level finding has an empty locations array.",
     "Runtime cards (AX*1) and X31 are mapped for completeness although they are out of scope for v1 (see coverage/matrix.json).",
@@ -131,6 +133,11 @@ for cid in concept_ids:
                     r[k] = cond[k]
             rules.append(r)
     spec = OrderedDict(rules=rules, dimensions=ds)
+    if cid in SCORE_DIMS:
+        sd = SCORE_DIMS[cid]
+        assert sd and set(sd) <= set(ds), (cid, "scoreDimensions must be a non-empty subset of dimensions", sd, ds)
+        assert sd != ds, (cid, "scoreDimensions equal to dimensions is redundant")
+        spec["scoreDimensions"] = sd
     if cid in FAMILY:
         spec["family"] = FAMILY[cid]
     mapping["concepts"][cid] = spec

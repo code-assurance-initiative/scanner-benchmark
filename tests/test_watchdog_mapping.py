@@ -1,4 +1,4 @@
-"""Pins mappings/watchdog.json (contract 1.1) against message shapes taken verbatim from a real Watchdog scan
+"""Pins mappings/watchdog.json (contract 1.1, and 1.2 scoreDimensions) against message shapes taken verbatim from a real Watchdog scan
 (bench-csharp-security-secrets, iteration 1): one dimension-level ruleId carries several concepts, so the message
 must decide, and hygiene rows on a secret dimension must never land on a secret concept."""
 import os
@@ -309,6 +309,26 @@ class WatchdogMapping(unittest.TestCase):
             spec = DOC["concepts"][u["concept"]]
             self.assertIn(u["dimension"], spec["dimensions"])
             self.assertFalse(any(u["dimension"] in _dims_of_rule(r if isinstance(r, str) else r["rule"]) for r in spec["rules"]), u)
+
+
+
+class ScoreDimensions(unittest.TestCase):
+    """Contract 1.2: a score band takes its score only from a dimension whose score measures the concept."""
+    DOC = load_json(os.path.join(ROOT, "mappings", "watchdog.json"))
+
+    def test_audited_concepts(self):
+        self.assertEqual(M.score_dimensions_of_concept("dependencies-not-locked"), ["SC1"])     # not D12, not D36
+        self.assertEqual(M.score_dimensions_of_concept("security-tooling-in-ci"), ["P3"])       # not D36
+        self.assertEqual(M.score_dimensions_of_concept("high-cognitive-complexity"), ["D2"])    # not R2
+        self.assertEqual(M.score_dimensions_of_concept("duplicated-code"), ["D4", "R10"])       # not X10
+        self.assertEqual(M.score_dimensions_of_concept("high-cyclomatic-complexity"), ["D1", "R2"])
+        self.assertEqual(M.dimensions_of_concept("dependencies-not-locked"), ["D12", "D36", "SC1"])
+
+    def test_score_dimensions_are_a_proper_subset_of_dimensions(self):
+        for c, spec in self.DOC["concepts"].items():
+            if "scoreDimensions" in spec:
+                sd = set(spec["scoreDimensions"])
+                self.assertTrue(sd and sd < set(spec["dimensions"]), c)
 
 
 if __name__ == "__main__":

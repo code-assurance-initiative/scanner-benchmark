@@ -95,7 +95,7 @@ def cmd_sha256(a):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog="python3 -m cai_bench", description="Scanner benchmark harness (contract v1.1).")
+    ap = argparse.ArgumentParser(prog="python3 -m cai_bench", description="Scanner benchmark harness (contract v1.2).")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     v = sub.add_parser("validate", help="check an answer key against the schema and (optionally) the taxonomy")

@@ -12,10 +12,12 @@ from .paths import norm, path_match
 LABELS = ("must-fire", "must-not-fire", "clean", "not-applicable", "score-band")
 SINGLE_CONCEPT_LABELS = ("must-fire", "must-not-fire", "not-applicable")
 TOP_KEYS = {"$schema", "schema", "schemaVersion", "repo", "keyVersion", "languages", "theme", "lineTolerance", "entries"}
-ENTRY_KEYS = {"id", "label", "concept", "concepts", "cwe", "file", "lines", "commit", "band", "rationale", "scannerHints"}
-SCHEMA_VERSIONS = ("1.0", "1.1")
+ENTRY_KEYS = {"id", "label", "concept", "concepts", "cwe", "file", "lines", "commit", "subject", "band", "rationale",
+              "scannerHints"}
+SCHEMA_VERSIONS = ("1.0", "1.1", "1.2")
 COMMIT_RE = re.compile(r"^[0-9a-fA-F]{7,40}$")
 COMMIT_LABELS = ("must-fire", "must-not-fire")
+SUBJECT_LABELS = ("must-fire", "must-not-fire", "clean")
 CONCEPT_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 CWE_RE = re.compile(r"^CWE-[0-9]+$")
 REPO_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
@@ -97,6 +99,11 @@ def _check_entry(i, e):
             p.append(f"{where}: 'commit' requires 'file'")
         if label in LABELS and label not in COMMIT_LABELS:
             p.append(f"{where}: label '{label}' does not take 'commit'")
+    if "subject" in e:
+        if not (isinstance(e["subject"], str) and e["subject"].strip()):
+            p.append(f"{where}: 'subject' must be a non-empty string (got {e['subject']!r})")
+        if label in LABELS and label not in SUBJECT_LABELS:
+            p.append(f"{where}: label '{label}' does not take 'subject'")
     if "band" in e:
         b = e["band"]
         if not (isinstance(b, list) and len(b) == 2 and all(_is_num(x) for x in b)):
@@ -169,6 +176,14 @@ def _check_cross(entries, tol):
             if (cs == "*" or a["concept"] in cs) and _site_overlap(a, c, 0):
                 p.append(f"{a['id']} (must-fire) lies inside {c['id']} (clean for "
                          f"{'every concept' if cs == '*' else repr(a['concept'])}): a region cannot be both")
+    for a in mf:
+        for b in mnf:
+            sa, sb = a.get("subject"), b.get("subject")
+            if (a["concept"] == b["concept"] and isinstance(sa, str) and isinstance(sb, str)
+                    and sa.strip().lower() == sb.strip().lower()):
+                p.append(f"{a['id']} (must-fire) and {b['id']} (must-not-fire) name the same subject {sa!r} on "
+                         f"concept '{a['concept']}': a location-less result naming it would be scored as a hit on "
+                         f"the plant")
     for n in na:
         for e in good:
             if e is not n and e["label"] in ("must-fire", "must-not-fire") and e.get("concept") == n["concept"]:

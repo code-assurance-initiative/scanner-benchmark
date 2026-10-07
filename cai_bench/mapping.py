@@ -8,6 +8,8 @@ Contract 1.1. A result belongs to a concept when one of the concept's `rules` ac
 `properties`: every named SARIF result property must be present and non-null (e.g. commitSha).
 Mapping-level `ignore`: [{rule?, message?, reason}] — a result matching every regex given is a scanner roll-up row
 (`summary`), excluded from all matching and metrics. `family` on a concept groups siblings (see scoring.py).
+Contract 1.2: `scoreDimensions` on a concept names the dimensions whose SCORE measures it, for score-band lookup, when
+`dimensions` (which attribute findings) is broader; without it a band looks up `dimensions`.
 """
 import re
 
@@ -67,6 +69,7 @@ class Mapping:
         self.concepts = {}   # concept -> [_Rule]
         self.dims = {}       # concept -> [dimension]
         self.families = {}   # concept -> family id
+        self.score_dims = {}  # concept -> [dimension] whose score measures it (1.2; default: dims)
         for c, spec in doc["concepts"].items():
             where = f"concepts.{c}"
             if not isinstance(spec, dict):
@@ -85,6 +88,11 @@ class Mapping:
                     rules.append(_Rule(_rx(r, w), c_msgs, c_props))
             self.concepts[c] = rules
             self.dims[c] = list(spec.get("dimensions", []))
+            if "scoreDimensions" in spec:
+                sd = spec["scoreDimensions"]
+                if not (isinstance(sd, list) and sd and all(isinstance(x, str) and x for x in sd)):
+                    raise MappingError(f"mapping: {where}.scoreDimensions must be a non-empty array of dimension ids")
+                self.score_dims[c] = list(sd)
             if spec.get("family") is not None:
                 if not isinstance(spec["family"], str) or not spec["family"]:
                     raise MappingError(f"mapping: {where}.family must be a non-empty string")
@@ -120,6 +128,10 @@ class Mapping:
 
     def dimensions_of_concept(self, concept):
         return self.dims.get(concept, [])
+
+    def score_dimensions_of_concept(self, concept):
+        """The dimensions whose score measures the concept: `scoreDimensions` when given, else `dimensions`."""
+        return self.score_dims.get(concept, self.dims.get(concept, []))
 
     def family_of(self, concept):
         return self.families.get(concept)

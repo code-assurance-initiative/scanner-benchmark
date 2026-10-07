@@ -1,6 +1,21 @@
-# Harness contract (v1.1)
+# Harness contract (v1.2)
 
 The fixed interfaces between the parts of this harness. Change only with a version bump.
+
+## What changed in 1.2 (2026-10-07) — backward compatible
+
+A dependency scan showed that dependency, licence, vulnerability and end-of-life scanners often report per PACKAGE,
+with no file or line: such a result could only match a repository-level entry, so a scanner that found 7 of 8 planted
+dependency defects scored 0 % recall. And a score band for lockfiles took the score of a dimension dominated by
+vulnerable packages. 1.2 adds, all optional — every valid 1.0/1.1 key and mapping means the same under 1.2:
+
+- **answer key** — `schemaVersion` may be `"1.2"`; a `must-fire`, `must-not-fire` or `clean` entry may carry
+  `subject` (a non-empty string: a NuGet/npm/… package id, or a framework moniker such as `net6.0`).
+- **matching** — an entry with a `subject` also matches a location-less (or manifest-located) result of its concept
+  whose message names the subject as a whole token (see Matching, "Subjects").
+- **mapping** — per concept `scoreDimensions`: the dimensions whose score measures the concept, used for score-band
+  lookup when `dimensions` (finding attribution) is broader.
+- **report** — an entry row carries its `subject`.
 
 ## What changed in 1.1 (2026-10-07) — backward compatible
 
@@ -32,7 +47,7 @@ The answer key holds LABELS; TP/FP/TN/FN are OUTCOMES of one scanner run against
 ```jsonc
 {
   "schema": "https://github.com/code-assurance-initiative/scanner-benchmark/schema/answer-key.schema.json",
-  "schemaVersion": "1.1",                // "1.0" or "1.1"
+  "schemaVersion": "1.2",                // "1.0", "1.1" or "1.2"
   "repo": "code-assurance-initiative/bench-csharp-security-secrets",
   "keyVersion": "1.0.0",                 // matches the frozen git tag v<keyVersion>
   "languages": ["csharp"],
@@ -47,6 +62,7 @@ The answer key holds LABELS; TP/FP/TN/FN are OUTCOMES of one scanner run against
       "file": "src/Billing/PaymentClient.cs",   // omitted = repository-level
       "lines": [14, 14],                 // omitted with a file = whole file
       // "commit": "e920ad5",            // 1.1, optional, must-fire/must-not-fire only, needs file: see Matching
+      // "subject": "Newtonsoft.Json",   // 1.2, optional, must-fire/must-not-fire/clean only: see Matching, Subjects
       "rationale": "…why this is (or is not) a defect, in one or two sentences…",
       "scannerHints": { "watchdog": ["D13"] }   // optional, informative; the authoritative mapping is mappings/<scanner>.json
     },
@@ -80,6 +96,11 @@ Scanner-neutral concepts. `{ "version": "1.0", "concepts": [ { "id": "hardcoded-
       "properties": ["commitSha"],          // 1.1, optional: these SARIF result properties must be present (non-null)
       "family": "hardcoded-secret",         // 1.1, optional: sibling concepts (see Matching)
       "dimensions": ["D13", "D31"]          // the scanner's own grouping, for per-dimension reporting
+    },
+    "dependencies-not-locked": {
+      "rules": [ … ],
+      "dimensions": ["D12", "D36", "SC1"],  // findings of all three are attributed to the concept …
+      "scoreDimensions": ["SC1"]            // 1.2, optional: … but only SC1's score measures it (see Metrics)
     }
   },
   "ruleDimension": [ { "rule": "^(D\\d+)", "dimension": "$1" } ],  // ruleId → dimension
@@ -109,6 +130,10 @@ to it, so they map to no concept; recorded so the omission is visibly deliberate
 (`[{concept, dimension, source}]`: a dimension listed for a concept although none of its results evidences it at
 this scanner version, so it has no rule item). They change no outcome, so they need no version bump.
 
+**Watchdog `scoreDimensions` (1.2).** `dependencies-not-locked` → SC1 (not D12, D36); `security-tooling-in-ci` → P3
+(not D36); `high-cognitive-complexity` → D2 (R2 raises rows on cyclomatic complexity only); `duplicated-code` → D4,
+R10 (not X10, a single-predicate finding). Curated in `mappings/watchdog-build/dims.py` (`SCORE_DIMS`).
+
 **Watchdog (rubric-2026.10.1).** Watchdog's ruleId is the bare dimension id, so the message title decides the
 concept. In `mappings/watchdog.json` every multi-concept in-scope dimension is fully discriminated: D3, D5, D7, D10,
 D12, D13, D17, D28, D29, D31, D32, D36, IC1, PF3, R2, R8, S1, X1, X3 and X5, plus SC1. Each result lands on exactly
@@ -132,6 +157,24 @@ Precedence when a result could match several entries: a `must-fire` it can consu
 repository-level) → `redundant` on an already-found plant → `must-not-fire` → `clean` → `not-applicable` → noise
 if one of its concepts is covered by the key → `uncovered`.
 
+**Subjects (1.2).** An entry with a `subject` matches, besides the results on its site (as above), a result of its
+concept (exactly, or as a family sibling where families apply) that has **no location or a location in a dependency
+manifest** (`Directory.Packages.props`, `Directory.Build.props`, `*.csproj`/`*.fsproj`/`*.vbproj`, `packages.config`,
+`packages.lock.json`, `global.json`, `package.json`, the npm/yarn/pnpm lock files, `requirements*.txt`,
+`pyproject.toml`, `go.mod`, `Cargo.toml`, `pom.xml`, `build.gradle`, `Gemfile`, `composer.json` and their locks;
+the full list is `MANIFEST_NAMES` in `cai_bench/scoring.py`), at any line, when the subject occurs in the result's
+`message.text` as a **whole token**, case-insensitive. A token is bounded by any character that is not a word
+character (letter, digit, `_`), except that `.`, `-` and `/` belong to the token when a word character is on their
+far side. So `GPL-2.0` does not occur in `LGPL-2.0` nor in `GPL-2.0-only`, `Newtonsoft.Json` does not occur in
+`Newtonsoft.Json.Bson` and `core` does not occur in `@angular/core`; `Newtonsoft.Json` does occur in
+`Newtonsoft.Json 12.0.3`, `Newtonsoft.Json@12.0.3`, `(Newtonsoft.Json)` and at the end of a sentence. A
+repository-level entry with a `subject` matches only results naming its subject. A subject match obeys the same
+one-to-one consumption, redundancy and precedence as any other: matching runs in passes — exact concept on the site,
+exact concept by subject, family sibling on the site, family sibling by subject — so a stronger match always wins, a
+second result naming an already-found plant's subject is `redundant`, and a subject on a trap or clean entry catches
+the scanner (FP). A location-less result that names the subject of a subject entry of its concept is never taken by a
+repository-level entry without a subject: the subject entry is its site. Without `subject`, matching is as in 1.1.
+
 **History entries (1.1).** An entry with `commit` matches a result whose SARIF `properties.commitSha` starts with
 `commit` (case-insensitive), in the same file (suffix rule), at **any** line: in a history finding the commit, not the
 line, is the site. A result without `commitSha` never matches such an entry.
@@ -150,7 +193,12 @@ other (1.0).
 - trap resistance = TN / (TN + FP) over `must-not-fire`
 - noise = (results on `must-not-fire` + `clean` + `not-applicable`, and results matching no entry of a
   concept the key covers) / all results of covered concepts
-- score-band: in/out per entry (scores supplied separately as `{concept|dimension: score}` JSON)
+- score-band: in/out per entry (scores supplied separately as `{concept|dimension: score}` JSON). The score is the
+  concept's own, if supplied; else that of each of the concept's `scoreDimensions` (1.2), defaulting to its
+  `dimensions`, that has a score — the band is `in` only when every score found lies in it, `unscored` when none is
+  found. A dimension whose findings evidence the concept does not necessarily have a score that measures it (a
+  dependency-hygiene score is dominated by vulnerable packages, not by lockfiles), which is what `scoreDimensions` is
+  for.
 
 Results whose concept the key does not cover at all are reported as `uncovered`, never as noise. `summary` rows
 (mapping `ignore`) are in no metric. A metric with a zero denominator is reported as n/a, never as 0 or 100 %.
