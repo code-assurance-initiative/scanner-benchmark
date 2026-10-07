@@ -88,6 +88,14 @@
       "commit": "74427c03c9754acadfcc65d229f3de95804e71f8",
       "keySha256": "99b0727ad27fb5bc165e00bab6fba035211178f45c210bf064a9f2f3888caa92",
       "frozenAt": "2026-10-07"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-csharp-maturity-history",
+      "tag": "v1.0.0",
+      "commit": "825b11e569fdd41491144a749eaf604603a3d7fa",
+      "keySha256": "d21bdbf2ddb77cad41c2dfb8d0886904b574438d56cb07b93b201506ef6559f7",
+      "frozenAt": "2026-10-07",
+      "note": "history-derived dimensions (ownership, freshness) are measured against the wall clock; scores drift on later re-scans"
     }
   ]
 }

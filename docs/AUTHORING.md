@@ -57,3 +57,12 @@ holds exactly what its key says → freeze (tag `v<keyVersion>`, sha256 of the k
 - Build and test locally (`dotnet build -c Release && dotnet test -c Release`) before every push. Never run two
   builds at once on the box: wrap every dotnet build/test/restore in `flock -o ~/RiderProjects/cai-bench/.build.lock …` (`-o`: MSBuild worker
   processes must not inherit the lock), and keep `TMPDIR` short (a long path breaks the test runner socket).
+
+## The benchmark files are inside what a scanner reads
+
+`benchmark/answer-key.json`, `benchmark/README.md` and the journal sit in the scanned tree. A scanner may read them as
+evidence (seen in Phase 2: a README-drift check treated every `.json` file as a manifest, so a key rationale that named
+a removed module masked the drift plant). Keep key and README prose free of identifiers that could change a scanner's
+judgement of the code (removed feature names, secret values, rule ids that look like configuration); describe the site,
+not the token. If a scan result changes because of `benchmark/` content, treat it as a defect of the repository and
+reword — never ask the scanner to exclude the directory (that would be scanner-specific configuration).
