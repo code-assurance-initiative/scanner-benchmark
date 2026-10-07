@@ -67,6 +67,13 @@
       "commit": "64db80ed07aa5a17ef0431231cb9ac3c108feced",
       "keySha256": "4a7da06596868ae3f41117b1253206ad8625eed26aac37f7012f027d8e1bcf4d",
       "frozenAt": "2026-10-07"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-csharp-codehealth",
+      "tag": "v1.0.0",
+      "commit": "d9f2e3e986f5a95f435322a445da5bf5df680279",
+      "keySha256": "581497cf5d0d939a1d4704c8b28cea79c0cad2b59b1203021a06d6267a455fdb",
+      "frozenAt": "2026-10-07"
     }
   ]
 }
