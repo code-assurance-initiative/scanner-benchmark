@@ -15,6 +15,9 @@ summary rows), the rest is additive:
   root, so a scanner that reports paths relative to a sub-directory no longer suffix-matches (give it a SARIF
   `uriBaseId` or report from the root). On the frozen Watchdog scans no outcome changed: Watchdog writes repo-relative
   uris, and no plant shared a basename with another file of its concept.
+  The key validator's cross-entry checks (a plant overlapping a trap or lying inside a clean region) compare entry
+  paths the same way — exactly, repo-relative — so a plant in the root `CHANGELOG.md` and a clean certificate on
+  `packages/x/CHANGELOG.md` no longer collide (before the final harness they did, by suffix).
 - **summary rows of a located concept (CHANGES OUTCOMES, by mapping declaration only).** Some scanners report a located
   defect only as an unlocated repository-wide row ("not all async methods take a CancellationToken": the per-method rows
   never reach SARIF). Such a row does NOT match a located must-fire — it does not tell the user where — but it is not

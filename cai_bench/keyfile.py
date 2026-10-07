@@ -7,7 +7,7 @@ the taxonomy, and entries whose labels contradict each other on one concept and 
 import json
 import re
 
-from .paths import norm, path_match
+from .paths import norm
 
 LABELS = ("must-fire", "must-not-fire", "clean", "not-applicable", "score-band")
 SINGLE_CONCEPT_LABELS = ("must-fire", "must-not-fire", "not-applicable")
@@ -140,15 +140,23 @@ def _check_entry(i, e):
     return p
 
 
+def _repo_path(path):
+    """An entry's repository-relative path, normalised as the scorer normalises it (`norm`, leading `/` dropped)."""
+    p = norm(path)
+    return p.lstrip("/") if p is not None else None
+
+
 def _site_overlap(a, b, gap):
     """True when the sites of two entries are closer than `gap` lines apart (both repo-level, or the same file with
-    either one whole-file, or line ranges within `gap`)."""
+    either one whole-file, or line ranges within `gap`). Entry paths are repository-relative by definition, so — like
+    the scorer (contract 1.4, `paths.same_file` on an exact path) — two entries name the same file only when their
+    normalised paths are EQUAL: a root `CHANGELOG.md` and `packages/x/CHANGELOG.md` are two files, not a collision."""
     fa, fb = a.get("file"), b.get("file")
     if fa is None and fb is None:
         return True
     if fa is None or fb is None:
         return False
-    if not path_match(norm(fa), norm(fb)):
+    if _repo_path(fa) != _repo_path(fb):
         return False
     if "lines" not in a or "lines" not in b:
         return True

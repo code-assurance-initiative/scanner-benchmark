@@ -107,6 +107,20 @@ class Invalid(unittest.TestCase):
         self.assertEqual(problems(key(mf("A", "weak-hash", PC, [5, 5]), clean("C", ["sql-injection"], PC))), [])
         self.assertEqual(problems(key(mf("A", "weak-hash", PC, [5, 5]), clean("C", "*", PC, [6, 9]))), [])
 
+    def test_sites_compared_by_exact_repo_relative_path(self):
+        # Contract 1.4: entry paths are repository-relative, and the scorer compares them EXACTLY. A root
+        # CHANGELOG.md and packages/x/CHANGELOG.md are different files: a plant in one and a clean certificate (or a
+        # trap) on the other do not contradict each other.
+        root, nested = "CHANGELOG.md", "packages/x/CHANGELOG.md"
+        self.assertEqual(problems(key(mf("A", "weak-hash", root, [5, 5]), clean("C", "*", nested))), [])
+        self.assertEqual(problems(key(mf("A", "weak-hash", nested, [5, 5]), clean("C", "*", root))), [])
+        self.assertEqual(problems(key(mf("A", "weak-hash", root, [5, 5]), mnf("T", "weak-hash", nested, [5, 5]))), [])
+        self.assertEqual(problems(key(mf("A", "weak-hash", nested), mnf("T", "weak-hash", root))), [])
+        # the same file still collides, also when spelled with a leading "./"
+        self.assertProblem(key(mf("A", "weak-hash", root, [5, 5]), clean("C", "*", "./" + root)), "lies inside C")
+        self.assertProblem(key(mf("A", "weak-hash", nested, [5, 5]), mnf("T", "weak-hash", "./" + nested, [6, 6])),
+                           "overlap")
+
     def test_not_applicable_contradicted(self):
         self.assertProblem(key(na("N", "weak-hash"), mf("A", "weak-hash", PC)), "N marks concept 'weak-hash'")
 
