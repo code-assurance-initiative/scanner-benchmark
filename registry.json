@@ -14,6 +14,13 @@
       "commit": "2471cda4f7ee049201cf9df3608b3f5afff4b57b",
       "keySha256": "83d3713965d8cbacd26e3aa0304500bf9e42756d59a3b6c740184d81185a7a4f",
       "frozenAt": "2026-10-07"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-csharp-security-dependencies",
+      "tag": "v1.0.0",
+      "commit": "2e3037f4b77b08faf62573e086926301e0de914d",
+      "keySha256": "4c312b6165af653eaebfb340598d54f5b8d6abbfe197a147f6d1d47e8681ec61",
+      "frozenAt": "2026-10-07"
     }
   ]
 }
