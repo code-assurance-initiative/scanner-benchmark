@@ -213,6 +213,7 @@ Taxonomy concepts no rule of the reference scanner detects (mapping `unmapped`):
 | **value-object-mutability** Value object that is mutable or compared by identity | — | domain | `csharp-domain-events` MF/MNF/CL |
 | **domain-event-never-handled** Domain event raised but never handled | — | domain | `csharp-domain-events` MF/MNF/CL |
 | **event-schema-change-without-upcaster** Persisted event schema changed without an upcaster | — | domain | `csharp-domain-events` MF/MNF/CL |
+| **consent-not-checked** Personal data processed for a consent-based purpose without checking consent | — | compliance | `ts-domain-privacy` MF *(plan: v1.0.0: SMS reminders sent without checking the SMS-reminder consent)* |
 
 ## Per repository
 

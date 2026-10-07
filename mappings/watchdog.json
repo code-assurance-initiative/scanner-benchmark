@@ -3112,6 +3112,10 @@
     "event-schema-change-without-upcaster": {
       "rules": [],
       "dimensions": []
+    },
+    "consent-not-checked": {
+      "rules": [],
+      "dimensions": []
     }
   },
   "ruleDimension": [
@@ -3170,6 +3174,11 @@
       "concept": "event-schema-change-without-upcaster",
       "reason": "no Watchdog rule detects this",
       "census": "ES1-ES3 judge folds, event mutability and personal data; no rule compares an event's schema across history (no 'upcast' title anywhere in the engine)"
+    },
+    {
+      "concept": "consent-not-checked",
+      "reason": "no Watchdog rule detects this",
+      "census": "C5 credits consent as repository-wide posture (a Consent identifier co-occurring with a Gdpr identifier in one file for JS/TS, ForeignComplianceScan.cs:332-335; the C# default-false opt-in shape, CompliancePrework.cs:4193-4316, is not applied to JS/TS) and emits no located row; D32's gdpr.yml has no consent rule despite DataComplianceAnalyzer.cs:11 naming consent gates"
     }
   ],
   "summaryOfConcept": [

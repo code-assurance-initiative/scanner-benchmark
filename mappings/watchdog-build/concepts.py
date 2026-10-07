@@ -318,13 +318,15 @@ c("domain-event-never-handled", "Domain event raised but never handled", None, "
   "A domain event type is raised or published, but nothing in the system subscribes to or handles it, so the consequence the event exists to trigger never happens.")
 c("event-schema-change-without-upcaster", "Persisted event schema changed without an upcaster", None, "domain", "finding",
   "The shape of an event type already persisted in an event store or durable log changed (a field renamed, removed or retyped) with no upcaster or versioned event type, so events written under the old schema no longer deserialise or replay correctly.")
+c("consent-not-checked", "Personal data processed for a consent-based purpose without checking consent", None, "compliance", "finding",
+  "Personal data is used for a purpose whose lawful basis is the data subject's consent (marketing, optional SMS or push messages, profiling) on a path that never checks that consent was given and not withdrawn, so people who refused or withdrew it are processed anyway.")
 
 UNMAPPED_REASON = "no Watchdog rule detects this"
 UNMAPPED = {cid: UNMAPPED_REASON for cid in (
     "business-logic-in-controller", "value-object-mutability", "domain-event-never-handled",
     "event-schema-change-without-upcaster", "react-index-as-key", "react-hook-missing-dependency",
     "react-state-mutation", "form-error-not-associated", "modal-focus-not-managed",
-    "autoplay-media-without-control")}
+    "autoplay-media-without-control", "consent-not-checked")}
 # The census behind each "no rule" (rubric-2026.10.1, engine at the instrument commit 6a05dfb6c; titles from the engine
 # source and the distinct titles of ~8.5k local report.sarif files):
 UNMAPPED_CENSUS = {
@@ -337,6 +339,7 @@ UNMAPPED_CENSUS = {
     "react-state-mutation": "no rule reads component state updates",
     "form-error-not-associated": "AC2 judges labels (aria-describedby is read only as a label reference, LabelAssociation.cs:322); no title concerns error-message association",
     "modal-focus-not-managed": "AC4/AC5 judge keyboard reachability and ARIA validity; no title concerns dialog focus entry, containment or return",
+    "consent-not-checked": "C5 credits consent as repository-wide posture (a Consent identifier co-occurring with a Gdpr identifier in one file for JS/TS, ForeignComplianceScan.cs:332-335; the C# default-false opt-in shape, CompliancePrework.cs:4193-4316, is not applied to JS/TS) and emits no located row; D32's gdpr.yml has no consent rule despite DataComplianceAnalyzer.cs:11 naming consent gates",
     "autoplay-media-without-control": "AC1 reads autoplay only to decide whether a <video> needs captions (TextAlternativesAnalyzer.cs:165-200); no title concerns stopping or muting autoplaying media",
 }
 assert set(UNMAPPED_CENSUS) == set(UNMAPPED)

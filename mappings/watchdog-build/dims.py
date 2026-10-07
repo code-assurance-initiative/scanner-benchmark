@@ -14,6 +14,7 @@ CH, CA, CE = "bench-csharp-codehealth", "bench-csharp-architecture", "bench-csha
 CR, CM, CT = "bench-csharp-readiness", "bench-csharp-maturity-history", "bench-csharp-tests"
 TB, TS, TI = "bench-ts-baseline-clean", "bench-ts-security-secrets", "bench-ts-security-injection"
 TD, TA, TH = "bench-ts-security-dependencies", "bench-ts-frontend-a11y", "bench-ts-codehealth"
+TP = "bench-ts-domain-privacy"
 EST = "estate-<company>-<service>"
 
 M = "dimension-language-matrix.json"
@@ -232,7 +233,7 @@ SCORE_DIMS = {
 
 # Which C# repo themes are Phase 1
 PHASE = {CB: 1, CS: 1, CI: 2, CD: 2, CX: 2, CH: 2, CA: 2, CE: 2, CR: 2, CM: 2, CT: 2,
-         TB: 3, TS: 3, TI: 3, TD: 3, TA: 3, TH: 3, EST: 4}
+         TB: 3, TS: 3, TI: 3, TD: 3, TA: 3, TH: 3, TP: 3, EST: 4}
 
 # Contract 1.4: repositories planned to plant the concepts no Watchdog dimension maps (concepts.UNMAPPED). Frozen
 # keys that label them are read by build.py; these are the plans for the next key versions.
@@ -247,4 +248,5 @@ BEYOND_PLAN = {
     "form-error-not-associated": [(TA, "next key version")],
     "modal-focus-not-managed": [(TA, "next key version")],
     "autoplay-media-without-control": [(TA, "next key version")],
+    "consent-not-checked": [(TP, "v1.0.0: SMS reminders sent without checking the SMS-reminder consent")],
 }

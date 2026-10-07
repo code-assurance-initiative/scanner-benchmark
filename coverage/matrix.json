@@ -17045,6 +17045,24 @@
           "source": "key v1.1.1"
         }
       ]
+    },
+    {
+      "concept": "consent-not-checked",
+      "title": "Personal data processed for a consent-based purpose without checking consent",
+      "cwe": null,
+      "family": "compliance",
+      "reason": "no Watchdog rule detects this",
+      "repos": [
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "must-fire"
+          ],
+          "source": "plan",
+          "note": "v1.0.0: SMS reminders sent without checking the SMS-reminder consent"
+        }
+      ]
     }
   ]
 }

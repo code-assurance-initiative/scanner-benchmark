@@ -17,7 +17,7 @@ MATRIX = load_json(os.path.join(ROOT, "coverage", "matrix.json"))
 NEW_UNMAPPED = ["business-logic-in-controller", "value-object-mutability", "domain-event-never-handled",
                 "event-schema-change-without-upcaster", "react-index-as-key", "react-hook-missing-dependency",
                 "react-state-mutation", "form-error-not-associated", "modal-focus-not-managed",
-                "autoplay-media-without-control"]
+                "autoplay-media-without-control", "consent-not-checked"]
 
 
 def wd(k, *results):

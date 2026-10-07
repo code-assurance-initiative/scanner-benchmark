@@ -1945,6 +1945,14 @@
       "family": "domain",
       "kind": "finding",
       "description": "The shape of an event type already persisted in an event store or durable log changed (a field renamed, removed or retyped) with no upcaster or versioned event type, so events written under the old schema no longer deserialise or replay correctly."
+    },
+    {
+      "id": "consent-not-checked",
+      "title": "Personal data processed for a consent-based purpose without checking consent",
+      "cwe": null,
+      "family": "compliance",
+      "kind": "finding",
+      "description": "Personal data is used for a purpose whose lawful basis is the data subject's consent (marketing, optional SMS or push messages, profiling) on a path that never checks that consent was given and not withdrawn, so people who refused or withdrew it are processed anyway."
     }
   ]
 }
