@@ -51,8 +51,8 @@
       ]
     },
     "bench-csharp-security-iac": {
-      "tag": "v1.1.0",
-      "keySha256": "7fc4112abbb6273650f755c684dee5fe373c87781d3cde0195bbd460a593b455",
+      "tag": "v1.2.0",
+      "keySha256": "66d02bd775e26fef5b4a77668823770afa4146c043ecb6c2d57e493bf516e036",
       "languages": [
         "csharp"
       ]
@@ -2583,7 +2583,7 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.1.0",
+          "source": "key v1.2.0",
           "entries": {
             "must-fire": 2,
             "must-not-fire": 4,
@@ -5240,7 +5240,7 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.1.0",
+          "source": "key v1.2.0",
           "entries": {
             "must-fire": 2,
             "must-not-fire": 4,
@@ -5543,7 +5543,7 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.1.0",
+          "source": "key v1.2.0",
           "entries": {
             "must-fire": 14,
             "must-not-fire": 16,
@@ -6084,7 +6084,7 @@
             "must-not-fire",
             "clean"
           ],
-          "source": "key v1.1.0",
+          "source": "key v1.2.0",
           "entries": {
             "must-fire": 13,
             "must-not-fire": 13,
@@ -6985,7 +6985,7 @@
             "clean",
             "score-band"
           ],
-          "source": "key v1.1.0",
+          "source": "key v1.2.0",
           "entries": {
             "must-fire": 6,
             "must-not-fire": 7,
@@ -7494,7 +7494,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.1.0",
+          "source": "key v1.2.0",
           "entries": {
             "score-band": 1
           }
@@ -7670,7 +7670,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.1.0",
+          "source": "key v1.2.0",
           "entries": {
             "score-band": 1
           }
@@ -7844,7 +7844,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.1.0",
+          "source": "key v1.2.0",
           "entries": {
             "score-band": 1
           }
@@ -17074,7 +17074,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.1.0",
+          "source": "key v1.2.0",
           "entries": {
             "score-band": 1
           }
@@ -18721,7 +18721,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.1.0",
+          "source": "key v1.2.0",
           "entries": {
             "score-band": 1
           }
@@ -18893,7 +18893,7 @@
           "labels": [
             "score-band"
           ],
-          "source": "key v1.1.0",
+          "source": "key v1.2.0",
           "entries": {
             "score-band": 1
           }
@@ -22408,7 +22408,7 @@
             "must-fire",
             "clean"
           ],
-          "source": "key v1.1.0",
+          "source": "key v1.2.0",
           "entries": {
             "must-fire": 1,
             "clean": 87

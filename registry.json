@@ -244,6 +244,15 @@
       "keySha256": "1971775473ee8d41824669768c7ba8c8721f3e85d204bf67f4d8a89950fa3e35",
       "frozenAt": "2026-10-07",
       "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-csharp-security-iac",
+      "tag": "v1.2.0",
+      "commit": "a863ef30d8652b9b177f0e4eb18a95ca68fd77d3",
+      "keySha256": "66d02bd775e26fef5b4a77668823770afa4146c043ecb6c2d57e493bf516e036",
+      "frozenAt": "2026-10-07",
+      "supersedes": "v1.1.0",
+      "change": "plant defect fixed: IAC-017 workflow line 34 was invalid YAML (hid the plant from every parser); defect unchanged"
     }
   ]
 }
