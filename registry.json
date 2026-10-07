@@ -117,6 +117,13 @@
       "commit": "aff1ad74ad6d10592a15926d10d6d0fdc3859aee",
       "keySha256": "5b7fc7d0249c02183cd14a5f156e35fb64d846cf257d5fab77c2cc3eaa50bc60",
       "frozenAt": "2026-10-07"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-ts-frontend-a11y",
+      "tag": "v1.0.0",
+      "commit": "b856dbfb1bc9fa4e1ceae18851616532015a4f18",
+      "keySha256": "2a6eff790a82e65d28f82dbe4ed4fc12b61d46014f876269b16aa221ed4f7f89",
+      "frozenAt": "2026-10-07"
     }
   ]
 }
