@@ -32,8 +32,10 @@ matrix's `beyondReference` with the repositories that label it (frozen keys) or 
 `discrim.py` adds the AC6 table (focus-outline-removed / motion-without-reduced-motion under the umbrella
 visual-and-motion-safety), the family `untrusted-data-executed` and `SUMMARY_OF_CONCEPT` (→ mapping
 `summaryOfConcept`). The matrix's per-repository labels are read from the FROZEN keys: every repository in
-`registry.json` at its latest tag, from the sibling clones in `BENCH_WORKSPACE` (default: the directory holding this
-repository), sha256-checked against the registry; planned labels from `dims.py` remain only for repositories not
+`registry.json` at its latest tag, sha256-checked against the registry, through `cai_bench/units.py` from the first
+source that has it: materialised units in `BENCH_UNITS_DIR`, the training set's bundles in `BENCH_SET_DIR` (default:
+a `training-set-2026` checkout next to this repository), or legacy clones in `BENCH_WORKSPACE` (default: the directory
+holding this repository); planned labels from `dims.py` remain only for repositories not
 frozen yet. `build.py` prints the frozen coverage gaps per language.
 
-    WATCHDOG_SOURCE=/path/to/engine-checkout BENCH_WORKSPACE=/path/with/bench-clones python3 mappings/watchdog-build/build.py
+    WATCHDOG_SOURCE=/path/to/engine-checkout BENCH_SET_DIR=/path/to/training-set-2026 python3 mappings/watchdog-build/build.py

@@ -196,12 +196,16 @@ def kind_basis(did, kind):
     return "assigned (not in the plan's lists)"
 
 # ---------------- frozen keys: what each frozen repository REALLY labels (contract 1.4 matrix truth) ----------------
-# Each registered repository's key is read at its latest registered tag (git show, sha256 checked against
-# registry.json) from the sibling clones in BENCH_WORKSPACE. Planned labels (dims.py) stay only for repositories not
-# frozen yet.
-import hashlib, subprocess
+# Each registered repository's key is read at its latest registered tag (sha256 checked against registry.json) from
+# the first source that has it: materialised units in BENCH_UNITS_DIR, the training set's bundles in BENCH_SET_DIR
+# (default: a training-set-2026 checkout next to this repository), then legacy clones in BENCH_WORKSPACE. Planned
+# labels (dims.py) stay only for repositories not frozen yet.
 from collections import Counter
+sys.path.insert(0, OUT)
+from cai_bench.units import default_set_dir, read_key
 WORKSPACE = os.environ.get("BENCH_WORKSPACE", os.path.dirname(OUT))
+UNITS_DIR = os.environ.get("BENCH_UNITS_DIR")
+SET_DIR = os.environ.get("BENCH_SET_DIR") or default_set_dir(WORKSPACE)
 LABEL_ORDER = ["must-fire", "must-not-fire", "clean", "not-applicable", "score-band"]
 registry = json.load(open(f"{OUT}/registry.json"))
 FROZEN = OrderedDict()
@@ -209,8 +213,7 @@ for x in registry["repos"]:
     FROZEN[x["repo"].split("/")[1]] = x  # a later entry supersedes an earlier one
 KEYS = OrderedDict()
 for repo, x in FROZEN.items():
-    raw = subprocess.check_output(["git", "-C", f"{WORKSPACE}/{repo}", "show", f"{x['tag']}:benchmark/answer-key.json"])
-    assert hashlib.sha256(raw).hexdigest() == x["keySha256"], (repo, x["tag"], "key differs from registry.json")
+    raw = read_key(repo, x["tag"], x["keySha256"], units_dir=UNITS_DIR, set_dir=SET_DIR, workspace=WORKSPACE)
     KEYS[repo] = json.loads(raw)
 CONCEPT_SET = set(concept_ids)
 key_dim = defaultdict(lambda: defaultdict(Counter))      # repo -> dimension -> Counter(label)

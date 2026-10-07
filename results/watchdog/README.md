@@ -8,6 +8,19 @@ During authoring Watchdog is the **instrument** used to make a repository golden
 it is right about something nobody meant to plant, the **repository** is fixed; where it is wrong, the finding is
 recorded here as Watchdog noise. Nothing in this directory is ever fixed by changing a key.
 
+The repositories these files describe are now **units of the training set**
+[`training-set-2026`](https://github.com/code-assurance-initiative/training-set-2026) (one git bundle each, full
+history and every tag, plus a readable snapshot of the latest tag); `repo` stays the unit id. The scan directories the
+files name (`_scans/<repo>/…`) are in the authoring workspace, recorded by sha256. To reproduce a result: materialise
+the unit (`tools/materialize.sh <repo> <dir>` in the set), scan `<dir>/<repo>`, re-score with
+[`rescore.py`](rescore.py) `--units-dir <dir>` (or score one unit with `python3 -m cai_bench score`), and compare —
+see [BASELINE-2026-10-07 § 11](BASELINE-2026-10-07.md#11-re-measuring-against-this-baseline).
+
+Scripts here: [`summarise.py`](summarise.py) (`final-scores.json` → `SUMMARY.json`), [`baseline.py`](baseline.py)
+(the frozen baseline and its doc tables; `--check`), [`rescore.py`](rescore.py) (a new set of scans → a
+`final-scores.json` to `compare`). The two that read keys take `--units-dir` (materialised units) and `--set-dir` (the
+set's bundles; default `training-set-2026` next to scanner-benchmark) and check every key's sha256.
+
 ## Verdict classes
 
 Each finding that is not a `must-fire` hit is placed in exactly one of five classes. The definitions are quoted from

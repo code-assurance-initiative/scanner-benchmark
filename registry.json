@@ -1,26 +1,43 @@
 {
   "version": "1.0",
+  "units": {
+    "set": "code-assurance-initiative/training-set-2026",
+    "setVersion": "1.0.0",
+    "note": "Every unit lives in the training set as units/<unit>.bundle (full history, every tag) with a readable snapshot of its latest tag in units/<unit>/. `repo` stays the unit id (and the frozen keys' `repo` field); the bundle is the canonical copy (the bench-* repositories are retired; the estate-quellbrook-* repositories stay live for other uses). Materialise with the set's tools/materialize.sh."
+  },
   "repos": [
     {
       "repo": "code-assurance-initiative/bench-csharp-baseline-clean",
       "tag": "v1.0.0",
       "commit": "dfc1f39bf76d5c79f84e6d544e2300ab4e835151",
       "keySha256": "b03513609f4cea6ce1dc439098576db967482702cb47018ed6946e415d973ef0",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-baseline-clean.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-security-secrets",
       "tag": "v1.0.0",
       "commit": "2471cda4f7ee049201cf9df3608b3f5afff4b57b",
       "keySha256": "83d3713965d8cbacd26e3aa0304500bf9e42756d59a3b6c740184d81185a7a4f",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-security-secrets.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-security-dependencies",
       "tag": "v1.0.0",
       "commit": "2e3037f4b77b08faf62573e086926301e0de914d",
       "keySha256": "4c312b6165af653eaebfb340598d54f5b8d6abbfe197a147f6d1d47e8681ec61",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-security-dependencies.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-security-dependencies",
@@ -29,21 +46,33 @@
       "keySha256": "ec030bcfd1de78b732d764793843b346a9654f7c6f25316e71e3f89815e6baf4",
       "frozenAt": "2026-10-07",
       "supersedes": "v1.0.0",
-      "change": "subjects added (contract 1.2); code unchanged"
+      "change": "subjects added (contract 1.2); code unchanged",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-security-dependencies.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-security-injection",
       "tag": "v1.0.0",
       "commit": "f89620bdbd2260b8e2d4e1fa93fdca31fb9296d8",
       "keySha256": "96e3264c685890b4090e4e17973d1730967642719f6d3389293aa330fb16421e",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-security-injection.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-security-iac",
       "tag": "v1.0.0",
       "commit": "19d0cf36ab86f9422a1f696a193118c66af07000",
       "keySha256": "bc73c82fa1d3650877efd03cd5bb2086bc805f1124f66fd3b1ee1fa83551cc8b",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-security-iac.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-security-iac",
@@ -52,42 +81,66 @@
       "keySha256": "7fc4112abbb6273650f755c684dee5fe373c87781d3cde0195bbd460a593b455",
       "frozenAt": "2026-10-07",
       "supersedes": "v1.0.0",
-      "change": "precise IaC concepts (contract 1.3); code unchanged"
+      "change": "precise IaC concepts (contract 1.3); code unchanged",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-security-iac.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-architecture",
       "tag": "v1.0.0",
       "commit": "7889757eb521cbc1af9c44f96f5e7e51dab18c17",
       "keySha256": "caed14af7c59525ed523ca8c316ec36752c4a5e7af242b42935b208ad30aa01b",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-architecture.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-domain-events",
       "tag": "v1.0.0",
       "commit": "64db80ed07aa5a17ef0431231cb9ac3c108feced",
       "keySha256": "4a7da06596868ae3f41117b1253206ad8625eed26aac37f7012f027d8e1bcf4d",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-domain-events.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-codehealth",
       "tag": "v1.0.0",
       "commit": "d9f2e3e986f5a95f435322a445da5bf5df680279",
       "keySha256": "581497cf5d0d939a1d4704c8b28cea79c0cad2b59b1203021a06d6267a455fdb",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-codehealth.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-tests",
       "tag": "v1.0.0",
       "commit": "a2dce40268f1a26379f7ba3828aec9e9f93e999e",
       "keySha256": "53bdee5a56ae27d7376992b5ea1491d6a99f9430a63b95463da0b43491e1cbb7",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-tests.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-readiness",
       "tag": "v1.0.0",
       "commit": "74427c03c9754acadfcc65d229f3de95804e71f8",
       "keySha256": "99b0727ad27fb5bc165e00bab6fba035211178f45c210bf064a9f2f3888caa92",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-readiness.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-maturity-history",
@@ -95,49 +148,77 @@
       "commit": "825b11e569fdd41491144a749eaf604603a3d7fa",
       "keySha256": "d21bdbf2ddb77cad41c2dfb8d0886904b574438d56cb07b93b201506ef6559f7",
       "frozenAt": "2026-10-07",
-      "note": "history-derived dimensions (ownership, freshness) are measured against the wall clock; scores drift on later re-scans"
+      "note": "history-derived dimensions (ownership, freshness) are measured against the wall clock; scores drift on later re-scans",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-maturity-history.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-ts-baseline-clean",
       "tag": "v1.0.0",
       "commit": "7ebcfbd2a860664a30c37cf2233a06679af8dc65",
       "keySha256": "3318283a747a5e4a4b75d4f826b104878d9e201e20850c06b2e0244e29cedf43",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-ts-baseline-clean.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-ts-security-secrets",
       "tag": "v1.0.0",
       "commit": "60170c5de06c913a3b73695bcef823ef048abfe4",
       "keySha256": "1737a27114aee510b76bdd29110f49accfdc0cc2c8794103d709cf95fda1cf07",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-ts-security-secrets.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-ts-security-injection",
       "tag": "v1.0.0",
       "commit": "aff1ad74ad6d10592a15926d10d6d0fdc3859aee",
       "keySha256": "5b7fc7d0249c02183cd14a5f156e35fb64d846cf257d5fab77c2cc3eaa50bc60",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-ts-security-injection.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-ts-frontend-a11y",
       "tag": "v1.0.0",
       "commit": "b856dbfb1bc9fa4e1ceae18851616532015a4f18",
       "keySha256": "2a6eff790a82e65d28f82dbe4ed4fc12b61d46014f876269b16aa221ed4f7f89",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-ts-frontend-a11y.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-ts-security-dependencies",
       "tag": "v1.0.0",
       "commit": "3e4041bbcc2be928fed8e4cbe0702ca1c51c6901",
       "keySha256": "6fad2c534391f9dd7057258fee67df0fce5eb72fa58d759e0ac573e89cf211bd",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-ts-security-dependencies.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-ts-codehealth",
       "tag": "v1.0.0",
       "commit": "69cd17343214889488146e7b5bdd3e7b93abefed",
       "keySha256": "142bcbd5752e8eaadbf1ec9b27e0dcc8d3d08031495b26d248ade88bca211604",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-ts-codehealth.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-architecture",
@@ -146,7 +227,11 @@
       "keySha256": "85b26bbaf25a9e8919717505c345f88a28d9fc2998b87fd39088cdfb36deb65e",
       "frozenAt": "2026-10-07",
       "supersedes": "v1.0.0",
-      "change": "BLC-001 relabelled to business-logic-in-controller; code unchanged"
+      "change": "BLC-001 relabelled to business-logic-in-controller; code unchanged",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-architecture.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-domain-events",
@@ -155,7 +240,11 @@
       "keySha256": "d684b231ee41d5fb546577e5dbc794a2556db4afb92f13b6c4b615f34e31353e",
       "frozenAt": "2026-10-07",
       "supersedes": "v1.0.0",
-      "change": "v1.1.0: 6 plants (value-object mutability, never-handled events x2, event schema without upcaster, boundary leakage x2) + 4 traps"
+      "change": "v1.1.0: 6 plants (value-object mutability, never-handled events x2, event schema without upcaster, boundary leakage x2) + 4 traps",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-domain-events.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-ts-frontend-a11y",
@@ -164,7 +253,11 @@
       "keySha256": "42fa35bd5f46bec202af374ce3c633014df7f812a105b49bf35d507b04426c1a",
       "frozenAt": "2026-10-07",
       "supersedes": "v1.0.0",
-      "change": "4 relabels to precise a11y concepts + 4 React/form plants + traps"
+      "change": "4 relabels to precise a11y concepts + 4 React/form plants + traps",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-ts-frontend-a11y.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-domain-events",
@@ -173,14 +266,22 @@
       "keySha256": "869366f155f9e2b197c1d2e5e57ceee9a60ad469e2c994f62e99d3a51a20b35a",
       "frozenAt": "2026-10-07",
       "supersedes": "v1.1.0",
-      "change": "subjects on BTL-001/002 (contract 1.2); code unchanged"
+      "change": "subjects on BTL-001/002 (contract 1.2); code unchanged",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-domain-events.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-ts-domain-privacy",
       "tag": "v1.0.0",
       "commit": "bb90fc9197080f82dddfb5c210ca22ef84e1ecbf",
       "keySha256": "9290dd7f5493678ba3c98799ea6f9bcc3bbeeb8b9a568c9b836a0bbc97939139",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-ts-domain-privacy.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-ts-domain-privacy",
@@ -189,21 +290,33 @@
       "keySha256": "f9dde9b07bd06228b512b018a6b836658a03ffe3c0fc8044b4840bd736fbb42d",
       "frozenAt": "2026-10-07",
       "supersedes": "v1.0.0",
-      "change": "subject on BTL-001 (contract 1.2); code unchanged"
+      "change": "subject on BTL-001 (contract 1.2); code unchanged",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-ts-domain-privacy.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-blazor-a11y",
       "tag": "v1.0.0",
       "commit": "fc4090774c0e6275973199566dbddeb7c439d448",
       "keySha256": "b27fff90b3df91789073f0c8147a963bbe27f45eab2698093464b3e93f9b4eeb",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-blazor-a11y.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-ts-readiness",
       "tag": "v1.0.0",
       "commit": "1c9ad0a6f5d8bf686d64a2fd278336b234f02192",
       "keySha256": "166acf1fb645c488927ab58d16bff5b2059fb90168b83ca24fa01bd00eae85e9",
-      "frozenAt": "2026-10-07"
+      "frozenAt": "2026-10-07",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-ts-readiness.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/estate-quellbrook-gateway",
@@ -211,7 +324,11 @@
       "commit": "796a7489bd12f2655e6f3858d9d65a6b56c8b2b8",
       "keySha256": "cbcbc47dc7e54b4c7f32a5a7b9880851b41b980ac582517cc77616e0f5929701",
       "frozenAt": "2026-10-07",
-      "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0"
+      "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/estate-quellbrook-gateway.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/estate-quellbrook-orders",
@@ -219,7 +336,11 @@
       "commit": "227ea390af526080dcc4748095abff75de5087b4",
       "keySha256": "356f0e66cb77419f3980c79b2ea5af20e0f41fc80beb4915893d2475035ba347",
       "frozenAt": "2026-10-07",
-      "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0"
+      "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/estate-quellbrook-orders.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/estate-quellbrook-dispatch",
@@ -227,7 +348,11 @@
       "commit": "4c68f6cd2fe39038ad0464222e7453e81bd8d068",
       "keySha256": "b9da8f498f17ea3276a411076de44dfcadceafb870920dacc2a1c44673058e5e",
       "frozenAt": "2026-10-07",
-      "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0"
+      "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/estate-quellbrook-dispatch.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/estate-quellbrook-notifier",
@@ -235,7 +360,11 @@
       "commit": "cfab2803fb3dbb8b68bb87ea668f2f26aa506cdd",
       "keySha256": "b4dabc406c3f50b150c188abd9014db0deab3c225a3b90cec0429a249e054e3c",
       "frozenAt": "2026-10-07",
-      "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0"
+      "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/estate-quellbrook-notifier.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/estate-quellbrook-web",
@@ -243,7 +372,11 @@
       "commit": "1828570ee65908f5d8cd8846b09536746831a809",
       "keySha256": "1971775473ee8d41824669768c7ba8c8721f3e85d204bf67f4d8a89950fa3e35",
       "frozenAt": "2026-10-07",
-      "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0"
+      "note": "reference estate (fictional Quellbrook Freight); scripted 3-sprint history, sprint tags v0.1.0-v0.3.0",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/estate-quellbrook-web.bundle"
+      }
     },
     {
       "repo": "code-assurance-initiative/bench-csharp-security-iac",
@@ -252,7 +385,11 @@
       "keySha256": "66d02bd775e26fef5b4a77668823770afa4146c043ecb6c2d57e493bf516e036",
       "frozenAt": "2026-10-07",
       "supersedes": "v1.1.0",
-      "change": "plant defect fixed: IAC-017 workflow line 34 was invalid YAML (hid the plant from every parser); defect unchanged"
+      "change": "plant defect fixed: IAC-017 workflow line 34 was invalid YAML (hid the plant from every parser); defect unchanged",
+      "source": {
+        "set": "code-assurance-initiative/training-set-2026",
+        "bundle": "units/bench-csharp-security-iac.bundle"
+      }
     }
   ]
 }

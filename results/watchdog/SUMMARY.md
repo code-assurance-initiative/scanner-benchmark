@@ -12,7 +12,16 @@ rows, score bands and every remaining false negative are in [`final-scores.json`
 below are in [`SUMMARY.json`](SUMMARY.json), produced by [`summarise.py`](summarise.py) from those two inputs. Every
 finding judged during authoring, with its verdict and reason, is in the per-repository `<repo>.json` files beside this
 one. **[`BASELINE-2026-10-07.md`](BASELINE-2026-10-07.md) freezes these numbers as the iteration-1 baseline** (per lens,
-per dimension, mechanisms, and how to compare a new engine against it). [`PHASE1.md`](PHASE1.md) is the earlier Phase-1 write-up and is kept as it was.
+per dimension, mechanisms, and how to compare a new engine against it).
+
+**Where the units live.** The 25 repositories were consolidated on 2026-10-07 into one training set,
+[`training-set-2026`](https://github.com/code-assurance-initiative/training-set-2026) v1.0.0: one git bundle per unit
+(full history, every registered tag; byte-identical commits and keys) plus a readable snapshot of its latest tag. The
+repository names stay the unit ids; the `bench-*` repositories are retired. To reproduce these numbers: materialise
+the units from the bundles (`tools/materialize.sh --all <dir>`), scan each contained, re-score with
+`rescore.py --units-dir <dir> --scans-root …`, and `python3 -m cai_bench compare` against the baseline —
+[BASELINE § 11](BASELINE-2026-10-07.md#11-re-measuring-against-this-baseline) has the exact commands. Three units
+were re-measured that way when the set was made, with outcomes identical to `final-scores.json`. [`PHASE1.md`](PHASE1.md) is the earlier Phase-1 write-up and is kept as it was.
 
 Definitions (contract 1.4): **recall** = TP / (TP + FN) over planted defects; **trap resistance** = traps left alone /
 traps; **noise share** = results on traps, clean regions, not-applicable concepts or matching no entry of a covered

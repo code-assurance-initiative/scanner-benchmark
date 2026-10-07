@@ -2,12 +2,15 @@
 that `python3 -m cai_bench compare` can set against a frozen baseline.
 
     python3 results/watchdog/rescore.py --baseline results/watchdog/baseline-2026-10-07.json \
-        --scans-root <dir> --instrument "Watchdog, kennel main <sha>, ..." --out final-scores-<label>.json
+        --units-dir <materialised units> --scans-root <dir> --instrument "Watchdog, kennel main <sha>, ..." \
+        --out final-scores-<label>.json
     python3 results/watchdog/rescore.py --baseline results/watchdog/baseline-2026-10-07.json --baseline-scans \
         --out /tmp/x.json                                   # reproduce the baseline from its own scans
 
-For each repository of the baseline: the key is read from the clone `<workspace>/<repo>` with
-`git show <tag>:benchmark/answer-key.json` and its sha256 must equal the baseline's; the scan is the one directory
+For each repository of the baseline: the key is read at its tag from the first source that has it — materialised units
+(`--units-dir <dir>/<repo>`, made by the training set's `tools/materialize.sh`), the training set's bundles
+(`--set-dir`, default: a `training-set-2026` checkout next to scanner-benchmark), or a legacy clone `<workspace>/<repo>`
+— and its sha256 must equal the baseline's; the scan is the one directory
 under `<scans-root>/<repo>/` holding a `report.sarif` (and `scorecard.json`, for the score bands) — the sidecar
 directory `tools/multilang/scan.py` prints. With `--baseline-scans` the scans named in the baseline are used instead.
 Standard library only.
@@ -16,7 +19,6 @@ import argparse
 import hashlib
 import json
 import os
-import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -27,6 +29,7 @@ sys.path.insert(0, os.path.join(ROOT, "mappings"))
 from cai_bench import CONTRACT_VERSION, __version__  # noqa: E402
 from cai_bench.mapping import Mapping  # noqa: E402
 from cai_bench.sarif import read_results  # noqa: E402
+from cai_bench.units import default_set_dir, read_key  # noqa: E402
 from cai_bench.scoring import score  # noqa: E402
 from watchdog_scores import scores as scorecard_scores  # noqa: E402
 
@@ -47,12 +50,12 @@ def rows(d):
     return [dict(v, id=k) for k, v in d.items()]
 
 
-def rescore_repo(b, workspace, scan_dir, mapping):
+def rescore_repo(b, workspace, scan_dir, mapping, units_dir=None, set_dir=None):
     name, tag = b["name"], b["tag"]
-    raw = subprocess.run(["git", "-C", os.path.join(workspace, name), "show", f"{tag}:benchmark/answer-key.json"],
-                         capture_output=True, check=True).stdout
-    if sha(raw) != b["keySha256"]:
-        raise SystemExit(f"{name}: key at {tag} is {sha(raw)}, the baseline scored {b['keySha256']}")
+    try:
+        raw = read_key(name, tag, b["keySha256"], units_dir=units_dir, set_dir=set_dir, workspace=workspace)
+    except (LookupError, ValueError) as e:
+        raise SystemExit(f"{e} (the baseline scored {b['keySha256']})")
     key = json.loads(raw)
     with open(os.path.join(scan_dir, "report.sarif"), "rb") as f:
         sarif_bytes = f.read()
@@ -77,8 +80,12 @@ def main(argv=None):
     ap.add_argument("--baseline", required=True)
     ap.add_argument("--scans-root", help="<scans-root>/<repo>/…/report.sarif per repository")
     ap.add_argument("--baseline-scans", action="store_true", help="re-score the scans the baseline names")
+    ap.add_argument("--units-dir", help="directory of materialised units, <units-dir>/<repo> (tools/materialize.sh)")
+    ap.add_argument("--set-dir", help="training-set checkout whose units/<repo>.bundle hold the keys "
+                                      "(default: training-set-2026 next to scanner-benchmark, or $BENCH_SET_DIR)")
     ap.add_argument("--workspace", default=os.path.dirname(ROOT),
-                    help="directory holding a clone of every benchmark repository (default: scanner-benchmark/..)")
+                    help="legacy: directory holding a clone of every repository; with --baseline-scans also the root "
+                         "the baseline's scan directories are relative to (default: scanner-benchmark/..)")
     ap.add_argument("--mapping", default=os.path.join(ROOT, "mappings", "watchdog.json"))
     ap.add_argument("--instrument", default=None, help="what was run (engine commit, rubric, image, mode)")
     ap.add_argument("--out", required=True)
@@ -92,7 +99,7 @@ def main(argv=None):
     repos = []
     for b in base["repos"]:
         d = os.path.join(a.workspace, b["scanDir"]) if a.baseline_scans else find_scan(a.scans_root, b["name"])
-        r = rescore_repo(b, a.workspace, d, mapping)
+        r = rescore_repo(b, a.workspace, d, mapping, a.units_dir, a.set_dir or default_set_dir(a.workspace))
         s = r["summary"]
         print(f"{b['name']:<36} {b['tag']:<7} recall {s['tp']}/{s['tp'] + s['fn']}  traps {s['trapTn']}/"
               f"{s['trapTn'] + s['trapFp']}  noise {s['noise']}/{s['results']}")

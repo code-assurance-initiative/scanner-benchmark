@@ -13,8 +13,10 @@ Standard library only (and the in-repository `cai_bench` package). Inputs:
 - coverage/matrix.json                 dimension names, lenses, scope, evaluator and which keys label each dimension
 - mappings/watchdog.json               concept -> dimension
 - the authoring workspace (default: the directory holding scanner-benchmark/):
-    <repo>/                            a clone of every benchmark repository (the key is read at the registered tag
-                                       with `git show <tag>:benchmark/answer-key.json`, its sha256 checked)
+    <repo>/                            legacy: a clone of every benchmark repository. The key is read at the
+                                       registered tag (sha256 checked) from the first source that has it: --units-dir
+                                       (materialised units), --set-dir (the training set's bundles; default
+                                       training-set-2026 next to scanner-benchmark), then this clone
     _scans/<repo>/<iter>/src/          the final contained scan named in final-scores.json (report.sarif, scorecard.json;
                                        sha256 of the SARIF checked)
     _scans/backlog-draft.json          the 70 noise mechanisms filed to the Watchdog backlog, and
@@ -33,7 +35,6 @@ import hashlib
 import json
 import os
 import re
-import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -46,6 +47,7 @@ from cai_bench.keyfile import entry_concepts, line_tolerance  # noqa: E402
 from cai_bench.mapping import Mapping  # noqa: E402
 from cai_bench.sarif import read_results  # noqa: E402
 from cai_bench.scoring import STAR, Matcher, score  # noqa: E402
+from cai_bench.units import default_set_dir, read_key  # noqa: E402
 from summarise import FN_MECHANISMS  # noqa: E402
 
 sys.path.insert(0, os.path.join(ROOT, "mappings"))
@@ -154,12 +156,12 @@ def dimension_outcomes(entries, results, mapping, tol):
     return out
 
 
-def rescore(repo, workspace, mapping):
+def rescore(repo, workspace, mapping, units_dir=None, set_dir=None):
     name, tag = repo["name"], repo["tag"]
-    raw = subprocess.run(["git", "-C", os.path.join(workspace, name), "show", f"{tag}:benchmark/answer-key.json"],
-                         capture_output=True, check=True).stdout
-    if sha256_bytes(raw) != repo["keySha256"]:
-        raise SystemExit(f"{name}: key at {tag} has sha256 {sha256_bytes(raw)}, final-scores says {repo['keySha256']}")
+    try:
+        raw = read_key(name, tag, repo["keySha256"], units_dir=units_dir, set_dir=set_dir, workspace=workspace)
+    except (LookupError, ValueError) as e:
+        raise SystemExit(f"{e} (final-scores says {repo['keySha256']})")
     key = json.loads(raw)
     scan = os.path.join(workspace, repo["scan"]["dir"])
     sarif_path = os.path.join(scan, "report.sarif")
@@ -357,7 +359,7 @@ def build(a):
     loc_none = located = 0
     repo_rows = []
     for repo in final["repos"]:
-        rs = rescore(repo, a.workspace, mapping)
+        rs = rescore(repo, a.workspace, mapping, a.units_dir, a.set_dir or default_set_dir(a.workspace))
         lang = repo["languages"][0]
         global_entries = {e["id"]: e for e in rs["report"]["entries"]}
         by_site, by_msg = verdict_index(HERE, repo["name"])
@@ -845,7 +847,10 @@ def update_doc(path, tables, check=False):
 def main(argv=None):
     ws = os.path.dirname(ROOT)
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--workspace", default=ws, help="directory holding the benchmark clones and _scans/")
+    ap.add_argument("--workspace", default=ws, help="directory holding _scans/ (and, legacy, the benchmark clones)")
+    ap.add_argument("--units-dir", help="directory of materialised units, <units-dir>/<repo> (tools/materialize.sh)")
+    ap.add_argument("--set-dir", help="training-set checkout whose units/<repo>.bundle hold the keys "
+                                      "(default: training-set-2026 next to scanner-benchmark, or $BENCH_SET_DIR)")
     ap.add_argument("--catalog", default=os.path.join(os.path.dirname(ws), "kennel.canine.dev", "engine", "rubrics",
                                                       "rubric-catalog-snapshot.json"))
     ap.add_argument("--backlog-draft", default=os.path.join(ws, "_scans", "backlog-draft.json"))

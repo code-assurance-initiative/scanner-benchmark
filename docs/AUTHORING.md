@@ -2,7 +2,35 @@
 
 The loop (plan §"The authoring loop"): **answer key first** → implement → scan with a reference scanner → judge every
 unexpected finding (five classes) → fix the repository only where the scanner is right → re-scan until the repository
-holds exactly what its key says → freeze (tag `v<keyVersion>`, sha256 of the key in `registry.json`).
+holds exactly what its key says → freeze (tag `v<keyVersion>`, sha256 of the key in `registry.json`) → bundle the unit
+into its set.
+
+## Where a unit lives: author as a repository, ship in a set
+
+Units are published in **sets**, not as repositories of their own: one public **training set per rubric generation**
+(`code-assurance-initiative/training-set-2026`, then `training-set-2027`, …) and **private quarterly holdouts**
+(`holdout-2026-q4`, …) in the same format — `units/<unit>.bundle` (full history, every tag), `units/<unit>/` (snapshot
+of the latest tag), `registry.json`, `tools/materialize.sh`, `tools/verify.sh`, `tools/build_set.py`.
+
+Authoring a NEW unit, for a new set or a holdout:
+
+1. **Author it as an ordinary git repository**: a local repository outside any other git tree (e.g.
+   `~/RiderProjects/cai-bench/<unit>`), or a TEMPORARY GitHub repository when the theme needs GitHub behaviour (CI
+   runs, Dependabot, push protection, PR metadata). A holdout unit is never pushed to a public repository, not even
+   temporarily.
+2. Run the whole loop below on it, freeze it with an annotated tag, and register it in `registry.json` with
+   `"source": {"set": "<org>/<set>", "bundle": "units/<unit>.bundle"}`.
+3. **Bundle it into the set**: `git -C <unit> fetch --tags && git -C <unit> bundle create <set>/units/<unit>.bundle
+   --all`, then in the set `python3 tools/build_set.py --source-registry <scanner-benchmark>/registry.json --baseline
+   <baseline json> --themes <scanner-benchmark>/README.md` (it clones every bundle, checks every registered tag →
+   commit and key sha256, writes the snapshot, the set registry and the README table) and `tools/verify.sh`. Commit,
+   tag the set version, push.
+4. Delete the temporary GitHub repository (if any) once the bundle verifies. A later key version is authored the same
+   way — in a clone materialised from the bundle (`tools/materialize.sh`, then add a remote or keep it local), tagged
+   `v1.x.0`, re-bundled; the set gets a new minor version. A new rubric generation starts a new set repository.
+
+Scanning during authoring uses the local repository; scanning for a published result uses a unit materialised from
+the set, so the result is reproducible from the set alone.
 
 ## Every repository
 
