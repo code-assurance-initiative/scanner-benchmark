@@ -1,0 +1,574 @@
+{
+ "repo": "code-assurance-initiative/bench-ts-domain-privacy",
+ "tag": "v1.0.0",
+ "engineVersion": "kennel main 6a05dfb6c (kennel-wt-scanner-bench), rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc) + host --with-llm passes (default and gdpr-tech)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-07",
+   "sarifSha256": "0fb4d865dc70bb7a42b3d9c4915f4d016e49f4eb0d43fe90a57cce618aac9bf7",
+   "outcomes": {
+    "tp": 4,
+    "fn": 7,
+    "fp": 0,
+    "tn": 152,
+    "trapFp": 0,
+    "trapTn": 13,
+    "results": 8,
+    "noise": 4,
+    "redundant": 0,
+    "uncovered": 22
+   },
+   "note": "contained; repository commit 28b737a"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "e39719617dcc02398481064031814ea0301c2b26b872b9fbba47b712a9aa855a",
+   "outcomes": {
+    "tp": 4,
+    "fn": 7,
+    "fp": 1,
+    "tn": 152,
+    "trapFp": 1,
+    "trapTn": 13,
+    "results": 10,
+    "noise": 6,
+    "redundant": 0,
+    "uncovered": 10
+   },
+   "note": "contained, final; repository commit a1e3218 (tag v1.0.0 = a1e3218 + journal entry only)"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "b5bc0a59d8006f7635f1730bbb2b7dc8e225bac8d9e91f567573fa8acb0bc3da",
+   "outcomes": {
+    "tp": 0,
+    "fn": 11,
+    "fp": 0,
+    "tn": 153,
+    "trapFp": 0,
+    "trapTn": 14,
+    "results": 0,
+    "noise": 0,
+    "redundant": 0,
+    "uncovered": 9
+   },
+   "note": "host --with-llm, default configuration, final; repository commit a1e3218. The TypeScript sidecar exits in host mode on this box (ERR_MODULE_NOT_FOUND), so no DM/AX7/D23 card and no D32 (semgrep is contained-only): recall 0/11 is an artefact of the host environment, not a headline number"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "b5bc0a59d8006f7635f1730bbb2b7dc8e225bac8d9e91f567573fa8acb0bc3da",
+   "configuration": {
+    "label": "gdpr-tech",
+    "env": {
+     "CODEHEALTH_COMPLIANCE_FRAMEWORKS": "gdpr-tech"
+    }
+   },
+   "outcomes": {
+    "tp": 0,
+    "fn": 11,
+    "fp": 0,
+    "tn": 153,
+    "trapFp": 0,
+    "trapTn": 14,
+    "results": 0,
+    "noise": 0,
+    "redundant": 0,
+    "uncovered": 9
+   },
+   "note": "host --with-llm with CODEHEALTH_COMPLIANCE_FRAMEWORKS=gdpr-tech (NOT the default configuration; secondary), repository commit a1e3218; SARIF byte-identical to the default host pass; no LA1 card"
+  }
+ ],
+ "verdicts": [
+  {
+   "ruleId": "D23",
+   "file": null,
+   "line": null,
+   "message": "Cross-context type MemberId (membership → billing): MemberId (context membership) is exposed in billing's public surface via KnexBillingAccountRepository.findByMember — couples the contexts.",
+   "class": "redundant",
+   "reason": "The store implementation of the same port method; one remediation (Billing's own member reference) clears it with the port row.",
+   "action": "recorded, counted once",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "D23",
+   "file": null,
+   "line": null,
+   "message": "Cross-context type MemberId (membership → billing): MemberId (context membership) is exposed in billing's public surface via BillingAccountRepository.findByMember — couples the contexts.",
+   "class": "valid",
+   "reason": "True: the account repository port's lookup by member takes Membership's MemberId — BTL-001's leak spreading; the key leaves this file uncertified for boundary-type-leakage. Location-less, so it counts as noise in the harness.",
+   "action": "recorded; no key change (same defect as BTL-001)",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "D23",
+   "file": null,
+   "line": null,
+   "message": "Cross-context type MemberId (membership → billing): MemberId (context membership) is exposed in billing's public surface via BillingAccount.memberId — couples the contexts.",
+   "class": "valid",
+   "reason": "BTL-001 found in substance: BillingAccount (Billing) exposes Membership's MemberId. The row carries no SARIF location (type and member in prose only), so under contract 1.4 it cannot match the located plant and counts as noise.",
+   "action": "recorded; plant BTL-001 stays an FN (harness: D23 rows unlocatable)",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "D23",
+   "file": null,
+   "line": null,
+   "message": "Cross-context type MemberId (membership → billing): MemberId (context membership) is exposed in billing's public surface via BillingAccount.constructor — couples the contexts.",
+   "class": "redundant",
+   "reason": "Same leak as the BillingAccount.memberId row (the constructor parameter of the same aggregate); one remediation clears both.",
+   "action": "recorded, counted once",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "D26",
+   "file": null,
+   "line": null,
+   "message": "Projects may be oversized for their cohesion: 1 of 1 project(s) overshoot their size bounds, lowering Project Cohesion to 0.0/10. The most over is `(repository root)` (3574 LoC, 159 module-visible types across 33 directories). Review these for cohesion — draw the boundary inside the module first (group each responsibility into its own package or directory and keep the cross-boundary members non-public), since splitting a published package moves types between packages and breaks consumers.",
+   "class": "opinion-not-fact",
+   "reason": "Size is measured accurately (3.6k LoC, one package); 'Project Cohesion 0.0/10' for a single-package service of that size, already split into two contexts and slices by folder, goes beyond what the size supports.",
+   "action": "recorded as noise (uncovered)",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "D29",
+   "file": "src/platform/field-cipher.ts",
+   "line": 29,
+   "message": "Medium: gcm-no-tag-length: The call to 'createDecipheriv' with the Galois Counter Mode (GCM) mode of operation is missing an expected authentication tag length. If the expected authentication tag length is not specified or otherwise checked, the application might be tricked into verifying a shorter-than-expected authentication tag. This can be abused by an attacker to spoof ciphertexts or recover the implicit authentication key of GCM, allowing arbitrary forgeries.",
+   "class": "valid",
+   "reason": "createDecipheriv in GCM mode without authTagLength accepts a truncated authentication tag (Node accepts 4-byte tags), weakening the integrity the field cipher promises. Accidental, not a plant.",
+   "action": "repo fixed in a1e3218: authTagLength 16 on cipher and decipher; a test proves a 4-byte tag is refused",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "C2",
+   "file": null,
+   "line": null,
+   "message": "No named authorization policies: Authorization IS enforced here (by route guards, auth middleware or checks that refuse a caller) — this is NOT a claim that endpoints are unprotected. What's missing is a NAMED rule set: who may do what is encoded inline where it is checked, so the rules can't be listed, reviewed or tested apart from the code that applies them. Recommendation, not a defect.",
+   "class": "opinion-not-fact",
+   "reason": "Scope checks per route (requireScope) are the policy; the row itself says authorization is enforced. As in the TypeScript baseline.",
+   "action": "recorded as noise (uncovered)",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "C3",
+   "file": null,
+   "line": null,
+   "message": "Partial audit-trail evidence: An audit mechanism is present, but the trail is not yet complete — missing: an ORM write hook every change flows through (a TypeORM/MikroORM subscriber, a Sequelize or Mongoose hook, Prisma middleware or a query extension, or an event-store append), per-model coverage (@Audited, or a change-history plugin such as mongoose-history or sequelize-paper-trail applied to each model).",
+   "class": "valid",
+   "reason": "Accurate: Membership audits every personal-data change in the same transaction, Billing's copy of name, e-mail and date of birth is not audited; the score (75) is in BND-002's band.",
+   "action": "recorded (consistent with BND-002)",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "C4",
+   "file": null,
+   "line": null,
+   "message": "Partial data-retention evidence: A retention mechanism is present, but the data-lifecycle is not yet complete — missing: an expiry limit — a declared maximum age / TTL after which the data is no longer kept, a scheduled purge / cleanup job (a cron task that deletes rows past their retention — purgeExpired… / deleteOld…).",
+   "class": "false-positive",
+   "reason": "Claims a missing expiry limit and a missing scheduled purge job. Disproof: MEMBER_RETENTION_MONTHS (src/config.ts) is the declared limit and src/membership/features/purge-lapsed-members/purge-lapsed-members.ts, run every round by src/jobs.ts, erases lapsed members. The real gap (the reminder log is never purged) is not what the row names. Score 50 in band.",
+   "action": "recorded as noise; code kept",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "C5",
+   "file": null,
+   "line": null,
+   "message": "Partial data-subject-rights support: Corroborated rights: erasure ✓ · export ✗ · consent ✗. Each tick means this scan found code in the repository implementing that right — a deletion/anonymisation path for erasure, a data-export or portability path for export, and consent state recorded alongside the personal data it authorises. A ✗ therefore means no such code was recognised HERE, not that the right is unsupported: a capability provided by a platform, a manual runbook, or code spelled in a way this scan does not match is not visible to it. Confirm before treating a cross as a gap; where it is one, the right has to be fulfilled manually.",
+   "class": "false-positive",
+   "reason": "Ticks export ✗ and consent ✗. Disproof: GET /members/:id/personal-data (features/export-member-data) exports the member's data, and consent is recorded per purpose and withdrawable (features/record-consent, Member.hasConsented). The real gap (consent not enforced on the SMS path, CON-001) is not what the row names. Score 40 in band (at the floor).",
+   "action": "recorded as noise; code kept",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "DM4",
+   "file": "src/billing/domain/invoices/invoice-line.ts",
+   "line": 8,
+   "message": "Anemic entity: InvoiceLine: `InvoiceLine` is an aggregate/entity with 3 data propert(ies) but no state-changing behaviour (only data and queries) — the business logic lives in a service.",
+   "class": "false-positive",
+   "reason": "'The business logic lives in a service' is untrue: InvoiceLine is an immutable child entity created and totalled only through its aggregate root (Invoice.addLine / issue / total).",
+   "action": "promoted to trap TRP-014 (anemic-domain-model); caught in iteration 2",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "DM4",
+   "file": "src/membership/domain/classes/class-session.ts",
+   "line": 5,
+   "message": "Anemic entity: ClassSession: `ClassSession` is an aggregate/entity with 4 data propert(ies) but no state-changing behaviour (only data and queries) — the business logic lives in a service.",
+   "class": "opinion-not-fact",
+   "reason": "No mutators is accurate; 'the business logic lives in a service' is not: hasStarted / hasRoomFor carry the class's rules. What it lacks is validation, which is CIE-001 (another concept).",
+   "action": "recorded; noise from iteration 2 on (the key covers the concept through TRP-014)",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "P6",
+   "file": null,
+   "line": null,
+   "message": "Changelog looks stale/thin: The changelog this check read carries 2 versioned entries, against a bar of 3. Counted as either an `x.y.z` string or a version-shaped section heading (`## [1.2.0]`, `## V14.x.x`, `## Updates in 8.0.x`), whichever is the larger — so a log sectioned by minor series counts its sections, not its individual patch numbers. Entries recorded somewhere this check does not read — release notes generated at tag time from a generator config it did not recognise, or a log kept outside the repository — are not counted here, and this row is about what is re-findable in the tree rather than about how often you release.",
+   "class": "opinion-not-fact",
+   "reason": "A first release (1.0.0) has one entry; 'stale/thin' judges a new project by a count bar.",
+   "action": "recorded as noise (uncovered)",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/billing/features/record-payment/record-payment.ts",
+   "line": 30,
+   "message": "Duplication concentrated across 3 sibling directories (12 clone groups): 12 duplicated blocks under src/ have copies in at least two of the sibling directories billing, membership, shared-kernel — 2 of them are reported below, and 10 are counted here but not reported individually: those copies match on shape but no longer clear R10's bar for an individually reported row — either they kept neither their own names nor their values, or what was copied is too small to stand on its own (it reports near-exact duplication only, and only of substantial extent). What this row states is the concentration, which the detector measured over all 12 and which does not depend on how exactly each block's copies still match. That concentration is one structural fact, not 12 local ones: the siblings replicate behaviour none of them owns, which is the shape of a missing shared module — a common library every sibling imports — rather than 12 separate extractions. Check first whether the siblings are deliberately standalone deliverables (scaffold templates, demo apps that must stay copy-pasteable); where they are, the duplication is the design and the per-block rows are the ones to act on.",
+   "class": "redundant",
+   "reason": "Roll-up of the located clone rows judged above.",
+   "action": "recorded",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/membership/features/cancel-membership/cancel-membership.ts",
+   "line": 39,
+   "message": "Duplication concentrated across 9 sibling directories (6 clone groups): 6 duplicated blocks under src/membership/features/ have copies in at least two of the sibling directories book-class, cancel-membership, change-contact-details, erase-member, purge-lapsed-members, record-consent (+3 more sibling(s) not listed) — 3 of them are reported below, and 3 are counted here but not reported individually: those copies match on shape but no longer clear R10's bar for an individually reported row — either they kept neither their own names nor their values, or what was copied is too small to stand on its own (it reports near-exact duplication only, and only of substantial extent). What this row states is the concentration, which the detector measured over all 6 and which does not depend on how exactly each block's copies still match. That concentration is one structural fact, not 6 local ones: the siblings replicate behaviour none of them owns, which is the shape of a missing shared module — a common library every sibling imports — rather than 6 separate extractions. Check first whether the siblings are deliberately standalone deliverables (scaffold templates, demo apps that must stay copy-pasteable); where they are, the duplication is the design and the per-block rows are the ones to act on.",
+   "class": "redundant",
+   "reason": "Roll-up of the located clone rows judged above.",
+   "action": "recorded",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/membership/features/send-class-reminders/email-gateway.ts",
+   "line": 15,
+   "message": "Duplicated block (13 lines × 2 locations): src/membership/features/send-class-reminders/email-gateway.ts:15 · src/membership/features/send-class-reminders/sms-gateway.ts:6 — the 2 copies are spread across 2 files, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+   "class": "valid",
+   "reason": "The two provider gateways repeated their option types and HTTP call.",
+   "action": "repo fixed in a1e3218: postToProvider helper (src/platform/provider-client.ts)",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/membership/features/cancel-membership/cancel-membership.ts",
+   "line": 39,
+   "message": "Duplicated block (12 lines × 2 locations): src/membership/features/cancel-membership/cancel-membership.ts:39 · src/membership/features/erase-member/erase-member.ts:33 — the 2 copies are spread across 2 directories, so the shared home is a decision rather than an obvious spot: check first whether one of them already owns this behaviour, and otherwise put the extracted module somewhere all of the sites already reach rather than making one of them depend on another.",
+   "class": "valid",
+   "reason": "Id-route handling and load-or-404 repeated across slices.",
+   "action": "repo fixed in a1e3218: idRoute and existingMember helpers",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/membership/features/change-contact-details/change-contact-details.ts",
+   "line": 40,
+   "message": "Duplicated block (12 lines × 2 locations): src/membership/features/change-contact-details/change-contact-details.ts:40 · src/membership/features/erase-member/erase-member.ts:26 — the 2 copies are spread across 2 files, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+   "class": "valid",
+   "reason": "Same repetition (load-or-404 + route tail).",
+   "action": "repo fixed in a1e3218",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/billing/features/record-payment/record-payment.ts",
+   "line": 26,
+   "message": "Duplicated block (11 lines × 4 locations): src/billing/features/record-payment/record-payment.ts:26 · src/membership/features/cancel-membership/cancel-membership.ts:35 · src/membership/features/erase-member/erase-member.ts:29 · src/membership/features/export-member-data/export-member-data.ts:53 — the 4 copies are spread across 4 files, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+   "class": "valid",
+   "reason": "Route tail (uuid parameter, sendResult) repeated in four slices.",
+   "action": "repo fixed in a1e3218: idRoute",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/membership/features/send-class-reminders/email-gateway.ts",
+   "line": 35,
+   "message": "Duplicated block (8 lines × 2 locations): src/membership/features/send-class-reminders/email-gateway.ts:35 · src/membership/features/send-class-reminders/sms-gateway.ts:25 — the 2 copies are spread across 2 files, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+   "class": "redundant",
+   "reason": "Second clone group of the same gateway duplication; one remediation cleared both.",
+   "action": "repo fixed in a1e3218",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/billing/features/record-payment/record-payment.ts",
+   "line": 17,
+   "message": "Duplicated block (7 lines × 3 locations): src/billing/features/record-payment/record-payment.ts:17 · src/membership/features/erase-member/erase-member.ts:20 · src/membership/features/record-consent/record-consent.ts:27 — the 3 copies are spread across 3 files, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+   "class": "valid",
+   "reason": "Load-or-404 head repeated.",
+   "action": "repo fixed in a1e3218: existingMember (membership); record-payment kept its single check",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/membership/features/book-class/book-class.ts",
+   "line": 55,
+   "message": "Duplicated block (5 lines × 3 locations): src/membership/features/book-class/book-class.ts:55 · src/membership/features/change-contact-details/change-contact-details.ts:47 · src/membership/features/record-consent/record-consent.ts:40 — the 3 copies are spread across 3 files, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+   "class": "valid",
+   "reason": "Parameter-then-body parsing repeated in three routes.",
+   "action": "repo fixed in a1e3218: idRoute",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/platform/db/migrations/001-membership.ts",
+   "line": 1,
+   "message": "Duplicated block (5 lines × 2 locations): src/platform/db/migrations/001-membership.ts:1 · src/platform/db/migrations/002-billing.ts:1 — the 2 copies are spread across 2 files, and the CITED SPAN is not a self-contained block — it runs from inside one construct into the next (the tail of a branch plus the head of the following one, a run of switch arms, the end of a declaration plus the list that follows it) rather than covering a whole unit. So do not lift these lines literally: no call can be substituted for a half-open construct. Extract the enclosing repeated UNIT instead — the whole function, component or branch these lines sit in — and where the repetition IS the construct (a run of switch arms, a stack of near-identical declarations) replace it with one table or registry looked up by key rather than a helper each arm calls. The copies still drift apart the first time only one of them is edited, which is why this is reported.",
+   "class": "opinion-not-fact",
+   "reason": "The knex migration file header (import of the Knex type and `export async function up`) that the migration format requires.",
+   "action": "recorded; code kept",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "X10",
+   "file": "src/membership/features/book-class/book-class.ts",
+   "line": 32,
+   "message": "Duplicated predicate: `member.status !== 'active' || member.membershipEndsOn.getTime() < today.getTime()` appears character-identically in 2 files — src/membership/features/book-class/book-class.ts, src/membership/features/send-class-reminders/send-class-reminders.ts. It is one line, so the duplication detector's token window never sees it; the copies drift when only one is corrected. Give the condition a name and one home.",
+   "class": "valid",
+   "reason": "It is SDR-001 (the good-standing rule decided in book-class and send-class-reminders, not on Member) seen through the duplicated-predicate lens. The mapping gives X10 no domain concept, so the repository-level plant stays an FN.",
+   "action": "recorded; coordinator: X10 rows over a domain type's members evidence scattered-domain-rule",
+   "iterations": [
+    1,
+    2
+   ]
+  },
+  {
+   "ruleId": "X4",
+   "file": "src/membership/features/send-class-reminders/email-gateway.ts",
+   "line": 51,
+   "message": "Interpolated log message defeats structured logging: `warn` at line 51 is handed a template literal with `${…}` substitutions as its message, so the logger receives one finished string — the values in it cannot be queried, filtered or aggregated as fields, and every occurrence reads as a different message. Pass the values beside a constant message instead: `logger.warn({ orderId, status }, 'order status updated')` for pino and bunyan, `logger.warn('order status updated', { orderId, status })` for winston. If these calls go through a NestJS `Logger` routed into pino, nestjs-pino forwards an object first argument as fields in the same way.",
+   "class": "valid",
+   "reason": "The e-mail gateway's warning interpolated the HTTP status into the message.",
+   "action": "repo fixed in a1e3218: status passed as a field, constant message",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "X4",
+   "file": "src/membership/features/send-class-reminders/sms-gateway.ts",
+   "line": 36,
+   "message": "Interpolated log message defeats structured logging: `warn` at line 36 is handed a template literal with `${…}` substitutions as its message, so the logger receives one finished string — the values in it cannot be queried, filtered or aggregated as fields, and every occurrence reads as a different message. Pass the values beside a constant message instead: `logger.warn({ orderId, status }, 'order status updated')` for pino and bunyan, `logger.warn('order status updated', { orderId, status })` for winston. If these calls go through a NestJS `Logger` routed into pino, nestjs-pino forwards an object first argument as fields in the same way.",
+   "class": "valid",
+   "reason": "The SMS gateway's warning interpolated the phone number and status into the message (the site of LOG-001).",
+   "action": "repo fixed in a1e3218: values passed as fields; the phone number stays in the entry, so LOG-001 is unchanged in substance",
+   "iterations": [
+    1
+   ]
+  },
+  {
+   "ruleId": "D26",
+   "file": null,
+   "line": null,
+   "message": "Projects may be oversized for their cohesion: 1 of 1 project(s) overshoot their size bounds, lowering Project Cohesion to 0.0/10. The most over is `(repository root)` (3559 LoC, 159 module-visible types across 33 directories). Review these for cohesion — draw the boundary inside the module first (group each responsibility into its own package or directory and keep the cross-boundary members non-public), since splitting a published package moves types between packages and breaks consumers.",
+   "class": "opinion-not-fact",
+   "reason": "Size is measured accurately (3.6k LoC, one package); 'Project Cohesion 0.0/10' for a single-package service of that size, already split into two contexts and slices by folder, goes beyond what the size supports.",
+   "action": "recorded as noise (uncovered)",
+   "iterations": [
+    2
+   ]
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/billing/db/invoice-store.ts",
+   "line": 58,
+   "message": "Duplication concentrated across 3 sibling directories (10 clone groups): 10 duplicated blocks under src/ have copies in at least two of the sibling directories billing, membership, shared-kernel — 0 of them are reported below, and 10 are counted here but not reported individually: those copies match on shape but no longer clear R10's bar for an individually reported row — either they kept neither their own names nor their values, or what was copied is too small to stand on its own (it reports near-exact duplication only, and only of substantial extent). What this row states is the concentration, which the detector measured over all 10 and which does not depend on how exactly each block's copies still match. That concentration is one structural fact, not 10 local ones: the siblings replicate behaviour none of them owns, which is the shape of a missing shared module — a common library every sibling imports — rather than 10 separate extractions. Check first whether the siblings are deliberately standalone deliverables (scaffold templates, demo apps that must stay copy-pasteable); where they are, the duplication is the design and the per-block rows are the ones to act on.",
+   "class": "opinion-not-fact",
+   "reason": "Iteration 2 roll-up: 10 clone groups, none reported individually (below the row bar) — the per-slice repetition ADR 0001 accepts to keep slices independent.",
+   "action": "recorded; code kept",
+   "iterations": [
+    2
+   ]
+  },
+  {
+   "ruleId": "R10",
+   "file": "src/membership/features/cancel-membership/cancel-membership.ts",
+   "line": 36,
+   "message": "Duplicated block (7 lines × 2 locations): src/membership/features/cancel-membership/cancel-membership.ts:36 · src/membership/features/erase-member/erase-member.ts:30 — the 2 copies are spread across 2 directories, so the shared home is a decision rather than an obvious spot: check first whether one of them already owns this behaviour, and otherwise put the extracted module somewhere all of the sites already reach rather than making one of them depend on another.",
+   "class": "opinion-not-fact",
+   "reason": "Two route registrations that differ in path and scope; extracting them buys nothing.",
+   "action": "recorded; code kept",
+   "iterations": [
+    2
+   ]
+  }
+ ],
+ "falseNegatives": [
+  {
+   "entryId": "DIB-001",
+   "concept": "domain-depends-on-infrastructure",
+   "reason": "ContactUniqueness in the membership domain imports knex and queries the members table. DM6's TypeScript arm only reads ORM decorators (TypeORM/MikroORM/Sequelize/Mongoose) on domain classes; imports and queries are invisible."
+  },
+  {
+   "entryId": "REP-001",
+   "concept": "repository-for-non-aggregate",
+   "reason": "InvoiceLineRepository serves the child entity InvoiceLine (the late-fee slice adds lines to issued invoices through it). DM7 on TypeScript cannot read a repository's subject: the code model records no type arguments of implemented interfaces, and a plain port interface is counted, never charged."
+  },
+  {
+   "entryId": "SDR-001",
+   "concept": "scattered-domain-rule",
+   "reason": "The good-standing rule is decided in book-class and send-class-reminders over Member's fields, not on Member. DM9 has no TypeScript arm; X10 reported the duplicated predicate (valid, unmapped to this concept)."
+  },
+  {
+   "entryId": "MAT-001",
+   "concept": "multi-aggregate-transaction",
+   "reason": "CancelMembershipHandler saves the Member and each future ClassBooking in one transaction. DM10 has no TypeScript arm."
+  },
+  {
+   "entryId": "CIE-001",
+   "concept": "constructible-invalid-entity",
+   "reason": "ClassSession's public constructor stores raw title, capacity and duration unchecked, with no factory. DM11 has no TypeScript arm (and the TypeScript model does not type constructor parameter primitives)."
+  },
+  {
+   "entryId": "BTL-001",
+   "concept": "boundary-type-leakage",
+   "reason": "Found in substance: D23 reported MemberId (membership → billing) via BillingAccount.memberId and its constructor, but every D23 row is location-less, so it cannot match the located plant (contract 1.4)."
+  },
+  {
+   "entryId": "CON-001",
+   "concept": "consent-not-checked",
+   "reason": "SMS reminders go to every member with a phone number without Member.hasConsented('sms-reminders'). The concept is unmapped for Watchdog: no rule locates a consent check (C5 credits consent as repository posture only)."
+  }
+ ],
+ "scoreBands": [
+  {
+   "entryId": "BND-001",
+   "concept": "data-encryption-controls",
+   "band": [
+    35,
+    80
+   ],
+   "outcome": "in",
+   "scores": [
+    {
+     "source": "C1",
+     "score": 65
+    }
+   ],
+   "source": "iteration 2 contained; identical in both host passes"
+  },
+  {
+   "entryId": "BND-002",
+   "concept": "audit-trail",
+   "band": [
+    30,
+    75
+   ],
+   "outcome": "in",
+   "scores": [
+    {
+     "source": "C3",
+     "score": 75
+    }
+   ],
+   "source": "iteration 2 contained; identical in both host passes"
+  },
+  {
+   "entryId": "BND-003",
+   "concept": "data-retention-policy",
+   "band": [
+    30,
+    80
+   ],
+   "outcome": "in",
+   "scores": [
+    {
+     "source": "C4",
+     "score": 50
+    }
+   ],
+   "source": "iteration 2 contained; identical in both host passes",
+   "note": "50: the row misses the purge job and the retention limit (false-positive), but the score lands in band"
+  },
+  {
+   "entryId": "BND-004",
+   "concept": "data-subject-rights",
+   "band": [
+    40,
+    90
+   ],
+   "outcome": "in",
+   "scores": [
+    {
+     "source": "C5",
+     "score": 40
+    }
+   ],
+   "source": "iteration 2 contained; identical in both host passes",
+   "note": "40, at the band floor: export and consent not recognised (false-positive ticks)"
+  },
+  {
+   "entryId": "BND-005",
+   "concept": "personal-data-inventory",
+   "band": [
+    10,
+    70
+   ],
+   "outcome": "unscored",
+   "scores": [],
+   "source": "iteration 2 contained + both host passes",
+   "note": "No LA1 card in any pass: contained mode has no model and does not pass the framework variable; both host passes (default and CODEHEALTH_COMPLIANCE_FRAMEWORKS=gdpr-tech) ran without a TypeScript code model (sidecar exits with ERR_MODULE_NOT_FOUND in host mode), which LA1 reads."
+  }
+ ],
+ "observations": [
+  "Recall 4/11 (36.4 %) in the contained default pass, trap resistance 13/14; the 4 TPs are DM1, DM2, AX7 (the first TypeScript measurements of those rows) and D32.",
+  "Five of the seven FNs are population gaps of the TypeScript arm by construction: DM9, DM10 and DM11 have no TypeScript arm, DM7 cannot read a TypeScript repository's subject type, and DM6 on TypeScript reads ORM decorators only (a domain service querying knex is invisible). One is unmapped (consent-not-checked). One (BTL-001) was found by D23 but is location-less.",
+  "D23 attributes bounded contexts on TypeScript by sibling directories that declare aggregate roots (src/membership, src/billing) without configuration, and reported the real leak and its spread with no false row; its rows carry no file or line, so a harness can only credit them through a location mechanism (D23 names the type and member, not the file).",
+  "X10 independently reported the scattered good-standing predicate (SDR-001); mapping X10 rows over a domain type's members to scattered-domain-rule would credit it (coordinator decision).",
+  "C4 and C5 recognise retention, export and consent by fixed identifier vocabularies (purgeExpired…, ExportPersonalData…, Consent+Gdpr in one file): a purge job named after lapsed members and an export named after member data are not seen; both scores still land in band.",
+  "The host --with-llm passes on this box have no TypeScript code model (the sidecar's node modules are not installed beside the host engine): every DM/AX7/D23 card disappears and recall drops to 0/11. Model-judged rows (M4 100, D19 90, D21 100) raised nothing; the default and gdpr-tech host passes are byte-identical. LA1 could not be measured in either configuration.",
+  "Harness: concept consent-not-checked added (scanner-benchmark fff4381), unmapped for Watchdog."
+ ]
+}
