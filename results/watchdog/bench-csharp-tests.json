@@ -1,0 +1,188 @@
+{
+ "repo": "code-assurance-initiative/bench-csharp-tests",
+ "tag": "v1.0.0",
+ "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-07",
+   "sarifSha256": "e0f3fadbb1d4e2d3ecf8888fde56841654d0b2cf65e5b401141834c84bd70306",
+   "outcomes": {
+    "tp": 7,
+    "fn": 4,
+    "fp": 1,
+    "tn": 93,
+    "trapFp": 1,
+    "trapTn": 12,
+    "results": 8,
+    "noise": 1,
+    "redundant": 0,
+    "uncovered": 5
+   },
+   "note": "contained; repository commit 8413dc0"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "0d5b1de8678ef01e680ab70c5edb0c24b2f1e725a6d9b6d4d14567904eb263b0",
+   "outcomes": {
+    "tp": 7,
+    "fn": 4,
+    "fp": 1,
+    "tn": 94,
+    "trapFp": 1,
+    "trapTn": 12,
+    "results": 8,
+    "noise": 1,
+    "redundant": 0,
+    "uncovered": 4
+   },
+   "note": "contained, final; repository commit eabe7b3 (tag v1.0.0 = a2dce40, journal only after it)"
+  }
+ ],
+ "verdicts": [
+  {
+   "ruleId": "D10",
+   "file": "tests/Fx.Conversion.UnitTests/Allocation/AllocatorTests.cs",
+   "line": 50,
+   "message": "No assertions: PartsAlwaysSumToTheTotal: This method's body runs code, and no assertion call was recognised in it. Recognised by name: Assert*, *Should*/ShouldBe*, Verify, Expect, Throws, Record, Received/DidNotReceive, MustHaveHappened/MustNotHaveHappened, EnsureSuccessStatusCode and *AndEnsure* — so verification routed through a helper of your own naming, through a base-class or callback object whose members hold the assertions, or through a harness that fails by throwing under some other name, is not visible to this check and is not counted here. Read it as 'no assertion this check knows how to see', and if that is right, add one.",
+   "class": "false-positive",
+   "reason": "CsCheck Gen.Select(...).Sample(predicate) throws CsCheckException with the shrunk counter-example when the predicate returns false (AllocatorTests.cs:52-59): the property-assert API is the assertion. The marker list does not know Sample.",
+   "action": "recorded as noise; caught by trap TRP-009 (planned before the scan)",
+   "iteration": 1,
+   "pass": "contained"
+  },
+  {
+   "ruleId": "D4",
+   "file": "src/Fx.Conversion.Api/Contracts/ConversionRequest.cs",
+   "line": 8,
+   "message": "Duplicated block (10 lines × 2): src/Fx.Conversion.Api/Contracts/ConversionRequest.cs:8-17 | src/Fx.Conversion.Api/Contracts/QuoteRequest.cs:7-16 — the copies sit in sibling files of one directory, so a shared home is within easy reach: extract the block into a single shared function the call sites can all reach — a file they already depend on, or a new one alongside them — and call it from both call sites, so a change lands once.",
+   "class": "valid",
+   "reason": "The conversion and quote request contracts repeated the same From/To validation attributes and properties; one shared declaration is the obvious home.",
+   "action": "repo fixed in 743d844 (abstract CurrencyPairRequest)",
+   "iteration": 1,
+   "pass": "contained"
+  },
+  {
+   "ruleId": "D5",
+   "file": null,
+   "line": null,
+   "message": "Off the main sequence: Fx.Conversion.Core: Fx.Conversion.Core: abstractness 0.26, instability 0.00, distance 0.74 — zone of pain — concrete and depended on by 2 project(s), so it's rigid to change.",
+   "class": "opinion-not-fact",
+   "reason": "The abstractness/instability numbers are accurate, but a concrete, I/O-free money library depended on by the host and the adapter is the intended shape (ADR 0001); main-sequence distance does not make it a defect.",
+   "action": "recorded as noise",
+   "iteration": 1,
+   "pass": "contained"
+  },
+  {
+   "ruleId": "D17",
+   "file": ".editorconfig",
+   "line": 37,
+   "message": "AnalyzerSeverityNone: CA2007 — this rule is switched off for every file the section matches, in every project under this directory, and the only record that it was ever switched off is this line: nothing at the sites it would have reported says so, so a reader of that code has no reason to look here, and code added years from now inherits the decision silently. Fix what the rule reports and delete the entry, or — where some sites really are legitimate — leave the rule on and suppress it at those sites with their reasons, so it keeps protecting the rest of the tree. If the rule is genuinely unwanted here, say why — on this line after the entry, or in the comment run directly above it: a comment that only repeats the rule's own title is read as no explanation at all and leaves this row in place.",
+   "class": "false-positive",
+   "reason": "The reason is the comment directly above (.editorconfig:36: tests must not use ConfigureAwait(false), xUnit1030; production re-enables it), and src/.editorconfig:3 switches CA2007 back to warning for every production file. The row claims the line is the only record and that no reason exists.",
+   "action": "recorded as noise (same site as bench-csharp-baseline-clean TRP-001; not promoted, off theme)",
+   "iteration": 1,
+   "pass": "contained"
+  },
+  {
+   "ruleId": "IC1",
+   "file": "tests/Fx.Conversion.UnitTests/Rates/CurrencyConverterTests.cs",
+   "line": 49,
+   "message": "Disabled test: A test is skipped (\"wip\") — coverage that looks present but never runs in any gate. If it's an opt-in suite, document how it runs; otherwise re-enable or delete it.",
+   "class": "redundant",
+   "reason": "Same test and same issue as the D10 \"Skipped test\" hit on TQ-003; one remediation clears both.",
+   "action": "recorded; counted once",
+   "iteration": 1,
+   "pass": "contained"
+  },
+  {
+   "ruleId": "IC1",
+   "file": "tests/Fx.Conversion.UnitTests/Allocation/AllocatorTests.cs",
+   "line": 63,
+   "message": "Disabled test: A test is skipped (\"BUG: weights whose sum exceeds int.MaxValue overflow before they are allocated; tracked in https://github.com/code-assurance-initiative/bench-csharp-tests/issues/1\") — coverage that looks present but never runs in any gate. If it's an opt-in suite, document how it runs; otherwise re-enable or delete it.",
+   "class": "opinion-not-fact",
+   "reason": "The test is skipped (true), but the framing \"coverage that looks present but never runs … re-enable or delete it\" ignores a categorised BUG: reason naming a reproduced defect and its tracking issue (#1). Off-concept in the mapping (skip with a reason), so it does not reach trap TRP-003.",
+   "action": "recorded as noise",
+   "iteration": 1,
+   "pass": "contained"
+  }
+ ],
+ "falseNegatives": [
+  {
+   "entryId": "TQ-002",
+   "reason": "AllocatorTests.AllocatesAcrossManyParts ends in Assert.True(true) and checks nothing the allocator produced. The assertion recogniser counts any Assert* call; a tautological assertion is not distinguished from a real one."
+  },
+  {
+   "entryId": "TQ-006",
+   "reason": "RateTableTests.TablePublishedTodayIsCurrent builds its expectation from DateTime.Today (local) against AgeInDays on the UTC date; fails whenever local and UTC dates differ (reproduced with TZ=Pacific/Pago_Pago at 09:23 UTC: expected 0, actual 1). No static check reads ambient clock use in tests, and the D11 re-runs on a UTC box cannot observe it."
+  },
+  {
+   "entryId": "TQ-007",
+   "reason": "QuoteServiceTests.CreatingAQuoteCallsEveryCollaborator substitutes all six collaborators and asserts only Received() calls. The scanner reports mock frameworks as an Info inventory line only; no per-test mock-dominance row exists at rubric-2026.10.1 (the mapping has no rule for excessive-mocking)."
+  },
+  {
+   "entryId": "AX8-001",
+   "reason": "src/Fx.Conversion.Api/Fx.Conversion.Api.csproj:10 references tests/Fx.Conversion.TestSupport (fakes, rate tables, xUnit assertion helpers; references xunit.v3.assert). AX8 scored 100 with no finding: the test-support project, which holds no test methods, is evidently not classified as a test project, so the production -> test edge is not seen."
+  }
+ ],
+ "scoreBands": [
+  {
+   "entryId": "BND-001",
+   "outcome": "out",
+   "score": 100,
+   "band": [
+    60,
+    95
+   ],
+   "note": "Scanner coverage curve saturates: 88 % merged line coverage scores 10/10 although it reports the wholly untested CashRounding.cs row (opinion-not-fact; band kept, set before the scan)."
+  },
+  {
+   "entryId": "BND-002",
+   "outcome": "in",
+   "score": 95,
+   "band": [
+    70,
+    100
+   ],
+   "note": "95: unit base, integration and BDD tiers."
+  },
+  {
+   "entryId": "BND-003",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "note": "P9 publishes no score on this repository."
+  },
+  {
+   "entryId": "BND-004",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "note": "Four Gherkin scenarios bound to Reqnroll steps."
+  },
+  {
+   "entryId": "BND-005",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    30,
+    75
+   ],
+   "note": "P12 is advisory and publishes no score; its \"Coverage collected but not gated\" row is the GATE-001 hit."
+  }
+ ],
+ "observations": [
+  "Recall 7/11, trap resistance 12/13. The static D10 checks hit every shape they look for (assertion-free body, undocumented skip, swallowed failure, fixed sleep after Task.Run, live host fetch); the four misses are shapes no rule reads: a tautological assertion, ambient local-clock use in a test, per-test mock dominance, and a production reference to a test-support project without test methods.",
+  "The one trap caught is the assertion recogniser not knowing CsCheck Sample(predicate) (it knows FsCheck *ThrowOnFailure terminals).",
+  "D11 re-ran the suite and found nothing flaky: correct for this run, and by construction blind to a time-zone-dependent test on a UTC analyzer box.",
+  "Harness change made for this repository (scanner-benchmark 8779a5c): concept test-failure-swallowed; D10 \"Test cannot fail\" rows were off-concept before.",
+  "D8 scores coverage on a saturating curve (88 % -> 100), so a score band cannot express \"one core module untested\"; the located Low coverage row does, and is the COV-001 hit."
+ ]
+}
