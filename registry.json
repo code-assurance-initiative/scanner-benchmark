@@ -391,5 +391,17 @@
         "bundle": "units/bench-csharp-security-iac.bundle"
       }
     }
+  ],
+  "preregistrations": [
+    {
+      "set": "holdout-2026-q4",
+      "repository": "code-assurance-initiative/holdout-2026-q4 (private until release)",
+      "methodFile": "docs/HOLDOUT-METHOD.md",
+      "methodCommit": "bf0fd98b140193c62bcb57a4c663a8a4c3f3262b",
+      "methodSha256": "9e2f8cf1f879460da19a7e5dd1c99b96af06b6e31e3df657619b43768277a813",
+      "quotaSha256": "6543d686ebb5bb76018b59083cd8804b7a286d4ddbd6a2b2ea6f16443f07f2b4",
+      "committedAt": "2026-10-07T21:22:57+02:00",
+      "note": "method sealed; contents private until release"
+    }
   ]
 }
