@@ -1,0 +1,704 @@
+{
+ "repo": "code-assurance-initiative/estate-quellbrook-web",
+ "tag": "v1.0.0",
+ "engineVersion": "rubric-2026.10.1 (pinned instrument kennel-wt-scanner-bench @ 6a05dfb6c)",
+ "keySha256": "1971775473ee8d41824669768c7ba8c8721f3e85d204bf67f4d8a89950fa3e35",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-07",
+   "sarifSha256": "ea44ba0cf1647e82b357189cfc14837cc0264d952ae6fbe2657a2c0d77b800f7",
+   "outcomes": {
+    "tp": 3,
+    "fn": 0,
+    "fp": 5,
+    "tn": 92,
+    "trapFp": 3,
+    "trapTn": 4,
+    "results": 15,
+    "noise": 12,
+    "redundant": 0,
+    "uncovered": 3
+   },
+   "note": "contained; first complete local history (6faee89, before any push, before the nginx header fix); scored with the frozen v1.0.0 key"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "8a1a83a61c0541226d8c408996b9c9c125ce070ff72609fad5d1f952b7590669",
+   "outcomes": {
+    "tp": 3,
+    "fn": 0,
+    "fp": 4,
+    "tn": 93,
+    "trapFp": 3,
+    "trapTn": 4,
+    "results": 7,
+    "noise": 4,
+    "redundant": 0,
+    "uncovered": 3
+   },
+   "note": "contained; pushed c633a99 (code identical to v1.0.0, which adds trap TRP-007 and the final journal entry)"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "ff3dcd471b9312c3764c3054cdc5ca6d401bab3f33c2a2ecd4380027d1683b72",
+   "outcomes": {
+    "tp": 3,
+    "fn": 0,
+    "fp": 4,
+    "tn": 93,
+    "trapFp": 3,
+    "trapTn": 4,
+    "results": 7,
+    "noise": 4,
+    "redundant": 0,
+    "uncovered": 4
+   },
+   "note": "host, model-judged pass; c633a99; the host has no container/IaC tools"
+  }
+ ],
+ "verdicts": [
+  {
+   "ruleId": "AC4",
+   "file": "src/features/orders/OrdersTable.tsx",
+   "line": 23,
+   "message": "Click handler on a non-interactive <tr>: A click handler on a plain element isn't keyboard-operable. Use a <button>, or add role + tabIndex={0} + a key handler.",
+   "class": "valid",
+   "reason": "The orders table row opens an order on click only.",
+   "action": "kept: plant WEB-001 (TP)"
+  },
+  {
+   "ruleId": "AC2",
+   "file": "src/features/orders/OrdersPage.tsx",
+   "line": 18,
+   "message": "<input> without a programmatic label: This control has only a placeholder — a placeholder is not a label (it vanishes on input and many AT ignore it). Add a <label htmlFor>, a wrapping <label>, or aria-label.",
+   "class": "valid",
+   "reason": "The search box has only a placeholder.",
+   "action": "kept: plant WEB-002 (TP)"
+  },
+  {
+   "ruleId": "AC1",
+   "file": "src/features/dispatch/RouteCard.tsx",
+   "line": 23,
+   "message": "<img> without a text alternative: An image with no alt (and no aria-label/aria-labelledby) is unreadable to assistive tech. Add alt — alt=\"\" if it's purely decorative.",
+   "class": "valid",
+   "reason": "The vehicle icon has no text alternative.",
+   "action": "kept: plant WEB-003 (TP)"
+  },
+  {
+   "ruleId": "D29",
+   "file": "nginx/default.conf",
+   "line": 15,
+   "message": "Low: header-redefinition: The 'add_header' directive is called in a 'location' block after headers have been set at the server block. Calling 'add_header' in the location block will actually overwrite the headers defined in the server block, no matter which headers are set. To fix this, explicitly set all headers or set all headers in the server block. This is a semgrep security-AUDIT rule reporting a POLICY that is absent or weaker than its recommendation, not an exploitable defect. Confirm whether the current setting is a deliberate decision for this repository — and apply the change where it is not; where it is (a policy your release process already enforces elsewhere, or one this repository has consciously opted out of), record the decision and leave the configuration as it is.",
+   "class": "valid",
+   "reason": "A location re-declared add_header, which in nginx drops every header set at server level: the page lost Permissions-Policy and the assets their frame and referrer policies.",
+   "action": "repository fixed in the scripted history: headers set once at server level, caching with expires (sprint 3, 2026-09-03)"
+  },
+  {
+   "ruleId": "D29",
+   "file": "nginx/default.conf",
+   "line": 16,
+   "message": "Low: header-redefinition: The 'add_header' directive is called in a 'location' block after headers have been set at the server block. Calling 'add_header' in the location block will actually overwrite the headers defined in the server block, no matter which headers are set. To fix this, explicitly set all headers or set all headers in the server block. This is a semgrep security-AUDIT rule reporting a POLICY that is absent or weaker than its recommendation, not an exploitable defect. Confirm whether the current setting is a deliberate decision for this repository — and apply the change where it is not; where it is (a policy your release process already enforces elsewhere, or one this repository has consciously opted out of), record the decision and leave the configuration as it is.",
+   "class": "valid",
+   "reason": "A location re-declared add_header, which in nginx drops every header set at server level: the page lost Permissions-Policy and the assets their frame and referrer policies.",
+   "action": "repository fixed in the scripted history: headers set once at server level, caching with expires (sprint 3, 2026-09-03)"
+  },
+  {
+   "ruleId": "D29",
+   "file": "nginx/default.conf",
+   "line": 17,
+   "message": "Low: header-redefinition: The 'add_header' directive is called in a 'location' block after headers have been set at the server block. Calling 'add_header' in the location block will actually overwrite the headers defined in the server block, no matter which headers are set. To fix this, explicitly set all headers or set all headers in the server block. This is a semgrep security-AUDIT rule reporting a POLICY that is absent or weaker than its recommendation, not an exploitable defect. Confirm whether the current setting is a deliberate decision for this repository — and apply the change where it is not; where it is (a policy your release process already enforces elsewhere, or one this repository has consciously opted out of), record the decision and leave the configuration as it is.",
+   "class": "valid",
+   "reason": "A location re-declared add_header, which in nginx drops every header set at server level: the page lost Permissions-Policy and the assets their frame and referrer policies.",
+   "action": "repository fixed in the scripted history: headers set once at server level, caching with expires (sprint 3, 2026-09-03)"
+  },
+  {
+   "ruleId": "D29",
+   "file": "nginx/default.conf",
+   "line": 28,
+   "message": "Low: header-redefinition: The 'add_header' directive is called in a 'location' block after headers have been set at the server block. Calling 'add_header' in the location block will actually overwrite the headers defined in the server block, no matter which headers are set. To fix this, explicitly set all headers or set all headers in the server block. This is a semgrep security-AUDIT rule reporting a POLICY that is absent or weaker than its recommendation, not an exploitable defect. Confirm whether the current setting is a deliberate decision for this repository — and apply the change where it is not; where it is (a policy your release process already enforces elsewhere, or one this repository has consciously opted out of), record the decision and leave the configuration as it is.",
+   "class": "valid",
+   "reason": "A location re-declared add_header, which in nginx drops every header set at server level: the page lost Permissions-Policy and the assets their frame and referrer policies.",
+   "action": "repository fixed in the scripted history: headers set once at server level, caching with expires (sprint 3, 2026-09-03)"
+  },
+  {
+   "ruleId": "D29",
+   "file": "nginx/default.conf",
+   "line": 29,
+   "message": "Low: header-redefinition: The 'add_header' directive is called in a 'location' block after headers have been set at the server block. Calling 'add_header' in the location block will actually overwrite the headers defined in the server block, no matter which headers are set. To fix this, explicitly set all headers or set all headers in the server block. This is a semgrep security-AUDIT rule reporting a POLICY that is absent or weaker than its recommendation, not an exploitable defect. Confirm whether the current setting is a deliberate decision for this repository — and apply the change where it is not; where it is (a policy your release process already enforces elsewhere, or one this repository has consciously opted out of), record the decision and leave the configuration as it is.",
+   "class": "valid",
+   "reason": "A location re-declared add_header, which in nginx drops every header set at server level: the page lost Permissions-Policy and the assets their frame and referrer policies.",
+   "action": "repository fixed in the scripted history: headers set once at server level, caching with expires (sprint 3, 2026-09-03)"
+  },
+  {
+   "ruleId": "D29",
+   "file": "nginx/default.conf",
+   "line": 30,
+   "message": "Low: header-redefinition: The 'add_header' directive is called in a 'location' block after headers have been set at the server block. Calling 'add_header' in the location block will actually overwrite the headers defined in the server block, no matter which headers are set. To fix this, explicitly set all headers or set all headers in the server block. This is a semgrep security-AUDIT rule reporting a POLICY that is absent or weaker than its recommendation, not an exploitable defect. Confirm whether the current setting is a deliberate decision for this repository — and apply the change where it is not; where it is (a policy your release process already enforces elsewhere, or one this repository has consciously opted out of), record the decision and leave the configuration as it is.",
+   "class": "valid",
+   "reason": "A location re-declared add_header, which in nginx drops every header set at server level: the page lost Permissions-Policy and the assets their frame and referrer policies.",
+   "action": "repository fixed in the scripted history: headers set once at server level, caching with expires (sprint 3, 2026-09-03)"
+  },
+  {
+   "ruleId": "D29",
+   "file": "nginx/default.conf",
+   "line": 31,
+   "message": "Low: header-redefinition: The 'add_header' directive is called in a 'location' block after headers have been set at the server block. Calling 'add_header' in the location block will actually overwrite the headers defined in the server block, no matter which headers are set. To fix this, explicitly set all headers or set all headers in the server block. This is a semgrep security-AUDIT rule reporting a POLICY that is absent or weaker than its recommendation, not an exploitable defect. Confirm whether the current setting is a deliberate decision for this repository — and apply the change where it is not; where it is (a policy your release process already enforces elsewhere, or one this repository has consciously opted out of), record the decision and leave the configuration as it is.",
+   "class": "valid",
+   "reason": "A location re-declared add_header, which in nginx drops every header set at server level: the page lost Permissions-Policy and the assets their frame and referrer policies.",
+   "action": "repository fixed in the scripted history: headers set once at server level, caching with expires (sprint 3, 2026-09-03)"
+  },
+  {
+   "ruleId": "D29",
+   "file": "nginx/default.conf",
+   "line": 32,
+   "message": "Low: header-redefinition: The 'add_header' directive is called in a 'location' block after headers have been set at the server block. Calling 'add_header' in the location block will actually overwrite the headers defined in the server block, no matter which headers are set. To fix this, explicitly set all headers or set all headers in the server block. This is a semgrep security-AUDIT rule reporting a POLICY that is absent or weaker than its recommendation, not an exploitable defect. Confirm whether the current setting is a deliberate decision for this repository — and apply the change where it is not; where it is (a policy your release process already enforces elsewhere, or one this repository has consciously opted out of), record the decision and leave the configuration as it is.",
+   "class": "valid",
+   "reason": "A location re-declared add_header, which in nginx drops every header set at server level: the page lost Permissions-Policy and the assets their frame and referrer policies.",
+   "action": "repository fixed in the scripted history: headers set once at server level, caching with expires (sprint 3, 2026-09-03)"
+  },
+  {
+   "ruleId": "AC7",
+   "file": null,
+   "line": null,
+   "message": "Accessibility enforcement below the top rung: No accessibility enforcement found — no a11y linter (eslint-plugin-jsx-a11y) and no axe/pa11y/Lighthouse in tests or CI. Start with the linter to catch issues at author time. What was searched, so you can tell an absence from a miss: the 13 markup file(s) this pass actually assessed, the linter configuration checked in beside them, and this repository's test and CI files — matched by name against the accessibility checkers this dimension carries. An audit run outside the repository, a hosted scanner, or a check whose name is not one of those, is not seen here.",
+   "class": "valid",
+   "reason": "True: the repository has no accessibility linter and no automated accessibility assertions.",
+   "action": "kept: expected by band accessibility-checks-in-ci [0, 40]"
+  },
+  {
+   "ruleId": "AC4",
+   "file": "src/features/orders/CancelOrderDialog.tsx",
+   "line": 38,
+   "message": "Click handler on a non-interactive <dialog>: A click handler on a plain element isn't keyboard-operable. Use a <button>, or add role + tabIndex={0} + a key handler.",
+   "class": "false-positive",
+   "reason": "A native modal <dialog>: Escape and its Close button close it; the backdrop click is a pointer convenience.",
+   "action": "caught by trap TRP-004"
+  },
+  {
+   "ruleId": "D31",
+   "file": "Dockerfile",
+   "line": 1,
+   "message": "Low IaC: DS-0026: No HEALTHCHECK defined. Add HEALTHCHECK instruction in your Dockerfile. Add HEALTHCHECK instruction in Dockerfile. Without one the runtime only knows whether the process is alive, not whether it is serving, so a wedged container is restarted by nobody. The step: add a `HEALTHCHECK` to the image that probes the service the way a client would — this image already declares `EXPOSE 8080`, so a request to `localhost:8080` on the service's own health or root route, exiting non-zero when it does not answer, is the probe — and give it an `--interval`, a `--timeout` and a `--start-period` long enough to cover startup. If the image ships no HTTP client, probe with whatever the runtime already has, or declare the check in the orchestrator instead and say so here.",
+   "class": "shape-irrelevant",
+   "reason": "No HEALTHCHECK on a Kubernetes-only image; probes are in the manifest.",
+   "action": "caught by trap TRP-005"
+  },
+  {
+   "ruleId": "R2",
+   "file": "src/features/orders/OrderDetailPage.tsx",
+   "line": 12,
+   "message": "Complex function OrderDetailPage (cyclomatic 11, cognitive 10): OrderDetailPage has cyclomatic complexity 11 and cognitive complexity 10; this row is raised above a cyclomatic bar of 10. The two numbers answer different questions and the gap between them is what decides whether to act: cyclomatic counts the independent arms through the body, cognitive counts what it costs to hold them in your head, so nesting and mixed boolean chains raise it while a flat run of independent arms does not. Cognitive sits below cyclomatic here, so much of the count is breadth — arms side by side rather than stacked — and splitting per arm would leave a function per arm; group the work between the checks into named steps instead. Measured by this repository's own parse of the file, so a body assembled at runtime, or generated, is counted as written rather than as it executes.",
+   "class": "opinion-not-fact",
+   "reason": "Cyclomatic 11 against a bar of 10, below the scanner's own D1 threshold of 15; a flat sequence of conditional renders.",
+   "action": "promoted to trap TRP-006"
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/deployment.yaml",
+   "line": 43,
+   "message": "Medium IaC: KSV-0125: Restrict container images to trusted registries. Container web in deployment quellbrook-web (namespace: quellbrook-edge) uses an image from an untrusted registry. Use images from trusted registries.",
+   "class": "opinion-not-fact",
+   "reason": "KSV-0125 'untrusted registry' for the organisation's own ghcr.io.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D41",
+   "file": null,
+   "line": null,
+   "message": "No AppArmor/SELinux confinement: Workloads declare no AppArmor or SELinux profile. A mandatory-access-control profile confines what a compromised container can touch on the host, complementing seccomp's syscall filter.",
+   "class": "opinion-not-fact",
+   "reason": "seccomp RuntimeDefault and dropped capabilities are set; AppArmor/SELinux is a further hardening step.",
+   "action": "recorded as noise"
+  },
+  {
+   "ruleId": "D20",
+   "file": "docs/adr/0001-record-architecture-decisions.md",
+   "line": 1,
+   "message": "The ADR describes a process for recording decisions rather than making a specific architectural decision, and the title is generic and uninformative.: Rename the title to reflect the specific decision (e.g., 'ADR 1: Establish Architecture Decision Record Process') and explicitly state the decision to adopt the ADR process as the standard for documenting console architecture.",
+   "class": "opinion-not-fact",
+   "reason": "A decision to record decisions is the conventional first ADR (Nygard); it has status, context, decision and consequences.",
+   "action": "promoted to trap TRP-007"
+  },
+  {
+   "ruleId": "D19",
+   "file": "README.md",
+   "line": 1,
+   "message": "Documentation: no contributor guidance: The document outline lists a 'Contributing' section, but the visible text ends before this section is reached. Without seeing the content, it is impossible to verify if guidance for contributors is present. If the section is empty or missing from the actual file, this is a defect. Ensure the 'Contributing' section in README.md contains clear instructions on how to submit pull requests, coding standards, and how to report issues.",
+   "class": "false-positive",
+   "reason": "The README has a Contributing section (pull requests, CI gates, CodeQL, CHANGELOG); the model says it could not see it.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README claims the deployment workflow verifies signed build provenance, but the evidence shows no workflow file or configuration for provenance verification. — searched for: `signed build provenance`, `provenance verification`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "deploy.yml verifies the provenance attestation that release.yml creates with actions/attest-build-provenance; the README's claim is true.",
+   "action": "recorded as noise (model pass)"
+  },
+  {
+   "ruleId": "P2",
+   "file": null,
+   "line": null,
+   "message": "No structured logging: No logging call was found in the 20 JavaScript/TypeScript production file(s) this check read across 1 module(s). Each was searched for its ecosystem's logging libraries (JavaScript/TypeScript: pino, winston, bunyan, log4js, loglevel, consola, the NestJS Logger) and for a call on a receiver named `log`/`logger` (or ending in `Logger`/`_logger`) with a level verb. It cannot see logging through a repo-local wrapper named otherwise, or in source it did not read — this is 'no logging found by this walk', not a verdict that nothing here logs. If it is right, production issues will be hard to diagnose.",
+   "class": "shape-irrelevant",
+   "reason": "A static single-page application has no server-side log; browser code is not expected to log.",
+   "action": "recorded as noise"
+  }
+ ],
+ "falseNegatives": [],
+ "scoreBands": [
+  {
+   "entryId": "BND-001",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-002",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-003",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-004",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-005",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    30,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-006",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-007",
+   "outcome": "in",
+   "score": 70,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 70
+   }
+  },
+  {
+   "entryId": "BND-008",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-009",
+   "outcome": "in",
+   "score": 80,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 80
+   }
+  },
+  {
+   "entryId": "BND-010",
+   "outcome": "in",
+   "score": 70,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 70
+   }
+  },
+  {
+   "entryId": "BND-011",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-012",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-013",
+   "outcome": "in",
+   "score": 0,
+   "band": [
+    0,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 0
+   }
+  },
+  {
+   "entryId": "BND-014",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-015",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    40,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-016",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    40,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-017",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-018",
+   "outcome": "in",
+   "score": 80,
+   "band": [
+    10,
+    80
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 80
+   }
+  },
+  {
+   "entryId": "BND-019",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    0,
+    40
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-020",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-021",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    30,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-022",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-023",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-024",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 90
+   }
+  },
+  {
+   "entryId": "BND-025",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 60
+   }
+  },
+  {
+   "entryId": "BND-026",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-027",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    50,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 93
+   }
+  },
+  {
+   "entryId": "BND-028",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-029",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-030",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  },
+  {
+   "entryId": "BND-031",
+   "outcome": "in",
+   "score": 40,
+   "band": [
+    0,
+    40
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 40
+   }
+  },
+  {
+   "entryId": "BND-032",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    90,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-033",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ],
+   "modelPass": {
+    "outcome": "in",
+    "score": 100
+   }
+  },
+  {
+   "entryId": "BND-034",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "modelPass": {
+    "outcome": "unscored",
+    "score": null
+   }
+  }
+ ],
+ "observations": [
+  "Recall 3/3 on every pass: the three accessibility plants (row click, placeholder-only search box, vehicle icon without alt) found on their lines, each in the sprint that introduced it.",
+  "Trap resistance 4/7 contained (TRP-004 dialog backdrop click, TRP-005 Dockerfile HEALTHCHECK, TRP-006 R2 cyclomatic 11 fire; the three accessibility traps — decorative divider, aria-label filter, display preference in localStorage — are respected); 4/7 in the model pass, where TRP-007 (D20 on ADR 0001) fires instead of TRP-005.",
+  "One valid incidental finding, fixed in the scripted history before the first push: nginx location blocks re-declared add_header and so dropped the server-level security headers (D29 × 8).",
+  "Every score band in on both final passes; AC7 correctly reports that no accessibility enforcement exists. The model pass adds two false positives on true documentation (D19 Contributing section, M4 signed provenance)."
+ ]
+}
