@@ -80,7 +80,11 @@ DIMENSION_CASES = [
     ('R8', "Test-only dependency 'rxjs' in production deps: Only test files import it — move it to devDependencies.", ['misplaced-dev-dependency']),
     ('X1', "async void method: Application_UnhandledException: `async void` can't be awaited and its exceptions crash the process", ['async-void-method']),
     ('X1', 'Sync-over-async (deadlock risk): Blocking on a Task with `.Wait()`/`.GetAwaiter().GetResult()` can deadlock', ['blocking-on-async-code']),
-    ('X1', '`async` callback passed to `forEach`: `forEach` ignores what its callback returns', []),
+    ('X1', '`async` callback passed to `forEach`: `forEach` ignores what its callback returns', ['floating-promise']),
+    ('X1', '`async` Promise executor: a rejection inside it is never observed', ['floating-promise']),
+    ('X1', "Task from `asyncio.create_task` is not kept: The task this creates is not kept anywhere", ['floating-promise']),
+    ('X1', '`async` callback passed to `useEffect`: The callback passed to `useEffect` is `async`', []),
+    ('R1', 'Type Safety: 62 % of frontend source files are TypeScript', ['untyped-javascript-share']),
     ('X3', 'Swallowed exception (empty catch): An empty catch block silently discards the error — failures vanish with no log and no rethrow.', ['empty-catch-block']),
     ('X3', 'Swallowed exception (caught, then discarded): `catch` takes every exception and records none of it', ['empty-catch-block']),
     ('X3', "Rethrow loses stack trace (`throw ex;`): `throw ex;` resets the exception's stack trace to this line", ['rethrow-resets-stack-trace']),
@@ -375,7 +379,7 @@ class WatchdogMapping(unittest.TestCase):
                 self.assertEqual(sorted(M.concepts_of(rule, msg, {})), want)
 
     def test_cases_cover_every_multi_concept_dimension(self):
-        self.assertEqual(len(MULTI), 20)
+        self.assertEqual(len(MULTI), 21)
         self.assertEqual(sorted(set(MULTI) - {r for r, _, w in DIMENSION_CASES if w} - {r for r, *_ in CASES}), [])
 
     def test_no_multi_concept_dimension_keeps_a_bare_ruleid_rule(self):

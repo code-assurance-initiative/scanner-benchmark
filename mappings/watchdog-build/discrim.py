@@ -412,6 +412,19 @@ TABLE = {
   ]),
   off=[
   ]),
+ "R1": dict(
+  concepts=OrderedDict([
+   ("untyped-javascript-share", [
+    dict(messages=["^Type Safety"],
+        source="engine/src/Scanner/Frontend/R1/TypeSafetyDimension.cs:39 via engine/src/Scanner/Frontend/Frontend.Shared/FrontendCards.cs:39,89 (one location-less row titled with the dimension name when the typed-share score is below 7)"),
+   ]),
+   ("unchecked-any-external-data", [
+    dict(messages=[],
+        source="engine/src/Scanner/Frontend/R1 measures the typed-file share and tsconfig strictness only; no row names an `any` cast at rubric-2026.10.1"),
+   ]),
+  ]),
+  off=[
+  ]),
  "R2": dict(
   concepts=OrderedDict([
    ("high-cyclomatic-complexity", [
@@ -454,12 +467,14 @@ TABLE = {
     dict(messages=[r"^Sync-over-async \(deadlock risk\)", "^Blocking wait while holding a `lock`", "^Blocking `[^`]+` inside an `async(?: def| method)?`"],
         source="engine/src/Scanner/Defects/X1/AsyncCorrectnessAnalyzer.cs:222/215 (Sync-over-async), :224/218 (blocking wait under a lock), :270/83 (SemaphoreSlim.Wait in an async method), :127 (blocking sleep inside async def)"),
    ]),
+   ("floating-promise", [
+    dict(messages=["^`async` callback passed to `forEach`", "^`async` Promise executor", "^(?:Task|Future) from `[^`]+` is not kept", "^Future started here is not kept"],
+        source="engine/src/Scanner/Defects/X1/AsyncCorrectnessAnalyzer.cs:123,125,137 (async callback passed to forEach: the Promise each call returns is dropped), :126,176 (async Promise executor: a rejection inside it is never observed), :129-131 (dropped task/future, Python/Ruby/Scala). A bare unawaited call is not detected at this rubric"),
+   ]),
   ]),
   off=[
-   dict(message="^`async` (?:callback passed to|Promise executor)",
-        source="engine/src/Scanner/Defects/X1/AsyncCorrectnessAnalyzer.cs:123-126,132,137,148,176 — a JS/Dart async callback whose promise is dropped; not `async void`, no concept"),
-   dict(message="^(?:Task|Future) from `[^`]+` is not kept|^Future started here is not kept",
-        source="engine/src/Scanner/Defects/X1/AsyncCorrectnessAnalyzer.cs:129-131 — dropped task/future (Python/Ruby/Scala), no concept"),
+   dict(message="^`async` callback passed to `(?!forEach`)",
+        source="engine/src/Scanner/Defects/X1/AsyncCorrectnessAnalyzer.cs:124,132,148 — an async React effect / Flutter setState callback: a framework-contract defect (the return value is read as a cleanup / the rebuild runs early), not a dropped promise"),
    dict(message="^`[^`]+` inside an `async def`",
         source="engine/src/Scanner/Defects/X1/AsyncCorrectnessAnalyzer.cs:128 — nested event loop, no concept"),
   ]),

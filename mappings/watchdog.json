@@ -6,7 +6,7 @@
     "Hence every regex in this file is an exact, anchored match on dimension ids: ^(?:D13|D28)$. The contract's optional sub-rule form (^D13[/.:-]) never occurs and is not used.",
     "The sub-rule lives in the RESULT MESSAGE, not the ruleId: message.text = \"{Finding.Title}: {Finding.Detail}\" (SarifReportRenderer.cs:117). Title formats: D13 \"Leaked secret: {secret type}\" (engine/src/Scanner/Security/D13/SecretScanningAnalyzer.cs:108); D28 \"Secret: {gitleaks rule id}\" (engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:266); D29 \"{severity}: {semgrep check id}\" (ScanParsers.cs:822-823); D31 \"{severity} IaC: {trivy id}\" (ScanParsers.cs:914). fingerprints.json carries the same title plus a `detector` field.",
     "Per-result CWE taxa are present on security results (SarifReportRenderer.cs:154-168), but D13 stamps the dimension-wide pair CWE-798+CWE-259 on every row regardless of secret type (SecretScanningAnalyzer.cs:44, SecurityCweMap.cs:36), so CWE cannot discriminate D13 concepts.",
-    "Contract 1.1: where one dimension maps to several concepts the message title decides. EVERY multi-concept in-scope dimension is fully discriminated (D10, D12, D13, D17, D28, D29, D3, D31, D32, D36, D5, D7, IC1, PF3, R2, R8, S1, X1, X3, X5), plus SC1: each of its concepts carries per-rule `messages` / `properties` conditions with a `source` naming the engine line the title format comes from (curated in mappings/watchdog-build/discrim.py). Titles a dimension really emits that denote none of its concepts are listed under `offConcept` (informational: such a result maps to no concept); (concept, dimension) pairs that no title of the dimension evidences at this rubric are listed under `unevidenced` and get no rule. Checked against the distinct messages of ~8.5k local Watchdog SARIF outputs: every one lands on exactly one concept or on an `offConcept` entry (D28's history rows also on secret-in-version-history, by design). Single-concept dimensions keep the bare ruleId rule, so their off-topic rows (if any) still count for their one concept.",
+    "Contract 1.1: where one dimension maps to several concepts the message title decides. EVERY multi-concept in-scope dimension is fully discriminated (D10, D12, D13, D17, D28, D29, D3, D31, D32, D36, D5, D7, IC1, PF3, R1, R2, R8, S1, X1, X3, X5), plus SC1: each of its concepts carries per-rule `messages` / `properties` conditions with a `source` naming the engine line the title format comes from (curated in mappings/watchdog-build/discrim.py). Titles a dimension really emits that denote none of its concepts are listed under `offConcept` (informational: such a result maps to no concept); (concept, dimension) pairs that no title of the dimension evidences at this rubric are listed under `unevidenced` and get no rule. Checked against the distinct messages of ~8.5k local Watchdog SARIF outputs: every one lands on exactly one concept or on an `offConcept` entry (D28's history rows also on secret-in-version-history, by design). Single-concept dimensions keep the bare ruleId rule, so their off-topic rows (if any) still count for their one concept.",
     "The four hardcoded-secret concepts form the family `hardcoded-secret`: a scanner that reports the right site under a sibling secret type (gitleaks generic-api-key on a planted password) is credited at plants and charged at traps (CONTRACT.md, Concept families).",
     "Sub-rule ids are not unique in one place: two different D31 rules share WD-K8S-0004 (engine/src/Scanner/Security/D31/Scanners/AutomountedServiceAccountTokenScan.cs:73 and UnresolvableImageReferenceScan.cs:56); the detail decides (\"This pod spec/template sets …\" -> automounted-service-account-token, the unsubstituted image placeholder -> iac-misconfiguration). WD-COMPOSE-0003 likewise carries host namespaces and privileged: true (host-namespace-sharing / privileged-container by detail).",
     "Contract 1.3 umbrellas: container-excessive-privilege and iac-misconfiguration are the `parent` of precise concepts (container-runs-as-root, privileged-container, host-namespace-sharing, host-path-mount, container-privilege-escalation-allowed, container-excess-capabilities, container-writable-root-filesystem, container-confinement-profile-unset, container-security-context-missing; missing-health-probes, missing-image-healthcheck, automounted-service-account-token, overly-permissive-rbac, image-not-from-allowed-registry, container-missing-resource-requests). Each result still lands on ONE concept; an entry naming an umbrella also matches its children's results, so keys written before the split keep their meaning, while an entry naming a precise concept is matched only by that concept. The children partition the umbrella's pre-split D31 ids (asserted in discrim.py); the umbrella keeps the residue no precise concept names.",
@@ -1935,6 +1935,23 @@
         "X1"
       ]
     },
+    "floating-promise": {
+      "rules": [
+        {
+          "rule": "^(?:X1)$",
+          "messages": [
+            "^`async` callback passed to `forEach`",
+            "^`async` Promise executor",
+            "^(?:Task|Future) from `[^`]+` is not kept",
+            "^Future started here is not kept"
+          ],
+          "source": "engine/src/Scanner/Defects/X1/AsyncCorrectnessAnalyzer.cs:123,125,137 (async callback passed to forEach: the Promise each call returns is dropped), :126,176 (async Promise executor: a rejection inside it is never observed), :129-131 (dropped task/future, Python/Ruby/Scala). A bare unawaited call is not detected at this rubric"
+        }
+      ],
+      "dimensions": [
+        "X1"
+      ]
+    },
     "missing-cancellation-propagation": {
       "rules": [
         "^(?:X2)$"
@@ -2212,8 +2229,20 @@
     },
     "untyped-javascript-share": {
       "rules": [
-        "^(?:R1)$"
+        {
+          "rule": "^(?:R1)$",
+          "messages": [
+            "^Type Safety"
+          ],
+          "source": "engine/src/Scanner/Frontend/R1/TypeSafetyDimension.cs:39 via engine/src/Scanner/Frontend/Frontend.Shared/FrontendCards.cs:39,89 (one location-less row titled with the dimension name when the typed-share score is below 7)"
+        }
       ],
+      "dimensions": [
+        "R1"
+      ]
+    },
+    "unchecked-any-external-data": {
+      "rules": [],
       "dimensions": [
         "R1"
       ]
@@ -3064,13 +3093,8 @@
     },
     {
       "rule": "^(?:X1)$",
-      "message": "^`async` (?:callback passed to|Promise executor)",
-      "source": "engine/src/Scanner/Defects/X1/AsyncCorrectnessAnalyzer.cs:123-126,132,137,148,176 — a JS/Dart async callback whose promise is dropped; not `async void`, no concept"
-    },
-    {
-      "rule": "^(?:X1)$",
-      "message": "^(?:Task|Future) from `[^`]+` is not kept|^Future started here is not kept",
-      "source": "engine/src/Scanner/Defects/X1/AsyncCorrectnessAnalyzer.cs:129-131 — dropped task/future (Python/Ruby/Scala), no concept"
+      "message": "^`async` callback passed to `(?!forEach`)",
+      "source": "engine/src/Scanner/Defects/X1/AsyncCorrectnessAnalyzer.cs:124,132,148 — an async React effect / Flutter setState callback: a framework-contract defect (the return value is read as a cleanup / the rebuild runs early), not a dropped promise"
     },
     {
       "rule": "^(?:X1)$",
@@ -3298,6 +3322,11 @@
       "concept": "excessive-mocking",
       "dimension": "D10",
       "source": "engine/src/Scanner/Testing/D10/TestQualityAnalyzer.cs emits no mock-dominance row at rubric-2026.10.1 (\"Mock framework:\" :406 is an Info inventory line, never in SARIF)"
+    },
+    {
+      "concept": "unchecked-any-external-data",
+      "dimension": "R1",
+      "source": "engine/src/Scanner/Frontend/R1 measures the typed-file share and tsconfig strictness only; no row names an `any` cast at rubric-2026.10.1"
     },
     {
       "concept": "high-cognitive-complexity",

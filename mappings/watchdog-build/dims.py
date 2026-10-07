@@ -162,7 +162,7 @@ D = {
  "PF2": dict(k="metric", c=["allocation-awareness"], cs="yes", ts="partial", lb="assessed: .NET + Go/JVM arms (no TS arm named)", r=[CH]),
  "PF3": dict(k="finding", c=["blocking-on-async-code", "missing-configure-await"], cs="yes", ts="yes", lb="DimensionMethods names a TS/JS arm (model-read off .NET)", r=[CH, TH]),
  # ---- frontend (R*) ----
- "R1": dict(k="metric", c=["untyped-javascript-share"], cs="no", ts="yes", lb="frontend JS/TS file inventory", r=[TH, TA]),
+ "R1": dict(k="metric", c=["untyped-javascript-share", "unchecked-any-external-data"], cs="no", ts="yes", lb="frontend JS/TS file inventory", r=[TH, TA]),
  "R2": dict(k="finding", c=["high-cyclomatic-complexity", "high-cognitive-complexity"], cs="no", ts="yes", lb="frontend function scanner", r=[TH]),
  "R3": dict(k="finding", c=["oversized-source-file"], cs="no", ts="yes", lb="frontend source tree", r=[TH, TA]),
  "R4": dict(k="metric", c=["test-coverage"], cs="no", ts="yes", lb="frontend import-graph reachability from tests", r=[TH]),
@@ -177,7 +177,7 @@ D = {
  "S1": dict(k="posture", c=["security-response-headers", "https-enforcement", "insecure-cookie-flags", "inbound-input-validation", "weak-cryptographic-algorithm", "weak-hash-algorithm", "hardcoded-cryptographic-key", "improper-certificate-validation", "token-signature-or-expiry-not-validated", "sensitive-data-in-url", "sensitive-data-in-logs", "missing-subresource-integrity", "insufficient-password-hashing", "cleartext-transmission"], cs="yes", ts="yes", lb="DimensionMethods: .NET arm, and JS/TS when the repo has no .NET source", r=[CI, TI]),
  "SC1": dict(k="posture", c=["dependencies-not-locked"], cs="yes", ts="yes", lb="language-neutral (manifests)", r=[CD, TD]),
  # ---- correctness (X) ----
- "X1": dict(k="finding", c=["blocking-on-async-code", "async-void-method"], cs="yes", ts="no", lb="assessed: Roslyn .Wait()/GetResult()/async void", r=[CH]),
+ "X1": dict(k="finding", c=["blocking-on-async-code", "async-void-method", "floating-promise"], cs="yes", ts="no", lb="assessed: Roslyn .Wait()/GetResult()/async void", r=[CH, TH]),
  "X2": dict(k="finding", c=["missing-cancellation-propagation"], cs="yes", ts="yes", lb="DimensionMethods: TS arm when no .NET source", r=[CH, TH]),
  "X3": dict(k="finding", c=["empty-catch-block", "pointless-catch-rethrow", "rethrow-resets-stack-trace"], cs="yes", ts="no", lb="assessed: Roslyn catch clauses", r=[CH]),
  "X4": dict(k="finding", c=["non-structured-log-message"], cs="yes", ts="yes", lb="DimensionMethods: TS arm when no .NET source", r=[CH, TH]),

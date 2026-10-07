@@ -160,6 +160,8 @@ c("rethrow-resets-stack-trace", "Rethrow discards the original stack trace", Non
   "A catch block rethrows the caught exception object (throw ex;) instead of rethrowing in place, so the stack trace restarts at the rethrow and hides where the failure originated.")
 c("blocking-on-async-code", "Blocking on asynchronous code (sync-over-async)", None, "codehealth", "finding", ".Wait()/.Result/.GetAwaiter().GetResult() or a blocking call inside an async function.")
 c("async-void-method", "async void outside event handlers", None, "codehealth", "finding", "An async void method whose exceptions cannot be observed.")
+c("floating-promise", "Floating promise / dropped asynchronous result", None, "codehealth", "finding",
+  "An asynchronous operation (promise, task, future) is started and then neither awaited, returned, kept nor given a failure handler, so its failure is never observed (an unhandled rejection) and its completion is not ordered with the code that follows it; includes async callbacks handed to APIs that ignore what the callback returns (forEach, a Promise executor).")
 c("missing-cancellation-propagation", "Async operation without cancellation", None, "codehealth", "finding", "An async method/function performing I/O that accepts and forwards no cancellation token/signal.")
 c("non-structured-log-message", "Log message built by string interpolation", None, "codehealth", "finding", "A logging call whose message template is an interpolated/concatenated string instead of a structured template with arguments.")
 c("nullable-analysis-disabled", "Null-safety analysis not enabled", None, "codehealth", "posture", "Projects compile without nullable reference types / strict null checks.")
@@ -190,6 +192,8 @@ c("missing-configure-await", "Library awaits without ConfigureAwait(false)", Non
 c("allocation-awareness", "Allocation-aware API usage", None, "codehealth", "metric", "Density of allocation-conscious APIs (spans, pools, value tasks, preallocation) in production code.")
 c("compiled-code-size", "Oversized compiled method bodies", None, "codehealth", "metric", "Share of methods whose emitted IL/bytecode exceeds the size threshold.")
 c("untyped-javascript-share", "Untyped JavaScript share of the frontend", None, "frontend", "metric", "Share of frontend source written in plain JavaScript rather than TypeScript.")
+c("unchecked-any-external-data", "External data used through an unchecked any cast", "CWE-1287", "codehealth", "finding",
+  "Data from outside the program (an HTTP response body, a parsed file, a message payload) is cast to `any` (or force-asserted to a type) and used as if its shape were verified, so the type checker vouches for fields nobody validated.")
 c("inconsistent-naming", "Inconsistent naming", None, "maturity", "judged", "Identifiers that do not follow a consistent, descriptive naming convention.")
 c("low-value-comments", "Low-value or misleading comments", None, "maturity", "judged", "Comments that restate code, are stale, or mislead.")
 # ---------------- architecture ----------------

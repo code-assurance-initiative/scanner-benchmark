@@ -921,6 +921,14 @@
       "description": "An async void method whose exceptions cannot be observed."
     },
     {
+      "id": "floating-promise",
+      "title": "Floating promise / dropped asynchronous result",
+      "cwe": null,
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "An asynchronous operation (promise, task, future) is started and then neither awaited, returned, kept nor given a failure handler, so its failure is never observed (an unhandled rejection) and its completion is not ordered with the code that follows it; includes async callbacks handed to APIs that ignore what the callback returns (forEach, a Promise executor)."
+    },
+    {
       "id": "missing-cancellation-propagation",
       "title": "Async operation without cancellation",
       "cwe": null,
@@ -1151,6 +1159,14 @@
       "family": "frontend",
       "kind": "metric",
       "description": "Share of frontend source written in plain JavaScript rather than TypeScript."
+    },
+    {
+      "id": "unchecked-any-external-data",
+      "title": "External data used through an unchecked any cast",
+      "cwe": "CWE-1287",
+      "family": "codehealth",
+      "kind": "finding",
+      "description": "Data from outside the program (an HTTP response body, a parsed file, a message payload) is cast to `any` (or force-asserted to a type) and used as if its shape were verified, so the type checker vouches for fields nobody validated."
     },
     {
       "id": "inconsistent-naming",
