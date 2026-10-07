@@ -132,6 +132,8 @@ Other commands:
 ```sh
 python3 -m cai_bench validate --key benchmark/answer-key.json --taxonomy taxonomy.json   # exit 1 + one line per problem
 python3 -m cai_bench sha256   --key benchmark/answer-key.json                           # for registry.json
+python3 -m cai_bench compare  --baseline results/watchdog/baseline-2026-10-07.json \
+                              --current <new final-scores.json> [--all] [--json delta.json]  # deltas vs a baseline
 python3 -m unittest                                                                     # the harness's own tests
 ```
 
@@ -160,6 +162,11 @@ command above reproduces the row (score bands need the scanner's dimension score
   false-negative and noise mechanisms; instrument notes and method lessons. Machine-readable:
   [`SUMMARY.json`](results/watchdog/SUMMARY.json), [`final-scores.json`](results/watchdog/final-scores.json);
   per-repository verdicts in `results/watchdog/<repo>.json`.
+- [`results/watchdog/BASELINE-2026-10-07.md`](results/watchdog/BASELINE-2026-10-07.md) — the frozen **iteration-1
+  baseline** of Watchdog before any improvement work: per lens, per dimension (one table per lens), per repository,
+  recall gaps and noise by mechanism (with backlog ids), score bands, model non-determinism, and how to re-measure a
+  new engine against it (`results/watchdog/rescore.py` + `python3 -m cai_bench compare`). Machine-readable:
+  [`baseline-2026-10-07.json`](results/watchdog/baseline-2026-10-07.json).
 - [`coverage/MATRIX.md`](coverage/MATRIX.md) — every Watchdog dimension, whether it is in scope, and which frozen
   repositories label it (read from their keys at the registered tags).
 
@@ -200,7 +207,7 @@ taxonomy.json                      scanner-neutral concepts
 mappings/<scanner>.json            concept -> the scanner's rule ids and dimensions
 registry.json                      frozen benchmark repositories
 coverage/                          coverage matrix (matrix.json, MATRIX.md, render_matrix.py)
-results/<scanner>/                 recorded results per scanner (watchdog: SUMMARY.md, final-scores.json, <repo>.json)
+results/<scanner>/                 recorded results per scanner (watchdog: SUMMARY.md, BASELINE-*.md + baseline-*.json, final-scores.json, <repo>.json)
 cai_bench/                         the CLI (python3 -m cai_bench)
 tests/                             its tests, with fixture keys, SARIF, taxonomy and mapping
 ```

@@ -11,7 +11,8 @@ commit is the tag or a commit whose code is identical to it). Per-repository num
 rows, score bands and every remaining false negative are in [`final-scores.json`](final-scores.json); the aggregates
 below are in [`SUMMARY.json`](SUMMARY.json), produced by [`summarise.py`](summarise.py) from those two inputs. Every
 finding judged during authoring, with its verdict and reason, is in the per-repository `<repo>.json` files beside this
-one. [`PHASE1.md`](PHASE1.md) is the earlier Phase-1 write-up and is kept as it was.
+one. **[`BASELINE-2026-10-07.md`](BASELINE-2026-10-07.md) freezes these numbers as the iteration-1 baseline** (per lens,
+per dimension, mechanisms, and how to compare a new engine against it). [`PHASE1.md`](PHASE1.md) is the earlier Phase-1 write-up and is kept as it was.
 
 Definitions (contract 1.4): **recall** = TP / (TP + FN) over planted defects; **trap resistance** = traps left alone /
 traps; **noise share** = results on traps, clean regions, not-applicable concepts or matching no entry of a covered

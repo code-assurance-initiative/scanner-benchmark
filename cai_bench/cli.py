@@ -1,4 +1,4 @@
-"""python3 -m cai_bench validate | score | sha256"""
+"""python3 -m cai_bench validate | score | sha256 | compare"""
 import argparse
 import hashlib
 import json
@@ -100,6 +100,31 @@ def cmd_sha256(a):
     return 0
 
 
+def cmd_compare(a):
+    from .baseline import compare, load_baseline
+    try:
+        baseline = load_baseline(a.baseline)
+    except OSError as ex:
+        return _fail(f"baseline: cannot read {a.baseline}: {ex.strerror}")
+    except ValueError as ex:
+        return _fail(str(ex))
+    current = _load(a.current, "current final scores")
+    if not isinstance(current, dict) or not isinstance(current.get("repos"), list):
+        return _fail(f"current: {a.current} is not a final-scores document (no 'repos' list)")
+    try:
+        mapping = Mapping(_load(a.mapping, "mapping"))
+    except MappingError as ex:
+        return _fail(str(ex))
+    doc, text = compare(baseline, current, mapping, a.all)
+    print(text)
+    if a.json:
+        with open(a.json, "w", encoding="utf-8") as f:
+            json.dump(doc, f, indent=1)
+            f.write("\n")
+        print(f"\nwrote {a.json}")
+    return 0
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="python3 -m cai_bench", description=f"Scanner benchmark harness (contract v{CONTRACT_VERSION}).")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -125,6 +150,15 @@ def main(argv=None):
     h = sub.add_parser("sha256", help="print the sha256 of an answer key's bytes (for registry.json)")
     h.add_argument("--key", required=True)
     h.set_defaults(fn=cmd_sha256)
+
+    c = sub.add_parser("compare", help="per-lens / per-dimension deltas of a run against a frozen baseline")
+    c.add_argument("--baseline", required=True, help="a frozen baseline, e.g. results/watchdog/baseline-2026-10-07.json")
+    c.add_argument("--current", required=True, help="the new run's final-scores.json (same shape as the baseline's)")
+    c.add_argument("--mapping", default="mappings/watchdog.json",
+                   help="concept -> dimension mapping used for the current run (default mappings/watchdog.json)")
+    c.add_argument("--all", action="store_true", help="print every dimension, not only the changed ones")
+    c.add_argument("--json", help="write the deltas as JSON here")
+    c.set_defaults(fn=cmd_compare)
 
     a = ap.parse_args(argv)
     return a.fn(a)
