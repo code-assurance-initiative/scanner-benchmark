@@ -237,6 +237,7 @@ c("test-without-assertion", "Test without an assertion", None, "testing", "findi
 c("skipped-test-without-reason", "Skipped test without a structured reason", None, "testing", "finding", "A skipped/ignored test without a documented, categorised reason.")
 c("excessive-mocking", "Test dominated by mocks", None, "testing", "finding", "A test whose setup is mostly mocks, testing wiring rather than behaviour.")
 c("flaky-test", "Flaky (non-deterministic) test", None, "testing", "finding", "A test that passes and fails across identical runs.")
+c("test-failure-swallowed", "Test whose failure is swallowed", None, "testing", "finding", "A test whose act or assertions run inside a catch-all that discards the failure (no rethrow, no verification in the catch), so the test cannot fail.")
 c("domain-vs-controller-coverage", "Domain versus controller test coverage", None, "testing", "metric", "Ratio of test coverage on domain logic versus thin web/controller code.")
 c("executable-specifications", "Executable specifications (BDD)", None, "testing", "posture", "Gherkin/BDD specifications wired to a runner.")
 c("ci-test-gate-integrity", "CI test gate honesty", None, "testing", "posture", "CI test gates that run the whole suite before merge, gate coverage, and do not exclude suites by filter.")

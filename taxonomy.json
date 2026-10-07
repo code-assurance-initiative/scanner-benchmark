@@ -1513,6 +1513,14 @@
       "description": "A test that passes and fails across identical runs."
     },
     {
+      "id": "test-failure-swallowed",
+      "title": "Test whose failure is swallowed",
+      "cwe": null,
+      "family": "testing",
+      "kind": "finding",
+      "description": "A test whose act or assertions run inside a catch-all that discards the failure (no rethrow, no verification in the catch), so the test cannot fail."
+    },
+    {
       "id": "domain-vs-controller-coverage",
       "title": "Domain versus controller test coverage",
       "cwe": null,

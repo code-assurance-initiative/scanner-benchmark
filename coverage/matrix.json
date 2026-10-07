@@ -669,7 +669,8 @@
         "test-without-assertion",
         "skipped-test-without-reason",
         "excessive-mocking",
-        "flaky-test"
+        "flaky-test",
+        "test-failure-swallowed"
       ],
       "requires": [
         "build + test execution"

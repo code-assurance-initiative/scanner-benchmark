@@ -65,7 +65,7 @@ DIMENSION_CASES = [
     ('D10', 'No assertions (empty test): seed: Test method has an empty body — it asserts nothing and exercises no code.', ['test-without-assertion']),
     ('D10', 'Skipped test: testComponentsSchemasArrayOfRefsOfNullableItems: Skipped — throws XCTSkip', ['skipped-test-without-reason']),
     ('D10', 'Fixed-sleep synchronisation: DeadLockTest: This test starts a thread it started and then orders itself against it with `Thread.Sleep(5200)` — a fixed wait, not a signal', ['flaky-test']),
-    ('D10', 'Test cannot fail: Parses_all: The assertion sits inside a try whose catch swallows the failure.', []),
+    ('D10', 'Test cannot fail: Parses_all: The assertion sits inside a try whose catch swallows the failure.', ['test-failure-swallowed']),
     ('D12', 'Vulnerable: Microsoft.NETCore.App: Microsoft.NETCore.App [2.0.0, — ) severity. 2.0.0', ['vulnerable-dependency']),
     ('D12', "Deprecated: xunit: xunit 2.4.1 — Legacy — the publisher's replacement is `xunit.v3`", ['deprecated-dependency']),
     ('D12', 'Dependency pinned to a stale untagged commit: github.com/flynn/go-shlex: Direct dependency `github.com/flynn/go-shlex` is required at `v0.0.0-20150515145356-3f9db97f8568`', ['outdated-dependency']),

@@ -38,7 +38,7 @@ D = {
  "D7":  dict(k="finding", c=["architecture-rules-unenforced", "layer-dependency-violation", "module-dependency-cycle"], cs="yes", ts="no", lb="assessed: Roslyn per checkable ADR (DimensionMethods)", r=[CA], b="na:no checkable ADR in the baseline (D7 needs ADRs with enforcement fields)"),
  "D8":  dict(k="metric", c=["test-coverage"], cs="yes", ts="yes", lb="assessed: coverlet/Cobertura/lcov (DimensionMethods)", r=[CT], req=[TESTRUN]),
  "D9":  dict(k="metric", c=["test-pyramid-distribution"], cs="yes", ts="yes", lb="assessed: test projects/frameworks; measured on 24 local TS scans", r=[CT], req=[TESTRUN]),
- "D10": dict(k="finding", c=["test-without-assertion", "skipped-test-without-reason", "excessive-mocking", "flaky-test"], cs="yes", ts="yes", lb="assessed: Roslyn per test; measured on 19 local TS scans", r=[CT, TH], req=[TESTRUN]),
+ "D10": dict(k="finding", c=["test-without-assertion", "skipped-test-without-reason", "excessive-mocking", "flaky-test", "test-failure-swallowed"], cs="yes", ts="yes", lb="assessed: Roslyn per test; measured on 19 local TS scans", r=[CT, TH], req=[TESTRUN]),
  "D11": dict(k="finding", c=["flaky-test"], cs="yes", ts="yes", lb="assessed: re-runs the suite (DimensionMethods)", r=[CT], req=[TESTRUN]),
  "D12": dict(k="finding", c=["vulnerable-dependency", "outdated-dependency", "deprecated-dependency", "prerelease-dependency", "dependencies-not-locked"], cs="yes", ts="yes", lb=M, r=[CD, TD], req=["package restore (dotnet list package / npm metadata)"]),
  "D13": dict(k="finding", c=["hardcoded-credential", "hardcoded-password", "hardcoded-cryptographic-key", "committed-private-key"], cs="yes", ts="yes", lb=M + " (agnostic)", r=[CS, TS]),

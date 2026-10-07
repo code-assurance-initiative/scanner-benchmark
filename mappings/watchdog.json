@@ -2661,6 +2661,20 @@
         "D11"
       ]
     },
+    "test-failure-swallowed": {
+      "rules": [
+        {
+          "rule": "^(?:D10)$",
+          "messages": [
+            "^Test cannot fail: "
+          ],
+          "source": "engine/src/Scanner/Testing/D10/TestQualityAnalyzer.cs:345 (a test that asserts, inside a catch-all that discards the failure), :482 (the same with no assertion: replaces the zero-assertion row)"
+        }
+      ],
+      "dimensions": [
+        "D10"
+      ]
+    },
     "domain-vs-controller-coverage": {
       "rules": [
         "^(?:P9)$"
@@ -2994,11 +3008,6 @@
       "rule": "^(?:D7)$",
       "message": "^ADR parse warning: ",
       "source": "engine/src/Scanner/Architecture/D7/ArchitecturalIntegrityAnalyzer.cs:545 — a parse diagnostic about the ADR file, not an architecture defect"
-    },
-    {
-      "rule": "^(?:D10)$",
-      "message": "^Test cannot fail: ",
-      "source": "engine/src/Scanner/Testing/D10/TestQualityAnalyzer.cs:345,482 — a test whose failure is swallowed (it may assert); no concept denotes it"
     },
     {
       "rule": "^(?:D10)$",

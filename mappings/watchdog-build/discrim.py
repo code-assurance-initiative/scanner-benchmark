@@ -359,10 +359,12 @@ TABLE = {
     dict(messages=["^Fixed-sleep synchronisation: ", "^Depends on a live external host: "],
         source="engine/src/Scanner/Testing/D10/TestQualityAnalyzer.cs:371 (test ordered against background work by a fixed sleep), :381 (test fetches a third-party host while it runs) — the two static causes of non-deterministic tests"),
    ]),
+   ("test-failure-swallowed", [
+    dict(messages=["^Test cannot fail: "],
+        source="engine/src/Scanner/Testing/D10/TestQualityAnalyzer.cs:345 (a test that asserts, inside a catch-all that discards the failure), :482 (the same with no assertion: replaces the zero-assertion row)"),
+   ]),
   ]),
   off=[
-   dict(message="^Test cannot fail: ",
-        source="engine/src/Scanner/Testing/D10/TestQualityAnalyzer.cs:345,482 — a test whose failure is swallowed (it may assert); no concept denotes it"),
    dict(message="^Snapshot tests auto-approve: ",
         source="engine/src/Scanner/Testing/D10/TestQualityAnalyzer.cs:396 — a snapshot harness configured to accept its own output; no concept denotes it"),
   ]),
