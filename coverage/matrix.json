@@ -140,6 +140,13 @@
       "languages": [
         "typescript"
       ]
+    },
+    "bench-ts-domain-privacy": {
+      "tag": "v1.0.1",
+      "keySha256": "f9dde9b07bd06228b512b018a6b836658a03ffe3c0fc8044b4840bd736fbb42d",
+      "languages": [
+        "typescript"
+      ]
     }
   },
   "coverageSource": "contract 1.4: a frozen repository's labels are read from its key at the registered tag (source 'key vX.Y.Z'; entries = entries per label; wildcardClean = its \"*\" clean regions, which measure noise on every concept and are not counted as a label); repositories not frozen yet keep the planned labels (source 'plan'). frozenCoverageGaps = the languages for which no frozen repository carries a measuring label on the row; frozenCoverageCleanOnly = the languages whose only measuring labels on the row are concept-specific clean regions (noise is measured, recall and trap resistance are not).",
@@ -2707,11 +2714,25 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 135
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -3546,6 +3567,22 @@
             "clean": 249
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 137
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -3970,6 +4007,22 @@
             "clean": 30
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 137
+          },
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -6422,11 +6475,25 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 137
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -7184,11 +7251,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "score-band"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "score-band": 1
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -7396,11 +7473,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "score-band"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "score-band": 1
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -7492,11 +7579,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "score-band"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "score-band": 1
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -7586,11 +7683,21 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "score-band"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "score-band": 1
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -7684,11 +7791,25 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 2,
+            "clean": 137
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -7782,11 +7903,25 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 137
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -7988,6 +8123,18 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "must-not-fire"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "must-not-fire": 1
+          },
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -8210,11 +8357,25 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 137
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -8308,11 +8469,25 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 137
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -8504,11 +8679,25 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 136
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -8602,11 +8791,25 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 137
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -8700,11 +8903,25 @@
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 2,
+            "clean": 136
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
-      "frozenCoverageGaps": [
-        "typescript"
-      ],
+      "frozenCoverageGaps": [],
       "frozenCoverageCleanOnly": [],
       "phase1": [
         "bench-csharp-baseline-clean"
@@ -9973,6 +10190,18 @@
             "clean": 10
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "score-band"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "score-band": 1
+          },
           "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
@@ -13557,6 +13786,22 @@
             "clean": 57
           },
           "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-ts-domain-privacy",
+          "phase": 3,
+          "labels": [
+            "must-fire",
+            "must-not-fire",
+            "clean"
+          ],
+          "source": "key v1.0.1",
+          "entries": {
+            "must-fire": 1,
+            "must-not-fire": 1,
+            "clean": 137
+          },
+          "note": "not planned for this dimension; labelled by the frozen key"
         }
       ],
       "frozenCoverageGaps": [],
@@ -17057,10 +17302,11 @@
           "repo": "bench-ts-domain-privacy",
           "phase": 3,
           "labels": [
-            "must-fire"
+            "must-fire",
+            "must-not-fire",
+            "clean"
           ],
-          "source": "plan",
-          "note": "v1.0.0: SMS reminders sent without checking the SMS-reminder consent"
+          "source": "key v1.0.1"
         }
       ]
     }
