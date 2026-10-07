@@ -7,7 +7,12 @@ Checks, all fatal:
   * every row is either `in-scope` with at least one repository carrying a label other than `not-applicable`,
     or `out-of-scope` with a non-empty reason (no row may lack both);
   * every label is a contract label kind; every concept exists in taxonomy.json;
-  * every (concept, dimension) pair of a row is present in mappings/watchdog.json.
+  * every (concept, dimension) pair of a row is present in mappings/watchdog.json;
+  * (contract 1.4) every `beyondReference` concept exists in taxonomy.json, is listed in the mapping's `unmapped`
+    and is mapped on no dimension, and every `unmapped` concept is in `beyondReference`.
+
+Not fatal, rendered and printed: the frozen-key coverage gaps (in-scope rows with no FROZEN repository of a language
+carrying a measuring label — planned repositories do not count) and the clean-only rows.
 
 Usage:  python3 coverage/render_matrix.py [--catalog <rubric-catalog-snapshot.json>] [--check]
         --check validates and verifies MATRIX.md is up to date without writing it.
@@ -83,6 +88,19 @@ def validate(matrix, taxonomy, mapping, catalog_path):
                 fail(f"{rid}: concept {cid!r} not in taxonomy.json")
             if cid not in mapped or rid not in mapped[cid]["dimensions"]:
                 fail(f"{rid}: mappings/watchdog.json does not map concept {cid!r} to dimension {rid}")
+    unmapped = {u["concept"] for u in mapping.get("unmapped", [])}
+    beyond = {b["concept"] for b in matrix.get("beyondReference", [])}
+    if unmapped != beyond:
+        fail(f"beyondReference {sorted(beyond)} differs from the mapping's unmapped {sorted(unmapped)}")
+    for b in matrix.get("beyondReference", []):
+        cid = b["concept"]
+        if cid not in concepts:
+            fail(f"beyondReference: concept {cid!r} not in taxonomy.json")
+        if mapped.get(cid, {}).get("rules") or mapped.get(cid, {}).get("dimensions"):
+            fail(f"beyondReference: concept {cid!r} is mapped by mappings/watchdog.json")
+        for c in b.get("repos", []):
+            if set(c["labels"]) - LABELS:
+                fail(f"beyondReference {cid}: unknown label(s) for {c['repo']}")
 
 
 def md_escape(s):
@@ -108,6 +126,9 @@ def render(matrix):
         f"(at least one of them carries a measuring label on {len(p1)} rows).",
         "",
         "Labels: MF must-fire · MNF must-not-fire · CL clean · NA not-applicable · SB score-band. "
+        "A frozen repository's labels are read from its key at the registered tag; *(plan)* marks a repository not "
+        "frozen yet (planned labels); — marks a frozen repository planned for the row whose key labels none of its "
+        "concepts. "
         "Repositories marked **★** are Phase 1. Languages: C# / TS relevance (yes · partial · no). "
         "Edition: Inc = Included in the downloadable edition; WC = withheld (commercial); WNS = withheld (not "
         "self-sufficient: needs build/tests/model/runtime); WNM = withheld (no standalone meaning: posture). "
@@ -129,8 +150,9 @@ def render(matrix):
             parts = []
             for c in r["coverage"]:
                 star = "**★**" if c["repo"] in p1set else ""
-                lab = "/".join(SHORT_LABEL[x] for x in c["labels"])
-                parts.append(f"{star}`{c['repo'].replace('bench-', '')}` {lab}")
+                lab = "/".join(SHORT_LABEL[x] for x in c["labels"]) or "—"
+                src = " *(plan)*" if c.get("source") == "plan" else ""
+                parts.append(f"{star}`{c['repo'].replace('bench-', '')}` {lab}{src}")
             where = "<br>".join(parts)
         else:
             where = "**OUT:** " + md_escape(r["reason"])
@@ -143,6 +165,25 @@ def render(matrix):
     lines += ["", "## Out of scope", ""]
     for r in out:
         lines.append(f"- **{r['id']}** {md_escape(r['name'])} — {md_escape(r['reason'])}")
+    lines += ["", "## Coverage gaps (frozen keys)", "",
+              "In-scope rows where no FROZEN repository of the language carries a measuring label (planned "
+              "repositories do not count), and rows whose only frozen measuring labels are concept-specific clean "
+              "regions (noise is measured there, recall and trap resistance are not).", ""]
+    for lang in ("csharp", "typescript"):
+        g = [r["id"] for r in ins if lang in r.get("frozenCoverageGaps", [])]
+        c = [r["id"] for r in ins if lang in r.get("frozenCoverageCleanOnly", [])]
+        lines.append(f"- **{lang}** — no frozen measuring label ({len(g)}): {', '.join(g) or 'none'}")
+        lines.append(f"- **{lang}** — clean-only ({len(c)}): {', '.join(c) or 'none'}")
+    lines += ["", "## Concepts beyond the reference scanner", "",
+              "Taxonomy concepts no rule of the reference scanner detects (mapping `unmapped`): a plant of one is a "
+              "false negative for that scanner — a real defect it cannot see.", "",
+              "| Concept | CWE | Family | Repositories (labels) |", "|---|---|---|---|"]
+    for b in matrix.get("beyondReference", []):
+        reps = "<br>".join(f"`{c['repo'].replace('bench-', '')}` "
+                           f"{'/'.join(SHORT_LABEL[x] for x in c['labels'])}"
+                           f"{' *(plan: ' + md_escape(c.get('note', '')) + ')*' if c.get('source') == 'plan' else ''}"
+                           for c in b["repos"]) or "—"
+        lines.append(f"| **{b['concept']}** {md_escape(b['title'])} | {b['cwe'] or '—'} | {b['family']} | {reps} |")
     lines += ["", "## Per repository", ""]
     per = {}
     for r in ins:
@@ -173,6 +214,9 @@ def main():
     rows = matrix["rows"]
     print(f"render_matrix: {len(rows)} rows, {sum(r['status'] == 'in-scope' for r in rows)} in scope, "
           f"{sum(r['status'] == 'out-of-scope' for r in rows)} out of scope -> {target.relative_to(ROOT)}")
+    for lang in ("csharp", "typescript"):
+        g = [r["id"] for r in rows if r["status"] == "in-scope" and lang in r.get("frozenCoverageGaps", [])]
+        print(f"render_matrix: frozen coverage gaps ({lang}): {' '.join(g) or 'none'}")
 
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@ from collections import OrderedDict, defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from concepts import C
+from concepts import C, UNMAPPED, UNMAPPED_CENSUS
 from dims import D, PHASE, CB, TB, CS, SCORE_DIMS
 
 KENNEL = os.environ.get("WATCHDOG_SOURCE", "/home/jimmy/RiderProjects/kennel.canine.dev")  # the Watchdog engine checkout (read only)
@@ -56,7 +56,10 @@ for d in D.values():
 missing = used - set(concept_ids)
 assert not missing, missing
 unused = set(concept_ids) - used
-assert not unused, unused
+# contract 1.4: the benchmark is scanner-neutral — a concept no Watchdog dimension maps is allowed, but only when it
+# is declared in concepts.UNMAPPED (with the census behind the "no rule"), never by accident
+assert unused == set(UNMAPPED), ("concepts no dimension maps must be exactly concepts.UNMAPPED",
+                                 sorted(unused - set(UNMAPPED)), sorted(set(UNMAPPED) - unused))
 assert set(SCORE_DIMS) <= set(concept_ids), set(SCORE_DIMS) - set(concept_ids)
 # contract 1.3 umbrellas: a parent exists, is not itself refined further, and is mapped on every dimension its
 # children are (an entry naming the umbrella must be able to meet every child's results in per-dimension matching)
@@ -82,7 +85,7 @@ def rule_for(ds):
 
 # Contract 1.1 discriminators (discrim.py): every multi-concept dimension decides its concept by message title.
 # DISCRIM: concept -> dimension -> [condition]; a dimension listed for a concept gets one rule object per condition.
-from discrim import SPEC, FAMILY, IGNORE, LOCATION_FROM_MESSAGE, PRECISE_PARENT
+from discrim import SPEC, FAMILY, IGNORE, LOCATION_FROM_MESSAGE, PRECISE_PARENT, SUMMARY_OF_CONCEPT
 for cid, par in PRECISE_PARENT.items():  # discrim.py's D31 split and the taxonomy agree on every umbrella
     assert next(c for c in C if c["id"] == cid).get("parent") == par, (cid, par)
 DISCRIM = OrderedDict()
@@ -124,6 +127,7 @@ mapping["notes"] = [
     "Contract 1.3 `locationFromMessage`: D36's workflow rows have no SARIF location but name their first site in the detail (\"release.yml:7\", or for secret argv rows the workflow path only); a location-less D36 result is given that site. The scanner named the location only in prose and is given the benefit of it; the report counts such results (summary.locationSources, result locationSource = message).",
     "Contract 1.2 `scoreDimensions`: a concept whose finding dimensions include one whose score does not measure it (D12 or D36 for dependencies-not-locked, D36 for security-tooling-in-ci, R2 for high-cognitive-complexity, X10 for duplicated-code) names the dimensions a score-band entry takes its score from (curated in mappings/watchdog-build/dims.py SCORE_DIMS); other concepts look up all of `dimensions`.",
     "D28's repository-level \"Rotate the exposed credentials\" row is a roll-up of its located rows and is listed under `ignore` (outcome summary, in no metric).",
+    "Contract 1.4 `unmapped`: taxonomy concepts no Watchdog rule detects (census in mappings/watchdog-build/concepts.py UNMAPPED_CENSUS) are mapped with no rule and no dimension; a plant of one is a Watchdog FN — a real defect it cannot see. `summaryOfConcept`: X2/PF3/X5 ratio rows that summarise a located concept over the repository without a site (their per-site rows are Info, never in SARIF); they find no located plant and are not noise. Family `untrusted-data-executed`: insecure-deserialization + code-injection. AC6 is split: focus-outline-removed and motion-without-reduced-motion are children of the umbrella visual-and-motion-safety, which keeps the contrast rows.",
     "Location: physicalLocation.artifactLocation.uri = Finding.FilePath (repo-relative) and region.startLine = LineNumber, with any non-positive or missing line written as 1 (SarifReportRenderer.cs:331-355). A file-level finding therefore matches only entries within lineTolerance of line 1; a repository-level finding has an empty locations array.",
     "Runtime cards (AX*1) and X31 are mapped for completeness although they are out of scope for v1 (see coverage/matrix.json).",
 ]
@@ -157,6 +161,13 @@ for cid in concept_ids:
         spec["parent"] = par
     mapping["concepts"][cid] = spec
 mapping["ruleDimension"] = [OrderedDict(rule=r"^([A-Z]+[0-9]+)$", dimension="$1")]
+mapping["unmapped"] = [OrderedDict(concept=cid, reason=UNMAPPED[cid], census=UNMAPPED_CENSUS[cid])
+                       for cid in concept_ids if cid in UNMAPPED]
+for u in mapping["unmapped"]:
+    assert mapping["concepts"][u["concept"]] == OrderedDict(rules=[], dimensions=[]), u
+for sm in SUMMARY_OF_CONCEPT:
+    re.compile(sm["rule"]), re.compile(sm["message"], re.I)
+mapping["summaryOfConcept"] = SUMMARY_OF_CONCEPT
 mapping["ignore"] = IGNORE
 mapping["locationFromMessage"] = LOCATION_FROM_MESSAGE
 mapping["offConcept"] = OFF
@@ -183,6 +194,51 @@ def kind_basis(did, kind):
     if kind == "finding":
         return "plan (default: locatable defects)"
     return "assigned (not in the plan's lists)"
+
+# ---------------- frozen keys: what each frozen repository REALLY labels (contract 1.4 matrix truth) ----------------
+# Each registered repository's key is read at its latest registered tag (git show, sha256 checked against
+# registry.json) from the sibling clones in BENCH_WORKSPACE. Planned labels (dims.py) stay only for repositories not
+# frozen yet.
+import hashlib, subprocess
+from collections import Counter
+WORKSPACE = os.environ.get("BENCH_WORKSPACE", os.path.dirname(OUT))
+LABEL_ORDER = ["must-fire", "must-not-fire", "clean", "not-applicable", "score-band"]
+registry = json.load(open(f"{OUT}/registry.json"))
+FROZEN = OrderedDict()
+for x in registry["repos"]:
+    FROZEN[x["repo"].split("/")[1]] = x  # a later entry supersedes an earlier one
+KEYS = OrderedDict()
+for repo, x in FROZEN.items():
+    raw = subprocess.check_output(["git", "-C", f"{WORKSPACE}/{repo}", "show", f"{x['tag']}:benchmark/answer-key.json"])
+    assert hashlib.sha256(raw).hexdigest() == x["keySha256"], (repo, x["tag"], "key differs from registry.json")
+    KEYS[repo] = json.loads(raw)
+CONCEPT_SET = set(concept_ids)
+key_dim = defaultdict(lambda: defaultdict(Counter))      # repo -> dimension -> Counter(label)
+key_concept = defaultdict(lambda: defaultdict(Counter))  # repo -> concept -> Counter(label)
+wildcard_clean = defaultdict(int)                       # repo -> number of "*" clean regions
+for repo, k in KEYS.items():
+    for e in k["entries"]:
+        lab = e["label"]
+        cs = e.get("concepts") if lab == "clean" else [e["concept"]]
+        if cs == "*":
+            wildcard_clean[repo] += 1
+            continue
+        for cid in cs:
+            assert cid in CONCEPT_SET, (repo, e["id"], cid)
+            key_concept[repo][cid][lab] += 1
+            for did in (SCORE_DIMS.get(cid, by_concept[cid]) if lab == "score-band" else by_concept[cid]):
+                key_dim[repo][did][lab] += 1
+
+def key_cov(repo, did):
+    cnt = key_dim[repo].get(did, Counter())
+    cv = OrderedDict(repo=repo, phase=PHASE[repo], labels=[l for l in LABEL_ORDER if cnt[l]],
+                     source=f"key {FROZEN[repo]['tag']}", entries=OrderedDict((l, cnt[l]) for l in LABEL_ORDER if cnt[l]))
+    if wildcard_clean[repo]:
+        cv["wildcardClean"] = wildcard_clean[repo]
+    return cv
+
+def repo_langs(repo):
+    return set(KEYS[repo].get("languages") or [])
 
 rows = []
 for x in dims:
@@ -237,12 +293,68 @@ for x in dims:
                                        note=("dimension does not exist for this repository's language" if base == CB else "C#-only dimension: must stay silent on a TypeScript repository")))
         for repo in d.get("r", []):
             cov.append(OrderedDict(repo=repo, phase=PHASE[repo], labels=labels_for(kind, True, d.get("loc", False))))
-        row["coverage"] = cov
         assert any(cv["labels"] != ["not-applicable"] for cv in cov), did
+        # contract 1.4: frozen repositories report what their key labels; planned values stay for the rest
+        out_cov, seen = [], set()
+        for cv in cov:
+            repo = cv["repo"]
+            seen.add(repo)
+            if repo not in FROZEN:
+                cv["source"] = "plan"
+                out_cov.append(cv)
+                continue
+            kc = key_cov(repo, did)
+            if not kc["labels"]:
+                kc["plannedLabels"] = cv["labels"]
+                kc["note"] = (f"planned, but the frozen key ({FROZEN[repo]['tag']}) labels no concept of this dimension"
+                              + (f" (plan note: {cv['note']})" if cv.get("note") else ""))
+            elif cv.get("note") and kc["labels"] == ["not-applicable"]:
+                kc["note"] = cv["note"]
+            out_cov.append(kc)
+        for repo in FROZEN:
+            if repo not in seen and key_dim[repo].get(did):
+                kc = key_cov(repo, did)
+                kc["note"] = "not planned for this dimension; labelled by the frozen key"
+                out_cov.append(kc)
+        cov = out_cov
+        row["coverage"] = cov
+        measuring = [cv for cv in cov if "source" in cv and cv["source"] != "plan"
+                     and set(cv["labels"]) - {"not-applicable"}]
+        gaps, clean_only = [], []
+        for lang, rel in (("csharp", d["cs"]), ("typescript", d["ts"])):
+            mine = [cv for cv in measuring if lang in repo_langs(cv["repo"])]
+            if rel in ("yes", "partial") and not mine:
+                gaps.append(lang)
+            elif rel in ("yes", "partial") and not any(set(cv["labels"]) - {"not-applicable", "clean"} for cv in mine):
+                clean_only.append(lang)
+        row["frozenCoverageGaps"] = gaps
+        row["frozenCoverageCleanOnly"] = clean_only
     row["phase1"] = sorted({cv["repo"] for cv in row["coverage"] if cv["phase"] == 1})
     rows.append(row)
 
 assert len(rows) == 165
+
+# Contract 1.4: concepts beyond the reference scanner (no Watchdog dimension maps them): concept, CWE and the
+# repositories that label them — from frozen keys, plus the repositories planned to plant them (concepts.UNMAPPED
+# repositories are planned in dims.BEYOND_PLAN).
+from dims import BEYOND_PLAN
+beyond = []
+for cid in concept_ids:
+    if cid not in UNMAPPED:
+        continue
+    cdef = next(c for c in C if c["id"] == cid)
+    reps = []
+    for repo in FROZEN:
+        cnt = key_concept[repo].get(cid)
+        if cnt:
+            reps.append(OrderedDict(repo=repo, phase=PHASE[repo], labels=[l for l in LABEL_ORDER if cnt[l]],
+                                    source=f"key {FROZEN[repo]['tag']}"))
+    for repo, why in BEYOND_PLAN.get(cid, []):
+        if not any(r["repo"] == repo for r in reps):
+            reps.append(OrderedDict(repo=repo, phase=PHASE[repo], labels=["must-fire"], source="plan", note=why))
+    beyond.append(OrderedDict(concept=cid, title=cdef["title"], cwe=cdef["cwe"], family=cdef["family"],
+                              reason=UNMAPPED[cid], repos=reps))
+
 matrix = OrderedDict(
     version="1.0",
     rubricVersion=cat["rubricVersion"],
@@ -256,7 +368,17 @@ matrix = OrderedDict(
         localScanCensus="'measured on N local TS scans' = count of sidecar.json under ~/Hentet/kennel (scans since 2026-09-25, rubric 2026.09.15-2026.09.18) where the dimension was Measured; indicative only"),
     phase1Repos=[CB, CS],
     labelKinds=["must-fire", "must-not-fire", "clean", "not-applicable", "score-band"],
-    rows=rows)
+    frozenRepos=OrderedDict((r, OrderedDict(tag=x["tag"], keySha256=x["keySha256"], languages=sorted(repo_langs(r))))
+                            for r, x in FROZEN.items()),
+    coverageSource=("contract 1.4: a frozen repository's labels are read from its key at the registered tag "
+                    "(source 'key vX.Y.Z'; entries = entries per label; wildcardClean = its \"*\" clean regions, "
+                    "which measure noise on every concept and are not counted as a label); repositories not frozen "
+                    "yet keep the planned labels (source 'plan'). frozenCoverageGaps = the languages for which no "
+                    "frozen repository carries a measuring label on the row; frozenCoverageCleanOnly = the languages whose only "
+                    "measuring labels on the row are concept-specific clean regions (noise is measured, recall and "
+                    "trap resistance are not)."),
+    rows=rows,
+    beyondReference=beyond)
 
 os.makedirs(f"{OUT}/mappings", exist_ok=True)
 os.makedirs(f"{OUT}/coverage", exist_ok=True)
@@ -269,6 +391,10 @@ dump(mapping, f"{OUT}/mappings/watchdog.json")
 dump(matrix, f"{OUT}/coverage/matrix.json")
 ins = sum(r["status"] == "in-scope" for r in rows)
 print("concepts", len(C), "rows", len(rows), "in-scope", ins, "out-of-scope", len(rows) - ins)
-from collections import Counter
 print(Counter(r["kind"] for r in rows))
+for lang in ("csharp", "typescript"):
+    g = [r["id"] for r in rows if r["status"] == "in-scope" and lang in r.get("frozenCoverageGaps", [])]
+    print(f"frozen coverage gaps ({lang}, {len(g)}):", " ".join(g))
+    g = [r["id"] for r in rows if r["status"] == "in-scope" and lang in r.get("frozenCoverageCleanOnly", [])]
+    print(f"  clean-only (noise measured, recall not) ({lang}, {len(g)}):", " ".join(g))
 print(Counter(c["cwe"] is not None for c in C))

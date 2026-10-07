@@ -12,7 +12,7 @@ measures, per concept and per scanner dimension:
 
 This repository holds the harness: the answer-key schema, the scanner-neutral concept taxonomy (CWE-anchored where a
 CWE exists), one mapping per scanner, the scoring CLI, the registry of frozen benchmark repositories, and recorded
-results. The fixed formats and the exact matching rules are in [`docs/CONTRACT.md`](docs/CONTRACT.md) (contract 1.3).
+results. The fixed formats and the exact matching rules are in [`docs/CONTRACT.md`](docs/CONTRACT.md) (contract 1.4).
 
 ## Labels and outcomes
 
@@ -74,7 +74,8 @@ python3 -m cai_bench score \
     --key bench-csharp-security-secrets/benchmark/answer-key.json \
     --sarif report.sarif \
     --mapping mappings/<scanner>.json \
-    [--scores scores.json] [--repo-root-prefix /abs/path/of/checkout] [--json report.json]
+    [--scores scores.json] [--repo-root-prefix /abs/path/of/checkout] [--json report.json] \
+    [--configuration-label "<non-default configuration>"]
 ```
 
 `score` prints a per-concept and a per-scanner-dimension table (recall, trap resistance, noise, TP/FN/FP/TN,
@@ -82,8 +83,19 @@ redundant, uncovered) and lists every entry that went wrong. `--json` writes the
 individual outcome — each key entry with the result(s) it matched, and each SARIF result (run and result index,
 ruleId, file, line) with its outcome — so a reader can audit every number.
 
-- Result paths may be relative, absolute or `file://` URIs; they are normalised and suffix-matched against the key's
-  repo-relative paths. A result without a location is repository-level.
+- Result paths may be relative, absolute or `file://` URIs. Each is made **repository-relative** — a relative uri is
+  taken as relative to the repository root; SARIF `uriBaseId`s are resolved through `originalUriBaseIds`; an absolute
+  path loses a `--repo-root-prefix`, the `/src` container mount or everything up to the checkout directory named
+  after the repository — and then compared with the key's path **exactly**, so `tools/x/.nvmrc` never matches a
+  plant at the root `.nvmrc`. Only a path that cannot be made repo-relative (an absolute path under an unknown root,
+  a site read out of a message) falls back to suffix matching; each result records `pathMatch: exact | suffix`. A
+  result without a location is repository-level.
+- A concept no rule of the scanner detects is still a concept: the mapping lists it under `unmapped` (or omits it),
+  and its plants are false negatives — real defects the scanner cannot see. The report lists them as
+  `unmappedConcepts` and in a `(no scanner rule)` dimension row.
+- A location-less row the mapping declares a summary of its concept (`summaryOfConcept`, e.g. "not all async methods
+  take a cancellation token") does not find a plant at a located site — it does not say where — and is not noise; the
+  report lists it under `summaryOfConcept` beside the plants it summarises.
 - A result's concept comes from the scanner mapping: `mappings/<scanner>.json` maps each concept to regexes over the
   SARIF `ruleId`, narrowed where one rule id carries several concepts by regexes over the message text and by
   required result properties. Scanner roll-up rows can be listed under `ignore` and are reported as `summary`, in no
@@ -94,6 +106,16 @@ ruleId, file, line) with its outcome — so a reader can audit every number.
   no score is reported `unscored`.
 - Results of concepts the key does not cover are reported as **uncovered** and never counted as noise. A second
   result on an already-found plant is **redundant**: it is neither a hit nor noise.
+
+### Default and secondary configurations
+
+The headline numbers of a scanner are those of its **default configuration** — what a user gets without switching
+anything on. A run with a non-default configuration (a compliance framework enabled, an extra rule pack, a stricter
+profile) is a **secondary run**: score it with `--configuration-label "<what was switched on>"`, which stamps the JSON
+report `"configuration": {"label": …, "headline": false}` (a default run carries `{"label": "default", "headline":
+true}`), and record it in the results file's `scans[]` with a `configuration` object (e.g. `{"label": "wcag-2.2",
+"env": {"CODEHEALTH_COMPLIANCE_FRAMEWORKS": "wcag-2.2"}}`). Secondary runs are reported beside the headline, never
+merged into it; a concept a scanner measures only in a non-default configuration is "not measured" in the headline.
 
 Other commands:
 

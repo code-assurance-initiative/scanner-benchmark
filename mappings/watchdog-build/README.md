@@ -24,3 +24,16 @@ partition of their umbrella's pre-split ids, so a key written against an umbrell
 each taxonomy `parent` into the mapping and checks a child is mapped on no dimension its umbrella is not.
 `LOCATION_FROM_MESSAGE` becomes the mapping's `locationFromMessage` (D36 workflow rows that name their site only in the
 message). `FAMILY` holds the families (`hardcoded-secret`, `weak-password-hashing`).
+
+Contract 1.4 additions. `concepts.py` may define concepts no Watchdog dimension maps: they must be listed in
+`UNMAPPED` (reason) with the census behind the "no rule" in `UNMAPPED_CENSUS`; `build.py` refuses any other concept no
+dimension maps, emits each as `rules: []`, `dimensions: []` plus a mapping-level `unmapped` entry, and lists it in the
+matrix's `beyondReference` with the repositories that label it (frozen keys) or plan to (`dims.BEYOND_PLAN`).
+`discrim.py` adds the AC6 table (focus-outline-removed / motion-without-reduced-motion under the umbrella
+visual-and-motion-safety), the family `untrusted-data-executed` and `SUMMARY_OF_CONCEPT` (→ mapping
+`summaryOfConcept`). The matrix's per-repository labels are read from the FROZEN keys: every repository in
+`registry.json` at its latest tag, from the sibling clones in `BENCH_WORKSPACE` (default: the directory holding this
+repository), sha256-checked against the registry; planned labels from `dims.py` remain only for repositories not
+frozen yet. `build.py` prints the frozen coverage gaps per language.
+
+    WATCHDOG_SOURCE=/path/to/engine-checkout BENCH_WORKSPACE=/path/with/bench-clones python3 mappings/watchdog-build/build.py

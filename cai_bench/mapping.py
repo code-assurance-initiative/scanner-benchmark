@@ -13,6 +13,10 @@ Contract 1.2: `scoreDimensions` on a concept names the dimensions whose SCORE me
 Contract 1.3: `parent` on a concept names its umbrella concept (a key entry naming the umbrella also matches the
 child's results, see scoring.py); a mapping-level `locationFromMessage` list [{rule, message?, pattern, source?}]
 gives a location-less result the `file` (and `line`) its message names.
+Contract 1.4: a mapping-level `unmapped` list [{concept, reason}] names the taxonomy concepts no rule of this scanner
+detects; each is in `concepts` with `rules: []` and `dimensions: []`, and a plant of it is scored an FN. A
+mapping-level `summaryOfConcept` list [{rule, message, reason}] declares the rows that summarise their concept across
+the repository without naming a site (see scoring.py).
 """
 import re
 
@@ -114,6 +118,24 @@ class Mapping:
                     raise MappingError(f"mapping: concepts.{c}.parent forms a cycle through '{p}'")
                 seen.add(p)
                 p = self.parents.get(p)
+        self.unmapped = {}  # 1.4: concept -> why no rule of this scanner maps it
+        for i, u in enumerate(doc.get("unmapped", []) or []):
+            w = f"unmapped[{i}]"
+            if not isinstance(u, dict) or not isinstance(u.get("concept"), str) or not (u.get("reason") or "").strip():
+                raise MappingError(f"mapping: {w} needs a 'concept' and a one-line 'reason'")
+            c = u["concept"]
+            if c not in self.concepts:
+                raise MappingError(f"mapping: {w} names '{c}', which is not a concept of the mapping")
+            if self.concepts[c] or self.dims[c]:
+                raise MappingError(f"mapping: {w}: '{c}' is listed as unmapped but has rules or dimensions")
+            self.unmapped[c] = u["reason"]
+        self.summaries = []  # 1.4: rows that summarise a concept across the repository, with no site
+        for i, sm in enumerate(doc.get("summaryOfConcept", []) or []):
+            w = f"summaryOfConcept[{i}]"
+            if not isinstance(sm, dict) or not ("rule" in sm and "message" in sm) or not (sm.get("reason") or "").strip():
+                raise MappingError(f"mapping: {w} needs a 'rule' regex, a 'message' regex and a 'reason'")
+            self.summaries.append((_rx(sm["rule"], f"{w}.rule"), _rx(sm["message"], f"{w}.message", re.IGNORECASE),
+                                   sm["reason"]))
         self.location_from_message = []
         for i, lm in enumerate(doc.get("locationFromMessage", []) or []):
             w = f"locationFromMessage[{i}]"
@@ -139,6 +161,16 @@ class Mapping:
             self.ignore.append((_rx(ig["rule"], f"{w}.rule") if "rule" in ig else None,
                                 _rx(ig["message"], f"{w}.message", re.IGNORECASE) if "message" in ig else None,
                                 ig.get("reason")))
+
+    def summary_of(self, rule_id, message):
+        """The reason of the first `summaryOfConcept` entry matching this result, or None (contract 1.4)."""
+        for rule, msg, reason in self.summaries:
+            if rule is not None and (rule_id is None or not rule.search(rule_id)):
+                continue
+            if msg is not None and not msg.search(message or ""):
+                continue
+            return reason
+        return None
 
     def ignored(self, rule_id, message):
         """The reason of the first `ignore` entry matching this result, or None."""

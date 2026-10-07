@@ -50,6 +50,9 @@ CASES = [
 # Every multi-concept dimension: real message shapes (verbatim from local Watchdog scans, truncated; a few D7 / D10 rows
 # that no local scan carries are written in the engine's own title format) -> the ONE concept they evidence, or none.
 DIMENSION_CASES = [
+    ('AC6', 'Focus outline removed inline: outline:none/0 in an inline style removes the keyboard focus ring with no chance of a :focus replacement.', ['focus-outline-removed']),
+    ('AC6', 'Animation without a prefers-reduced-motion guard: This stylesheet animates but never checks prefers-reduced-motion', ['motion-without-reduced-motion']),
+    ('AC6', "Low contrast Tailwind colour pair (2.9:1): This element's Tailwind text/background colour utilities fall below", ['visual-and-motion-safety']),
     ('D3', 'ClassTooLong: Kcp: ClassTooLong — 493 significant lines (blank, comment-only and punctuation-only lines excluded), 26 methods. The bar is 400 significant lines', ['god-class']),
     ('D3', 'TooManyMethods: xt: TooManyMethods — 78 methods. The bar is 30 methods; this is 48 over it, 2.60× the bar.', ['god-class']),
     ('D3', 'FileTooLong: pro/apex.ts: FileTooLong — 574 significant lines (blank, comment-only and punctuation-only lines excluded). The bar is 500 significant lines', ['oversized-source-file']),
@@ -326,8 +329,9 @@ class WatchdogMapping(unittest.TestCase):
 
     def test_umbrellas(self):
         kids = {c: s["parent"] for c, s in DOC["concepts"].items() if "parent" in s}
-        self.assertEqual(set(kids.values()), {"container-excessive-privilege", "iac-misconfiguration"})
-        self.assertEqual(len(kids), 15)
+        self.assertEqual(set(kids.values()), {"container-excessive-privilege", "iac-misconfiguration",
+                                              "visual-and-motion-safety"})
+        self.assertEqual(len(kids), 17)
         for c, p in kids.items():
             self.assertEqual(M.ancestors(c), [p])
             self.assertLessEqual(set(DOC["concepts"][c]["dimensions"]), set(DOC["concepts"][p]["dimensions"]), c)
@@ -379,7 +383,7 @@ class WatchdogMapping(unittest.TestCase):
                 self.assertEqual(sorted(M.concepts_of(rule, msg, {})), want)
 
     def test_cases_cover_every_multi_concept_dimension(self):
-        self.assertEqual(len(MULTI), 21)
+        self.assertEqual(len(MULTI), 22)  # 1.4: AC6 split; R1 (floating-promise batch)
         self.assertEqual(sorted(set(MULTI) - {r for r, _, w in DIMENSION_CASES if w} - {r for r, *_ in CASES}), [])
 
     def test_no_multi_concept_dimension_keeps_a_bare_ruleid_rule(self):

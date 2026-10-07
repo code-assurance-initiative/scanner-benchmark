@@ -57,7 +57,9 @@ class Cli(unittest.TestCase):
         self.assertIn("FN SEC-002", p.stdout)
         got = {(x["index"], x["outcome"], x["entryId"], x["ruleId"], x["file"], x["line"]) for x in r["results"]}
         self.assertEqual(got, {
-            (0, "tp", "SEC-001", "D13", "/home/ci/work/bench-fixture/src/Billing/PaymentClient.cs", 15),
+            # contract 1.4: the absolute uri under the checkout directory (named after the key's repo) is made
+            # repo-relative and compared exactly
+            (0, "tp", "SEC-001", "D13", "src/Billing/PaymentClient.cs", 15),
             (1, "redundant", "SEC-001", "D13/aws", "src/Billing/PaymentClient.cs", 14),
             (2, "trap-fp", "TRP-001", "D13", "src/Billing/PaymentClient.cs", 40),
             (3, "clean-fp", "CLN-001", "D1", "src/Billing/Invoice.cs", 3),   # ruleIndex -> driver.rules[1]

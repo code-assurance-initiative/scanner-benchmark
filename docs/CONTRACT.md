@@ -1,6 +1,53 @@
-# Harness contract (v1.3)
+# Harness contract (v1.4)
 
 The fixed interfaces between the parts of this harness. Change only with a version bump.
+
+## What changed in 1.4 (2026-10-07)
+
+The answer-key format is unchanged; every 1.0–1.3 key and mapping stays valid. Two outcome rules change (paths and
+summary rows), the rest is additive:
+
+- **paths — exact, repo-relative (CHANGES OUTCOMES).** Suffix matching let a plant at the root `.nvmrc` be found by a
+  result on `tools/manifest-export/.nvmrc`, and made two `package-lock.json` files of one repository collide. A result
+  path is now made repository-relative and compared with the entry's path EXACTLY; suffix matching remains only as a
+  fallback for a path that cannot be made repository-relative (see Matching, "Paths"). Each result carries `pathMatch`
+  (`exact` | `suffix`), the summary `pathMatches`. Consequence: a RELATIVE uri is taken as relative to the repository
+  root, so a scanner that reports paths relative to a sub-directory no longer suffix-matches (give it a SARIF
+  `uriBaseId` or report from the root). On the frozen Watchdog scans no outcome changed: Watchdog writes repo-relative
+  uris, and no plant shared a basename with another file of its concept.
+- **summary rows of a located concept (CHANGES OUTCOMES, by mapping declaration only).** Some scanners report a located
+  defect only as an unlocated repository-wide row ("not all async methods take a CancellationToken": the per-method rows
+  never reach SARIF). Such a row does NOT match a located must-fire — it does not tell the user where — but it is not
+  noise either: a mapping may declare it (`summaryOfConcept`), and when the key plants its concept at located sites it
+  becomes outcome `summary-of-concept`, listed in the report's `summaryOfConcept` with the plants it summarises (each
+  plant's entry row carries `summarisedBy`), outside the result count and every metric (see Matching, precedence 6).
+  A repository-level must-fire or trap of the concept still takes the row first. An undeclared location-less row is
+  matched as before.
+- **concepts beyond the scanner (scanner-neutral taxonomy).** A taxonomy concept no rule of a scanner detects is
+  allowed: the mapping lists it in `concepts` with `rules: []`, `dimensions: []` and in a top-level `unmapped`
+  `[{concept, reason}]`. A must-fire on it is an FN for that scanner (a real defect it cannot see) — as is a must-fire on
+  a concept the mapping omits. The report lists such concepts as `unmappedConcepts`, and their plants and traps in a
+  per-dimension row `(no scanner rule)`; counts carry `summaryOfConcept`.
+- **configuration.** `score --configuration-label <text>` stamps the JSON report `configuration: {label, headline:
+  false}` (default run: `{label: "default", headline: true}`). Headline numbers are the scanner's default
+  configuration; a non-default run is a secondary run, recorded in a results file's `scans[]` with a `configuration`
+  object and excluded from headline numbers.
+- **coverage matrix** (`coverage/matrix.json`, not an interface of the scorer): a frozen repository's labels per row
+  are read from its key at the registered tag (`source: "key vX.Y.Z"`, `entries` per label, `wildcardClean`); planned
+  labels remain only for repositories not frozen yet (`source: "plan"`); rows carry `frozenCoverageGaps` and
+  `frozenCoverageCleanOnly`; `beyondReference` lists the concepts no reference-scanner rule maps, with the repositories
+  that plant them.
+
+Watchdog mapping changes shipped with 1.4: ten `unmapped` concepts (business-logic-in-controller,
+value-object-mutability, domain-event-never-handled, event-schema-change-without-upcaster, react-index-as-key,
+react-hook-missing-dependency, react-state-mutation, form-error-not-associated, modal-focus-not-managed,
+autoplay-media-without-control — census in `mappings/watchdog-build/concepts.py`, `UNMAPPED_CENSUS`); AC6 split — new
+`focus-outline-removed` and `motion-without-reduced-motion` are children of the umbrella `visual-and-motion-safety`,
+which keeps the contrast rows; family `untrusted-data-executed` = `insecure-deserialization` + `code-injection` (a
+type-embedding deserializer on untrusted input is code execution: a scanner reporting the deserialization site as code
+injection found the defect, and is charged symmetrically at a trap); `summaryOfConcept` for X2, PF3 and X5 ratio rows.
+`excessive-mocking` (a mock-dominated test) and `pointless-catch-rethrow` already existed: their dimensions (D10, X3)
+cover them, no title evidences them (`unevidenced`), so they are not `unmapped`.
 
 ## What changed in 1.3 (2026-10-07) — backward compatible
 
@@ -139,6 +186,12 @@ keeps its meaning (see Matching, "Umbrella concepts"). New keys name the precise
     }
   },
   "ruleDimension": [ { "rule": "^(D\\d+)", "dimension": "$1" } ],  // ruleId → dimension
+  "unmapped": [                             // 1.4, optional: concepts no rule of this scanner detects
+    { "concept": "react-index-as-key", "reason": "no Watchdog rule detects this" }  // in `concepts` with rules: [], dimensions: []
+  ],
+  "summaryOfConcept": [                     // 1.4, optional: unlocated rows that summarise a located concept
+    { "rule": "^X2$", "message": "^Not all async methods take a CancellationToken:", "reason": "…" }
+  ],
   "ignore": [                               // 1.1, optional: scanner roll-up rows
     { "rule": "^D28$", "message": "^Rotate the exposed credentials", "reason": "roll-up of the located rows" }
   ],
@@ -168,6 +221,15 @@ A rule item accepts a result when its ruleId matches the rule regex, AND — if 
 named property is present in the result's `properties` bag. An object rule item's own `messages` / `properties`
 replace the concept-level ones for that item (one concept often spans several scanner rules whose messages have
 different formats); a string rule uses the concept-level ones. With neither, the ruleId alone decides (1.0).
+
+`unmapped` (1.4) entries name concepts of the mapping that have no rule and no dimension, each with a one-line
+reason; a concept listed there with a rule or a dimension is an error. A key concept the mapping omits altogether is
+treated the same way (no result can carry it).
+
+A `summaryOfConcept` (1.4) entry needs `rule`, `message` (regexes, as for `ignore`) and a `reason`. It declares that a
+matching result restates a concept over the whole repository without naming a site; see Matching, precedence 6. Unlike
+`ignore`, such a row keeps its concept: it can still match a repository-level entry or be caught by a
+repository-level trap.
 
 An `ignore` entry matches a result when every regex it gives matches (`rule` over the ruleId, `message` over the
 message text, case-insensitive); it needs at least one. Such a result is a `summary` row: listed in the report with
@@ -212,16 +274,31 @@ scanner knowledge.
 
 ## Matching (mirrors kennel tools/multilang/matching.py semantics)
 
-A SARIF result matches a located entry iff its ruleId matches one of the entry concept's `rules`, its path ends with
-the entry's `file` (suffix-tolerant, `/`-normalised), and its startLine is within `lineTolerance` of `lines`. A
+A SARIF result matches a located entry iff its ruleId matches one of the entry concept's `rules`, its path names the
+entry's `file` (see "Paths" below), and its startLine is within `lineTolerance` of `lines`. A
 repository-level entry matches any result of the concept that has no location or whose location is outside every
 located entry. One-to-one for `must-fire` (each entry consumes at most one result; extra results on the same site are
 `redundant`, counted once and not as noise). `clean` entries match any result whose location falls inside the region,
 for any concept listed (or any concept at all for `"*"`), with no line tolerance.
 
-Precedence when a result could match several entries: a `must-fire` it can consume (key order, located before
-repository-level) → `redundant` on an already-found plant → `must-not-fire` → `clean` → `not-applicable` → noise
-if one of its concepts is covered by the key → `uncovered`.
+Precedence when a result could match several entries: (1) a `must-fire` it can consume (key order, located before
+repository-level) → (2) `redundant` on an already-found plant → (3) `must-not-fire` → (4) `clean` → (5)
+`not-applicable` → (6, 1.4) `summary-of-concept` when the mapping declares the row a summary (`summaryOfConcept`), it
+has no location (none in SARIF, none from its message) and the key has a located `must-fire` of its concept (exactly
+or as an umbrella's child) → (7) noise if one of its concepts is covered by the key → (8) `uncovered`.
+
+**Paths (1.4).** Both sides are compared as repository-relative paths. An entry's `file` is repository-relative by
+definition. A result's uri is made repository-relative, in order: (a) a uri with a `uriBaseId` is resolved through the
+run's `originalUriBaseIds` — bases that are themselves relative contribute their path, the top-most base is the root
+the scanner declares, and the path below it is repository-relative (unless the full absolute path reduces under a
+configured `--repo-root-prefix`, which wins); (b) a relative uri (no leading `/`, no drive letter, no `..`) is
+relative to the repository root; (c) an absolute path (or `file://` URI) loses the first matching
+`--repo-root-prefix`, else the built-in checkout root `/src`, else everything up to and including the first path
+segment equal to the key's repository name (`/tmp/scan/bench-x/…` for repo `owner/bench-x`). A result made
+repository-relative (`pathMatch: exact`) names the entry's file only when the two paths are EQUAL. A result that cannot
+be made repository-relative, and every result located from its message (often a basename), falls back to the suffix
+rule (`pathMatch: suffix`): the paths are equal or either is a `/`-boundary suffix of the other. Before 1.4 every path
+used the suffix rule, so a plant at the root `.nvmrc` was found by a result on `tools/manifest-export/.nvmrc`.
 
 **Subjects (1.2).** An entry with a `subject` matches, besides the results on its site (as above), a result of its
 concept (exactly, or as a family sibling where families apply) that has **no location or a location in a dependency
@@ -284,6 +361,11 @@ other (1.0).
   changes no TP/FN: a result on the wrong line stays an FN (a scanner that points at line 1 for a resource at line 71
   is imprecise, and recall says so). The gap between file-level recall and recall is the scanner's location
   imprecision. Reported per concept, per dimension and in total, always labelled as secondary.
+
+`summary-of-concept` results (1.4) are in no metric: not hits, not noise, not in the result count; counts carry
+`summaryOfConcept`, and the report's `summaryOfConcept` lists each with its concept and the plants it summarises. A
+plant of a concept no rule of the scanner maps is an FN (1.4); per dimension such plants and traps are counted in the
+row `(no scanner rule)`.
 
 Results whose concept the key does not cover at all are reported as `uncovered`, never as noise. `summary` rows
 (mapping `ignore`) are in no metric. A metric with a zero denominator is reported as n/a, never as 0 or 100 %.

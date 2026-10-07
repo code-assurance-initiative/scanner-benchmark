@@ -41,6 +41,9 @@ good site may be promoted to a `must-not-fire` trap); `redundant` is recorded an
       "iteration": 1,                      // 1, 2, … in the order of the authoring loop
       "date": "2026-10-07",                // ISO 8601
       "sarifSha256": "…",                  // sha256 of the report.sarif bytes scored
+      "configuration": { "label": "wcag-2.2", "env": { "CODEHEALTH_COMPLIANCE_FRAMEWORKS": "wcag-2.2" } },
+                                           // optional: ONLY on a non-default configuration (a secondary run, excluded
+                                           // from headline numbers); absent = the scanner's default configuration
       "outcomes": {                        // the `summary` block of `python3 -m cai_bench score --json`
         "tp": 0, "fn": 0, "fp": 0, "tn": 0, "trapFp": 0, "trapTn": 0,
         "results": 0, "noise": 0, "redundant": 0, "uncovered": 0

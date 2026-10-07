@@ -1001,6 +1001,20 @@ TABLE = {
   ]),
 }
 
+# ---- AC6 (contract 1.4 split): visual-and-motion-safety becomes the umbrella of the two precise concepts its titles
+# name; contrast rows stay on the umbrella (its residue). Every AC6 title (VisualAndMotionAnalyzer.cs) is covered.
+AC6_SRC = "engine/src/Scanner/Accessibility/AC6/VisualAndMotionAnalyzer.cs"
+TABLE["AC6"] = dict(
+    concepts=OrderedDict([
+        ("visual-and-motion-safety", [dict(messages=[r"^Low contrast (?:Tailwind )?colour pair"],
+                                           source=AC6_SRC + ":95,134,856,948,1005 (Low contrast colour pair …, in CSS, Tailwind, CSS-in-JS)")]),
+        ("focus-outline-removed", [dict(messages=[r"^Focus outline removed (?:inline|in CSS without a :focus replacement):"],
+                                        source=AC6_SRC + ":87 (inline style), :124 (<style> block without :focus)")]),
+        ("motion-without-reduced-motion", [dict(messages=[r"^Animation without a prefers-reduced-motion guard:"],
+                                                source=AC6_SRC + ":117")]),
+    ]),
+    off=[])
+
 for _d, _s in TABLE.items():
     assert _d not in SPEC, _d
     SPEC[_d] = _s
@@ -1012,6 +1026,21 @@ FAMILY = {c: "hardcoded-secret" for c in ("hardcoded-credential", "hardcoded-pas
 # taxonomy makes them disjoint (untrusted code receives the secret vs. the process list / script text shows it), and the
 # one rule that blurred them (watchdog-secret-interpolated-into-run) is mapped to the concept its CWE-214 names.
 FAMILY.update({c: "weak-password-hashing" for c in ("weak-hash-algorithm", "insufficient-password-hashing")})
+# A type-embedding deserializer on untrusted input IS remote code execution: a scanner that reports the
+# deserialization site as code injection (or an eval site as unsafe deserialization) found the defect, and is charged
+# symmetrically at a trap (contract 1.4; TS DESER-001 was reported as code injection).
+FAMILY.update({c: "untrusted-data-executed" for c in ("insecure-deserialization", "code-injection")})
+# Contract 1.4 `summaryOfConcept`: rows that summarise a located concept over the whole repository (a ratio or a
+# count) with no site; the per-site rows are Info and never reach SARIF (FindingSurface.cs). Such a row does not find
+# a located plant (it does not say where), and it is not noise: the report lists it beside the plants it summarises.
+SUMMARY_OF_CONCEPT = [
+    OrderedDict(rule=r"^X2$", message=r"^Not all async methods take a CancellationToken:",
+                reason="X2's ratio row over every async method (engine/src/Scanner/Defects/X2); its per-method rows are Info and never reach SARIF"),
+    OrderedDict(rule=r"^PF3$", message=r"^(?:Awaits without ConfigureAwait\(false\)|Sync-over-async blocking):",
+                reason="PF3's repository-wide count/ratio rows (\"Only N/M awaits …\", \"N blocking call(s)\"); no per-site row reaches SARIF"),
+    OrderedDict(rule=r"^X5$", message=r"^(?:Nullable reference types not enabled everywhere|Null-forgiving operator \(`!`\) suppressions reduce the NRT score):",
+                reason="X5's repository-wide ratio rows (projects enabling <Nullable>, `!` density); they name no project or site"),
+]
 IGNORE = [OrderedDict(rule=r"^D28$", message=r"^Rotate the exposed credentials",
                       reason="D28's repository-level roll-up of its located history rows (engine/src/Scanner/Security/D28/SecretsHistoryAnalyzer.cs:392), not a separate finding")]
 

@@ -153,9 +153,13 @@ class Paths(unittest.TestCase):
         self.assertFalse(self._hit("src/Billing/MyPaymentClient.cs"))
         self.assertFalse(self._hit("src/Billing/PaymentClient.cs.bak"))
 
-    def test_scanner_reporting_from_inside_the_repo(self):
-        # either side may be the suffix (kennel matching.py rule)
-        self.assertTrue(self._hit("Billing/PaymentClient.cs"))
+    def test_relative_uri_is_repo_relative_not_a_suffix(self):
+        # contract 1.4: a relative uri is relative to the repository root and compared exactly, so a scanner run
+        # from inside a sub-directory does not hit (before 1.4 either side could be the suffix)
+        self.assertFalse(self._hit("Billing/PaymentClient.cs"))
+        # an absolute path under an unknown root still falls back to the suffix rule, either side
+        self.assertTrue(self._hit("/somewhere/else/src/Billing/PaymentClient.cs"))
+        self.assertTrue(path_match("Billing/PaymentClient.cs", PC))
 
     def test_repo_root_prefix_is_stripped(self):
         self.assertEqual(norm("/work/repo/src/a.cs", ["/work/repo"]), "src/a.cs")

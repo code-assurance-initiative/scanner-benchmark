@@ -1770,11 +1770,77 @@
     },
     {
       "id": "visual-and-motion-safety",
-      "title": "Contrast, focus visibility and motion safety",
+      "title": "Contrast, focus visibility and motion safety (umbrella)",
       "cwe": null,
       "family": "frontend",
       "kind": "finding",
-      "description": "Insufficient text contrast, removed focus outline, animation without prefers-reduced-motion guard."
+      "description": "Umbrella of focus-outline-removed and motion-without-reduced-motion (their `parent`). As a concept of its own: insufficient text contrast, and any visual or motion hazard no child names."
+    },
+    {
+      "id": "focus-outline-removed",
+      "title": "Keyboard focus indicator removed",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "finding",
+      "description": "A style removes the focus outline (outline: none / 0) of focusable elements without providing a visible replacement focus style, so a keyboard user cannot see where focus is (WCAG 2.4.7).",
+      "parent": "visual-and-motion-safety"
+    },
+    {
+      "id": "motion-without-reduced-motion",
+      "title": "Animation that ignores the reduced-motion preference",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "finding",
+      "description": "Animations or transitions run regardless of the user's prefers-reduced-motion setting, so a motion-sensitive user cannot turn them off (WCAG 2.3.3).",
+      "parent": "visual-and-motion-safety"
+    },
+    {
+      "id": "form-error-not-associated",
+      "title": "Form error not programmatically associated with its field",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "finding",
+      "description": "A validation error message is shown next to a field but is not tied to it (no aria-describedby / aria-errormessage, no aria-invalid, no live region), so assistive technology does not announce which field is wrong or why (WCAG 3.3.1, 1.3.1)."
+    },
+    {
+      "id": "modal-focus-not-managed",
+      "title": "Modal dialog does not manage focus",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "finding",
+      "description": "A modal dialog that, on opening, does not move focus into itself, does not keep focus inside while open, or does not return focus to the triggering control on close, so keyboard and screen-reader users act on content behind it (WCAG 2.4.3)."
+    },
+    {
+      "id": "autoplay-media-without-control",
+      "title": "Media plays automatically with no way to stop it",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "finding",
+      "description": "Audio, or video with sound, starts playing on load for more than a few seconds without a control to pause, stop or mute it (WCAG 1.4.2, 2.2.2)."
+    },
+    {
+      "id": "react-index-as-key",
+      "title": "List item keyed by its array index",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "finding",
+      "description": "Items of a list that can be reordered, filtered or have items inserted are rendered with their array index as the reconciliation key, so component state and DOM (inputs, focus) stay attached to the wrong item after the list changes."
+    },
+    {
+      "id": "react-hook-missing-dependency",
+      "title": "Effect or memoised callback with a missing dependency",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "finding",
+      "description": "A hook whose callback reads a prop, state or derived value that is not listed in its dependency array, so it keeps running with a stale value (a stale closure) after that value changes."
+    },
+    {
+      "id": "react-state-mutation",
+      "title": "Component state mutated in place",
+      "cwe": null,
+      "family": "frontend",
+      "kind": "finding",
+      "description": "Component state (or a prop) is changed by mutating the existing object or array (push, splice, property assignment) instead of producing a new value through the state setter, so the change is not rendered or is lost on the next update."
     },
     {
       "id": "accessibility-checks-in-ci",
@@ -1847,6 +1913,38 @@
       "family": "ops",
       "kind": "finding",
       "description": "A published network binding not declared in the repository's own ports/expose configuration."
+    },
+    {
+      "id": "business-logic-in-controller",
+      "title": "Business logic in a controller",
+      "cwe": null,
+      "family": "architecture",
+      "kind": "finding",
+      "description": "A web controller / endpoint handler computes business rules itself (state transitions, pricing, approval limits) instead of delegating to the domain or an application service, so no other entry point can apply the same rules and they cannot be tested without HTTP."
+    },
+    {
+      "id": "value-object-mutability",
+      "title": "Value object that is mutable or compared by identity",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "A type modelling a value (money, an address, a date range) exposes mutable state or uses reference (identity) equality, so two equal values compare unequal or a shared value changes under every holder."
+    },
+    {
+      "id": "domain-event-never-handled",
+      "title": "Domain event raised but never handled",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "A domain event type is raised or published, but nothing in the system subscribes to or handles it, so the consequence the event exists to trigger never happens."
+    },
+    {
+      "id": "event-schema-change-without-upcaster",
+      "title": "Persisted event schema changed without an upcaster",
+      "cwe": null,
+      "family": "domain",
+      "kind": "finding",
+      "description": "The shape of an event type already persisted in an event store or durable log changed (a field renamed, removed or retyped) with no upcaster or versioned event type, so events written under the old schema no longer deserialise or replay correctly."
     }
   ]
 }

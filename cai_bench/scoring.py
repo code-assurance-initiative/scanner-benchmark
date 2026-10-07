@@ -41,17 +41,26 @@ Precedence when one result could match several entries — the first that applie
   3. a `must-not-fire` trap                                                                        -> trap-fp
   4. a `clean` region                                                                              -> clean-fp
   5. a `not-applicable` concept                                                                    -> na-fp
-  6. any other result of a concept the key covers                                                  -> unmatched-fp
-  7. a result of a concept the key does not cover at all                                           -> uncovered
-Outcomes 3–6 are noise. `redundant` is neither a hit nor noise. `uncovered` is reported, never counted as noise.
+  6. a result the mapping declares a summary row (`summaryOfConcept`), with no location (none in SARIF, none
+     from the message), of a concept the key plants at located sites (contract 1.4)                -> summary-of-concept
+  7. any other result of a concept the key covers                                                  -> unmatched-fp
+  8. a result of a concept the key does not cover at all                                           -> uncovered
+Outcomes 3–5 and 7 are noise. `redundant` and `summary-of-concept` are neither hits nor noise (`summary-of-concept`
+is outside the result count). `uncovered` is reported, never counted as noise.
+
+Paths (contract 1.4): a result path made repository-relative (paths.repo_relative; the SARIF uriBaseId chain, the
+configured prefixes, a built-in checkout root, or the checkout directory named after the key's repo) is compared with
+an entry's path EXACTLY; one that cannot be, and every site read out of a message, falls back to the suffix rule
+(`pathMatch`: exact | suffix).
 """
 import re
 
 from .keyfile import entry_concepts, line_tolerance
 from .mapping import UNMAPPED
-from .paths import norm, path_match
+from .paths import norm, repo_relative, same_file
 
 NOISE = ("trap-fp", "clean-fp", "na-fp", "unmatched-fp")
+NO_RULE = "(no scanner rule)"  # by_dimension row: entries whose concept no dimension of the scanner maps
 STAR = "*"
 
 
@@ -67,7 +76,7 @@ def _covers(entry, result, tol):
     an entry pinned to a commit takes any line of its file in that commit."""
     if result["file"] is None:
         return False
-    if not path_match(result["file"], entry["_file"]):
+    if not same_file(result, entry["_file"]):
         return False
     if "commit" in entry:
         sha = result.get("commitSha")
@@ -242,7 +251,7 @@ class Matcher:
                 ent_out[e["id"]]["fileLevel"] = any(
                     res_out[i] is None or res_out[i]["outcome"] != "summary"
                     for i, r in enumerate(self.results)
-                    if r["file"] is not None and path_match(r["file"], e["_file"])
+                    if r["file"] is not None and same_file(r, e["_file"])
                     and (_result_concepts_for(e, r) or _result_concepts_for(e, r, self.family_of)))
         hit_mf = [e for e in mf if ent_out[e["id"]]["outcome"] == "TP"]
         for i, r in enumerate(self.results):
@@ -265,6 +274,18 @@ class Matcher:
                         ent_out[e["id"]]["outcome"] = "FP"
                         ent_out[e["id"]]["results"].append(i)
 
+        located_mf = [e for e in mf if e["_file"] is not None]
+        for i, r in enumerate(self.results):
+            if res_out[i] is None and r["file"] is None and r.get("summaryOf"):
+                # contract 1.4: a location-less row of a concept the key plants only at located sites summarises
+                # that concept ("not all async methods take a token"): it tells the reader the scanner knew, but not
+                # where, so it finds no plant — and it is not noise either
+                plants = [e for e in located_mf if _result_concepts_for(e, r)]
+                if plants:
+                    claim(i, "summary-of-concept", None, plants[0]["concept"])
+                    res_out[i]["plants"] = [e["id"] for e in plants]
+                    for e in plants:
+                        ent_out[e["id"]].setdefault("summarisedBy", []).append(i)
         for i, r in enumerate(self.results):
             if res_out[i] is None:
                 cov = [c for c in _mc(r) if c in self.covered]
@@ -283,7 +304,8 @@ def _ratio(n, d):
 
 def empty_counts():
     return {"tp": 0, "fn": 0, "fp": 0, "tn": 0, "trapFp": 0, "trapTn": 0,
-            "results": 0, "noise": 0, "redundant": 0, "uncovered": 0, "summaryRows": 0, "fileLevelTp": 0}
+            "results": 0, "noise": 0, "redundant": 0, "uncovered": 0, "summaryRows": 0, "summaryOfConcept": 0,
+            "fileLevelTp": 0}
 
 
 def finish(c):
@@ -311,6 +333,9 @@ def add_result(c, outcome):
         return
     if outcome == "uncovered":
         c["uncovered"] += 1
+        return
+    if outcome == "summary-of-concept":  # contract 1.4: neither a hit nor noise, outside the result count
+        c["summaryOfConcept"] += 1
         return
     c["results"] += 1
     if outcome in NOISE:
@@ -381,7 +406,13 @@ def by_dimension(entries, results, mapping, tol):
         rs = [r for r in results if r["dimension"] == d]
         m = Matcher(ents, rs, tol, mapping)
         rows[d] = totals(m, m.run())
-    return {k: rows[k] for k in sorted(rows, key=lambda k: (k == UNMAPPED, _natural(k)))}
+    # contract 1.4: plants and traps of a concept no dimension of the scanner maps (a must-fire there is an FN)
+    ruleless = [e for e in entries if e["label"] in ("must-fire", "must-not-fire")
+                and not mapping.dimensions_of_concept(e["concept"])]
+    if ruleless:
+        m = Matcher(ruleless, [], tol, mapping)
+        rows[NO_RULE] = totals(m, m.run())
+    return {k: rows[k] for k in sorted(rows, key=lambda k: (k in (UNMAPPED, NO_RULE), k == NO_RULE, _natural(k)))}
 
 
 def _natural(s):
@@ -417,8 +448,10 @@ def score(key, results, mapping, scores=None):
     """Score `results` (from sarif.read_results) against `key` under `mapping`. Returns the full report dict."""
     tol = line_tolerance(key)
     entries = key["entries"]
+    repo_name = (key.get("repo") or "").rsplit("/", 1)[-1] or None
     for r in results:
         r["ignoreReason"] = mapping.ignored(r["ruleId"], r.get("message"))
+        r["summaryOf"] = None if r["ignoreReason"] else mapping.summary_of(r["ruleId"], r.get("message"))
         r["concepts"] = [] if r["ignoreReason"] else mapping.concepts_of(r["ruleId"], r.get("message"),
                                                                          r.get("properties"))
         mc = list(r["concepts"])
@@ -431,6 +464,12 @@ def score(key, results, mapping, scores=None):
             loc = mapping.location_in_message(r["ruleId"], r.get("message"))
             if loc is not None:
                 r["file"], r["line"], r["locationSource"] = norm(loc[0]), loc[1], "message"
+                r["pathExact"] = False  # a site named in prose (often a basename): the suffix rule
+        elif r["file"] is not None and not r.get("pathExact"):
+            f, exact = repo_relative(r["file"], (), repo_name)  # contract 1.4: under the checkout directory
+            if exact:
+                r["file"], r["pathExact"] = f, True
+        r["pathMatch"] = None if r["file"] is None else ("exact" if r.get("pathExact") else "suffix")
     m = Matcher(entries, results, tol, mapping)
     out = m.run()
 
@@ -447,6 +486,8 @@ def score(key, results, mapping, scores=None):
                 row[k] = e[k]
         row["results"] = [_brief(results[i]) for i in o["results"]]
         row["redundant"] = [_brief(results[i]) for i in o["redundant"]]
+        if o.get("summarisedBy"):
+            row["summarisedBy"] = list(o["summarisedBy"])
         entry_rows.append(row)
 
     result_rows = []
@@ -455,23 +496,39 @@ def score(key, results, mapping, scores=None):
                             "dimension": r["dimension"], "outcome": o["outcome"], "entryId": o["entryId"],
                             "attributedConcept": o["concept"], "ignoreReason": r.get("ignoreReason")})
 
+    soc = [{"index": r["index"], "ruleId": r["ruleId"], "concept": o["concept"], "message": r["message"],
+            "plants": o["plants"], "reason": r["summaryOf"]} for r, o in zip(results, out["results"]) if o["outcome"] == "summary-of-concept"]
     bands = score_bands(entries, scores or {}, mapping)
     summary = totals(m, out)
     summary["locationSources"] = {k: sum(r["locationSource"] == k for r in results) for k in ("sarif", "message", "none")}
+    summary["pathMatches"] = {k: sum(r.get("pathMatch") == k for r in results) for k in ("exact", "suffix")}
     return {
         "lineTolerance": tol,
         "summary": summary,
         "concepts": by_concept(m, out),
         "dimensions": by_dimension(entries, results, mapping, tol),
         "scoreBands": bands,
+        "unmappedConcepts": unmapped_concepts(entries, mapping),
+        "summaryOfConcept": soc,
         "entries": entry_rows,
         "results": result_rows,
     }
 
 
+def unmapped_concepts(entries, mapping):
+    """The concepts of the key's plants and traps that no rule of the scanner maps (contract 1.4: a concept beyond
+    the scanner — absent from its mapping, listed as `unmapped`, or mapped with no rule): its plants are FNs."""
+    out = set()
+    for e in entries:
+        if e["label"] in ("must-fire", "must-not-fire") and not mapping.concepts.get(e["concept"]):
+            out.add(e["concept"])
+    return sorted(out)
+
+
 def _brief(r):
     return {"index": r["index"], "run": r["run"], "resultIndex": r["resultIndex"], "ruleId": r["ruleId"],
             "file": r["file"], "line": r["line"], "locationSource": r.get("locationSource"),
+            "pathMatch": r.get("pathMatch"),
             "commitSha": r.get("commitSha")}
 
 
@@ -511,6 +568,9 @@ def render(report):
             got = ", ".join(f"{s['source']}={s['score']}" for s in b["scores"]) or "-"
             parts.append(f"  {b['id']:<12} {b['concept']:<32} band {b['band'][0]}-{b['band'][1]}  "
                          f"score {got}  -> {b['outcome']}")
+    if report.get("unmappedConcepts"):
+        parts += ["", "concepts no rule of this scanner maps (each plant of them is an FN: a real defect the scanner "
+                      "cannot see): " + ", ".join(report["unmappedConcepts"])]
     misses = [e for e in report["entries"] if e["outcome"] in ("FN", "FP")]
     if misses:
         parts += ["", "entries that went wrong (FN = planted defect missed, FP = fired on a trap/clean/n-a):"]
@@ -522,6 +582,11 @@ def render(report):
     if summ:
         parts += ["", "summary rows (mapping `ignore`; in no metric):"]
         parts += [f"  #{r['index']} {r['ruleId']} {r['file'] or '(repository)'}  — {r['ignoreReason']}" for r in summ]
+    if report.get("summaryOfConcept"):
+        parts += ["", "summaryOfConcept (location-less rows summarising a concept planted at located sites; the "
+                      "scanner knew, but said not where — no hit, no noise):"]
+        parts += [f"  #{x['index']} {x['ruleId']} [{x['concept']}] plants {', '.join(x['plants'])}: "
+                  f"{(x['message'] or '')[:100]}" for x in report["summaryOfConcept"]]
     stray = [r for r in report["results"] if r["outcome"] == "unmatched-fp"]
     if stray:
         parts += ["", "results on covered concepts that match no entry (noise):"]

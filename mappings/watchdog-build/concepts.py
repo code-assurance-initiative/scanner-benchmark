@@ -276,7 +276,25 @@ c("form-control-without-label", "Form control without accessible label", None, "
 c("page-structure-violation", "Page structure / landmark violation", None, "frontend", "finding", "Missing lang/title/main landmark, skipped heading levels, zoom-disabling viewport, untitled iframe, meta refresh.")
 c("non-keyboard-accessible-interaction", "Interaction not keyboard accessible", None, "frontend", "finding", "Click handlers on non-interactive elements without role/tabindex/key handler, positive tabindex, href-less anchors (WCAG 2.1.1).")
 c("invalid-aria-usage", "Invalid ARIA usage", None, "frontend", "finding", "Invalid/abstract roles, missing required ARIA state, aria-hidden on focusable elements (WCAG 4.1.2).")
-c("visual-and-motion-safety", "Contrast, focus visibility and motion safety", None, "frontend", "finding", "Insufficient text contrast, removed focus outline, animation without prefers-reduced-motion guard.")
+c("visual-and-motion-safety", "Contrast, focus visibility and motion safety (umbrella)", None, "frontend", "finding", "Umbrella of focus-outline-removed and motion-without-reduced-motion (their `parent`). As a concept of its own: insufficient text contrast, and any visual or motion hazard no child names.")
+c("focus-outline-removed", "Keyboard focus indicator removed", None, "frontend", "finding",
+  "A style removes the focus outline (outline: none / 0) of focusable elements without providing a visible replacement focus style, so a keyboard user cannot see where focus is (WCAG 2.4.7).",
+  parent="visual-and-motion-safety")
+c("motion-without-reduced-motion", "Animation that ignores the reduced-motion preference", None, "frontend", "finding",
+  "Animations or transitions run regardless of the user's prefers-reduced-motion setting, so a motion-sensitive user cannot turn them off (WCAG 2.3.3).",
+  parent="visual-and-motion-safety")
+c("form-error-not-associated", "Form error not programmatically associated with its field", None, "frontend", "finding",
+  "A validation error message is shown next to a field but is not tied to it (no aria-describedby / aria-errormessage, no aria-invalid, no live region), so assistive technology does not announce which field is wrong or why (WCAG 3.3.1, 1.3.1).")
+c("modal-focus-not-managed", "Modal dialog does not manage focus", None, "frontend", "finding",
+  "A modal dialog that, on opening, does not move focus into itself, does not keep focus inside while open, or does not return focus to the triggering control on close, so keyboard and screen-reader users act on content behind it (WCAG 2.4.3).")
+c("autoplay-media-without-control", "Media plays automatically with no way to stop it", None, "frontend", "finding",
+  "Audio, or video with sound, starts playing on load for more than a few seconds without a control to pause, stop or mute it (WCAG 1.4.2, 2.2.2).")
+c("react-index-as-key", "List item keyed by its array index", None, "frontend", "finding",
+  "Items of a list that can be reordered, filtered or have items inserted are rendered with their array index as the reconciliation key, so component state and DOM (inputs, focus) stay attached to the wrong item after the list changes.")
+c("react-hook-missing-dependency", "Effect or memoised callback with a missing dependency", None, "frontend", "finding",
+  "A hook whose callback reads a prop, state or derived value that is not listed in its dependency array, so it keeps running with a stale value (a stale closure) after that value changes.")
+c("react-state-mutation", "Component state mutated in place", None, "frontend", "finding",
+  "Component state (or a prop) is changed by mutating the existing object or array (push, splice, property assignment) instead of producing a new value through the state setter, so the change is not rendered or is lost on the next update.")
 c("accessibility-checks-in-ci", "Accessibility checks enforced", None, "frontend", "posture", "An accessibility lint rule set and automated accessibility assertions in tests/CI.")
 c("alt-text-quality", "Alt text is meaningful", None, "frontend", "judged", "Static alt text conveys the image's purpose rather than a filename or generic word.")
 c("link-and-button-text-quality", "Link and button text is descriptive", None, "frontend", "judged", "Link/button text conveys its purpose out of context (not 'click here').")
@@ -287,3 +305,38 @@ c("reproducible-boot", "Application declares a reproducible boot", None, "ops", 
 c("undocumented-api-endpoint", "Served API differs from the committed API description", None, "security", "finding", "Operations served by the running app that its committed OpenAPI document does not declare (or vice versa).")
 c("third-party-data-flow", "Third-party data flows from the UI", None, "compliance", "finding", "Third-party hosts (analytics, trackers) the rendered UI contacts.")
 c("unexpected-exposed-port", "Network port exposed beyond declaration", None, "ops", "finding", "A published network binding not declared in the repository's own ports/expose configuration.")
+
+# ---------------- concepts beyond the reference scanner (contract 1.4: `unmapped`) ----------------
+# Defects a codebase can really have that no rule of the reference scanner detects. They are in the taxonomy because
+# the benchmark measures defects, not one scanner's rule set: a plant of one of them is an FN for a scanner that has
+# no rule for it.
+c("business-logic-in-controller", "Business logic in a controller", None, "architecture", "finding",
+  "A web controller / endpoint handler computes business rules itself (state transitions, pricing, approval limits) instead of delegating to the domain or an application service, so no other entry point can apply the same rules and they cannot be tested without HTTP.")
+c("value-object-mutability", "Value object that is mutable or compared by identity", None, "domain", "finding",
+  "A type modelling a value (money, an address, a date range) exposes mutable state or uses reference (identity) equality, so two equal values compare unequal or a shared value changes under every holder.")
+c("domain-event-never-handled", "Domain event raised but never handled", None, "domain", "finding",
+  "A domain event type is raised or published, but nothing in the system subscribes to or handles it, so the consequence the event exists to trigger never happens.")
+c("event-schema-change-without-upcaster", "Persisted event schema changed without an upcaster", None, "domain", "finding",
+  "The shape of an event type already persisted in an event store or durable log changed (a field renamed, removed or retyped) with no upcaster or versioned event type, so events written under the old schema no longer deserialise or replay correctly.")
+
+UNMAPPED_REASON = "no Watchdog rule detects this"
+UNMAPPED = {cid: UNMAPPED_REASON for cid in (
+    "business-logic-in-controller", "value-object-mutability", "domain-event-never-handled",
+    "event-schema-change-without-upcaster", "react-index-as-key", "react-hook-missing-dependency",
+    "react-state-mutation", "form-error-not-associated", "modal-focus-not-managed",
+    "autoplay-media-without-control")}
+# The census behind each "no rule" (rubric-2026.10.1, engine at the instrument commit 6a05dfb6c; titles from the engine
+# source and the distinct titles of ~8.5k local report.sarif files):
+UNMAPPED_CENSUS = {
+    "business-logic-in-controller": "no finding title names controller logic; AX10 (business-logic-share) is a repository-wide share metric and P9 compares test coverage of domain vs controllers — neither locates rules in a controller",
+    "value-object-mutability": "DM5 judges entity state (publicly-mutable-entity-state), DM2/DM8 primitive ids and clumps; no title concerns a value type's mutability or equality",
+    "domain-event-never-handled": "ED1-ED5 judge handlers that exist (temporal coupling, multiple handlers, naming, outbox, idempotency); no title reports an event with no handler",
+    "event-schema-change-without-upcaster": "ES1-ES3 judge folds, event mutability and personal data; no rule compares an event's schema across history (no 'upcast' title anywhere in the engine)",
+    "react-index-as-key": "no rule reads JSX keys; the only React rules are D29 dangerouslySetInnerHTML/style injection and X1 useEffect(async)",
+    "react-hook-missing-dependency": "no rule reads hook dependency arrays (X1 flags only an async effect callback)",
+    "react-state-mutation": "no rule reads component state updates",
+    "form-error-not-associated": "AC2 judges labels (aria-describedby is read only as a label reference, LabelAssociation.cs:322); no title concerns error-message association",
+    "modal-focus-not-managed": "AC4/AC5 judge keyboard reachability and ARIA validity; no title concerns dialog focus entry, containment or return",
+    "autoplay-media-without-control": "AC1 reads autoplay only to decide whether a <video> needs captions (TextAlternativesAnalyzer.cs:165-200); no title concerns stopping or muting autoplaying media",
+}
+assert set(UNMAPPED_CENSUS) == set(UNMAPPED)

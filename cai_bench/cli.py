@@ -73,10 +73,16 @@ def cmd_score(a):
         "key": {"path": a.key, "sha256": sha256_file(a.key), "repo": key.get("repo"), "keyVersion": key.get("keyVersion")},
         "sarif": {"path": a.sarif, "sha256": sha256_file(a.sarif), "results": len(results)},
         "mapping": {"path": a.mapping, "scanner": mapping.scanner, "version": mapping.version},
+        # contract 1.4: headline numbers come from the scanner's DEFAULT configuration only
+        "configuration": {"label": a.configuration_label, "headline": False} if a.configuration_label
+        else {"label": "default", "headline": True},
         **report,
     }
     print(f"{key.get('repo')} v{key.get('keyVersion')}  x  {mapping.scanner} {mapping.version or ''}  "
           f"({len(results)} results, line tolerance ±{report['lineTolerance']})\n")
+    if a.configuration_label:
+        print(f"configuration: {a.configuration_label} — NOT the default configuration: a secondary run, excluded "
+              f"from headline numbers\n")
     print(render(report))
     if a.json:
         with open(a.json, "w", encoding="utf-8") as f:
@@ -111,6 +117,9 @@ def main(argv=None):
     s.add_argument("--repo-root-prefix", action="append",
                    help="path prefix to strip from result paths (repeatable); suffix matching works without it")
     s.add_argument("--json", help="write the full report, every individual outcome included, here")
+    s.add_argument("--configuration-label",
+                   help="the scan ran in a NON-default scanner configuration (e.g. 'wcag-2.2 framework on'): stamped "
+                        "into the JSON as configuration {label, headline: false}; omit for the default configuration")
     s.set_defaults(fn=cmd_score)
 
     h = sub.add_parser("sha256", help="print the sha256 of an answer key's bytes (for registry.json)")

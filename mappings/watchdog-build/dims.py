@@ -77,7 +77,7 @@ D = {
  "AC3": dict(k="finding", c=["page-structure-violation"], cs="yes", ts="yes", lb=M + " (declared)", r=[TA], b="na:baseline is an API with no markup"),
  "AC4": dict(k="finding", c=["non-keyboard-accessible-interaction"], cs="yes", ts="yes", lb=M + " (declared)", r=[TA], b="na:baseline is an API with no markup"),
  "AC5": dict(k="finding", c=["invalid-aria-usage"], cs="yes", ts="yes", lb=M + " (declared)", r=[TA], b="na:baseline is an API with no markup"),
- "AC6": dict(k="finding", c=["visual-and-motion-safety"], cs="yes", ts="yes", lb=M + " (declared)", r=[TA], b="na:baseline is an API with no markup"),
+ "AC6": dict(k="finding", c=["visual-and-motion-safety", "focus-outline-removed", "motion-without-reduced-motion"], cs="yes", ts="yes", lb=M + " (declared)", r=[TA], b="na:baseline is an API with no markup"),
  "AC7": dict(k="posture", c=["accessibility-checks-in-ci"], cs="yes", ts="yes", lb=M + " (declared)", r=[TA], b="na:baseline is an API with no markup"),
  # ---- static architecture ----
  "AX1": dict(k="finding", c=["captive-dependency"], cs="yes", ts="no", lb="assessed: Roslyn DI registrations (AddSingleton/Scoped/Transient)", r=[CA]),
@@ -233,3 +233,18 @@ SCORE_DIMS = {
 # Which C# repo themes are Phase 1
 PHASE = {CB: 1, CS: 1, CI: 2, CD: 2, CX: 2, CH: 2, CA: 2, CE: 2, CR: 2, CM: 2, CT: 2,
          TB: 3, TS: 3, TI: 3, TD: 3, TA: 3, TH: 3, EST: 4}
+
+# Contract 1.4: repositories planned to plant the concepts no Watchdog dimension maps (concepts.UNMAPPED). Frozen
+# keys that label them are read by build.py; these are the plans for the next key versions.
+BEYOND_PLAN = {
+    "business-logic-in-controller": [(CA, "v1.1.0: relabel BLC-001 (WorkOrdersController.Approve) from business-logic-share")],
+    "value-object-mutability": [(CE, "v1.1.0: add a plant (mutable / identity-equality value object)")],
+    "domain-event-never-handled": [(CE, "v1.1.0: add a plant")],
+    "event-schema-change-without-upcaster": [(CE, "v1.1.0: add a plant")],
+    "react-index-as-key": [(TA, "next key version: reorderable list keyed by index")],
+    "react-hook-missing-dependency": [(TA, "next key version")],
+    "react-state-mutation": [(TA, "next key version")],
+    "form-error-not-associated": [(TA, "next key version")],
+    "modal-focus-not-managed": [(TA, "next key version")],
+    "autoplay-media-without-control": [(TA, "next key version")],
+}
