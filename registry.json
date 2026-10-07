@@ -110,6 +110,13 @@
       "commit": "60170c5de06c913a3b73695bcef823ef048abfe4",
       "keySha256": "1737a27114aee510b76bdd29110f49accfdc0cc2c8794103d709cf95fda1cf07",
       "frozenAt": "2026-10-07"
+    },
+    {
+      "repo": "code-assurance-initiative/bench-ts-security-injection",
+      "tag": "v1.0.0",
+      "commit": "aff1ad74ad6d10592a15926d10d6d0fdc3859aee",
+      "keySha256": "5b7fc7d0249c02183cd14a5f156e35fb64d846cf257d5fab77c2cc3eaa50bc60",
+      "frozenAt": "2026-10-07"
     }
   ]
 }
