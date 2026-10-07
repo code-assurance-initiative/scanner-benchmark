@@ -1,0 +1,649 @@
+{
+ "repo": "code-assurance-initiative/bench-csharp-readiness",
+ "tag": "v1.0.0",
+ "commit": "74427c03c9754acadfcc65d229f3de95804e71f8",
+ "engineVersion": "kennel main 6a05dfb6c, rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc); model-judged passes in host mode",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-07",
+   "sarifSha256": "9c46fe4722e52abe2aebf2624828414405daed0e69fbd891a9587cc8d8c147c9",
+   "outcomes": {
+    "tp": 3,
+    "fn": 9,
+    "fp": 6,
+    "tn": 164,
+    "trapFp": 1,
+    "trapTn": 16,
+    "results": 29,
+    "noise": 25,
+    "redundant": 1,
+    "uncovered": 0
+   },
+   "note": "contained; repo commit 1d91a2a (first implementation)"
+  },
+  {
+   "iteration": 2,
+   "date": "2026-10-07",
+   "sarifSha256": "69b57a1267140044adafd404cc331074ef8413a8375de7ee24f2b741f70905ee",
+   "outcomes": {
+    "tp": 3,
+    "fn": 9,
+    "fp": 8,
+    "tn": 178,
+    "trapFp": 6,
+    "trapTn": 18,
+    "results": 20,
+    "noise": 16,
+    "redundant": 1,
+    "uncovered": 0
+   },
+   "note": "contained; repo commit fc5b2db (iteration-1 fixes: worker tests, retention sweeper, UID 10001, release checksums/attestation; traps TRP-018..024)"
+  },
+  {
+   "iteration": 2,
+   "pass": "llm",
+   "date": "2026-10-07",
+   "sarifSha256": "a49c1d25a1232f32e6637ab4a429d74fdd7820d7c49aeb3d4a52543a07670c90",
+   "outcomes": {
+    "tp": 3,
+    "fn": 9,
+    "fp": 4,
+    "tn": 182,
+    "trapFp": 2,
+    "trapTn": 22,
+    "results": 18,
+    "noise": 14,
+    "redundant": 1,
+    "uncovered": 0
+   },
+   "note": "host pass with --with-llm on fc5b2db; no IaC tools on the host, so no D31 rows; model-judged rows D19, D20, M4"
+  },
+  {
+   "iteration": 3,
+   "date": "2026-10-07",
+   "sarifSha256": "69b57a1267140044adafd404cc331074ef8413a8375de7ee24f2b741f70905ee",
+   "outcomes": {
+    "tp": 3,
+    "fn": 9,
+    "fp": 9,
+    "tn": 178,
+    "trapFp": 7,
+    "trapTn": 18,
+    "results": 20,
+    "noise": 16,
+    "redundant": 1,
+    "uncovered": 0
+   },
+   "note": "contained; repo commit a8c3f3f (docs fixes; trap TRP-025); SARIF byte-identical to iteration 2, scored against the key with TRP-025"
+  },
+  {
+   "iteration": 3,
+   "pass": "llm",
+   "date": "2026-10-07",
+   "sarifSha256": "7989846fae644c6fd0094ce5e76f5a46e6c8ffd6a70d977667191cbe8a72d0a8",
+   "outcomes": {
+    "tp": 3,
+    "fn": 9,
+    "fp": 4,
+    "tn": 183,
+    "trapFp": 3,
+    "trapTn": 22,
+    "results": 15,
+    "noise": 11,
+    "redundant": 1,
+    "uncovered": 0
+   },
+   "note": "host pass with --with-llm on a8c3f3f; D20 and M4 rows gone after the fixes; D19 repeats (false positive)"
+  }
+ ],
+ "verdicts": [
+  {
+   "ruleId": "D5",
+   "file": null,
+   "line": null,
+   "message": "Off the main sequence: ParcelTracking.Core: ParcelTracking.Core: abstractness 0.25, instability 0.00, distance 0.75 — zone of pain — concrete and depended on by 2 project(s), so it's rigid to change.",
+   "class": "opinion-not-fact",
+   "reason": "Main-sequence distance is a heuristic; ParcelTracking.Core is the domain and ports, depended on by the infrastructure and CLI by design, and stable domain code is meant to be concrete.",
+   "action": "recorded as noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ParcelTracking.Infrastructure/Persistence/DesignTimeDbContextFactory.cs",
+   "line": 1,
+   "message": "Low coverage: src/ParcelTracking.Infrastructure/Persistence/DesignTimeDbContextFactory.cs: 0.0% line coverage (0/8).",
+   "class": "valid",
+   "reason": "True: the design-time DbContext factory used by dotnet ef and the migrations bundle had no test.",
+   "action": "repo fixed: DesignTimeDbContextFactoryTests (commit iteration-1 fixes)",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ParcelTracking.Worker/NotificationDispatcher.cs",
+   "line": 1,
+   "message": "Low coverage: src/ParcelTracking.Worker/NotificationDispatcher.cs: 0.0% line coverage (0/36).",
+   "class": "valid",
+   "reason": "True: the notification dispatcher (outbox delivery and retry) had no test.",
+   "action": "repo fixed: NotificationDispatcherTests",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D8",
+   "file": "src/ParcelTracking.Worker/TrackingPoller.cs",
+   "line": 1,
+   "message": "Low coverage: src/ParcelTracking.Worker/TrackingPoller.cs: 0.0% line coverage (0/37).",
+   "class": "valid",
+   "reason": "True: the tracking poller had no test. (The test added exercises one polling round; it does not and cannot cure the planted shutdown defect RDY-003.)",
+   "action": "repo fixed: TrackingPollerTests",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D17",
+   "file": "src/ParcelTracking.Infrastructure/Health/CarrierApiHealthCheck.cs",
+   "line": 21,
+   "message": "EmptyCatchBlock: empty catch block — the error is discarded with nothing recorded, so a failure here leaves no trace anywhere. Narrow the catch to the exception you actually expect, record it through whatever this codebase already uses to report problems, or — where swallowing really is correct, as it often is on a teardown/dispose path where throwing would mask the original failure — write down WHY in a comment on the catch. The comment has to give the reason: a note that only restates the swallow (\"ignored\", \"do nothing\") is read as no explanation at all and leaves this row in place. Any of the three makes the decision reviewable; all three clear this row.",
+   "class": "redundant",
+   "reason": "The D17 lens on the same empty catch X3 reports; one remediation clears both. Counted once.",
+   "action": "recorded; RDY-007 already found",
+   "iteration": 1,
+   "entryId": "RDY-007"
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/api.yaml",
+   "line": 8,
+   "message": "Medium IaC: CKV_K8S_35: Prefer using secrets as files over secrets as environment variables",
+   "class": "opinion-not-fact",
+   "reason": "Accurate (secrets are injected as environment variables), but the conclusion overreaches for an ASP.NET Core app: env vars from secretKeyRef are the framework's standard configuration path, visible only to the non-root process, with no shell or debug endpoint to leak them.",
+   "action": "recorded as noise; promoted to traps TRP-023/TRP-024 (at the secretKeyRef lines; the scanner reports the resource start)",
+   "iteration": 1,
+   "entryId": "TRP-023"
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/api.yaml",
+   "line": 8,
+   "message": "Medium IaC: CKV_K8S_40: Containers should run as a high UID to avoid host conflict",
+   "class": "valid",
+   "reason": "True: UID 1654 is low enough to collide with a host account if a container escaped; a UID above 10000 costs nothing. Uncertain resolves to valid.",
+   "action": "repo fixed: runAsUser/runAsGroup/fsGroup 10001 in both Deployments and USER 10001:10001 in both Dockerfiles",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/api.yaml",
+   "line": 42,
+   "message": "Medium IaC: KSV-0125: Restrict container images to trusted registries. Container api in deployment parcel-tracking-api (namespace: parcel-tracking) uses an image from an untrusted registry. Use images from trusted registries.",
+   "class": "opinion-not-fact",
+   "reason": "ghcr.io/code-assurance-initiative is the organisation's own registry, images pinned by digest with provenance attestations; a registry allow-list belongs to the cluster's admission policy, not to the workload manifest.",
+   "action": "recorded as noise; promoted to trap TRP-021",
+   "iteration": 1,
+   "entryId": "TRP-021"
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/worker.yaml",
+   "line": 9,
+   "message": "Medium IaC: CKV_K8S_35: Prefer using secrets as files over secrets as environment variables",
+   "class": "opinion-not-fact",
+   "reason": "As #5, worker Deployment.",
+   "action": "recorded as noise; trap TRP-024",
+   "iteration": 1,
+   "entryId": "TRP-024"
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/worker.yaml",
+   "line": 9,
+   "message": "Medium IaC: CKV_K8S_40: Containers should run as a high UID to avoid host conflict",
+   "class": "valid",
+   "reason": "As #6, worker Deployment.",
+   "action": "repo fixed with #6",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/worker.yaml",
+   "line": 41,
+   "message": "Medium IaC: KSV-0125: Restrict container images to trusted registries. Container worker in deployment parcel-tracking-worker (namespace: parcel-tracking) uses an image from an untrusted registry. Use images from trusted registries.",
+   "class": "opinion-not-fact",
+   "reason": "As #7, worker image.",
+   "action": "recorded as noise; promoted to trap TRP-022",
+   "iteration": 1,
+   "entryId": "TRP-022"
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/api.yaml",
+   "line": 42,
+   "message": "Low IaC: KSV-0020: Runs with UID <= 10000. Container 'api' of Deployment 'parcel-tracking-api' should set 'securityContext.runAsUser' > 10000. Set 'containers[].securityContext.runAsUser' to an integer > 10000. One securityContext edit clears this facet's near-duplicate rules together: KSV-0020, KSV-0021.",
+   "class": "redundant",
+   "reason": "Trivy's KSV-0020 restates checkov's CKV_K8S_40 (#6) on the same container; one edit clears both.",
+   "action": "repo fixed with #6",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "deploy/k8s/worker.yaml",
+   "line": 41,
+   "message": "Low IaC: KSV-0020: Runs with UID <= 10000. Container 'worker' of Deployment 'parcel-tracking-worker' should set 'securityContext.runAsUser' > 10000. Set 'containers[].securityContext.runAsUser' to an integer > 10000. One securityContext edit clears this facet's near-duplicate rules together: KSV-0020, KSV-0021.",
+   "class": "redundant",
+   "reason": "As #11, worker.",
+   "action": "repo fixed with #6",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D31",
+   "file": "src/ParcelTracking.Api/Dockerfile",
+   "line": 1,
+   "message": "Low IaC: DS-0026: No HEALTHCHECK defined. Add HEALTHCHECK instruction in your Dockerfile. Add HEALTHCHECK instruction in Dockerfile. Without one the runtime only knows whether the process is alive, not whether it is serving, so a wedged container is restarted by nobody. The step: add a `HEALTHCHECK` to the image that probes the service the way a client would — this image already declares `EXPOSE 8080`, so a request to `localhost:8080` on the service's own health or root route, exiting non-zero when it does not answer, is the probe — and give it an `--interval`, a `--timeout` and a `--start-period` long enough to cover startup. If the image ships no HTTP client, probe with whatever the runtime already has, or declare the check in the orchestrator instead and say so here.",
+   "class": "false-positive",
+   "reason": "The API image runs only on Kubernetes (ADR 0002), which ignores Dockerfile HEALTHCHECK; liveness/readiness are HTTP probes in deploy/k8s/api.yaml. The finding's claim that 'a wedged container is restarted by nobody' is false here.",
+   "action": "recorded as noise; caught by trap TRP-014",
+   "iteration": 1,
+   "entryId": "TRP-014"
+  },
+  {
+   "ruleId": "D36",
+   "file": null,
+   "line": null,
+   "message": "No artifact signing: No artifact signing found in CI — sign your released artifacts with whatever your ecosystem ships (a GPG/minisign detached signature — or `cosign sign-blob` — over the release archives, or over a checksum file published alongside them, `dotnet nuget sign` with a code-signing certificate for the NuGet packages (`dotnet nuget verify` checks it), or Authenticode via signtool for any executable you ship) so consumers can verify what you built. What was searched, so you can tell an absence from a miss: this repository's CI files, the scripts they invoke and its own composite actions, its root build manifest and its release manifest, its release task runner if it has one, and its own release automation script — plus the trusted-publishing declarations that sign on the registry's side. A signature produced by a pipeline whose configuration is not in this repository, or by a signer whose name is none of the ones this check carries, is not seen here.",
+   "class": "valid",
+   "reason": "True: the release's downloadable files (migrations bundle, client package) were neither signed nor attested (only the images had provenance). Uncertain resolves to valid.",
+   "action": "repo fixed: build-provenance attestation of the release files (actions/attest-build-provenance) verified by the deploy workflow",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D36",
+   "file": null,
+   "line": null,
+   "message": "No checksums published for release artifacts: The release uploads downloadable files but publishes no digest for them (release.yml), so someone who downloads a release asset has nothing to compare it against — a truncated download, a corrupted mirror and a substituted file are indistinguishable. The signing and attestation this pipeline does perform sits on another distribution channel and does not reach these files, so the digest is the cheapest control available here: hash every asset in the release job and upload the result alongside them (`sha256sum <files> > SHA256SUMS` on Linux/macOS, `Get-FileHash` on Windows). Publishing the digest is also what makes the next rung cheap: an artifact signature is conventionally a detached signature over exactly this file rather than over each asset.",
+   "class": "valid",
+   "reason": "True: the release published no checksums for its files.",
+   "action": "repo fixed: SHA256SUMS attached to the release and checked by the deploy workflow",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D41",
+   "file": null,
+   "line": null,
+   "message": "No AppArmor/SELinux confinement: Workloads declare no AppArmor or SELinux profile. A mandatory-access-control profile confines what a compromised container can touch on the host, complementing seccomp's syscall filter.",
+   "class": "opinion-not-fact",
+   "reason": "Accurate (no AppArmor/SELinux profile is declared), but the workloads run under seccomp RuntimeDefault, the restricted Pod Security Standard, non-root, no capabilities and a read-only root filesystem, and container runtimes apply their default AppArmor profile when none is declared; the implied gap overreaches.",
+   "action": "recorded as noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "D42",
+   "file": null,
+   "line": null,
+   "message": "No runtime threat detection: No runtime threat-detection engine (Tetragon TracingPolicy / Falco) is committed. These observe process, file and network activity in-kernel and can alert or kill on malicious behaviour a static scan cannot catch.",
+   "class": "shape-irrelevant",
+   "reason": "Runtime threat detection (Falco/Tetragon) is cluster-level infrastructure, not part of an application repository's manifests.",
+   "action": "recorded as noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "C1",
+   "file": null,
+   "line": null,
+   "message": "No data-protection/encryption: No data-protection or encryption usage (ASP.NET Data Protection, AES, column encryption, PBKDF2) was found — sensitive data at rest may be unprotected. If TDE/KMS/vault is delegated to infrastructure, ignore.",
+   "class": "opinion-not-fact",
+   "reason": "Accurate (no encryption API in code), and the row itself says to ignore it when encryption at rest is delegated: the data (tracking numbers, postal codes, pickup notes) live only in a managed PostgreSQL instance (docs/operations/backup-and-restore.md).",
+   "action": "recorded as noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "C4",
+   "file": null,
+   "line": null,
+   "message": "Partial data-retention evidence: A retention mechanism is present, but the data-lifecycle is not yet complete — missing: a scheduled purge / cleanup job (PurgeOlderThan / CleanupJob), a documented retention period / data-expiry.",
+   "class": "valid",
+   "reason": "True: delivered notifications and completed parcels, including free-text redirect notes, were kept forever.",
+   "action": "repo fixed: RetentionSweeper in the worker (30 days for delivered notifications, 180 days for completed parcels), store purge method with tests, docs/operations/data-retention.md",
+   "iteration": 1
+  },
+  {
+   "ruleId": "ED5",
+   "file": "src/ParcelTracking.Worker/NotificationDispatcher.cs",
+   "line": 16,
+   "message": "Possible non-idempotent mutation (review): Worker.NotificationDispatcher.ExecuteAsync: `Worker.NotificationDispatcher.ExecuteAsync` mutates persistent state (a database save one hop away, in NotificationDispatcher.DispatchDueAsync) with no visible idempotency guard. Under a client retry or at-least-once redelivery a re-run could double-apply it — confirm it's safe to re-run, or add an exists/dedup check, an upsert, an idempotency-key/inbox, or a versioned write.",
+   "class": "false-positive",
+   "reason": "Disproof: NotificationDispatcher.DispatchDueAsync selects only rows with DeliveredAt == null (ParcelStore.ListDueNotificationsAsync), marks each delivered after the relay accepts it, and every payload carries the notification id as EventId for de-duplication (MerchantWebhookClient, ADR 0003). The guard exists; a re-run cannot double-apply.",
+   "action": "recorded as noise; promoted to trap TRP-018",
+   "iteration": 1,
+   "entryId": "TRP-018"
+  },
+  {
+   "ruleId": "P10",
+   "file": null,
+   "line": null,
+   "message": "Large public API surface: 55/64 types (86%) are public. For a library, every public type is a stability contract — make internal-by-default and expose only the intended API.",
+   "class": "false-positive",
+   "reason": "Disproof: the repository's one library, ParcelTracking.Client, has five public types (ParcelTrackingClient, ServiceCollectionExtensions, three records); the 55/64 count is over the service's own projects, which are not published. The row applies a library contract to application types.",
+   "action": "recorded as noise; promoted to repository-level trap TRP-019",
+   "iteration": 1,
+   "entryId": "TRP-019"
+  },
+  {
+   "ruleId": "P2",
+   "file": null,
+   "line": null,
+   "message": "Logging is not universal: Only 4/5 service-like projects use logging (pure contract/DTO projects are excluded — they have nothing to log). Of those 5, 2 ship a process this repository operates; the rest are libraries their consumer hosts, where the logging decision belongs to the host.",
+   "class": "opinion-not-fact",
+   "reason": "Accurate count (4/5 service-like projects log); the silent one is a library or the CLI, and the row itself says the logging decision of a library belongs to its host. Meanwhile the real gap (the worker's Console.WriteLine dispatcher, RDY-006) is invisible to it, because the worker project logs elsewhere.",
+   "action": "recorded as noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "PF2",
+   "file": null,
+   "line": null,
+   "message": "No allocation-aware APIs detected: No Span/Memory, pooling (ArrayPool/ObjectPool), stackalloc, ValueTask or buffer-writer usage was found. If this code sits on a hot path, these reduce the GC pressure it creates — a bonus, not a requirement.",
+   "class": "opinion-not-fact",
+   "reason": "Accurate, and self-described as 'a bonus, not a requirement': nothing in this service is allocation-critical.",
+   "action": "recorded as noise",
+   "iteration": 1
+  },
+  {
+   "ruleId": "PF3",
+   "file": null,
+   "line": null,
+   "message": "Awaits without ConfigureAwait(false): Only 4/50 awaits use ConfigureAwait(false). A library that captures the caller's context can stall or deadlock its host — the classic way a dependency drags an app down.",
+   "class": "shape-irrelevant",
+   "reason": "The awaits without ConfigureAwait(false) are ASP.NET Core / generic-host application code, which has no SynchronizationContext; the one library for arbitrary hosts (ParcelTracking.Client) uses ConfigureAwait(false) on all four of its awaits — those are the 4/50.",
+   "action": "recorded as noise; promoted to repository-level trap TRP-020",
+   "iteration": 1,
+   "entryId": "TRP-020"
+  },
+  {
+   "ruleId": "X2",
+   "file": null,
+   "line": null,
+   "message": "Not all async methods take a CancellationToken: Only 26/27 async methods accept a CancellationToken, so in-flight work can't be stopped early when the caller gives up — whatever ends it in your host (shutdown signal, timeout, abandoned request, user cancel). Thread a token through the call chain and honour it at each await and loop; where a method genuinely cannot be interrupted, omitting it is a deliberate choice — judge against your hosting model.",
+   "class": "valid",
+   "reason": "This IS the planted defect RDY-003 (PollOnceAsync takes no token), reported only as a location-less summary row. The located row ('Async method without CancellationToken: PollOnceAsync', TrackingPoller.cs:26) is in the scorecard at Info level but not in the SARIF, so the harness cannot match it to the plant. Not a repository defect beyond the plant; nothing to fix.",
+   "action": "recorded; counted against RDY-003 as a location-less detection (harness FN)",
+   "iteration": 1,
+   "entryId": "RDY-003"
+  },
+  {
+   "ruleId": "C4",
+   "file": null,
+   "line": null,
+   "message": "Partial data-retention evidence: A retention mechanism is present, but the data-lifecycle is not yet complete — missing: a scheduled purge / cleanup job (PurgeOlderThan / CleanupJob).",
+   "class": "false-positive",
+   "reason": "Disproof: src/ParcelTracking.Worker/RetentionSweeper.cs is a scheduled BackgroundService (PeriodicTimer, every 6 h) that calls IParcelStore.PurgeAsync (ParcelStore.cs, ExecuteDeleteAsync) with the periods in docs/operations/data-retention.md. The row looks for a purge job by name (PurgeOlderThan / CleanupJob).",
+   "action": "recorded as noise; promoted to repository-level trap TRP-025",
+   "iteration": 2,
+   "entryId": "TRP-025"
+  },
+  {
+   "ruleId": "D19",
+   "file": "README.md",
+   "line": 1,
+   "message": "Documentation: no contributor guidance: The root README lacks a section guiding external contributors on how to set up their development environment, run tests, or submit pull requests. Add a 'Contributing' section to the root README.md with steps for setting up the local dev environment, running the test suite, and guidelines for submitting changes.",
+   "class": "false-positive",
+   "reason": "Disproof: README.md has a '## Contributing' section (PR against main, CI and CodeQL must pass, migrations via dotnet ef, CHANGELOG), and Build and run / Testing give the dev setup and test command.",
+   "action": "recorded as noise (clean README)",
+   "iteration": 2,
+   "pass": "llm"
+  },
+  {
+   "ruleId": "D20",
+   "file": "docs/adr/0003-resilience-for-upstream-http.md",
+   "line": 1,
+   "message": "The Consequences section only addresses the risk of retries on non-idempotent calls but fails to mention other significant consequences of adopting this specific resilience strategy, such as increased latency due to timeouts/retries, increased load on the upstream service, or the operational complexity of tuning the policies.: Expand the Consequences section to include trade-offs regarding latency impact, upstream load implications, and the need for ongoing monitoring and tuning of the resilience policies.",
+   "class": "valid",
+   "reason": "True: ADR 0003's Consequences named only the retry/idempotency risk.",
+   "action": "repo fixed: latency, upstream load and tuning consequences added to ADR 0003",
+   "iteration": 2,
+   "pass": "llm"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README lists `src/ParcelTracking.Benchmarks` as the benchmarks project, but the evidence shows the project is located at `benchmarks/ParcelTracking.Benchmarks` (not under `src/`). — searched for: `src/ParcelTracking.Benchmarks`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+   "class": "false-positive",
+   "reason": "Disproof: README.md's Projects table names `benchmarks/ParcelTracking.Benchmarks`, which is where the project is; no `src/ParcelTracking.Benchmarks` appears in the README.",
+   "action": "recorded as noise",
+   "iteration": 2,
+   "pass": "llm"
+  },
+  {
+   "ruleId": "M4",
+   "file": null,
+   "line": null,
+   "message": "README/code drift: README omits the `ParcelTracking.IntegrationTests` and `ParcelTracking.UnitTests` projects from the Projects table, although they exist in the repository. — reported by the model that read the README against this repository; no term search was run for this one, so nothing here has been checked against the tree. Treat it as a reading to confirm, not as a measured contradiction: verify it against the code before acting on it, and if the footprint it describes does exist, this row is wrong.",
+   "class": "valid",
+   "reason": "True that the README never named the two test projects (the Testing section described them without names). Minor; uncertain resolves to valid.",
+   "action": "repo fixed: Testing section names tests/ParcelTracking.UnitTests and tests/ParcelTracking.IntegrationTests",
+   "iteration": 2,
+   "pass": "llm"
+  }
+ ],
+ "falseNegatives": [
+  {
+   "entryId": "RDY-001",
+   "reason": "Real: the merchant-webhook typed client is registered with a base address only (no resilience handler, no timeout beyond the 100 s default). P7 is one repository-wide switch: any AddStandardResilienceHandler (here on the carrier client, TRP-003) credits every client, so P7 scored 100 and emitted nothing."
+  },
+  {
+   "entryId": "RDY-002",
+   "reason": "Real: FindByTrackingNumberAsync accepts a CancellationToken and does not pass it to SingleOrDefaultAsync. X2 only checks that an async method declares a token parameter; forwarding is never checked."
+  },
+  {
+   "entryId": "RDY-003",
+   "reason": "Detected but not located: X2's per-site row 'Async method without CancellationToken: PollOnceAsync' (TrackingPoller.cs:26) is in the scorecard at Info level but absent from the SARIF; only the location-less summary 'Only 26/27 async methods accept a CancellationToken' reaches it. The row's detail ('the body observes an ambient token instead') is also wrong: the loop never reads stoppingToken. ExecuteAsync itself is exempt as an override, and no dimension checks graceful shutdown of a BackgroundService."
+  },
+  {
+   "entryId": "RDY-004",
+   "reason": "Real: ReportsController has no [Authorize] and no fallback policy exists. C2 counts [Authorize] attributes repo-wide and never itemises endpoints; it scored 100."
+  },
+  {
+   "entryId": "RDY-005",
+   "reason": "Real: RedirectParcelRequest has no validation attributes. S1's validation check is satisfied by the word [ApiController] anywhere in the repository."
+  },
+  {
+   "entryId": "RDY-006",
+   "reason": "Real: NotificationDispatcher reports through Console.WriteLine. P2 neither credits nor flags Console output and counts the worker project as logging because other files in it use ILogger; X4 does not treat Console as a log call."
+  },
+  {
+   "entryId": "RDY-008",
+   "reason": "Real: the worker calls EnsureCreated at startup against the migrated database. P8 reports EnsureCreated only when no Migrations/ directory exists; with migrations present it is silently ignored and P8 scores 100."
+  },
+  {
+   "entryId": "RDY-010",
+   "reason": "Real: the /labels branch is mapped before the security-headers middleware. S1 does not model app.Map/MapWhen/UseWhen branches; a header-name literal anywhere earns the credit."
+  },
+  {
+   "entryId": "RDY-011",
+   "reason": "Real: AddHsts is configured but UseHsts is never called. S1 credits either word, UseHsts or AddHsts, anywhere in the repository."
+  }
+ ],
+ "scoreBands": [
+  {
+   "entryId": "BND-001",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ]
+  },
+  {
+   "entryId": "BND-002",
+   "outcome": "in",
+   "score": 94,
+   "band": [
+    60,
+    95
+   ]
+  },
+  {
+   "entryId": "BND-003",
+   "outcome": "in",
+   "score": 80,
+   "band": [
+    60,
+    100
+   ]
+  },
+  {
+   "entryId": "BND-004",
+   "outcome": "out",
+   "score": 100,
+   "band": [
+    50,
+    85
+   ],
+   "note": "Out: the changelog has two versioned entries and a note that earlier history is missing, yet P6 scored 100 and raised no 'thin changelog' row."
+  },
+  {
+   "entryId": "BND-005",
+   "outcome": "out",
+   "score": 100,
+   "band": [
+    30,
+    70
+   ],
+   "note": "Out: one of two upstream clients is unresilient (RDY-001); P7 credits the whole repository from one AddStandardResilienceHandler."
+  },
+  {
+   "entryId": "BND-006",
+   "outcome": "out",
+   "score": 100,
+   "band": [
+    30,
+    70
+   ],
+   "note": "Out: EnsureCreated in the worker (RDY-008) is ignored once a Migrations/ directory exists."
+  },
+  {
+   "entryId": "BND-007",
+   "outcome": "in",
+   "score": 60,
+   "band": [
+    60,
+    100
+   ]
+  },
+  {
+   "entryId": "BND-008",
+   "outcome": "in",
+   "score": 90,
+   "band": [
+    60,
+    100
+   ]
+  },
+  {
+   "entryId": "BND-009",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    80,
+    100
+   ]
+  },
+  {
+   "entryId": "BND-010",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    60,
+    100
+   ],
+   "note": "Unscored: LA3 emitted no score in either model-judged pass."
+  },
+  {
+   "entryId": "BND-011",
+   "outcome": "in",
+   "score": 100,
+   "band": [
+    70,
+    100
+   ]
+  },
+  {
+   "entryId": "BND-012",
+   "outcome": "out",
+   "score": 40,
+   "band": [
+    50,
+    100
+   ],
+   "note": "Out (low): docs/operations/backup-and-restore.md has RPO/RTO, a restore procedure and quarterly drills, but P5 credited backup evidence only (40) and recommends exactly what the runbook contains."
+  },
+  {
+   "entryId": "BND-013",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    30,
+    70
+   ],
+   "note": "Unscored: P12 is advisory and has no score; its finding hit RDY-009."
+  },
+  {
+   "entryId": "BND-014",
+   "outcome": "out",
+   "score": 100,
+   "band": [
+    40,
+    80
+   ],
+   "note": "Out: C2 counts attributes repo-wide; the anonymous reports controller (RDY-004) costs nothing."
+  },
+  {
+   "entryId": "BND-015",
+   "outcome": "out",
+   "score": 100,
+   "band": [
+    40,
+    90
+   ],
+   "note": "Out: S1 is one score for every web-security concept and is word-matched; the headers branch and missing HSTS (RDY-010/011) cost nothing."
+  },
+  {
+   "entryId": "BND-016",
+   "outcome": "out",
+   "score": 100,
+   "band": [
+    40,
+    80
+   ],
+   "note": "Out: see BND-015; AddHsts alone earns the HSTS credit."
+  },
+  {
+   "entryId": "BND-017",
+   "outcome": "out",
+   "score": 100,
+   "band": [
+    50,
+    90
+   ],
+   "note": "Out: see BND-015; [ApiController] earns the validation credit."
+  },
+  {
+   "entryId": "BND-018",
+   "outcome": "unscored",
+   "score": null,
+   "band": [
+    80,
+    100
+   ],
+   "note": "Unscored: SC1 emitted no score."
+  }
+ ],
+ "observations": [
+  "Recall 3/12 (25 %): the scanner found the three plants whose detectors are per-site Roslyn or CI-text checks - the empty catch in the carrier health check (X3, with D17 redundant), the interpolated log message (X4) and coverage collected but not gated (P12, location-less, matched by the repository-level plant).",
+  "Every readiness posture plant was missed for the same structural reason: P7, P8, C2 and S1 are repository-wide word switches, so one correct site (a resilient client, a Migrations/ directory, an [Authorize], an AddHsts, a header literal, [ApiController]) switches the posture on for the whole repository and the one wrong site beside it is invisible. Their scores sat at 100 while each had a planted gap, putting six bands out.",
+  "X2 found the graceful-shutdown plant (PollOnceAsync without a token) but only in the scorecard: the located Info row never reaches the SARIF, so the harness sees a location-less summary and scores an FN. A token that is accepted but not forwarded (RDY-002) is not checked at all.",
+  "Traps held well where the scanner looks per site: health/.well-known anonymity, CancellationToken.None with a reason, the resilient carrier client, the library that leaves resilience to its host, structured templates split with +, generated migrations with #nullable disable, the shutdown empty catch with a when filter, the CLI console output (25 traps, 18 left alone in the final contained pass).",
+  "Caught in traps (7, final contained pass): DS-0026 HEALTHCHECK on a Kubernetes-only image; ED5 non-idempotent on an outbox dispatcher that guards on DeliveredAt and sends an EventId; P10 'large public API' counted over unpublished service projects; PF3 ConfigureAwait over application code; KSV-0125 untrusted registry for the organisation's own ghcr.io (twice); C4 asking for a purge job by name although a RetentionSweeper exists.",
+  "Valid findings fixed in the repository: no tests for the worker services and the design-time factory (D8), UID 1654 (CKV_K8S_40/KSV-0020), no checksums or signing for release files (D36 x2), unbounded retention (C4), one-sided ADR consequences (D20), README not naming the test projects (M4).",
+  "Model-judged rows are not stable between passes: D20 and two M4 rows appeared in iteration 2 and not in 3 (after the fixes, as expected), D19 'no contributor guidance' repeated although README has a Contributing section; LA3 never emitted a score."
+ ]
+}
