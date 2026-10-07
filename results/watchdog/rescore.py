@@ -46,6 +46,16 @@ def find_scan(root, name):
     return hits[0]
 
 
+def portable(path, workspace):
+    """A scan directory relative to the workspace when it lies under it (as final-scores.json records it), so a
+    committed results file carries no machine-local absolute path; else as given."""
+    if workspace:
+        rel = os.path.relpath(os.path.abspath(path), os.path.abspath(workspace))
+        if rel != ".." and not rel.startswith(".." + os.sep):
+            return rel
+    return path
+
+
 def rows(d):
     return [dict(v, id=k) for k, v in d.items()]
 
@@ -70,7 +80,8 @@ def rescore_repo(b, workspace, scan_dir, mapping, units_dir=None, set_dir=None):
            for e in report["entries"] if e["label"] == "must-fire" and e["outcome"] == "FN"]
     return {"repo": key.get("repo"), "name": name, "tag": tag, "commit": b.get("commit"), "keySha256": b["keySha256"],
             "keyVersion": key.get("keyVersion"), "languages": [b["language"]], "family": b["family"],
-            "scan": {"dir": scan_dir, "sarifSha256": sha(sarif_bytes), "scorecard": os.path.exists(card)},
+            "scan": {"dir": portable(scan_dir, workspace), "sarifSha256": sha(sarif_bytes),
+                     "scorecard": os.path.exists(card)},
             "summary": report["summary"], "concepts": rows(report["concepts"]),
             "dimensions": rows(report["dimensions"]), "scoreBands": report["scoreBands"], "falseNegatives": fns}
 
