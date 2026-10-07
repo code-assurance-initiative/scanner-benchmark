@@ -4,4 +4,4 @@ Implements docs/CONTRACT.md (v1.4). Python 3 standard library only.
 """
 
 CONTRACT_VERSION = "1.4"
-__version__ = "1.3.0"
+__version__ = "1.3.1"
