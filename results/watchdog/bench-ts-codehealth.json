@@ -1,0 +1,671 @@
+{
+  "repo": "code-assurance-initiative/bench-ts-codehealth",
+  "tag": "v1.0.0",
+  "engineVersion": "kennel main 6a05dfb6c (kennel-wt-scanner-bench), rubric-2026.10.1, contained (codehealth-analyzer:train-src-89d1e8def87553cc) + one host --with-llm pass",
+  "scans": [
+    {
+      "iteration": 1,
+      "date": "2026-10-07",
+      "sarifSha256": "667dc4e990bb8acbcbaa4cd35e079f0f2a810cac285cec570bf0680fcb2a179a",
+      "outcomes": {
+        "tp": 26,
+        "fn": 24,
+        "fp": 4,
+        "tn": 113,
+        "trapFp": 3,
+        "trapTn": 30,
+        "results": 40,
+        "noise": 13,
+        "redundant": 1,
+        "uncovered": 8
+      },
+      "note": "contained; repo a8eb4cb"
+    },
+    {
+      "iteration": 2,
+      "date": "2026-10-07",
+      "sarifSha256": "facfc6c7cabd6e61c26a6eb8473d77b555cd8812de850ed36a18fe4bb9aa0da8",
+      "outcomes": {
+        "tp": 29,
+        "fn": 22,
+        "fp": 5,
+        "tn": 113,
+        "trapFp": 5,
+        "trapTn": 30,
+        "results": 38,
+        "noise": 8,
+        "redundant": 1,
+        "uncovered": 8
+      },
+      "note": "contained; repo 7a28e0e"
+    },
+    {
+      "iteration": 2,
+      "date": "2026-10-07",
+      "sarifSha256": "2e1c1935f92e56dfc41685366480ca7260e47071623ff043d05bfa4095fb1f9f",
+      "outcomes": {
+        "tp": 19,
+        "fn": 32,
+        "fp": 5,
+        "tn": 113,
+        "trapFp": 5,
+        "trapTn": 30,
+        "results": 27,
+        "noise": 8,
+        "redundant": 0,
+        "uncovered": 17
+      },
+      "note": "host --with-llm (model-judged pass); repo 7a28e0e; host passes produce no D1/D2/D3/D6 scores, so the contained pass is the measurement of record"
+    },
+    {
+      "iteration": 3,
+      "date": "2026-10-07",
+      "sarifSha256": "facfc6c7cabd6e61c26a6eb8473d77b555cd8812de850ed36a18fe4bb9aa0da8",
+      "outcomes": {
+        "tp": 29,
+        "fn": 22,
+        "fp": 6,
+        "tn": 113,
+        "trapFp": 6,
+        "trapTn": 30,
+        "results": 38,
+        "noise": 8,
+        "redundant": 1,
+        "uncovered": 8
+      },
+      "note": "contained; repo 024770a; byte-identical SARIF to iteration 2; final (tag v1.0.0 = 69cd173, journal only after it)"
+    }
+  ],
+  "verdicts": [
+    {
+      "ruleId": "D1",
+      "file": "src/application/labels/label-service.ts",
+      "line": 235,
+      "message": "LabelService.parseAddress (cyclomatic 16): LabelService.parseAddress has cyclomatic complexity 16 (threshold 15). To reduce it, split the body: these branches sit side by side rather than nested inside one another, so extracting each one on its own would leave a function per branch. Group the statements between the checks into named steps and move each step into its own function, so the body reads as a short sequence of named stages.",
+      "class": "valid",
+      "reason": "Accurate (cyclomatic 16): parseAddress spelled out one if per country postcode format on top of the field checks. An accidental second complexity site, not a plant.",
+      "action": "repo fixed: postcode formats moved to a table (postcodeFormats); parseAddress below the bar",
+      "iteration": 1
+    },
+    {
+      "ruleId": "R2",
+      "file": "src/application/labels/label-service.ts",
+      "line": 235,
+      "message": "Complex function parseAddress (cyclomatic 16, cognitive 15): parseAddress has cyclomatic complexity 16 and cognitive complexity 15; this row is raised above a cyclomatic bar of 10. The two numbers answer different questions and the gap between them is what decides whether to act: cyclomatic counts the independent arms through the body, cognitive counts what it costs to hold them in your head, so nesting and mixed boolean chains raise it while a flat run of independent arms does not. Cognitive sits below cyclomatic here, so much of the count is breadth — arms side by side rather than stacked — and splitting per arm would leave a function per arm; group the work between the checks into named steps instead. Measured by this repository's own parse of the file, so a body assembled at runtime, or generated, is counted as written rather than as it executes.",
+      "class": "valid",
+      "reason": "Same site and issue as the D1 row (cyclomatic 16, cognitive 15): one logical finding seen by two lenses.",
+      "action": "repo fixed with the D1 row",
+      "iteration": 1
+    },
+    {
+      "ruleId": "R10",
+      "file": "src/application/labels/label-service.ts",
+      "line": 158,
+      "message": "Duplicated block with local edits (6 matched lines × 2 locations): src/application/labels/label-service.ts:158 · src/application/labels/label-service.ts:184 — the two spans are one implementation copied and then locally edited — 53 tokens are still identical, in the same order in both spans, with only local edits between them. The copies have already begun to drift, which is this row's finding: an edit made to one and not the other changes behaviour silently. Diff the two spans first to learn what genuinely differs, then extract the shared core into one module both sites use, passing the differences in as parameters — or, if one copy exists only because the other could not be imported from its context, make one of them the single source the other is generated or re-exported from. If one copy is no longer reachable, delete it rather than letting it shadow the live one.",
+      "class": "valid",
+      "reason": "archive and reprint both loaded the label file and threw the same \"missing\" error: a real copy with local edits.",
+      "action": "repo fixed: one private labelFile helper",
+      "iteration": 1
+    },
+    {
+      "ruleId": "R10",
+      "file": "tools/import-rate-cards.ts",
+      "line": 12,
+      "message": "Duplicated block with local edits (8 matched lines × 2 locations): tools/import-rate-cards.ts:12 · tools/import-rate-cards.ts:25 — the two spans are one implementation copied and then locally edited — 55 tokens are still identical, in the same order in both spans, with only local edits between them. The copies have already begun to drift, which is this row's finding: an edit made to one and not the other changes behaviour silently. Diff the two spans first to learn what genuinely differs, then extract the shared core into one module both sites use, passing the differences in as parameters — or, if one copy exists only because the other could not be imported from its context, make one of them the single source the other is generated or re-exported from. If one copy is no longer reachable, delete it rather than letting it shadow the live one.",
+      "class": "valid",
+      "reason": "importFolder and importArchive repeat the change-directory / list / parse / change-back sequence. They are the planted unrestored-state site (CH-038) and its trap (TRP-026); one withWorkingDirectory helper with its restore in a finally would fix both the duplication and CH-038.",
+      "action": "key changed: CH-051 (duplicated-code, must-fire) added; code kept, it is planted debt",
+      "iteration": 1
+    },
+    {
+      "ruleId": "PF3",
+      "file": "src/infrastructure/labels/label-archive.ts",
+      "line": 28,
+      "message": "Sync-over-async blocking: `load` is async and calls readFileSync — a blocking call inside async code stalls the event loop — every other request waits for as long as it runs.",
+      "class": "valid",
+      "reason": "The planted CH-029 (async load calls readFileSync), reported at the function line 28; the key had placed the plant on the call (line 33), 5 lines away.",
+      "action": "plant corrected: CH-029 now spans the method from its declaration to the blocking call (28-33)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "R9",
+      "file": "src/infrastructure/carriers/carrier-registry.ts",
+      "line": 1,
+      "message": "Import cycle (2 files): src/infrastructure/carriers/carrier-registry.ts → src/infrastructure/carriers/corvid-courier-adapter.ts → src/infrastructure/carriers/carrier-registry.ts",
+      "class": "valid",
+      "reason": "The planted runtime cycle CH-040 (registry imports the Corvid adapter, which imports defaultTimeoutMs back), reported for the file without a line (line 1); the key had placed it on the import statement (line 5).",
+      "action": "plant corrected: CH-040 spans the registry import block (lines 1-5)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "D10",
+      "file": "tests/unit/carrier-adapters.test.ts",
+      "line": 89,
+      "message": "No assertions: maps the Corvid error code: This method's body runs code, and no assertion call was recognised in it. Recognised by name: Assert*, *Should*/ShouldBe*, Verify, Expect, Throws, Record, Received/DidNotReceive, MustHaveHappened/MustNotHaveHappened, EnsureSuccessStatusCode and *AndEnsure* — so verification routed through a helper of your own naming, through a base-class or callback object whose members hold the assertions, or through a harness that fails by throwing under some other name, is not visible to this check and is not counted here. Read it as 'no assertion this check knows how to see', and if that is right, add one.",
+      "class": "false-positive",
+      "reason": "\"No assertion call was recognised\": the test calls expect.fail(...) inside its try, an assertion vitest provides; the scanner recognises expect( but not expect.fail. The real defect at this site is the planted CH-047 (the catch swallows the assertion error, so the test cannot fail), which this row does not name.",
+      "action": "recorded as noise; code kept (planted CH-047)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "R2",
+      "file": "src/domain/ports/label-lifecycle-hooks.ts",
+      "line": 1,
+      "message": "Complex function (top-level) (cyclomatic 18, cognitive 17): (top-level) has cyclomatic complexity 18 and cognitive complexity 17; this row is raised above a cyclomatic bar of 10. The two numbers answer different questions and the gap between them is what decides whether to act: cyclomatic counts the independent arms through the body, cognitive counts what it costs to hold them in your head, so nesting and mixed boolean chains raise it while a flat run of independent arms does not. Cognitive sits below cyclomatic here, so much of the count is breadth — arms side by side rather than stacked — and splitting per arm would leave a function per arm; group the work between the checks into named steps instead. Measured by this repository's own parse of the file, so a body assembled at runtime, or generated, is counted as written rather than as it executes.",
+      "class": "false-positive",
+      "reason": "\"(top-level) has cyclomatic complexity 18\": the file is one interface of seventeen optional method signatures and contains no control flow; the token scanner counted each optional `?` as a branch.",
+      "action": "promoted to trap TRP-034 (high-cyclomatic-complexity, must-not-fire, whole file)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "R2",
+      "file": "src/application/pricing/service-code-map.ts",
+      "line": 4,
+      "message": "Complex function serviceCode (cyclomatic 18, cognitive 3): serviceCode has cyclomatic complexity 18 and cognitive complexity 3; this row is raised above a cyclomatic bar of 10. The two numbers answer different questions and the gap between them is what decides whether to act: cyclomatic counts the independent arms through the body, cognitive counts what it costs to hold them in your head, so nesting and mixed boolean chains raise it while a flat run of independent arms does not. Cognitive sits below cyclomatic here, so much of the count is breadth — arms side by side rather than stacked — and splitting per arm would leave a function per arm; group the work between the checks into named steps instead. Measured by this repository's own parse of the file, so a body assembled at runtime, or generated, is counted as written rather than as it executes.",
+      "class": "opinion-not-fact",
+      "reason": "Accurate count (cyclomatic 18, cognitive 3) of a flat lookup switch; the conclusion that it is complex is not supported (the scanner's own D1 drops it as a flat dispatcher).",
+      "action": "caught by trap TRP-001; code kept",
+      "iteration": 1
+    },
+    {
+      "ruleId": "R2",
+      "file": "tools/rates-cli.ts",
+      "line": 11,
+      "message": "Complex function run (cyclomatic 11, cognitive 13): run has cyclomatic complexity 11 and cognitive complexity 13; this row is raised above a cyclomatic bar of 10. The two numbers answer different questions and the gap between them is what decides whether to act: cyclomatic counts the independent arms through the body, cognitive counts what it costs to hold them in your head, so nesting and mixed boolean chains raise it while a flat run of independent arms does not. Cognitive is at or above cyclomatic here, so the branching is nested or entangled rather than laid out side by side — extracting each decision into its own named function is the change that pays. Measured by this repository's own parse of the file, so a body assembled at runtime, or generated, is counted as written rather than as it executes.",
+      "class": "opinion-not-fact",
+      "reason": "Accurate (cyclomatic 11 against an R2 bar of 10, below the D1 bar of 15): a three-command CLI dispatcher with one usage check per command. Flat and short; extracting it would add indirection, not clarity.",
+      "action": "promoted to trap TRP-035; code kept",
+      "iteration": 1
+    },
+    {
+      "ruleId": "X4",
+      "file": "tools/import-rate-cards.ts",
+      "line": 53,
+      "message": "Interpolated log message defeats structured logging: `info` at line 53 is handed a template literal with `${…}` substitutions as its message, so the logger receives one finished string — the values in it cannot be queried, filtered or aggregated as fields, and every occurrence reads as a different message. Pass the values beside a constant message instead: `logger.info({ orderId, status }, 'order status updated')` for pino and bunyan, `logger.info('order status updated', { orderId, status })` for winston. If these calls go through a NestJS `Logger` routed into pino, nestjs-pino forwards an object first argument as fields in the same way.",
+      "class": "false-positive",
+      "reason": "`log` is the import command's ImportLog console sink (it writes a line to stdout for the operator), not a pino logger; the rule matches the receiver name `log`.",
+      "action": "caught by trap TRP-033 (added before the scan); code kept",
+      "iteration": 1
+    },
+    {
+      "ruleId": "X4",
+      "file": "src/infrastructure/rates/rate-card-cache.ts",
+      "line": 71,
+      "message": "Interpolated log message defeats structured logging: `info` at line 71 is handed a template literal with `${…}` substitutions as its message, so the logger receives one finished string — the values in it cannot be queried, filtered or aggregated as fields, and every occurrence reads as a different message. Pass the values beside a constant message instead: `logger.info({ orderId, status }, 'order status updated')` for pino and bunyan, `logger.info('order status updated', { orderId, status })` for winston. If these calls go through a NestJS `Logger` routed into pino, nestjs-pino forwards an object first argument as fields in the same way.",
+      "class": "false-positive",
+      "reason": "The template interpolates the module constant sourceName only: the message is identical on every call and carries no value that belongs in a field.",
+      "action": "caught by trap TRP-021; code kept",
+      "iteration": 1
+    },
+    {
+      "ruleId": "X2",
+      "file": null,
+      "line": null,
+      "message": "Not all async functions that make a request accept an AbortSignal: Only 2/3 async functions that make a cancellable request (fetch, axios, ky, ofetch) accept an AbortSignal or pass one on, so a request keeps running after whatever wanted it has given up — a page navigated away from, an unmounted component, a timed-out job. Take a `signal` (or an options object that carries one) and hand it to the request; where nothing could ever cancel the call, omitting it is a deliberate choice — judge against how the function is used.",
+      "class": "valid",
+      "reason": "Location-less roll-up \"2/3 async functions accept an AbortSignal\": the third is RateCardCache.download, the planted CH-030. True, but the harness can only match a location-less row to a repository-level entry, so it scores as noise and CH-030 as an FN.",
+      "action": "recorded; nothing to fix (planted)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "C2",
+      "file": null,
+      "line": null,
+      "message": "No named authorization policies: Authorization IS enforced here (by route guards, auth middleware or checks that refuse a caller) — this is NOT a claim that endpoints are unprotected. What's missing is a NAMED rule set: who may do what is encoded inline where it is checked, so the rules can't be listed, reviewed or tested apart from the code that applies them. Recommendation, not a defect.",
+      "class": "false-positive",
+      "reason": "Every /api route declares its scope at registration with requireScope(Scopes.x) and the scopes are named constants in src/api/scopes.ts; the README lists them. Same false positive as in bench-ts-baseline-clean (TRP-003 there).",
+      "action": "recorded as noise (uncovered concept here)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "P6",
+      "file": null,
+      "line": null,
+      "message": "Changelog looks stale/thin: The changelog this check read carries 2 versioned entries, against a bar of 3. Counted as either an `x.y.z` string or a version-shaped section heading (`## [1.2.0]`, `## V14.x.x`, `## Updates in 8.0.x`), whichever is the larger — so a log sectioned by minor series counts its sections, not its individual patch numbers. Entries recorded somewhere this check does not read — release notes generated at tag time from a generator config it did not recognise, or a log kept outside the repository — are not counted here, and this row is about what is re-findable in the tree rather than about how often you release.",
+      "class": "opinion-not-fact",
+      "reason": "One release so far; inventing versions to clear a bar of three would falsify the history (as in the other repositories).",
+      "action": "recorded",
+      "iteration": 1
+    },
+    {
+      "ruleId": "P7",
+      "file": "src/infrastructure/rates/rate-card-cache.ts",
+      "line": 90,
+      "message": "Outbound HTTP without resilience: `fetch(` makes an outbound HTTP call, and nothing bounds it: no timeout, deadline, retry or circuit breaker is set for it here, and the client has no process-wide default. A slow or failing dependency will hold this service's request, thread or connection until the call gives up on its own — or never, for a client with no default timeout.",
+      "class": "valid",
+      "reason": "RateCardCache.download calls fetch with no timeout or signal: the planted CH-030 seen by the resilience lens (one remediation, passing a signal with a timeout, clears both).",
+      "action": "recorded; planted (CH-030)",
+      "iteration": 1
+    },
+    {
+      "ruleId": "R4",
+      "file": "src/composition.ts",
+      "line": 1,
+      "message": "This test file cannot be loaded: src/composition.ts:23 imports './infrastructure/zones/country-zones.generated.js', which names no file in this repository — and no rule in its .gitignore chain could cover one, so no build writes it either. The import throws as the runner collects this file, so none of its test cases run and nothing it was written to verify is verified. Restore the missing module or delete the test. It is excluded from the reachability measured above, because a file that cannot load reaches nothing.",
+      "class": "false-positive",
+      "reason": "\"imports country-zones.generated.js, which names no file in this repository\": src/infrastructure/zones/country-zones.generated.ts exists and is committed; the suite loads it in every run (98 tests pass). The scanner drops generated files from its file set and then reports imports of them as unresolvable.",
+      "action": "recorded as noise (uncovered concept); code kept",
+      "iteration": 1
+    },
+    {
+      "ruleId": "R4",
+      "file": "tests/unit/pricing.test.ts",
+      "line": 1,
+      "message": "This test file cannot be loaded: tests/unit/pricing.test.ts:8 imports '../../src/infrastructure/zones/country-zones.generated.js', which names no file in this repository — and no rule in its .gitignore chain could cover one, so no build writes it either. The import throws as the runner collects this file, so none of its test cases run and nothing it was written to verify is verified. Restore the missing module or delete the test. It is excluded from the reachability measured above, because a file that cannot load reaches nothing.",
+      "class": "false-positive",
+      "reason": "\"imports country-zones.generated.js, which names no file in this repository\": src/infrastructure/zones/country-zones.generated.ts exists and is committed; the suite loads it in every run (98 tests pass). The scanner drops generated files from its file set and then reports imports of them as unresolvable.",
+      "action": "recorded as noise (uncovered concept); code kept",
+      "iteration": 1
+    },
+    {
+      "ruleId": "R4",
+      "file": "tests/unit/quote-service.test.ts",
+      "line": 1,
+      "message": "This test file cannot be loaded: tests/unit/quote-service.test.ts:9 imports '../../src/infrastructure/zones/country-zones.generated.js', which names no file in this repository — and no rule in its .gitignore chain could cover one, so no build writes it either. The import throws as the runner collects this file, so none of its test cases run and nothing it was written to verify is verified. Restore the missing module or delete the test. It is excluded from the reachability measured above, because a file that cannot load reaches nothing.",
+      "class": "false-positive",
+      "reason": "\"imports country-zones.generated.js, which names no file in this repository\": src/infrastructure/zones/country-zones.generated.ts exists and is committed; the suite loads it in every run (98 tests pass). The scanner drops generated files from its file set and then reports imports of them as unresolvable.",
+      "action": "recorded as noise (uncovered concept); code kept",
+      "iteration": 1
+    },
+    {
+      "ruleId": "R4",
+      "file": "tests/unit/rate-calculator.test.ts",
+      "line": 1,
+      "message": "This test file cannot be loaded: tests/unit/rate-calculator.test.ts:6 imports '../../src/infrastructure/zones/country-zones.generated.js', which names no file in this repository — and no rule in its .gitignore chain could cover one, so no build writes it either. The import throws as the runner collects this file, so none of its test cases run and nothing it was written to verify is verified. Restore the missing module or delete the test. It is excluded from the reachability measured above, because a file that cannot load reaches nothing.",
+      "class": "false-positive",
+      "reason": "\"imports country-zones.generated.js, which names no file in this repository\": src/infrastructure/zones/country-zones.generated.ts exists and is committed; the suite loads it in every run (98 tests pass). The scanner drops generated files from its file set and then reports imports of them as unresolvable.",
+      "action": "recorded as noise (uncovered concept); code kept",
+      "iteration": 1
+    },
+    {
+      "ruleId": "R6",
+      "file": "src/composition.ts",
+      "line": 1,
+      "message": "The declared test suite includes a file that cannot be loaded: This repository declares test tooling, and the ✓ above records that declaration — but src/composition.ts and 3 other test file(s) in this workspace cannot be loaded at all: it imports a module that names no file in this repository, so the runner throws while collecting it and none of its cases execute. The wiring is present and the suite it points at does not run as written, which is why the tooling tick must not be read as a statement that the tests pass. Fix the unloadable file(s) — each one is reported with its failing import under Test Coverage — then the declared script exercises what it claims to.",
+      "class": "false-positive",
+      "reason": "\"imports country-zones.generated.js, which names no file in this repository\": src/infrastructure/zones/country-zones.generated.ts exists and is committed; the suite loads it in every run (98 tests pass). The scanner drops generated files from its file set and then reports imports of them as unresolvable.",
+      "action": "recorded as noise (uncovered concept); code kept",
+      "iteration": 1
+    },
+    {
+      "ruleId": "R2",
+      "file": "src/application/labels/label-service.ts",
+      "line": 241,
+      "message": "Complex function parseAddress (cyclomatic 12, cognitive 11): parseAddress has cyclomatic complexity 12 and cognitive complexity 11; this row is raised above a cyclomatic bar of 10. The two numbers answer different questions and the gap between them is what decides whether to act: cyclomatic counts the independent arms through the body, cognitive counts what it costs to hold them in your head, so nesting and mixed boolean chains raise it while a flat run of independent arms does not. Cognitive sits below cyclomatic here, so much of the count is breadth — arms side by side rather than stacked — and splitting per arm would leave a function per arm; group the work between the checks into named steps instead. Measured by this repository's own parse of the file, so a body assembled at runtime, or generated, is counted as written rather than as it executes.",
+      "class": "opinion-not-fact",
+      "reason": "Accurate (cyclomatic 12 against the R2 bar of 10; the D1 bar of 15 no longer fires after the iteration-1 fix): parseAddress is now flat field validation, one single-line check per field plus one table lookup. The measurement does not support calling it complex.",
+      "action": "promoted to trap TRP-036; code kept",
+      "iteration": 2
+    },
+    {
+      "ruleId": "D19",
+      "file": "README.md",
+      "line": 1,
+      "message": "Documentation: no contributor guidance: No guidance for contributors is provided in the root README. Add a 'Contributing' section with links to the code of conduct, instructions for setting up the development environment, and how to submit pull requests.",
+      "class": "opinion-not-fact",
+      "reason": "True that the README has no Contributing section; for a small single-team service the claim that its documentation is deficient for lacking one goes beyond the measurement (D19 still scores 90).",
+      "action": "recorded",
+      "iteration": 2
+    },
+    {
+      "ruleId": "M4",
+      "file": null,
+      "line": null,
+      "message": "README/code drift: JWT_AUDIENCE is a configuration variable — searched for: `JWT_AUDIENCE`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+      "class": "false-positive",
+      "reason": "The README claim holds and is findable in the code: the configuration variables are read in src/config.ts, the endpoints are registered in src/api/routes/label-routes.ts, and the unit and tool tests exist under tests/unit and tests/tools. The rule matches claimed features against file and directory NAMES only.",
+      "action": "recorded as noise (uncovered concept); README kept",
+      "iteration": 2
+    },
+    {
+      "ruleId": "M4",
+      "file": null,
+      "line": null,
+      "message": "README/code drift: LABEL_FROM_ADDRESS is a configuration variable — searched for: `LABEL_FROM_ADDRESS`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+      "class": "false-positive",
+      "reason": "The README claim holds and is findable in the code: the configuration variables are read in src/config.ts, the endpoints are registered in src/api/routes/label-routes.ts, and the unit and tool tests exist under tests/unit and tests/tools. The rule matches claimed features against file and directory NAMES only.",
+      "action": "recorded as noise (uncovered concept); README kept",
+      "iteration": 2
+    },
+    {
+      "ruleId": "M4",
+      "file": null,
+      "line": null,
+      "message": "README/code drift: LABEL_RETENTION_DAYS is a configuration variable — searched for: `LABEL_RETENTION_DAYS`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+      "class": "false-positive",
+      "reason": "The README claim holds and is findable in the code: the configuration variables are read in src/config.ts, the endpoints are registered in src/api/routes/label-routes.ts, and the unit and tool tests exist under tests/unit and tests/tools. The rule matches claimed features against file and directory NAMES only.",
+      "action": "recorded as noise (uncovered concept); README kept",
+      "iteration": 2
+    },
+    {
+      "ruleId": "M4",
+      "file": null,
+      "line": null,
+      "message": "README/code drift: CUTOFF_ALDER / CUTOFF_CORVID are configuration variables — searched for: `CUTOFF_ALDER`, `CUTOFF_CORVID`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+      "class": "false-positive",
+      "reason": "The README claim holds and is findable in the code: the configuration variables are read in src/config.ts, the endpoints are registered in src/api/routes/label-routes.ts, and the unit and tool tests exist under tests/unit and tests/tools. The rule matches claimed features against file and directory NAMES only.",
+      "action": "recorded as noise (uncovered concept); README kept",
+      "iteration": 2
+    },
+    {
+      "ruleId": "M4",
+      "file": null,
+      "line": null,
+      "message": "README/code drift: GET /api/statistics/labels endpoint exists — searched for: `/api/statistics/labels`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+      "class": "false-positive",
+      "reason": "The README claim holds and is findable in the code: the configuration variables are read in src/config.ts, the endpoints are registered in src/api/routes/label-routes.ts, and the unit and tool tests exist under tests/unit and tests/tools. The rule matches claimed features against file and directory NAMES only.",
+      "action": "recorded as noise (uncovered concept); README kept",
+      "iteration": 2
+    },
+    {
+      "ruleId": "M4",
+      "file": null,
+      "line": null,
+      "message": "README/code drift: DELETE /api/labels/:id endpoint exists — searched for: `/api/labels/:id DELETE`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+      "class": "false-positive",
+      "reason": "The README claim holds and is findable in the code: the configuration variables are read in src/config.ts, the endpoints are registered in src/api/routes/label-routes.ts, and the unit and tool tests exist under tests/unit and tests/tools. The rule matches claimed features against file and directory NAMES only.",
+      "action": "recorded as noise (uncovered concept); README kept",
+      "iteration": 2
+    },
+    {
+      "ruleId": "M4",
+      "file": null,
+      "line": null,
+      "message": "README/code drift: Unit tests cover domain, pricing, labels and adapters — searched for: `unit tests`, `domain tests`, `pricing tests`, `label tests`, `adapter tests`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+      "class": "false-positive",
+      "reason": "The README claim holds and is findable in the code: the configuration variables are read in src/config.ts, the endpoints are registered in src/api/routes/label-routes.ts, and the unit and tool tests exist under tests/unit and tests/tools. The rule matches claimed features against file and directory NAMES only.",
+      "action": "recorded as noise (uncovered concept); README kept",
+      "iteration": 2
+    },
+    {
+      "ruleId": "M4",
+      "file": null,
+      "line": null,
+      "message": "README/code drift: Tool tests run the CLI against temporary folders — searched for: `tool tests`, `CLI tests`. Each was matched case- and separator-insensitively against file and directory NAMES anywhere in the tree, and against the CONTENTS of manifest files (package.json, *.csproj, *.props, *.slnx, *.yml, Dockerfile); the README's own prose never counts, so a claim is never refuted by merely being made. Nothing outside that search was read — a footprint living only in a submodule, in a file type not listed here, or under a name none of those terms matches is not seen, and this row is then wrong.",
+      "class": "false-positive",
+      "reason": "The README claim holds and is findable in the code: the configuration variables are read in src/config.ts, the endpoints are registered in src/api/routes/label-routes.ts, and the unit and tool tests exist under tests/unit and tests/tools. The rule matches claimed features against file and directory NAMES only.",
+      "action": "recorded as noise (uncovered concept); README kept",
+      "iteration": 2
+    },
+    {
+      "ruleId": "D21",
+      "file": null,
+      "line": null,
+      "message": "(score only) D21 Naming Consistency 100",
+      "class": "false-positive",
+      "reason": "D21 samples symbols from the C# workspace only; on this TypeScript repository the sample is empty, so the 100 rests on no evidence (the snake_case, Hungarian-prefixed and abbreviated names in LabelService, RateCalculator and CarrierAccountManager were never read).",
+      "action": "BND-008 out of band, band kept (set before the first scan)",
+      "iteration": 2
+    }
+  ],
+  "falseNegatives": [
+    {
+      "entryId": "CH-010",
+      "concept": "suppressed-diagnostic",
+      "reason": "`// @ts-ignore` with no reason over a real type error; the TypeScript arm of the debt dimension reads task comments only (suppressions unmeasured off .NET)."
+    },
+    {
+      "entryId": "CH-012",
+      "concept": "suppressed-diagnostic",
+      "reason": "The ESLint config block switching the type-safety and promise rules off for the legacy files, with no reason; no rule reads lint configuration for suppressions."
+    },
+    {
+      "entryId": "CH-013",
+      "concept": "commented-out-code",
+      "reason": "Three lines of commented-out code (the old label-number scheme); commented-out code is not measured for TypeScript."
+    },
+    {
+      "entryId": "CH-014",
+      "concept": "empty-catch-block",
+      "reason": "`} catch {}` around the customer e-mail; empty catch is not measured for TypeScript (D17 arm unmeasured, X3 has no JS arm)."
+    },
+    {
+      "entryId": "CH-015",
+      "concept": "unused-code",
+      "reason": "A private method nothing calls; dead-code analysis is not run for TypeScript in the debt dimension, and R7 reads module exports only."
+    },
+    {
+      "entryId": "CH-016",
+      "concept": "unused-code",
+      "reason": "An exported function no module, tool or test imports; R7 emits unused exports as Recommendation-level rows that did not reach SARIF."
+    },
+    {
+      "entryId": "CH-018",
+      "concept": "obsolete-symbol-still-used",
+      "reason": "`@deprecated` RateCalculator.quote still called by LabelService; no TypeScript rule reads JSDoc deprecation."
+    },
+    {
+      "entryId": "CH-019",
+      "concept": "not-implemented-placeholder",
+      "reason": "`throw new Error('Not implemented: …')` as the whole body of voidLabel, reachable from the API; the placeholder rule did not recognise it."
+    },
+    {
+      "entryId": "CH-020",
+      "concept": "incomplete-implementation",
+      "reason": "isRemoteArea logs and returns false whatever the address; the hollow-method rule did not fire (the debug log counts as doing work)."
+    },
+    {
+      "entryId": "CH-022",
+      "concept": "pointless-catch-rethrow",
+      "reason": "`catch (error) { throw error; }`; no catch-only-rethrow rule for TypeScript."
+    },
+    {
+      "entryId": "CH-023",
+      "concept": "unchecked-any-external-data",
+      "reason": "`(await response.json()) as any` and its fields read unchecked; no rule reads `any` casts (concept unevidenced)."
+    },
+    {
+      "entryId": "CH-025",
+      "concept": "null-forgiving-suppression",
+      "reason": "Non-null assertions on values that can be missing in LabelService; repository-level density stayed below the scanner's 5 per 1k lines bar, so no row."
+    },
+    {
+      "entryId": "CH-026",
+      "concept": "null-dereference",
+      "reason": "`printerName?.trim()` then `printerName.length` in the tools (strict null checks off); the null-dereference rule has no TypeScript arm."
+    },
+    {
+      "entryId": "CH-027",
+      "concept": "floating-promise",
+      "reason": "`labels.archive(created.shipmentId);` unawaited in the request handler; only forEach(async)/Promise-executor shapes are detected, not a bare unawaited call."
+    },
+    {
+      "entryId": "CH-030",
+      "concept": "missing-cancellation-propagation",
+      "reason": "RateCardCache.download fetches with no AbortSignal; only the location-less roll-up \"2/3 async functions\" reaches SARIF, which the harness cannot credit to a located plant."
+    },
+    {
+      "entryId": "CH-033",
+      "concept": "inert-configuration-option",
+      "reason": "`#ttlMs = options.ttlMs ?? 15 * 60_000` never read while isStale re-spells `15 * 60_000`; the inert-option rule did not fire (it may require a constructed default)."
+    },
+    {
+      "entryId": "CH-036",
+      "concept": "undrained-child-process-stream",
+      "reason": "lp spawned with both pipes, stdout read, stderr never, close awaited; the undrained-stream rule did not fire (the child is passed to events.once, which may count as leaving its scope)."
+    },
+    {
+      "entryId": "CH-049",
+      "concept": "unused-code",
+      "reason": "Write-only private field `#ttlMs`; not measured for TypeScript."
+    },
+    {
+      "entryId": "CH-050",
+      "concept": "unused-code",
+      "reason": "Write-only private field `#refreshTimer` (not even read by dispose); not measured for TypeScript."
+    },
+    {
+      "entryId": "CH-045",
+      "concept": "test-without-assertion",
+      "reason": "A vitest test with no expect at all; no D10 row (the census likely treats the factory-call body as unjudgeable)."
+    },
+    {
+      "entryId": "CH-047",
+      "concept": "test-failure-swallowed",
+      "reason": "try { act; expect.fail } catch { /* swallowed */ }: the test cannot fail; no swallowed-test rule for TypeScript. D10 reported the site as \"No assertions\" instead (judged false: expect.fail is an assertion)."
+    },
+    {
+      "entryId": "CH-048",
+      "concept": "excessive-mocking",
+      "reason": "A route test that mocks every collaborator and asserts the mocks were called; mock dominance is not measured for JavaScript."
+    }
+  ],
+  "scoreBands": [
+    {
+      "entryId": "BND-001",
+      "concept": "high-cyclomatic-complexity",
+      "band": [
+        70,
+        97
+      ],
+      "outcome": "out",
+      "scores": [
+        {
+          "source": "D1",
+          "score": 93
+        },
+        {
+          "source": "R2",
+          "score": 99
+        }
+      ],
+      "source": "iteration 3 contained"
+    },
+    {
+      "entryId": "BND-002",
+      "concept": "high-cognitive-complexity",
+      "band": [
+        70,
+        97
+      ],
+      "outcome": "in",
+      "scores": [
+        {
+          "source": "D2",
+          "score": 84
+        }
+      ],
+      "source": "iteration 3 contained"
+    },
+    {
+      "entryId": "BND-003",
+      "concept": "duplicated-code",
+      "band": [
+        75,
+        99
+      ],
+      "outcome": "in",
+      "scores": [
+        {
+          "source": "R10",
+          "score": 97
+        }
+      ],
+      "source": "iteration 3 contained"
+    },
+    {
+      "entryId": "BND-004",
+      "concept": "low-class-cohesion",
+      "band": [
+        70,
+        97
+      ],
+      "outcome": "in",
+      "scores": [
+        {
+          "source": "D6",
+          "score": 93
+        }
+      ],
+      "source": "iteration 3 contained"
+    },
+    {
+      "entryId": "BND-005",
+      "concept": "untyped-javascript-share",
+      "band": [
+        85,
+        100
+      ],
+      "outcome": "in",
+      "scores": [
+        {
+          "source": "R1",
+          "score": 99
+        }
+      ],
+      "source": "iteration 3 contained"
+    },
+    {
+      "entryId": "BND-006",
+      "concept": "test-coverage",
+      "band": [
+        70,
+        100
+      ],
+      "outcome": "in",
+      "scores": [
+        {
+          "source": "D8",
+          "score": 100
+        },
+        {
+          "source": "R4",
+          "score": 100
+        }
+      ],
+      "source": "iteration 3 contained"
+    },
+    {
+      "entryId": "BND-007",
+      "concept": "frontend-tooling-scripts",
+      "band": [
+        85,
+        100
+      ],
+      "outcome": "in",
+      "scores": [
+        {
+          "source": "R6",
+          "score": 100
+        }
+      ],
+      "source": "iteration 3 contained"
+    },
+    {
+      "entryId": "BND-008",
+      "concept": "inconsistent-naming",
+      "band": [
+        40,
+        85
+      ],
+      "outcome": "out",
+      "scores": [
+        {
+          "source": "D21",
+          "score": 100
+        }
+      ],
+      "source": "iteration 2 model pass"
+    },
+    {
+      "entryId": "BND-009",
+      "concept": "low-value-comments",
+      "band": [
+        40,
+        85
+      ],
+      "outcome": "unscored",
+      "scores": [],
+      "source": "iteration 3 contained"
+    }
+  ],
+  "observations": [
+    "Recall 29/51 (57%) on the final contained pass. Found: complexity (D1/D2), god class, oversized file and long method (D3), cohesion (D6), duplication (R10, two sites), TODO/HACK (D17), the bare file-wide eslint-disable (IC1), skipped test (IC1), fat interface (AX6), anemic and mutable entity (DM4/DM5), blocking read in an async method (PF3), upward domain import (R11), runtime import cycle (R9), async forEach (X1), dead switch arm (X12), truncation loop (X16), owned timer never disposed (X18), unrestored chdir (X19), unguarded debug serialisation (X23), loop decided by parcels[0] (X29), interpolated log message (X4), strict-null posture (X5), regex over JSON (X6), silent catch fallback (X7).",
+    "The 22 misses cluster: the TypeScript arm of the explicit-debt dimension reads task comments only (suppressions, commented-out code, empty catch, dead code, deprecation unmeasured — 9 FNs); the test-quality census does not measure swallowed failures or mock dominance for JavaScript and missed a plain no-expect test; a bare unawaited promise on a request path is not detected (only forEach/Promise-executor shapes); several card rules read narrower TypeScript shapes than the defect (X13 with events.once, X25 without a constructed default, IC1 Error('Not implemented'), hollow method that logs).",
+    "Trap resistance 30/36. Caught: R2 on a flat lookup switch, on an interface of optional members (the `?` tokens counted as 18 branches), on a three-command CLI dispatcher (11) and on flat field validation (12) — R2's bar of 10 sits below D1's 15, so the frontend lens flags what the code-health lens deliberately does not; X4 on a template interpolating only a module constant, and on a console sink whose receiver is named `log`. Held: generated zones file (header) for size/complexity, DTO pair, log-and-rethrow, TODO in string literals and a URL, justified eslint-disable-next-line, @ts-expect-error with a reason, void fire-and-forget with a self-catching callee, cohesive policy class, type-only import cycle, optional-hooks and data-shape interfaces for AX6, read-only entity getter, synchronous read in a CLI, guarded debug log, regex validating an identifier, both-streams-drained spawn, floored truncation loop, chdir restored in finally, correct case-normalised arms, logged cut-off fallback, export used only by the CLI, injected (not owned) disposable, conditional skip with its reason, assertion helper.",
+    "R4/R6 report every importer of `country-zones.generated.ts` as 'cannot be loaded: names no file' (5 rows): the generated file is dropped from the scanner's file set and its imports then read as unresolvable. The file exists and loads in every test run.",
+    "Model-judged dimensions on TypeScript: D21 samples C# symbols only, so it scored 100 on an empty sample (BND-008 out, recorded as a score without evidence); D24 produced no score. M4 raised 8 README-drift false positives (name-only matching, as in the other repositories).",
+    "Harness: added concepts floating-promise (X1 dropped-promise rows, previously off-concept) and unchecked-any-external-data (R1, unevidenced) in scanner-benchmark b63206f. Location-less roll-ups (X2) still cannot match a located plant (CH-030), as recorded for bench-csharp-codehealth. D10's 'No assertions' on a swallowed-failure test lands as noise because test-without-assertion and test-failure-swallowed are not a family.",
+    "Not the instrument: GitHub CodeQL on the same commits raised js/http-to-file-access ×2 (by design), js/user-controlled-bypass (same false positive as the baseline) and js/missing-rate-limiting ×2 (gateway's job). CI green."
+  ]
+}
