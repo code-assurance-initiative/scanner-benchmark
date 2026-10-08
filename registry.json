@@ -418,6 +418,14 @@
           "sha256": "82064f9212de956962ca735930fe05d8056d918f69ec9229459ebec33933df44",
           "committedAt": "2026-10-08T08:51:39+02:00",
           "note": "resource scope (harness contract 1.6): absence-type IaC concepts match within the entry's YAML document, Dockerfile stage or HCL block; no key changes"
+        },
+        {
+          "n": 3,
+          "file": "docs/HOLDOUT-METHOD-AMENDMENT-3.md",
+          "commit": "6eeee8b9dbef836f53ae5356de122e0959eee8ae",
+          "sha256": "ffa6a60e10a09ddcd39ac69d570af13882013dc4b7c5cb57159ae47476b25e33",
+          "committedAt": "2026-10-08T22:24:47+02:00",
+          "note": "filing while sealed: found defects go to the reference scanner's backlog as abstract mechanisms (no holdout sites); headline stays at the pinned instrument; later reference-scanner versions measured on this set are marked post-filing; no key or scoring changes"
         }
       ],
       "contentCommitment": {
