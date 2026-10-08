@@ -410,6 +410,14 @@
           "sha256": "44f0c65057819effe717be5888b8b331be0dc0413bccc6c0f67d12b756bd6148",
           "committedAt": "2026-10-07T23:00:58+02:00",
           "note": "location equivalence (harness contract 1.5): file-scope concepts and clone-group sites; no key changes"
+        },
+        {
+          "n": 2,
+          "file": "docs/HOLDOUT-METHOD-AMENDMENT-2.md",
+          "commit": "a37376ce8ad8e2299538e3c82f36218aa3635186",
+          "sha256": "82064f9212de956962ca735930fe05d8056d918f69ec9229459ebec33933df44",
+          "committedAt": "2026-10-08T08:51:39+02:00",
+          "note": "resource scope (harness contract 1.6): absence-type IaC concepts match within the entry's YAML document, Dockerfile stage or HCL block; no key changes"
         }
       ]
     }
