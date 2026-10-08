@@ -426,6 +426,14 @@
           "sha256": "ffa6a60e10a09ddcd39ac69d570af13882013dc4b7c5cb57159ae47476b25e33",
           "committedAt": "2026-10-08T22:24:47+02:00",
           "note": "filing while sealed: found defects go to the reference scanner's backlog as abstract mechanisms (no holdout sites); headline stays at the pinned instrument; later reference-scanner versions measured on this set are marked post-filing; no key or scoring changes"
+        },
+        {
+          "n": 4,
+          "file": "docs/HOLDOUT-METHOD-AMENDMENT-4.md",
+          "commit": "5f63fa180fe855ea6abefbeb42a9acebf27ac7a5",
+          "sha256": "6703fad1bbe4e72858acad42455c2385a69f1aa722ac1d066dc451243f05d4f1",
+          "committedAt": "2026-10-09T00:26:59+02:00",
+          "note": "final harness round (harness contract 1.7): element scope (absence-type markup concepts match within the entry's start tag) and group scope (a dependency cycle matches at any member file); contract 1.7 also records the optimal one-to-one assignment and the subject a result states; rejected with reasons: declaration/member scope, quoted-claim location, project name as a file, test path as a file, location-less rows at located entries; no key changes"
         }
       ],
       "contentCommitment": {
