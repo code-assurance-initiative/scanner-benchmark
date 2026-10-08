@@ -15,6 +15,8 @@ under `<scans-root>/<repo>/` holding a `report.sarif` (and `scorecard.json`, for
 directory `tools/multilang/scan.py` prints. With `--baseline-scans` the scans named in the baseline are used instead.
 Contract 1.6: the unit's files at the tag (resource boundaries of IaC files) are read from the same sources, first that
 has the tag (`cai_bench.units.files_source`); each repository's summary records it as `resourceScope.source`.
+`--contract` scores under an earlier contract (default: the current one), so the effect of a contract's rules can be
+separated from that of a mapping change (contract 1.7 addendum).
 Standard library only.
 """
 import argparse
@@ -62,7 +64,7 @@ def rows(d):
     return [dict(v, id=k) for k, v in d.items()]
 
 
-def rescore_repo(b, workspace, scan_dir, mapping, units_dir=None, set_dir=None):
+def rescore_repo(b, workspace, scan_dir, mapping, units_dir=None, set_dir=None, contract=None):
     name, tag = b["name"], b["tag"]
     try:
         raw = read_key(name, tag, b["keySha256"], units_dir=units_dir, set_dir=set_dir, workspace=workspace)
@@ -78,7 +80,7 @@ def rescore_repo(b, workspace, scan_dir, mapping, units_dir=None, set_dir=None):
             scores = scorecard_scores(json.load(f))
     # contract 1.6: the unit's files at the tag, for resource boundaries (YAML documents, Dockerfile stages, HCL blocks)
     src = files_source(name, tag, units_dir=units_dir, set_dir=set_dir, workspace=workspace)
-    report = score(key, read_results(json.loads(sarif_bytes), ()), mapping, scores, source=src)
+    report = score(key, read_results(json.loads(sarif_bytes), ()), mapping, scores, source=src, contract=contract)
     fns = [{"id": e["id"], "concept": e["concept"], "file": e.get("file"), "lines": e.get("lines"),
             "subject": e.get("subject"), "fileLevel": e.get("fileLevel"),
             **({"matchScope": e["matchScope"]} if e.get("matchScope") else {})}
@@ -104,6 +106,7 @@ def main(argv=None):
                          "the baseline's scan directories are relative to (default: scanner-benchmark/..)")
     ap.add_argument("--mapping", default=os.path.join(ROOT, "mappings", "watchdog.json"))
     ap.add_argument("--instrument", default=None, help="what was run (engine commit, rubric, image, mode)")
+    ap.add_argument("--contract", default=None, help="score under this contract (default: the current one)")
     ap.add_argument("--out", required=True)
     a = ap.parse_args(argv)
     if bool(a.scans_root) == bool(a.baseline_scans):
@@ -115,12 +118,13 @@ def main(argv=None):
     repos = []
     for b in base["repos"]:
         d = os.path.join(a.workspace, b["scanDir"]) if a.baseline_scans else find_scan(a.scans_root, b["name"])
-        r = rescore_repo(b, a.workspace, d, mapping, a.units_dir, a.set_dir or default_set_dir(a.workspace))
+        r = rescore_repo(b, a.workspace, d, mapping, a.units_dir, a.set_dir or default_set_dir(a.workspace),
+                         a.contract)
         s = r["summary"]
         print(f"{b['name']:<36} {b['tag']:<7} recall {s['tp']}/{s['tp'] + s['fn']}  traps {s['trapTn']}/"
               f"{s['trapTn'] + s['trapFp']}  noise {s['noise']}/{s['results']}")
         repos.append(r)
-    doc = {"harness": {"name": "cai_bench", "version": __version__, "contract": CONTRACT_VERSION},
+    doc = {"harness": {"name": "cai_bench", "version": __version__, "contract": a.contract or CONTRACT_VERSION},
            "mapping": {"path": os.path.relpath(a.mapping, ROOT), "scanner": mapping.scanner, "version": mapping.version},
            "instrument": a.instrument or (base["instrument"] if a.baseline_scans else "unspecified"),
            "baseline": os.path.basename(a.baseline), "repos": repos}
