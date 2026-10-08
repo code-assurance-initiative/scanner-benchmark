@@ -54,7 +54,7 @@ class Taxonomy(unittest.TestCase):
         # contract 1.6 adds "resource" (tests/test_contract_1_6.py); "file" is still exactly the file-scope concepts
         tax = load_json(os.path.join(ROOT, "taxonomy.json"))
         self.assertEqual({c["id"] for c in tax["concepts"] if c.get("matchScope") == "file"}, file_scope_concepts())
-        self.assertLessEqual({c.get("matchScope") for c in tax["concepts"]}, {None, "file", "resource"})
+        self.assertLessEqual({c.get("matchScope") for c in tax["concepts"]}, {None, "file", "resource", "element", "group"})
 
     def test_a_bad_match_scope_is_refused(self):
         with self.assertRaises(ValueError):

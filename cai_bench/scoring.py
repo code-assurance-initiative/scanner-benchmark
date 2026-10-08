@@ -73,6 +73,20 @@ a result on the entry's lines is preferred. The boundaries are read from the uni
 path -> text, resources.dir_source / git_source); a file the source cannot read keeps the line rule and its entry row
 says `matchScope: "resource-unavailable"` (an unsupported file type: "resource-unsupported"). `score(...,
 contract="1.5")` scores without the resource rule.
+
+Contract 1.7. (1) Assignment: which plant a result is consumed by no longer depends on key or result order. Among all
+one-to-one assignments of results to plants the scorer takes one that finds the MOST plants; among those, the one with
+the most matches of the strongest kind, then of the next (the passes and location levels above, the result's own
+location on the entry's lines counting before one within the line tolerance); remaining ties go to key order, then
+result order. Traps, clean regions and redundancy are unchanged (a trap or clean region is not consumed). (2) Subjects:
+a mapping may say where a message STATES its subject (`subjectFromMessage`); the subjects of entries are then searched
+in that part only (`subjectText` in the result row), so an advisory about one package that names its parent as the
+path it arrived by is about the package. (3) Group scope: a concept whose taxonomy `matchScope` is "group" (a relation
+among several files, each equally its site: a dependency cycle) matches an entry that names it at a result located in,
+or listing, the entry's file. (4) Element scope: a concept whose taxonomy `matchScope` is "element" (a markup element's
+property that can be an absence) matches an entry that names it at a result anywhere in the START TAG the entry's lines
+lie in (resources.markup_start_tags); boundaries as for the resource scope ("element-unavailable",
+"element-unsupported"). `score(..., contract="1.6")` scores without all four.
 """
 import re
 
@@ -80,8 +94,8 @@ from . import CONTRACT_VERSION
 from .keyfile import entry_concepts, line_tolerance
 from .mapping import UNMAPPED
 from .paths import norm, path_match, repo_relative, same_file
-from .resources import UNAVAILABLE, UNSUPPORTED, ResourceIndex
-from .taxonomy import file_scope_concepts, resource_scope_concepts
+from .resources import ELEMENT, RESOURCE, UNAVAILABLE, UNSUPPORTED, ResourceIndex
+from .taxonomy import element_scope_concepts, file_scope_concepts, group_scope_concepts, resource_scope_concepts
 
 NOISE = ("trap-fp", "clean-fp", "na-fp", "unmatched-fp")
 NO_RULE = "(no scanner rule)"  # by_dimension row: entries whose concept no dimension of the scanner maps
@@ -159,6 +173,12 @@ def subject_in(subject, text):
     return rx.search(text) is not None
 
 
+def _stext(result):
+    """The text a result's subjects are searched in: the part of the message that states its subject (contract 1.7,
+    mapping `subjectFromMessage`), else the whole message."""
+    return result.get("subjectText") or result.get("message")
+
+
 def _subject_hit(entry, result):
     """The entry's subject is named by a result that has no location or sits in a manifest (concepts not checked)."""
     subject = entry.get("subject")
@@ -166,7 +186,7 @@ def _subject_hit(entry, result):
         return False
     if result["file"] is not None and not is_manifest(result["file"]):
         return False
-    return subject_in(subject, result.get("message"))
+    return subject_in(subject, _stext(result))
 
 
 # The passes of matching, strongest first: (family sibling?, by subject?).
@@ -194,22 +214,30 @@ def _result_concepts_for(entry, result, family_of=None):
 
 # Location levels of matching (contract 1.5), strongest first: the result's own location on the entry's lines; then
 # also anywhere in the entry's file for a file-scope concept, or (1.6) in the entry's resource for a resource-scope
+# concept, or (1.7) in the entry's start tag for an element-scope concept, or in the entry's file for a group-scope
 # concept; then also every further site its message names.
 SITE, FILE_SCOPE, MESSAGE_SITES = 0, 1, 2
+WHOLE_FILE_SCOPES = ("file", "group")  # scopes in which an entry's site is its whole file
+SCOPES = WHOLE_FILE_SCOPES + (RESOURCE, ELEMENT)
 
 
 class Matcher:
     def __init__(self, entries, results, tol, mapping=None, file_scope=frozenset(), resource_scope=frozenset(),
-                 resources=None):
+                 resources=None, element_scope=frozenset(), group_scope=frozenset(), optimal=False):
         self.entries = [dict(e, _file=norm(e["file"])) if "file" in e else dict(e, _file=None)
                         for e in entries if e["label"] != "score-band"]
         self.results = results
         self.tol = tol
         self.file_scope = frozenset(file_scope)
         self.resource_scope = frozenset(resource_scope)
+        self.element_scope = frozenset(element_scope)
+        self.group_scope = frozenset(group_scope)
+        self.bounded = {RESOURCE: self.resource_scope, ELEMENT: self.element_scope}
+        self.optimal = optimal
         self.resources = resources if resources is not None else ResourceIndex(None)
         self._entry_resources = {}
-        self.levels = ([SITE] + ([FILE_SCOPE] if self.file_scope or self.resource_scope else [])
+        self.levels = ([SITE] + ([FILE_SCOPE] if self.file_scope or self.resource_scope or self.element_scope
+                                 or self.group_scope else [])
                        + ([MESSAGE_SITES] if any(r.get("sites") for r in results) else []))
         self.widest = self.levels[-1]
         self.family_of = mapping.family_of if mapping is not None else (lambda c: None)
@@ -236,52 +264,66 @@ class Matcher:
         return any(c in scope for c in concepts)
 
     def _file_scoped(self, entry, concepts):
-        """Contract 1.5: the entry's site is its whole file for these result concepts."""
-        return self._scoped(entry, concepts, self.file_scope)
+        """Contract 1.5 (file scope) and 1.7 (group scope): the entry's site is its whole file for these result
+        concepts — "file", "group", or None."""
+        if self._scoped(entry, concepts, self.file_scope):
+            return "file"
+        if self._scoped(entry, concepts, self.group_scope):
+            return "group"
+        return None
 
-    def resource_status(self, entry):
-        """Contract 1.6, for a located entry with lines that names a resource-scope concept: (status, boundaries,
-        resource ids of the entry's lines) — status "resource", "resource-unavailable" or "resource-unsupported";
-        None for any other entry."""
-        if entry["id"] in self._entry_resources:
-            return self._entry_resources[entry["id"]]
+    def scope_status(self, entry, scope=RESOURCE):
+        """Contract 1.6 (scope "resource") and 1.7 ("element"), for a located entry with lines that names a concept of
+        the scope: (status, boundaries, ids of the boundaries the entry's lines lie in) — status "<scope>",
+        "<scope>-unavailable" or "<scope>-unsupported"; None for any other entry."""
+        k = (entry["id"], scope)
+        if k in self._entry_resources:
+            return self._entry_resources[k]
         got = None
         cs = entry_concepts(entry)
-        if (self.resource_scope and entry["_file"] is not None and "lines" in entry and "commit" not in entry
-                and cs != STAR and any(c in self.resource_scope for c in cs)):
-            b = self.resources.get(entry["_file"])
+        concepts = self.bounded[scope]
+        if (concepts and entry["_file"] is not None and "lines" in entry and "commit" not in entry
+                and cs != STAR and any(c in concepts for c in cs)):
+            b = self.resources.get(entry["_file"], scope)
             if b == UNAVAILABLE:
-                got = ("resource-unavailable", None, None)
+                got = (f"{scope}-unavailable", None, None)
             elif b == UNSUPPORTED:
-                got = ("resource-unsupported", None, None)
+                got = (f"{scope}-unsupported", None, None)
             else:
-                got = ("resource", b, b.ids_over(*entry["lines"]))
-        self._entry_resources[entry["id"]] = got
+                got = (scope, b, b.ids_over(*entry["lines"]))
+        self._entry_resources[k] = got
         return got
 
-    def _in_resource(self, entry, concepts, loc):
-        """Contract 1.6: the location lies in the entry's resource (same file, a line in a resource the entry's lines
-        are in) and the entry names a resource-scope concept the result counts as."""
-        if not self._scoped(entry, concepts, self.resource_scope):
+    def resource_status(self, entry):
+        """Contract 1.6: scope_status for the resource scope."""
+        return self.scope_status(entry, RESOURCE)
+
+    def _in_bounds(self, entry, concepts, loc, scope):
+        """Contract 1.6 / 1.7: the location lies in the entry's resource / start tag (same file, a line in a boundary
+        the entry's lines are in) and the entry names a concept of that scope the result counts as."""
+        if not self._scoped(entry, concepts, self.bounded[scope]):
             return False
-        st = self.resource_status(entry)
-        if st is None or st[0] != "resource" or not _covers(entry, loc, self.tol, whole_file=True):
+        st = self.scope_status(entry, scope)
+        if st is None or st[0] != scope or not _covers(entry, loc, self.tol, whole_file=True):
             return False
         return bool(st[1].ids_at(loc.get("line")) & st[2])
 
     def covering(self, entry, result, concepts, level=None):
         """(location, scope) by which the result lies on the located entry's site at `level` (default: the widest):
-        location is the result itself or one of its message sites, scope "site" or "file"; None when it does not."""
+        location is the result itself or one of its message sites, scope "site", "file", "group", "resource" or
+        "element"; None when it does not."""
         level = self.widest if level is None else level
         scoped = level >= FILE_SCOPE
-        whole = scoped and self._file_scoped(entry, concepts)
+        whole = self._file_scoped(entry, concepts) if scoped else None
         for loc in [result] + (result.get("sites") or [] if level >= MESSAGE_SITES else []):
             if _covers(entry, loc, self.tol):
                 return loc, "site"
             if whole and _covers(entry, loc, self.tol, whole_file=True):
-                return loc, "file"
-            if scoped and self._in_resource(entry, concepts, loc):
-                return loc, "resource"
+                return loc, whole
+            if scoped:
+                for sc in (RESOURCE, ELEMENT):
+                    if self._in_bounds(entry, concepts, loc, sc):
+                        return loc, sc
         return None
 
     def _on_located(self, result, c):
@@ -300,7 +342,7 @@ class Matcher:
         if subject:
             if not _subject_hit(entry, result) and not (
                     entry["_file"] is None and entry.get("subject")
-                    and subject_in(entry["subject"], result.get("message"))
+                    and subject_in(entry["subject"], _stext(result))
                     and self._outside_located(result, concepts)):
                 return False
             return True
@@ -321,6 +363,78 @@ class Matcher:
             for level in ([self.widest] if subject else self.levels):
                 yield family, subject, level
 
+    @staticmethod
+    def _exact(entry, result, how):
+        """A match by the result's own location on the entry's own lines (no tolerance needed), or one that is not a
+        line match at all; False only for an own-location match that needed the line tolerance."""
+        if not isinstance(how, tuple):
+            return True
+        loc, scope = how
+        if scope != "site" or loc is not result or "lines" not in entry or "commit" in entry:
+            return True
+        lo, hi = entry["lines"]
+        return result["line"] is not None and lo <= result["line"] <= hi
+
+    def assign(self, mf, res_out):
+        """Contract 1.7: [(plant position in `mf`, result index, how)] — a maximum one-to-one assignment of the free
+        results to the plants. Each admissible (plant, result) pair has a TIER: the strongest pass and location level
+        at which it matches, a level's own-location matches split into exact-line before within-tolerance. Among the
+        assignments that find the most plants it takes the one with the most pairs of the strongest tier, then of
+        the next, …; remaining ties go to key order, then result order. Solved exactly per connected component of
+        the candidate pairs (Hungarian method on integer weights that encode that order)."""
+        passes = list(self._passes())
+        free = [i for i, o in enumerate(res_out) if o is None]
+        pairs = {}
+        for p, e in enumerate(mf):
+            for i in free:
+                r = self.results[i]
+                if not (_result_concepts_for(e, r) or _result_concepts_for(e, r, self.family_of)):
+                    continue
+                for k, (family, subject, level) in enumerate(passes):
+                    how = self.matches(e, r, family, subject, level)
+                    if how:
+                        pairs[(p, i)] = (2 * k + (0 if self._exact(e, r, how) else 1), how)
+                        break
+        if not pairs:
+            return []
+        tiers = 2 * len(passes)
+        parent = {}
+
+        def find(x):
+            while parent.setdefault(x, x) != x:
+                parent[x] = parent[parent[x]]
+                x = parent[x]
+            return x
+
+        for p, i in pairs:
+            parent[find(("e", p))] = find(("r", i))
+        comps = {}
+        for p, i in pairs:
+            comps.setdefault(find(("e", p)), []).append((p, i))
+        out = []
+        for edges in comps.values():
+            ps = sorted({p for p, _ in edges})
+            rs = sorted({i for _, i in edges})
+            n_e, n_r = len(ps), len(rs)
+            n = min(n_e, n_r)
+            base = n + 2
+            c = (n_r + 1) ** n_e
+            big = base ** (tiers + 1) * c
+            pos_p = {p: k for k, p in enumerate(ps)}
+            pos_r = {i: k for k, i in enumerate(rs)}
+            weight = {}
+            for p, i in edges:
+                t = pairs[(p, i)][0]
+                weight[(p, i)] = (big + base ** (tiers - 1 - t) * c
+                                  + (n_r + 1) ** (n_e - 1 - pos_p[p]) * (n_r - pos_r[i]))
+            if n_e == 1 or n_r == 1:
+                best = max(edges, key=lambda pi: weight[pi])
+                chosen = [best]
+            else:
+                chosen = _max_weight_matching(ps, rs, weight)
+            out += [(p, i, pairs[(p, i)][1]) for p, i in chosen]
+        return sorted(out)
+
     def run(self):
         """{"entries": {id: outcome}, "results": [outcome]} — see the module docstring for the outcome names."""
         res_out = [None] * len(self.results)
@@ -335,7 +449,7 @@ class Matcher:
                 loc, scope = how
                 if loc is not self.results[i]:
                     res_out[i]["site"] = {k: loc[k] for k in ("file", "line", "endLine")}
-                if scope in ("file", "resource"):
+                if scope in SCOPES:
                     res_out[i]["scope"] = scope
 
         def concept_for(entry, r):
@@ -356,18 +470,24 @@ class Matcher:
         mf = [e for e in mf if e["_file"]] + [e for e in mf if not e["_file"]]
         for e in mf:
             ent_out[e["id"]] = {"outcome": "FN", "results": [], "redundant": [], "fileLevel": False}
-        for family, subject, level in self._passes():
-            for e in mf:
-                if ent_out[e["id"]]["outcome"] == "TP":
-                    continue
-                for i, r in enumerate(self.results):
-                    if res_out[i] is not None:
+        if self.optimal:  # contract 1.7: the best one-to-one assignment, not the first come
+            for p, i, how in self.assign(mf, res_out):
+                e = mf[p]
+                claim(i, "tp", e, e["concept"], how)
+                ent_out[e["id"]] = {"outcome": "TP", "results": [i], "redundant": [], "fileLevel": True}
+        else:
+            for family, subject, level in self._passes():
+                for e in mf:
+                    if ent_out[e["id"]]["outcome"] == "TP":
                         continue
-                    how = self.matches(e, r, family, subject, level)
-                    if how:
-                        claim(i, "tp", e, e["concept"], how)
-                        ent_out[e["id"]] = {"outcome": "TP", "results": [i], "redundant": [], "fileLevel": True}
-                        break
+                    for i, r in enumerate(self.results):
+                        if res_out[i] is not None:
+                            continue
+                        how = self.matches(e, r, family, subject, level)
+                        if how:
+                            claim(i, "tp", e, e["concept"], how)
+                            ent_out[e["id"]] = {"outcome": "TP", "results": [i], "redundant": [], "fileLevel": True}
+                            break
         for e in mf:
             if ent_out[e["id"]]["outcome"] != "TP" and e["_file"] is not None:
                 ent_out[e["id"]]["fileLevel"] = any(
@@ -417,6 +537,53 @@ class Matcher:
                 else:
                     claim(i, "uncovered", None, r["concepts"][0] if r["concepts"] else UNMAPPED)
         return {"entries": ent_out, "results": res_out}
+
+
+def _max_weight_matching(rows, cols, weight):
+    """[(row, col)] of a maximum-weight matching of a bipartite graph (Hungarian method, integer weights >= 0; a pair
+    absent from `weight` has none). Exact on arbitrary-precision integers."""
+    transpose = len(rows) > len(cols)
+    if transpose:
+        rows, cols = cols, rows
+        weight = {(b, a): w for (a, b), w in weight.items()}
+    n, m = len(rows), len(cols)
+    w = [[0] * (m + 1)] + [[0] + [weight.get((rows[a], cols[b]), 0) for b in range(m)] for a in range(n)]
+    inf = (max(max(r) for r in w) + 1) * (n + 1) * 4
+    u, v, p, way = [0] * (n + 1), [0] * (m + 1), [0] * (m + 1), [0] * (m + 1)
+    for a in range(1, n + 1):
+        p[0], j0 = a, 0
+        minv, used = [inf] * (m + 1), [False] * (m + 1)
+        while True:
+            used[j0] = True
+            a0, delta, j1 = p[j0], inf, 0
+            for j in range(1, m + 1):
+                if not used[j]:
+                    cur = -w[a0][j] - u[a0] - v[j]
+                    if cur < minv[j]:
+                        minv[j], way[j] = cur, j0
+                    if minv[j] < delta:
+                        delta, j1 = minv[j], j
+            for j in range(m + 1):
+                if used[j]:
+                    u[p[j]] += delta
+                    v[j] -= delta
+                else:
+                    minv[j] -= delta
+            j0 = j1
+            if p[j0] == 0:
+                break
+        while True:
+            j1 = way[j0]
+            p[j0] = p[j1]
+            j0 = j1
+            if j0 == 0:
+                break
+    out = []
+    for j in range(1, m + 1):
+        if p[j] and w[p[j]][j] > 0:
+            a, b = rows[p[j] - 1], cols[j - 1]
+            out.append((b, a) if transpose else (a, b))
+    return out
 
 
 # --- metrics --------------------------------------------------------------------------------------------------------
@@ -503,7 +670,8 @@ def by_concept(matcher, out):
     return {k: finish(v) for k, v in sorted(rows.items(), key=lambda kv: (kv[0] in (STAR, UNMAPPED), kv[0]))}
 
 
-def by_dimension(entries, results, mapping, tol, file_scope=frozenset(), resource_scope=frozenset(), resources=None):
+def by_dimension(entries, results, mapping, tol, file_scope=frozenset(), resource_scope=frozenset(), resources=None,
+                 **scopes):
     """Per scanner dimension, matching re-run within the dimension: only its own results against the entries whose
     concept maps to it (and every `"*"` clean region), so a hit by one dimension is never credited to another."""
     dims = []
@@ -527,7 +695,7 @@ def by_dimension(entries, results, mapping, tol, file_scope=frozenset(), resourc
             if cs == STAR or any(d in mapping.dimensions_of_concept(c) for c in cs):
                 ents.append(e)
         rs = [r for r in results if r["dimension"] == d]
-        m = Matcher(ents, rs, tol, mapping, file_scope, resource_scope, resources)
+        m = Matcher(ents, rs, tol, mapping, file_scope, resource_scope, resources, **scopes)
         rows[d] = totals(m, m.run())
     # contract 1.4: plants and traps of a concept no dimension of the scanner maps (a must-fire there is an FN)
     ruleless = [e for e in entries if e["label"] in ("must-fire", "must-not-fire")
@@ -567,14 +735,15 @@ def score_bands(entries, scores, mapping):
 
 # --- the whole run --------------------------------------------------------------------------------------------------
 
-CONTRACTS = ("1.4", "1.5", "1.6")
+CONTRACTS = ("1.4", "1.5", "1.6", "1.7")
 
 
 def score(key, results, mapping, scores=None, contract=None, taxonomy=None, source=None):
     """Score `results` (from sarif.read_results) against `key` under `mapping`. Returns the full report dict.
 
     `contract` (default: the current one) "1.4" scores without the 1.5 location-equivalence rules, so a measurement
-    frozen under 1.4 re-scores exactly; "1.5" without the 1.6 resource scope. `taxonomy` (a parsed taxonomy.json)
+    frozen under 1.4 re-scores exactly; "1.5" without the 1.6 resource scope; "1.6" without the 1.7 rules (optimal
+    assignment, `subjectFromMessage`, element and group scope). `taxonomy` (a parsed taxonomy.json)
     overrides the harness's own for the file- and resource-scope concepts. `source` (contract 1.6; a callable
     repository-relative path -> text or None, see resources.dir_source / git_source) reads the unit's files for
     resource boundaries; without it every resource-scope entry keeps the line rule (`resource-unavailable`)."""
@@ -585,6 +754,10 @@ def score(key, results, mapping, scores=None, contract=None, taxonomy=None, sour
     file_scope = file_scope_concepts(taxonomy) if equivalence else frozenset()
     resource_rule = contract not in ("1.4", "1.5")
     resource_scope = resource_scope_concepts(taxonomy) if resource_rule else frozenset()
+    rules_1_7 = contract not in ("1.4", "1.5", "1.6")
+    scopes = {"element_scope": element_scope_concepts(taxonomy) if rules_1_7 else frozenset(),
+              "group_scope": group_scope_concepts(taxonomy) if rules_1_7 else frozenset(),
+              "optimal": rules_1_7}
     resources = ResourceIndex(source)
     tol = line_tolerance(key)
     entries = key["entries"]
@@ -610,6 +783,11 @@ def score(key, results, mapping, scores=None, contract=None, taxonomy=None, sour
             if exact:
                 r["file"], r["pathExact"] = f, True
         r["pathMatch"] = None if r["file"] is None else ("exact" if r.get("pathExact") else "suffix")
+        r.pop("subjectText", None)
+        if rules_1_7 and not r["ignoreReason"]:  # contract 1.7: the part of the message that states the subject
+            st = mapping.subject_text(r["ruleId"], r.get("message"))
+            if st is not None:
+                r["subjectText"] = st
         r.pop("sites", None)
         if equivalence and not r["ignoreReason"] and r["concepts"]:
             sites = []  # contract 1.5: further sites named in the message, matched like message locations (suffix)
@@ -622,7 +800,7 @@ def score(key, results, mapping, scores=None, contract=None, taxonomy=None, sour
                               "commitSha": r.get("commitSha")})
             if sites:
                 r["sites"] = sites
-    m = Matcher(entries, results, tol, mapping, file_scope, resource_scope, resources)
+    m = Matcher(entries, results, tol, mapping, file_scope, resource_scope, resources, **scopes)
     out = m.run()
     for r, o in zip(results, out["results"]):
         r.pop("site", None), r.pop("matchScope", None)
@@ -647,7 +825,9 @@ def score(key, results, mapping, scores=None, contract=None, taxonomy=None, sour
         if o.get("summarisedBy"):
             row["summarisedBy"] = list(o["summarisedBy"])
         st = m.resource_status(e)
-        if st is not None:  # contract 1.6: how the resource scope applied to this entry
+        if st is None and rules_1_7:
+            st = m.scope_status(e, ELEMENT)
+        if st is not None:  # contract 1.6 / 1.7: how the resource (else the element) scope applied to this entry
             row["matchScope"] = st[0]
             if st[1] is not None:
                 row["resourceKind"] = st[1].kind
@@ -660,6 +840,8 @@ def score(key, results, mapping, scores=None, contract=None, taxonomy=None, sour
                "attributedConcept": o["concept"], "ignoreReason": r.get("ignoreReason")}
         if r.get("sites"):
             row["sites"] = [{k: x[k] for k in ("file", "line", "endLine")} for x in r["sites"]]
+        if r.get("subjectText") is not None:
+            row["subjectText"] = r["subjectText"]
         result_rows.append(row)
 
     soc = [{"index": r["index"], "ruleId": r["ruleId"], "concept": o["concept"], "message": r["message"],
@@ -672,18 +854,27 @@ def score(key, results, mapping, scores=None, contract=None, taxonomy=None, sour
         summary["fileScopeMatches"] = sum(r.get("matchScope") == "file" for r in results)
         summary["resultsWithMessageSites"] = sum(bool(r.get("sites")) for r in results)
     if resource_rule:
-        statuses = [x.get("matchScope") for x in entry_rows]
+        statuses = [st[0] if st else None for st in (m.resource_status(e) for e in m.entries)]
         summary["resourceScopeMatches"] = sum(r.get("matchScope") == "resource" for r in results)
         summary["resourceScope"] = {
             "source": getattr(source, "description", None) if source is not None else None,
             "entries": sum(x is not None for x in statuses), "applied": statuses.count("resource"),
             "unavailable": statuses.count("resource-unavailable"), "unsupported": statuses.count("resource-unsupported")}
+    if rules_1_7:
+        estat = [x[0] if x else None for x in (m.scope_status(e, ELEMENT) for e in m.entries)]
+        summary["assignment"] = "optimal"
+        summary["groupScopeMatches"] = sum(r.get("matchScope") == "group" for r in results)
+        summary["elementScopeMatches"] = sum(r.get("matchScope") == "element" for r in results)
+        summary["elementScope"] = {
+            "source": getattr(source, "description", None) if source is not None else None,
+            "entries": sum(x is not None for x in estat), "applied": estat.count("element"),
+            "unavailable": estat.count("element-unavailable"), "unsupported": estat.count("element-unsupported")}
     summary["pathMatches"] = {k: sum(r.get("pathMatch") == k for r in results) for k in ("exact", "suffix")}
     return {
         "lineTolerance": tol,
         "summary": summary,
         "concepts": by_concept(m, out),
-        "dimensions": by_dimension(entries, results, mapping, tol, file_scope, resource_scope, resources),
+        "dimensions": by_dimension(entries, results, mapping, tol, file_scope, resource_scope, resources, **scopes),
         "contract": contract,
         "scoreBands": bands,
         "unmappedConcepts": unmapped_concepts(entries, mapping),
@@ -755,6 +946,19 @@ def render(report):
         parts += [f"{report['summary']['resourceScopeMatches']} result(s) matched by resource-scope (contract 1.6): an "
                   f"IaC concept whose defect is a property of a whole resource, reported elsewhere in the entry's "
                   f"resource (YAML document, Dockerfile stage, HCL block)."]
+    if report["summary"].get("groupScopeMatches"):
+        parts += [f"{report['summary']['groupScopeMatches']} result(s) matched by group-scope (contract 1.7): a "
+                  f"relation among several files (a dependency cycle) reported at, or listing, another member."]
+    if report["summary"].get("elementScopeMatches"):
+        parts += [f"{report['summary']['elementScopeMatches']} result(s) matched by element-scope (contract 1.7): a "
+                  f"markup element's property reported elsewhere in the element's start tag."]
+    es = report["summary"].get("elementScope") or {}
+    if es.get("unavailable") or es.get("unsupported"):
+        lost = [e["id"] for e in report["entries"] if e.get("matchScope") in ("element-unavailable",
+                                                                           "element-unsupported")]
+        parts += [f"{len(lost)} element-scope entr(y/ies) kept the line rule — element-unavailable (the unit's files "
+                  f"were not readable: pass --repo-dir) or element-unsupported (not a markup file): "
+                  f"{', '.join(lost)}"]
     rs = report["summary"].get("resourceScope") or {}
     if rs.get("unavailable") or rs.get("unsupported"):
         lost = [e["id"] for e in report["entries"] if e.get("matchScope") in ("resource-unavailable",

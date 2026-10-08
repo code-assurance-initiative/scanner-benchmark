@@ -13,7 +13,7 @@ measures, per concept and per scanner dimension:
 
 This repository holds the harness: the answer-key schema, the scanner-neutral concept taxonomy (CWE-anchored where a
 CWE exists), one mapping per scanner, the scoring CLI, the registry of frozen benchmark units, and recorded
-results. The units themselves are in the training set. The fixed formats and the exact matching rules are in [`docs/CONTRACT.md`](docs/CONTRACT.md) (contract 1.6).
+results. The units themselves are in the training set. The fixed formats and the exact matching rules are in [`docs/CONTRACT.md`](docs/CONTRACT.md) (contract 1.7).
 
 ## The benchmark challenge
 
@@ -133,6 +133,12 @@ ruleId, file, line) with its outcome — so a reader can audit every number.
   boundaries from its files — a YAML document, a Dockerfile build stage, a top-level HCL block — so that an absence-type
   IaC concept (no limits, no probes, no securityContext, no USER, no HEALTHCHECK) reported anywhere in the entry's
   resource is on the entry's site. Without it those entries keep the line rule and say `resource-unavailable`.
+  Contract 1.7 reads the element start tags of markup files the same way (an element-scope accessibility concept
+  reported anywhere in the entry's start tag is on its site; without the files: `element-unavailable`).
+- Contract 1.7: a result is consumed by the plant that gives the best one-to-one assignment (most plants found, then
+  the strongest matches, exact line before line tolerance), not the first plant in key order; a mapping may say where
+  a message states its subject (`subjectFromMessage`); a dependency cycle reported at, or listing, any member file is
+  on the site of a cycle entry in that file (group scope).
 - A result carrying SARIF `properties.commitSha` is a history finding; an entry with `commit` matches it by commit
   in the same file, at any line.
 - `score-band` entries need `--scores`, a JSON object `{ "<concept or scanner dimension>": <0–100> }`. An entry with
@@ -245,7 +251,7 @@ generation is a new set repository, never a rewrite of an old one — and **priv
 ## Layout
 
 ```
-docs/CONTRACT.md                   fixed formats, matching and metric semantics (v1.6)
+docs/CONTRACT.md                   fixed formats, matching and metric semantics (v1.7)
 schema/answer-key.schema.json      JSON Schema (draft 2020-12) for benchmark/answer-key.json
 taxonomy.json                      scanner-neutral concepts
 mappings/<scanner>.json            concept -> the scanner's rule ids and dimensions

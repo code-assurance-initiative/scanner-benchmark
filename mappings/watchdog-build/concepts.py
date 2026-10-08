@@ -408,3 +408,54 @@ for _c in C:
         assert "matchScope" not in _c, _c["id"]
         _c["matchScope"] = "resource"
 assert set(RESOURCE_SCOPE) <= {_c["id"] for _c in C}, set(RESOURCE_SCOPE) - {_c["id"] for _c in C}
+
+# ---------------- contract 1.7: element-scope concepts (taxonomy `matchScope: "element"`) ----------------
+# A markup concept whose defect is a property of ONE ELEMENT — its accessible name, its label, its role and states, its
+# keyboard operability, its error association, its playback controls — and, by its definition, can be an ABSENCE: an
+# attribute the element lacks has no line of its own. A scanner reports it at the element (its start tag), a key at the
+# attribute line it would go to; when the start tag spans several lines, neither is more precise. For an entry naming
+# such a concept, a result of it anywhere in the same START TAG is on the entry's site (cai_bench/resources.py
+# markup_start_tags). The element's content (children) is not its start tag, so a row on a parent element never finds
+# a child's defect. The same criterion as RESOURCE_SCOPE (contract 1.6): concepts whose defect is a PRESENT value with
+# a line of its own keep the line rule — `focus-outline-removed` (an `outline: none` declaration) and the umbrella
+# `visual-and-motion-safety` (contrast: present colour values). `motion-without-reduced-motion` is a property of a
+# stylesheet rule, not of an element's start tag, and `modal-focus-not-managed` one of script behaviour; neither is an
+# element attribute, so both keep the line rule.
+ELEMENT_SCOPE = {
+    "missing-text-alternative": "no alt / title / accessible name on an image, svg, image input or video: an absence on "
+                                "the element",
+    "form-control-without-label": "no associated label or accessible name on a form control: an absence on the element",
+    "non-keyboard-accessible-interaction": "a click handler without role / tabindex / key handler, or a positive "
+                                           "tabindex, on one element: the missing keyboard semantics are an absence on "
+                                           "the element (a positive tabindex is one way the same property arises)",
+    "invalid-aria-usage": "a missing required ARIA state is an absence on the element (an invalid role or "
+                          "aria-hidden on a focusable element is one way the same property arises)",
+    "page-structure-violation": "a missing lang on <html>, a missing title on an <iframe>: an absence on the element "
+                                "(a skipped heading level or a zoom-disabling viewport is one way the same property "
+                                "arises)",
+    "form-error-not-associated": "no aria-describedby / aria-errormessage / aria-invalid tying an error to its field: an "
+                                 "absence on the element",
+    "autoplay-media-without-control": "autoplay without controls on a media element: an absence on the element",
+}
+for _c in C:
+    if _c["id"] in ELEMENT_SCOPE:
+        assert "matchScope" not in _c, _c["id"]
+        _c["matchScope"] = "element"
+assert set(ELEMENT_SCOPE) <= {_c["id"] for _c in C}, set(ELEMENT_SCOPE) - {_c["id"] for _c in C}
+
+# ---------------- contract 1.7: group-scope concepts (taxonomy `matchScope: "group"`) ----------------
+# A concept whose defect is a RELATION among several files or modules, none of which is more its site than another.
+# In a dependency cycle every edge is necessary for it and removing any one breaks it, so no edge is "the reference
+# that closes the cycle" except by the order in which an author wrote them; which member a scanner names, and which a
+# key names, is a convention. For an entry naming such a concept, a result of it located in, or (mapping
+# `sitesFromMessage`) listing, the entry's file is on the entry's site. Supersedes the contract 1.5 remark that the
+# closing reference is a cycle's site. `change-coupling` (a pair of files) is already file-scope (contract 1.5).
+GROUP_SCOPE = {
+    "module-dependency-cycle": "projects, packages or modules depending on each other in a cycle: every member is "
+                               "equally its site",
+}
+for _c in C:
+    if _c["id"] in GROUP_SCOPE:
+        assert "matchScope" not in _c, _c["id"]
+        _c["matchScope"] = "group"
+assert set(GROUP_SCOPE) <= {_c["id"] for _c in C}, set(GROUP_SCOPE) - {_c["id"] for _c in C}

@@ -59,8 +59,9 @@ class Cli(unittest.TestCase):
         self.assertEqual(got, {
             # contract 1.4: the absolute uri under the checkout directory (named after the key's repo) is made
             # repo-relative and compared exactly
-            (0, "tp", "SEC-001", "D13", "src/Billing/PaymentClient.cs", 15),
-            (1, "redundant", "SEC-001", "D13/aws", "src/Billing/PaymentClient.cs", 14),
+            # contract 1.7: the row on the plant's own line (14) is the TP, the one within tolerance (15) redundant
+            (0, "redundant", "SEC-001", "D13", "src/Billing/PaymentClient.cs", 15),
+            (1, "tp", "SEC-001", "D13/aws", "src/Billing/PaymentClient.cs", 14),
             (2, "trap-fp", "TRP-001", "D13", "src/Billing/PaymentClient.cs", 40),
             (3, "clean-fp", "CLN-001", "D1", "src/Billing/Invoice.cs", 3),   # ruleIndex -> driver.rules[1]
             (4, "na-fp", "NA-001", "D14", "src/Data/Repo.cs", 9),

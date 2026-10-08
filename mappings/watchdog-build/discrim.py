@@ -387,11 +387,19 @@ TABLE = {
         source="engine/src/Scanner/Dependencies/D12/DependencyHygieneAnalyzer.cs:462"),
    ]),
    ("dependencies-not-locked", [
-    dict(messages=[r"^No dependency lockfile committed \(", r"^No Package\.resolved committed \(", r"^No go\.sum committed \(", r"^No Gemfile\.lock committed by an application", "^Dependency not covered by the (?:lockfile|committed resolution): ", "^Floating (?:npm|git|source|branch) dependency: ", "^UPM dependency `[^`]+` is a git source with no revision", "^Dependency pinning: "],
+    dict(messages=[r"^No dependency lockfile committed \(", r"^No Package\.resolved committed \(", r"^No go\.sum committed \(", r"^No Gemfile\.lock committed by an application", "^Dependency not covered by the (?:lockfile|committed resolution): ", "^UPM dependency `[^`]+` is a git source with no revision", "^Dependency pinning: "],
         source='engine/src/Scanner/Dependencies/D12/DependencyHygieneAnalyzer.cs:3090-3196 (pinning-discipline titles: no lockfile :3102,3111,3143,3177; declaration outside the lockfile :3145,3179; dependency naming no releasable version :3093,3104,3147,3181; fallback "Dependency pinning") and :2985 (UPM git source with no revision)'),
    ]),
   ]),
   off=[
+   dict(message="^Floating (?:npm|git|source|branch) dependency: ",
+        source="engine/src/Scanner/Dependencies/D12/DependencyHygieneAnalyzer.cs:3093 (npm), :3104,3147,3181 (git / source / branch) "
+               "and engine/src/Core/Dependencies/NpmManifestHygiene.cs:261-266 (fires on the manifest range alone, with or "
+               "without a lockfile) — a declaration that names no releasable version (`*`, a git source without a ref) is "
+               "a property of the manifest range; whether the build is locked is decided by the lockfile, whose absence has "
+               "its own rows (No dependency lockfile committed, Dependency not covered by the lockfile), and a committed "
+               "lockfile records what the range resolved to. Same reasoning as the unbounded requirement below (contract "
+               "1.7 mapping pass)"),
    dict(message="^Unbounded dependency requirement: ",
         source="engine/src/Scanner/Dependencies/D12/DependencyHygieneAnalyzer.cs:3183,3196 — a requirement with no upper bound beside a lockfile: upgrade risk, not an unlocked build"),
    dict(message="^One package at two majors across the workspace: ",
@@ -702,6 +710,13 @@ TABLE = {
     dict(messages=[r"^(?:Secret\ passed\ as\ a\ command\-line\ argument):"],
         source="engine/src/Scanner/SecurityPosture/D36/SupplyChainProvenanceAnalyzer.cs:8694"),
    ]),
+   ("release-hygiene", [
+    dict(messages=[r"^(?:Packaging\ script\ can\ name\ the\ release\ artifact\ with\ an\ empty\ version):"],
+        source="engine/src/Scanner/SecurityPosture/D36/SupplyChainProvenanceAnalyzer.cs:2697 (a packaging script names the "
+               "artifact it produces after a version parsed out of another file, with nothing that stops it when the parse "
+               "matches nothing: the release's version property can be empty — versioning hygiene; contract 1.7 mapping "
+               "pass, formerly offConcept)"),
+   ]),
   ]),
   off=[
    dict(message="^Job token omits the `?contents`? scope its checkout needs:",
@@ -712,8 +727,6 @@ TABLE = {
         source="engine/src/Scanner/SecurityPosture/D36/SupplyChainProvenanceAnalyzer.cs:2629 (toolchain drift)"),
    dict(message=r"^(?:Release\ publish\ runs\ through\ a\ build\ or\ test\ step\ that\ cannot\ fail):",
         source="engine/src/Scanner/SecurityPosture/D36/SupplyChainProvenanceAnalyzer.cs:2672 (continue-on-error on a release build/test step; gate honesty, not provenance)"),
-   dict(message=r"^(?:Packaging\ script\ can\ name\ the\ release\ artifact\ with\ an\ empty\ version):",
-        source="engine/src/Scanner/SecurityPosture/D36/SupplyChainProvenanceAnalyzer.cs:2697"),
    dict(message=r"^(?:Release\ publish\ has\ no\ approval\ gate):",
         source="engine/src/Scanner/SecurityPosture/D36/SupplyChainProvenanceAnalyzer.cs:8605 (release governance)"),
    dict(message=r"^(?:npm\ publish\ authenticates\ with\ a\ long\-lived\ registry\ token):",
@@ -941,6 +954,16 @@ TABLE = {
     dict(messages=[r"^\w+: (?:(?:watchdog-)?card\-verification\-value\-in\-claims\-csharp|(?:watchdog-)?payment\-card\-in\-jwt\-payload\-csharp|(?:watchdog-)?credential\-in\-jwt\-payload\-csharp|(?:watchdog-)?credential\-in\-jwt\-payload\-python|(?:watchdog-)?credential\-in\-jwt\-payload\-scala|(?:watchdog-)?credential\-in\-jwt\-payload\-java|(?:watchdog-)?credential\-in\-jwt\-payload\-go|(?:watchdog-)?credential\-in\-jwt\-payload\-ts):"],
         source='engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61; a registry id led by react-/angular-/vue-/jquery-/express-/django-/flask-/rails- loses that prefix when the repo does not declare the framework (engine/src/Scanner/Security/D29/Scanners/ForeignFrameworkAdvice.cs:177-232, applied at StaticAnalysisAnalyzer.cs:665)'),
    ]),
+   ("null-dereference", [
+    dict(messages=[r"^\w+: (?:(?:watchdog-)?unchecked\-catch\-binding\-deref\-ts|(?:watchdog-)?nil\-agreement\-guard\-then\-deref\-go|(?:watchdog-)?unchecked\-map\-lookup\-deref\-go|(?:watchdog-)?error\-reported\-then\-nil\-interface\-dereferenced\-go):"],
+        source='engine/rulesets/semgrep/watchdog-sast.yml (watchdog-unchecked-catch-binding-deref-ts: a test that reaches '
+               'two levels into a catch binding raises a TypeError when the intermediate is absent; -nil-agreement-guard-'
+               'then-deref-go, -unchecked-map-lookup-deref-go (a map miss returns a nil pointer that is dereferenced), '
+               '-error-reported-then-nil-interface-dereferenced-go: the value the code itself treats as possibly absent '
+               'is dereferenced unguarded, CWE-476); title "{severity}: {semgrep check_id after its last \'.\'}" '
+               'engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823. Contract 1.7 mapping pass: formerly '
+               'offConcept as "no D29 concept denotes it" — null-dereference is a taxonomy concept (X5\'s), now also D29\'s'),
+   ]),
   ]),
   off=[
    dict(message=r"^\w+: (?:(?:watchdog-)?global\-tilde\-expansion\-bound\-home\-rust|(?:watchdog-)?git\-ref\-parsed\-by\-fixed\-field\-index|(?:watchdog-)?empty\-glob\-character\-class\-rust|(?:watchdog-)?map\-order\-in\-rendered\-text\-go|(?:watchdog-)?map\-order\-in\-joined\-slice\-go|(?:watchdog-)?global\-tilde\-expansion\-rust|missing\-self\-transfer\-check\-ercx|insecure\-use\-string\-copy\-fn|system\-wildcard\-detected|check\-validation\-regex|detect\-buffer\-noassert|insecure\-use\-strcat\-fn|insecure\-use\-strtok\-fn|insecure\-use\-scanf\-fn|insecure\-use\-gets\-fn|bad\-hexa\-conversion|use\-of\-unsafe\-block|bash_reverse_shell|divide\-by\-zero|use\-after\-free|double\-free):",
@@ -971,7 +994,7 @@ TABLE = {
         source='sensitive data in unprotected mobile device storage (iOS UserDefaults, CWE-311/922) - the browser-storage concept is D32\'s and names browser storage; engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61'),
    dict(message=r"^\w+: (?:(?:watchdog-)?unbounded\-tag\-trigger\-publish\-without\-environment|(?:watchdog-)?force\-moved\-release\-pointer\-tag\-in\-workflow|(?:watchdog-)?mutable\-container\-tag\-published\-in\-workflow|(?:watchdog-)?comment\-approval\-gate\-without\-author\-check|(?:watchdog-)?floating\-toolchain\-version\-in\-setup\-action|(?:watchdog-)?unpinned\-package\-install\-in\-run|(?:watchdog-)?floating\-release\-tool\-version|(?:watchdog-)?unbounded\-go\-toolchain\-range|(?:watchdog-)?nonfatal\-integrity\-check\-go|(?:watchdog-)?archived\-action\-dependency|pnpm\-block\-exotic\-sub\-dependencies|openai\-consequential\-action\-false|detect\-shai\-hulud\-backdoor|pnpm\-trust\-policy):",
         source='CI posture that is neither injection, secret exposure, action pinning nor remote-exec: unpinned package/tool versions, archived action, tag-moving, mutable tag publishing, ungated publish, comment approval gate, malicious-workflow IOC, LLM action flag, pnpm trust policy; engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61'),
-   dict(message=r"^\w+: (?:(?:watchdog-)?field\-round\-trip\-writes\-back\-to\-different\-field\-js|(?:watchdog-)?error\-reported\-then\-nil\-interface\-dereferenced\-go|(?:watchdog-)?sorted\-singleton\-excluded\-by\-off\-by\-one\-guard\-go|(?:watchdog-)?closed\-channel\-arm\-continues\-the\-select\-loop\-go|(?:watchdog-)?broad\-rescue\-guard\-not\-keyed\-on\-exception\-ruby|(?:watchdog-)?redundant\-re\-defaulting\-of\-normalised\-value\-js|(?:watchdog-)?instance\-field\-assigned\-as\-bare\-identifier\-js|(?:watchdog-)?diagnostics\-gated\-on\-nested\-error\-checks\-go|(?:watchdog-)?regex\-match\-index\-beyond\-capture\-groups\-js|(?:watchdog-)?class\-method\-called\-as\-bare\-identifier\-js|(?:watchdog-)?expiry\-sweep\-exits\-after\-first\-removal\-go|(?:watchdog-)?presized\-slice\-hole\-from\-skipped\-index\-go|(?:watchdog-)?fold\-step\-error\-discarded\-by\-continue\-go|(?:watchdog-)?deferred\-close\-in\-archive\-entry\-loop\-go|(?:watchdog-)?inverted\-error\-classification\-helper\-go|(?:watchdog-)?parameter\-overwritten\-before\-return\-go|(?:watchdog-)?blocking\-send\-in\-nil\-context\-guard\-go|(?:watchdog-)?discarded\-close\-error\-written\-file\-go|(?:watchdog-)?lock\-acquisition\-failure\-not\-gated\-go|(?:watchdog-)?error\-logged\-then\-zero\-value\-used\-go|(?:watchdog-)?error\-overwritten\-before\-any\-test\-go|(?:watchdog-)?paired\-walk\-bounded\-by\-one\-length\-go|(?:watchdog-)?captured\-parameter\-written\-back\-go|(?:watchdog-)?tally\-divided\-by\-foreign\-length\-go|(?:watchdog-)?loop\-carried\-error\-overwritten\-go|(?:watchdog-)?nil\-agreement\-guard\-then\-deref\-go|(?:watchdog-)?unchecked\-catch\-binding\-deref\-ts|(?:watchdog-)?discarded\-close\-flush\-error\-go|(?:watchdog-)?unbound\-identifier\-assigned\-js|(?:watchdog-)?string\-keyed\-context\-value\-go|(?:watchdog-)?unchecked\-map\-lookup\-deref\-go|(?:watchdog-)?unchecked\-document\-assert\-go|(?:watchdog-)?splice\-from\-ranged\-slice\-go|(?:watchdog-)?usize\-underflow\-panic\-rust|(?:watchdog-)?fabricated\-array\-bound\-go|(?:watchdog-)?discarded\-write\-error\-go):",
+   dict(message=r"^\w+: (?:(?:watchdog-)?field\-round\-trip\-writes\-back\-to\-different\-field\-js|(?:watchdog-)?sorted\-singleton\-excluded\-by\-off\-by\-one\-guard\-go|(?:watchdog-)?closed\-channel\-arm\-continues\-the\-select\-loop\-go|(?:watchdog-)?broad\-rescue\-guard\-not\-keyed\-on\-exception\-ruby|(?:watchdog-)?redundant\-re\-defaulting\-of\-normalised\-value\-js|(?:watchdog-)?instance\-field\-assigned\-as\-bare\-identifier\-js|(?:watchdog-)?diagnostics\-gated\-on\-nested\-error\-checks\-go|(?:watchdog-)?regex\-match\-index\-beyond\-capture\-groups\-js|(?:watchdog-)?class\-method\-called\-as\-bare\-identifier\-js|(?:watchdog-)?expiry\-sweep\-exits\-after\-first\-removal\-go|(?:watchdog-)?presized\-slice\-hole\-from\-skipped\-index\-go|(?:watchdog-)?fold\-step\-error\-discarded\-by\-continue\-go|(?:watchdog-)?deferred\-close\-in\-archive\-entry\-loop\-go|(?:watchdog-)?inverted\-error\-classification\-helper\-go|(?:watchdog-)?parameter\-overwritten\-before\-return\-go|(?:watchdog-)?blocking\-send\-in\-nil\-context\-guard\-go|(?:watchdog-)?discarded\-close\-error\-written\-file\-go|(?:watchdog-)?lock\-acquisition\-failure\-not\-gated\-go|(?:watchdog-)?error\-logged\-then\-zero\-value\-used\-go|(?:watchdog-)?error\-overwritten\-before\-any\-test\-go|(?:watchdog-)?paired\-walk\-bounded\-by\-one\-length\-go|(?:watchdog-)?captured\-parameter\-written\-back\-go|(?:watchdog-)?tally\-divided\-by\-foreign\-length\-go|(?:watchdog-)?loop\-carried\-error\-overwritten\-go|(?:watchdog-)?discarded\-close\-flush\-error\-go|(?:watchdog-)?unbound\-identifier\-assigned\-js|(?:watchdog-)?string\-keyed\-context\-value\-go|(?:watchdog-)?unchecked\-document\-assert\-go|(?:watchdog-)?splice\-from\-ranged\-slice\-go|(?:watchdog-)?usize\-underflow\-panic\-rust|(?:watchdog-)?fabricated\-array\-bound\-go|(?:watchdog-)?discarded\-write\-error\-go):",
         source='engine-authored correctness checks (nil/err handling, bounds, dead stores, unbound identifiers, map order, catch-binding derefs ...; CWE-125/129/193/248/252/391/457/476/563/665/667/694/703/772/1164): real defects that no D29 concept denotes; engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61'),
    dict(message=r"^\w+: (?:(?:watchdog-)?shell\-quoted\-argument\-in\-argv\-exec\-ruby|(?:watchdog-)?unencoded\-segment\-appended\-to\-url\-ruby|(?:watchdog-)?html\-entity\-in\-rendered\-dart\-literal|(?:watchdog-)?backtick\-only\-escape):",
         source='incomplete / wrong escaping that is a correctness defect, not an exploitable sink (CWE-116/838); engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs:794,823 (title = "{severity}: {semgrep check_id after its last \'.\'}"); check ids enumerated from the analyzer image\'s baked packs (engine/docker/analyzer/Dockerfile:570-571 bakes p/security-audit + p/owasp-top-ten; :595 copies engine/rulesets/semgrep/watchdog-sast.yml), all three passed by engine/src/Scanner/Security/D29/StaticAnalysisAnalyzer.cs:55-61'),
@@ -1019,6 +1042,58 @@ for _d, _s in TABLE.items():
     assert _d not in SPEC, _d
     SPEC[_d] = _s
 
+# ---- contract 1.7 mapping pass: single-concept dimensions whose rows are not all of their concept --------------------
+# A row that reports that a measurement could NOT be taken (the suite did not install, no coverage collector, the
+# vulnerability scanner did not run) denotes no defect of the dimension's concept; like D12's "Dependency hygiene not
+# measured" it is offConcept. AC4 (keyboard semantics) emits one title that is a missing ARIA state.
+_AC4_COMPOSITE = r"^Composite <[^>]*> never reports its active option"
+SPEC["AC4"] = dict(concepts=OrderedDict([
+    ("non-keyboard-accessible-interaction", [dict(
+        messages=["^Click handler on a (?:non-interactive )?<", "^Focusable <[^>]*> isn't keyboard-operable",
+                  "^Clickable element isn't keyboard-operable", "^Hover-only interaction on <",
+                  "^Double-click handler on a non-interactive <", "^Anchor without href", r"^Link used as a button \(",
+                  "^Clickable role=\"[^\"]*\" that no keyboard user can reach", r"^Positive tabindex \("],
+        source="engine/src/Scanner/Accessibility/AC4/KeyboardSemanticsAnalyzer.cs:176,204,291,334,370,427,466,486,585,768 "
+               "(click handler on a non-interactive or nested element, focusable/clickable element not keyboard-operable, "
+               "hover-only, double-click, anchor without href, link used as a button, clickable role no keyboard user can "
+               "reach, positive tabindex)")]),
+    ("invalid-aria-usage", [dict(
+        messages=[_AC4_COMPOSITE],
+        source="engine/src/Scanner/Accessibility/AC4/KeyboardSemanticsAnalyzer.cs:723 (\"Composite <{name} role=\\\"{role}\\\"> "
+               "never reports its active option\": the container is the tab stop and never sets aria-activedescendant, no "
+               "option is focusable — a missing required ARIA state, WCAG 4.1.2; contract 1.7 mapping pass)")]),
+]), off=[])
+SPEC["D8"] = dict(concepts=OrderedDict([
+    ("test-coverage", [dict(
+        messages=["^(?!Coverage not measured)"],
+        source="engine/src/Scanner/Testing/D8 (Low coverage, CRAP, No automated tests, No test project references …): "
+               "every D8 title but the measurement disclosures")]),
+]), off=[dict(message="^Coverage not measured",
+              source="engine/src/Scanner/Testing/D8/CoverageNotMeasured.cs:54,272,301,323 (\"Coverage not measured — …\": "
+                     "the coverage run did not produce a number — a measurement disclosure, not low coverage)")])
+SPEC["D11"] = dict(concepts=OrderedDict([
+    ("flaky-test", [dict(
+        messages=["^(?:Flaky test|Test declared unreliable): "],
+        source="engine/src/Scanner/Testing/D11/TestReliabilityAnalyzer.cs:1981 (\"Flaky test: {FullyQualifiedName}\", a test "
+               "that passed and failed across repeated runs) and :4349 (\"Test declared unreliable: {test}\", a test its "
+               "own repository marks as unreliable)")]),
+]), off=[dict(message="^Test reliability not measured",
+              source="engine/src/Scanner/Testing/D11/TestReliabilityAnalyzer.cs:1512-1513,1535,1841-1842,4443,4450,4464 "
+                     "(the suite was not re-run: a measurement disclosure, no flaky test)"),
+         dict(message="^Test suite (?:cannot be installed from its own lockfile|executes none of its|declares a test script "
+                      "but contains no test files|aborts before any test executes|is reachable only from an Apple platform)",
+              source="engine/src/Scanner/Testing/D11/TestReliabilityAnalyzer.cs:1425,1443,1479,1483,4181 (a suite that cannot "
+                     "run, or runs nothing: the reliability measurement could not be taken; no test was observed to flake)")])
+_SCANNER_FAILED = "^Scanner failed to run — not a clean result"
+for _d, _c in (("D30", "vulnerable-dependency"), ("D43", "malicious-dependency")):
+    SPEC[_d] = dict(concepts=OrderedDict([
+        (_c, [dict(messages=["^(?!" + _SCANNER_FAILED[1:] + ")"],
+                   source="engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs (advisory rows): every " + _d
+                          + " title but the scanner-failure disclosure")]),
+    ]), off=[dict(message=_SCANNER_FAILED,
+                  source="engine/src/Scanner/Security/Shared/Scanners/DeepScan.cs:785,798 (the external scanner did not "
+                         "run — a measurement disclosure, no advisory)")])
+
 FAMILY = {c: "hardcoded-secret" for c in ("hardcoded-credential", "hardcoded-password", "hardcoded-cryptographic-key", "committed-private-key")}
 # A weak digest used on a password and a password stored without an adequate KDF are one defect seen from two rules
 # (an MD5 password hash is both): a scanner reporting the site under the sibling is credited at plants and charged at
@@ -1030,16 +1105,25 @@ FAMILY.update({c: "weak-password-hashing" for c in ("weak-hash-algorithm", "insu
 # deserialization site as code injection (or an eval site as unsafe deserialization) found the defect, and is charged
 # symmetrically at a trap (contract 1.4; TS DESER-001 was reported as code injection).
 FAMILY.update({c: "untrusted-data-executed" for c in ("insecure-deserialization", "code-injection")})
+# Contract 1.7 mapping pass: an unconfined container (no seccomp / AppArmor profile) and the workload syscall-confinement
+# posture are ONE defect at two granularities — the taxonomy says so itself ("The per-workload finding;
+# workload-syscall-confinement is the repository-wide posture"). A scanner reporting the per-workload finding at a site
+# a key plants as the posture found it, and is charged symmetrically at a trap of either.
+FAMILY.update({c: "syscall-confinement" for c in ("container-confinement-profile-unset", "workload-syscall-confinement")})
 # Contract 1.4 `summaryOfConcept`: rows that summarise a located concept over the whole repository (a ratio or a
 # count) with no site; the per-site rows are Info and never reach SARIF (FindingSurface.cs). Such a row does not find
 # a located plant (it does not say where), and it is not noise: the report lists it beside the plants it summarises.
 SUMMARY_OF_CONCEPT = [
     OrderedDict(rule=r"^X2$", message=r"^Not all async methods take a CancellationToken:",
                 reason="X2's ratio row over every async method (engine/src/Scanner/Defects/X2); its per-method rows are Info and never reach SARIF"),
+    OrderedDict(rule=r"^X2$", message=r"^Not all [\w ]+ that make a request accept [^:]+:",
+                reason="X2's ratio row for the other languages (engine/src/Scanner/Defects/X2/CancellationPropagationAnalyzer.cs:233, \"Not all {subject} that make a request accept {token}\": async functions / AbortSignal for JavaScript/TypeScript, and the Go, PHP, Dart and Kotlin forms); its per-function rows are Info and never reach SARIF (contract 1.7 mapping pass)"),
     OrderedDict(rule=r"^PF3$", message=r"^(?:Awaits without ConfigureAwait\(false\)|Sync-over-async blocking):",
                 reason="PF3's repository-wide count/ratio rows (\"Only N/M awaits …\", \"N blocking call(s)\"); no per-site row reaches SARIF"),
     OrderedDict(rule=r"^X5$", message=r"^(?:Nullable reference types not enabled everywhere|Null-forgiving operator \(`!`\) suppressions reduce the NRT score):",
                 reason="X5's repository-wide ratio rows (projects enabling <Nullable>, `!` density); they name no project or site"),
+    OrderedDict(rule=r"^X5$", message=r"^(?:Strict null checking is not enabled everywhere the repository type-checks|Null assertions \(`!`\) reduce the strict null checking score):",
+                reason="X5's TypeScript twins of the two ratio rows (engine/src/Scanner/Defects/X5/NullableReferenceTypesAnalyzer.cs:1444 strictNullChecks over the type-checked projects, :1453 `!` density); they name no tsconfig or site (contract 1.7 mapping pass)"),
 ]
 IGNORE = [OrderedDict(rule=r"^D28$", message=r"^Rotate the exposed credentials",
                       reason="D28's repository-level roll-up of its located history rows (engine/src/Scanner/Security/D28/SecretsHistoryAnalyzer.cs:392), not a separate finding")]
@@ -1060,6 +1144,38 @@ LOCATION_FROM_MESSAGE = [
                        "lists \"{relative path}: {command line}\" sites, :8946) — the file, no line"),
     OrderedDict(rule=r"^D36$", pattern=r"(?<![\w./-])(?P<file>[\w./-]+\.(?:ya?ml|toml|json)):(?P<line>\d+)\b",
                 source=D36_SITE_SRC),
+    OrderedDict(rule=r"^P12$", message=r"^Test suite runs only after the merge:",
+                pattern=r"^Test suite runs only after the merge: `(?P<file>[^`]+\.ya?ml)`",
+                source="engine/src/Scanner/Readiness/P12/CiGateHonestyAnalyzer.cs:205-207 (\"`{workflow}`, … run(s) the test suite, "
+                       "but no workflow that runs tests is triggered by a pull request\"): the first workflow named — the "
+                       "file, no line (contract 1.7 mapping pass)"),
+]
+
+# Contract 1.7 `subjectFromMessage`: where a row STATES its subject. An advisory row names the vulnerable package first and
+# then, for a transitive one, the parent it arrived through ("form-data 2.3.3: … pulled in transitively by request
+# 2.88.2"); a D12 row names its package in the title; a D11 flaky row names the test, whose .NET identity Watchdog prints
+# as {project}::{class}.{class}.{method} (the TRX className, then the TRX testName, which for xUnit already starts with
+# the class) and whose JavaScript identity it prints glued to the package label ("the repository roottests/x.test.ts::name").
+# Subjects of entries are searched in the stated part only.
+SUBJECT_FROM_MESSAGE = [
+    OrderedDict(rule=r"^D30$", within=r"^\w+ CVE: (?:(?:GHSA|CVE|PYSEC|GO|RUSTSEC|OSV)-[\w-]+: )?(?P<subject>\S+) ",
+                source="engine/src/Scanner/Security/Shared/Scanners/ScanParsers.cs (\"{severity} CVE: [{advisory id}: ]{package} "
+                       "{version}: …\"; census of D30 rows in the local report.sarif files: \"High CVE: Newtonsoft.Json 12.0.3: "
+                       "…\", \"Critical CVE: GHSA-…: form-data 2.3.3: … pulled in transitively by request 2.88.2\")"),
+    OrderedDict(rule=r"^D12$",
+                within=r"^(?:Vulnerable|Deprecated|Deprecated module|Discontinued package|Abandoned package|Retired release|"
+                       r"Yanked release|Prerelease dependency|Outdated(?: \([^)]*\))?|Floating (?:npm|git|source|branch) "
+                       r"dependency|Dependency not covered by the (?:lockfile|committed resolution)): (?P<subject>[^\s:]+)",
+                source="engine/src/Scanner/Dependencies/D12/DependencyHygieneAnalyzer.cs:441-462,3093 (\"{kind}: {package}: …\")"),
+    OrderedDict(rule=r"^D11$", message=r"^Flaky test: [\w.-]+::",
+                within=r"^Flaky test: [\w.-]+::(?:(?P<c>[\w.]+)\.(?=(?P=c)\.))?(?P<subject>.+?): Passed \d+×",
+                source="engine/src/Scanner/Testing/D11/TestReliabilityAnalyzer.cs:1981 and "
+                       "engine/src/Core/Testing/DotnetTestReliabilityCollector.cs:381 (\"{project}::{className}.{testName}\"; "
+                       "the class printed twice is read once)"),
+    OrderedDict(rule=r"^D11$", message=r"^Flaky test: ",
+                within=r"^Flaky test: (?:the repository root)?(?P<subject>.+?): Passed \d+×",
+                source="engine/src/Scanner/Testing/D11/TestReliabilityAnalyzer.cs:1981 (\"{package label}{test file}::{name}\"; "
+                       "the root package's label \"the repository root\" is glued to the path and is not part of it)"),
 ]
 
 # Contract 1.5 `sitesFromMessage`: Watchdog reports a clone GROUP as one row located at its first member and lists every
@@ -1088,4 +1204,28 @@ SITES_FROM_MESSAGE = [
                 source="engine/src/Scanner/Defects/X10/StringContractSmellAnalyzer.cs:369-371 (\"… appears "
                        "character-identically in {n} files — {string.Join(\", \", files.Take(4))}. It is one line, …\"): "
                        "files, no line"),
+    # Contract 1.7 mapping pass: rows that are ABOUT several files list them. R9 reports an import cycle at its
+    # alphabetically-first member and lists every member (group scope, module-dependency-cycle); D16's off-boarding row
+    # lists the files that lose their only owner, D34's fold row the orphaned files it stands in for (both file-scope,
+    # location-less); D35 names both files of a coupled pair (file-scope, located at one of them). Files, no lines.
+    OrderedDict(rule=r"^R9$", message=r"^Import cycle \(", concepts=["module-dependency-cycle"],
+                within=r"^Import cycle \(\d+ files\): (?P<sites>.*?)(?: \(|$)",
+                patterns=[r"(?:^|\s→\s)(?P<file>[^\s→]+)"],
+                source="engine/src/Scanner/Frontend/R9 (\"Import cycle (N files): {a} → {b} → … → {a}\" [\" (one verified "
+                       "cycle inside a mutually-dependent group …)\"]); census: every R9 row of the local report.sarif files"),
+    OrderedDict(rule=r"^D16$", message=r"^Off-boarding risk:", concepts=["knowledge-concentration"],
+                within=r"lose their only recent owner: (?P<sites>.+?)(?: \(\+\d+ more\))?\.(?:\s|$)",
+                patterns=[r"(?:^|,\s)(?P<file>[^\s,]+)"],
+                source="engine/src/Scanner/GitMining/D16/KnowledgeConcentrationAnalyzer.cs:856 and :70-81 NameSiloFiles "
+                       "(\"{a}, {b} (+K more)\"); the folded \"Further sole-owners\" row names contributors, not files"),
+    OrderedDict(rule=r"^D34$", message=r"^Orphaned files with no living knowledge:", concepts=["knowledge-freshness"],
+                within=r"most significant first: (?P<sites>.+?)(?: \(and \d+ more\))?\.(?:\s|$)",
+                patterns=[r"(?:^|,\s)(?P<file>[^\s,]+)"],
+                source="engine/src/Scanner/GitMining/D34/KnowledgeFreshnessAnalyzer.cs:810-829 NameOrphans "
+                       "(\" — most significant first: {a}, {b} (and N more)\")"),
+    OrderedDict(rule=r"^D35$", concepts=["change-coupling"],
+                within=r"^[^:]*: (?P<sites>.*?)(?: change together| sit in DIFFERENT)",
+                patterns=[r"`(?P<file>[^`\s]+)`"],
+                source="engine/src/Scanner/GitMining/D35/ChangeCouplingAnalyzer.cs:521,536 (\"[Boundary-crossing ]Change "
+                       "coupling: {A} ↔ {B}\", detail \"`{path A}` [(context …)] and `{path B}` … change together\")"),
 ]

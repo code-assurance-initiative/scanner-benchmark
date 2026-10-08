@@ -1,6 +1,118 @@
-# Harness contract (v1.6)
+# Harness contract (v1.7)
 
 The fixed interfaces between the parts of this harness. Change only with a version bump.
+
+## What changed in 1.7 (2026-10-09) — assignment, stated subjects, element and group scope
+
+The answer-key format is unchanged; every 1.0–1.6 key and mapping stays valid. Four rules change outcomes. Each is
+principled, scanner-neutral (a property of the concept, of the result's own content, or a declaration any scanner's
+mapping may make), symmetric for plants, traps and clean regions, and applies uniformly to every set, training and
+holdout alike. They were decided from definitions and conventions observed while authoring holdout units, before any
+holdout headline was computed. `cai_bench` 1.6.0.
+
+- **optimal one-to-one assignment (CHANGES OUTCOMES).** Up to 1.6 each plant, in key order, took the first free result
+  that matched it in the strongest pass, so the result order and the key order decided which plant a result was
+  consumed by. A row within the line tolerance of two plants could take the first one and leave the second an FN while
+  a row exactly on the first became redundant; a clone row listing two plants could take one that a nearby row could
+  have found. Now the scorer takes, among all one-to-one assignments of results to plants, one that finds the MOST
+  plants; among those, the one with the most matches of the strongest kind, then the next — the passes (exact concept
+  on the site, exact concept by subject, family sibling on the site, family sibling by subject), each at its location
+  levels (the result's own location on the entry's lines, then its own location within the entry's file / resource /
+  element / group, then a listed site), with an own-location match ON the entry's lines counted before one that needs
+  the line tolerance; remaining ties go to key order, then result order (so the outcome is deterministic). Solved
+  exactly per connected component of the candidate pairs (Hungarian method on integer weights encoding that order,
+  `scoring.Matcher.assign`). Traps, clean regions and not-applicable entries are not consumed and are unchanged; a
+  result left over on a found plant is `redundant` as before. The summary carries `assignment: "optimal"`.
+- **the subject a result states (CHANGES OUTCOMES, by mapping declaration only).** A message may name several packages
+  or tests: the subject it reports on and others it mentions as context ("form-data 2.3.3: … pulled in transitively by
+  request 2.88.2"). A mapping may declare where a message STATES its subject (`subjectFromMessage`, see the mapping
+  section); for a result such a declaration applies to, the subjects of entries (1.2) are searched in that part only —
+  so an advisory is about the package it reports, not the parent it arrived through, at a plant (TP), a trap (caught)
+  and a clean region alike. A declaration may also read an identity the scanner prints in a non-canonical form (a test
+  identity with its class printed twice). The result row carries `subjectText`. Without a declaration the whole
+  message is searched (1.2).
+- **group-scope concepts (CHANGES OUTCOMES, taxonomy).** A taxonomy concept may carry `"matchScope": "group"`: its
+  defect is a RELATION among several files or modules none of which is more its site than another. In a dependency
+  cycle every edge is necessary for it and removing any one breaks it, so no member is "the reference that closes the
+  cycle" except by the order in which an author wrote them (this supersedes the 1.5 remark below). For an entry that
+  names such a concept and has a file, a result of the concept located in the entry's file — its own location, or a
+  member its message lists (`sitesFromMessage`) — is on the entry's site, at a plant, a trap or a clean region listing
+  the concept; a `"*"` clean region keeps its lines. Consumption stays one-to-one: one cycle row finds one plant. The
+  concept: `module-dependency-cycle` (`mappings/watchdog-build/concepts.py`, `GROUP_SCOPE`).
+- **element-scope concepts (CHANGES OUTCOMES, taxonomy).** A taxonomy concept may carry `"matchScope": "element"`: a
+  markup concept whose defect is a property of ONE element and, by its definition, can be an ABSENCE — an attribute the
+  element lacks has no line of its own; a scanner reports it at the element, a key at the attribute line it would go
+  to, and when the element's start tag spans several lines neither is more precise. For an entry that names such a
+  concept and has a file and lines, a result of the concept anywhere in the same START TAG as the entry's lines is on
+  the entry's site (plants, traps, clean regions listing the concept; a `"*"` region keeps its lines); a result on the
+  entry's lines is preferred. A start tag runs from `<name` to the `>` that closes it — quoted values, `{…}` (JSX) and
+  `@(…)` (Razor) expressions skipped; comments, declarations, end tags and `<script>`/`<style>` content are not start
+  tags; where markup is embedded in code (`*.jsx`, `*.tsx`, `*.cshtml`, `*.razor`) a `<` directly after an operand opens
+  none (`cai_bench/resources.py`, `markup_start_tags`). The element's children are not its start tag, so a row on a
+  parent never finds a child's defect. Markup files are `*.html`, `*.htm`, `*.xhtml`, `*.cshtml`, `*.razor`, `*.vue`,
+  `*.svelte`, `*.jsx`, `*.tsx`; elsewhere the line rule applies (`element-unsupported`), and without the unit's files
+  too (`element-unavailable`), exactly as for the resource scope. The concepts (`concepts.py`, `ELEMENT_SCOPE`, with the
+  reason for each): `missing-text-alternative`, `form-control-without-label`, `non-keyboard-accessible-interaction`,
+  `invalid-aria-usage`, `page-structure-violation`, `form-error-not-associated`, `autoplay-media-without-control`.
+  By the same criterion as 1.6, concepts whose defect is a PRESENT value with a line of its own keep the line rule:
+  `focus-outline-removed` (an `outline: none` declaration) and the umbrella `visual-and-motion-safety` (contrast);
+  `motion-without-reduced-motion` (a stylesheet rule) and `modal-focus-not-managed` (script behaviour) are not
+  properties of a start tag.
+- **report.** A result row carries `matchScope` `group` | `element` when that scope decided, and `subjectText` when a
+  declaration applied; an entry row naming an element-scope concept carries `matchScope` `element` (with
+  `resourceKind: "markup-start-tag"`) | `element-unavailable` | `element-unsupported`. The summary carries
+  `assignment`, `groupScopeMatches`, `elementScopeMatches` and `elementScope {source, entries, applied, unavailable,
+  unsupported}`; the text report names every element entry that kept the line rule.
+- **frozen measurements.** `score(..., contract="1.6")` scores without all four (and "1.5", "1.4" as before), so a
+  measurement frozen under 1.6 re-scores exactly; `results/watchdog/rescore.py --contract` selects the contract. The
+  1.7 effect on the training set is its own file (`results/watchdog/rescore-harness-1.7.json`, addendum in
+  `BASELINE-2026-10-07.md`).
+
+Considered in the same round and NOT adopted (decided from definitions, with the reason):
+
+- **declaration / member scope** (a row anchored at the enclosing type or member declaration for a defect inside a
+  member). A type-level scope is too generous: a type holds several members, and a header row would stand for every
+  plant of its concept in the type without saying which. The principled boundary — the innermost member enclosing the
+  entry's lines — fails the 1.6 criterion: the concepts in question (publicly mutable entity state, domain depending on
+  infrastructure, a repository returning a query handle, an ambient clock or random read, a reference across feature
+  slices) are PRESENT values — a setter, a reference, a call — with a line of their own that a scanner can name; a row
+  at an enclosing declaration is less precise, not differently conventioned. A concept whose defect is a whole member
+  needs no scope: keys place it on the member, which the line rule already covers.
+- **location from a quoted claim** (finding a documentation-drift row's line by searching the scanned README for the
+  claim it reports). The messages paraphrase the claim or quote search terms, not the line; locating them would be the
+  harness choosing a line by fuzzy text search, which the scanner did not do.
+- **a project name as a file** (giving a layer-violation row that names the referencing project the project file as
+  its location). The row names a project, not a file: turning a name into a path is resolution the scanner did not do,
+  a file-only location would match no lined entry anyway (1.3), and the row already matches by subject where a key
+  names the project.
+- **a test path as a file** (locating a flaky-test row at the test file its message names). A file-only location would
+  match no lined entry and would take the row out of subject matching (a result located in a non-manifest file cannot
+  match by subject); the stated test identity (`subjectFromMessage`) is the route that identifies the test.
+- **location-less rows at located entries in general** (posture rows, CI gate rows). A row that does not identify its
+  site cannot match a located entry; a row naming a file is given that file through `locationFromMessage` (1.3) and
+  then matches whole-file entries only.
+
+Watchdog mapping changes shipped with 1.7 (census of every result title of the local training and holdout scans; each
+title lands on the concept it denotes or on none, `mappings/watchdog-build/discrim.py`):
+`subjectFromMessage` for D30 advisories, D12 package rows and D11 flaky-test rows (the doubled class of a .NET test
+identity read once; the root package label glued to a JavaScript test path dropped); `sitesFromMessage` for R9 import
+cycles (members, group scope), D16 off-boarding rows and D34 orphan folds (the files they name), D35 coupled pairs (both
+files); `locationFromMessage` for P12's post-merge row (the workflow it names, no line); AC4 discriminated — its
+"Composite … never reports its active option" title is `invalid-aria-usage` (a missing required ARIA state); D29's four
+dereference rules (`unchecked-catch-binding-deref-ts` and three Go nil-dereference rules) are `null-dereference`; D36's
+"Packaging script can name the release artifact with an empty version" is `release-hygiene`; D12's "Floating …
+dependency" rows are `offConcept` (a range naming no release is a manifest property; whether the build is locked is
+the lockfile's, whose absence has its own rows — the reasoning of the existing "Unbounded dependency requirement"
+entry); the measurement disclosures of D8 ("Coverage not measured"), D11 ("Test reliability not measured", suites that
+cannot install or run nothing) and D30/D43 ("Scanner failed to run") are `offConcept`; X2's non-.NET ratio row ("Not all
+async functions that make a request accept an AbortSignal" and its Go/PHP/Dart/Kotlin forms) and X5's two TypeScript
+ratio rows are `summaryOfConcept`; `container-confinement-profile-unset` and `workload-syscall-confinement` form the
+family `syscall-confinement` (one defect at two granularities, as the taxonomy defines them; an umbrella still takes no
+family, a child shares one only with concepts outside its umbrella). Score bands keep their dimensions
+(`scoreDimensions`: invalid-aria-usage → AC5, null-dereference → X5, release-hygiene → P6). Titles still without a
+concept, each with its reason in `offConcept`: D36 "Release publish has no approval gate", "npm publish authenticates
+with a long-lived registry token"; IC1 skips that carry a reason; D17 "DemotedWarningsAsErrors"; D29 nginx
+`header-redefinition`.
 
 ## What changed in 1.6 (2026-10-08) — resource scope
 
@@ -265,8 +377,10 @@ Scanner-neutral concepts. `{ "version": "1.0", "concepts": [ { "id": "hardcoded-
 (so an id is never removed either: a concept that turns out too coarse becomes an umbrella).
 
 `matchScope` (optional) is `"file"` (1.5) for a concept whose defect is a whole class, file or module, or
-`"resource"` (1.6) for an IaC concept whose defect is a property — usually an absence — of a whole resource (see
-Matching, "Location equivalence"); absent, the entry's lines decide. No other value is valid.
+`"resource"` (1.6) for an IaC concept whose defect is a property — usually an absence — of a whole resource,
+`"element"` (1.7) for a markup concept whose defect is a property — possibly an absence — of one element (its start
+tag), or `"group"` (1.7) for a relation among several files each equally its site (see Matching, "Location
+equivalence" and "What changed in 1.7"); absent, the entry's lines decide. No other value is valid.
 
 `parent` (1.3, optional) names the UMBRELLA concept this one refines (one level deep). The umbrella stays a concept: as a
 concept of its own it denotes what none of its children names (its residue), and an answer-key entry written against it
@@ -319,6 +433,12 @@ keeps its meaning (see Matching, "Umbrella concepts"). New keys name the precise
       "patterns": ["(?:^|\\s\\|\\s)(?P<file>[^\\s|]+):(?P<line>\\d+)(?:-(?P<endLine>\\d+))?"],  // `file` required
       "source": "…" }                       // informational
   ],
+  "subjectFromMessage": [                   // 1.7, optional: where a message states its subject
+    { "rule": "^D30$",                      // regex over the ruleId (required)
+      "message": "…",                       // optional regex over the message (case-insensitive search)
+      "within": "^\\w+ CVE: (?:GHSA-[\\w-]+: )?(?P<subject>\\S+) ",  // required: named group `subject`
+      "source": "…" }                       // informational
+  ],
   "locationFromMessage": [                  // 1.3, optional: sites named only in the message
     { "rule": "^D36$",                      // regex over the ruleId (required)
       "message": "^Secret passed as",       // optional regex over the message (case-insensitive search)
@@ -347,6 +467,12 @@ match a site: the `file` group (normalised; matched by the suffix rule, like eve
 `line` group when it is a positive integer, the `endLine` group as the end of a stated span. Sites are kept in message
 order without repeats; the result's own location restated without a span is not a site. Use it for scanners that
 report a group (a clone group) as one result and list its members, and give the source of the message format.
+
+`subjectFromMessage` (1.7) entries are tried in order on every result: the first entry whose `rule` (and `message`)
+match and whose `within` matches gives the text its `subject` group captured; the subjects of entries (1.2) are then
+searched in that text only (whole-token rule as before). A result no entry applies to is searched over its whole
+message. Use it where a scanner's message names its subject at a fixed position beside other packages or identities
+it mentions as context, and give the source of the format.
 
 A rule item accepts a result when its ruleId matches the rule regex, AND — if `messages` apply to it — at least one
 `messages` regex matches the result's `message.text` (case-insensitive search), AND — if `properties` apply — every
@@ -412,11 +538,12 @@ for a file-scope concept, 1.6: or anywhere in the entry's resource for a resourc
 message names — see "Location equivalence"). A
 repository-level entry matches any result of the concept that has no location or whose location is outside every
 located entry. One-to-one for `must-fire` (each entry consumes at most one result; extra results on the same site are
-`redundant`, counted once and not as noise). `clean` entries match any result whose location falls inside the region,
+`redundant`, counted once and not as noise); 1.7: which plant consumes which result is the optimal assignment (most
+plants found, then the strongest matches; see "What changed in 1.7"), not key order. `clean` entries match any result whose location falls inside the region,
 for any concept listed (or any concept at all for `"*"`), with no line tolerance.
 
-Precedence when a result could match several entries: (1) a `must-fire` it can consume (key order, located before
-repository-level) → (2) `redundant` on an already-found plant → (3) `must-not-fire` → (4) `clean` → (5)
+Precedence when a result could match several entries: (1) a `must-fire` it can consume (1.7: in the optimal
+assignment; up to 1.6: key order, located before repository-level) → (2) `redundant` on an already-found plant → (3) `must-not-fire` → (4) `clean` → (5)
 `not-applicable` → (6, 1.4) `summary-of-concept` when the mapping declares the row a summary (`summaryOfConcept`), it
 has no location (none in SARIF, none from its message) and the key has a located `must-fire` of its concept (exactly
 or as an umbrella's child) → (7) noise if one of its concepts is covered by the key → (8) `uncovered`.
@@ -448,7 +575,8 @@ plant takes it before one elsewhere in the file, and a plant is found by the res
 that merely lists it. Whether a result lies outside every located entry of its concept (repository-level matching) is
 decided with all of its locations. File-level recall counts a listed site in the plant's file.
 
-**Subjects (1.2).** An entry with a `subject` matches, besides the results on its site (as above), a result of its
+**Subjects (1.2).** (1.7: "the result's message" below is the part the mapping's `subjectFromMessage` says states the
+subject, when a declaration applies.) An entry with a `subject` matches, besides the results on its site (as above), a result of its
 concept (exactly, or as a family sibling where families apply) that has **no location or a location in a dependency
 manifest** (`Directory.Packages.props`, `Directory.Build.props`, `*.csproj`/`*.fsproj`/`*.vbproj`, `packages.config`,
 `packages.lock.json`, `global.json`, `package.json`, the npm/yarn/pnpm lock files, `requirements*.txt`,

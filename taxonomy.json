@@ -1204,7 +1204,8 @@
       "cwe": "CWE-1047",
       "family": "architecture",
       "kind": "finding",
-      "description": "Projects, packages or modules that depend on each other in a cycle."
+      "description": "Projects, packages or modules that depend on each other in a cycle.",
+      "matchScope": "group"
     },
     {
       "id": "unstable-dependency",
@@ -1757,7 +1758,8 @@
       "cwe": null,
       "family": "frontend",
       "kind": "finding",
-      "description": "Images, image inputs, SVG images and video without alt text, title or captions (WCAG 1.1.1, 1.2.2)."
+      "description": "Images, image inputs, SVG images and video without alt text, title or captions (WCAG 1.1.1, 1.2.2).",
+      "matchScope": "element"
     },
     {
       "id": "form-control-without-label",
@@ -1765,7 +1767,8 @@
       "cwe": null,
       "family": "frontend",
       "kind": "finding",
-      "description": "Inputs, selects, textareas and buttons without an associated label or accessible name (WCAG 1.3.1, 4.1.2)."
+      "description": "Inputs, selects, textareas and buttons without an associated label or accessible name (WCAG 1.3.1, 4.1.2).",
+      "matchScope": "element"
     },
     {
       "id": "page-structure-violation",
@@ -1773,7 +1776,8 @@
       "cwe": null,
       "family": "frontend",
       "kind": "finding",
-      "description": "Missing lang/title/main landmark, skipped heading levels, zoom-disabling viewport, untitled iframe, meta refresh."
+      "description": "Missing lang/title/main landmark, skipped heading levels, zoom-disabling viewport, untitled iframe, meta refresh.",
+      "matchScope": "element"
     },
     {
       "id": "non-keyboard-accessible-interaction",
@@ -1781,7 +1785,8 @@
       "cwe": null,
       "family": "frontend",
       "kind": "finding",
-      "description": "Click handlers on non-interactive elements without role/tabindex/key handler, positive tabindex, href-less anchors (WCAG 2.1.1)."
+      "description": "Click handlers on non-interactive elements without role/tabindex/key handler, positive tabindex, href-less anchors (WCAG 2.1.1).",
+      "matchScope": "element"
     },
     {
       "id": "invalid-aria-usage",
@@ -1789,7 +1794,8 @@
       "cwe": null,
       "family": "frontend",
       "kind": "finding",
-      "description": "Invalid/abstract roles, missing required ARIA state, aria-hidden on focusable elements (WCAG 4.1.2)."
+      "description": "Invalid/abstract roles, missing required ARIA state, aria-hidden on focusable elements (WCAG 4.1.2).",
+      "matchScope": "element"
     },
     {
       "id": "visual-and-motion-safety",
@@ -1823,7 +1829,8 @@
       "cwe": null,
       "family": "frontend",
       "kind": "finding",
-      "description": "A validation error message is shown next to a field but is not tied to it (no aria-describedby / aria-errormessage, no aria-invalid, no live region), so assistive technology does not announce which field is wrong or why (WCAG 3.3.1, 1.3.1)."
+      "description": "A validation error message is shown next to a field but is not tied to it (no aria-describedby / aria-errormessage, no aria-invalid, no live region), so assistive technology does not announce which field is wrong or why (WCAG 3.3.1, 1.3.1).",
+      "matchScope": "element"
     },
     {
       "id": "modal-focus-not-managed",
@@ -1839,7 +1846,8 @@
       "cwe": null,
       "family": "frontend",
       "kind": "finding",
-      "description": "Media starts playing on load without a control to pause or stop it: audio, or video with sound, for more than 3 seconds without a pause/mute control (WCAG 1.4.2), or moving video - muted or not - for more than 5 seconds without a pause/stop/hide control (WCAG 2.2.2)."
+      "description": "Media starts playing on load without a control to pause or stop it: audio, or video with sound, for more than 3 seconds without a pause/mute control (WCAG 1.4.2), or moving video - muted or not - for more than 5 seconds without a pause/stop/hide control (WCAG 2.2.2).",
+      "matchScope": "element"
     },
     {
       "id": "react-index-as-key",

@@ -19,15 +19,22 @@ it anywhere in the same RESOURCE is on the entry's site. A resource is:
   (`<<EOT`, `<<-EOT`) are skipped. Lines outside every construct (comments, blanks) are in no resource.
 
 Any other file is `unsupported` (the line rule applies); a file the source cannot read is `unavailable` (the line rule
-applies, and the report says so). Standard library only.
+applies, and the report says so).
+
+Contract 1.7 adds the ELEMENT boundaries of markup files, for element-scope concepts (taxonomy `matchScope:
+"element"`): an element's START TAG, from its `<name` to the `>` that closes it, wherever line breaks fall between its
+attributes (`markup_start_tags`). Markup files are `*.html`, `*.htm`, `*.xhtml`, `*.cshtml`, `*.razor`, `*.vue`,
+`*.svelte`, `*.jsx`, `*.tsx`; any other file is `unsupported` for the element scope. Standard library only.
 """
+import bisect
 import os
 import re
 import subprocess
 
-YAML, DOCKERFILE, HCL = "yaml", "dockerfile", "hcl"
-KIND_NAMES = {YAML: "yaml-document", DOCKERFILE: "dockerfile-stage", HCL: "hcl-block"}
+YAML, DOCKERFILE, HCL, MARKUP = "yaml", "dockerfile", "hcl", "markup"
+KIND_NAMES = {YAML: "yaml-document", DOCKERFILE: "dockerfile-stage", HCL: "hcl-block", MARKUP: "markup-start-tag"}
 UNAVAILABLE, UNSUPPORTED = "unavailable", "unsupported"
+RESOURCE, ELEMENT = "resource", "element"  # the scopes boundaries are read for
 
 
 def kind_of(path):
@@ -41,6 +48,19 @@ def kind_of(path):
     if name.endswith((".tf", ".hcl", ".tfvars")):
         return HCL
     return None
+
+
+MARKUP_SUFFIXES = (".html", ".htm", ".xhtml", ".cshtml", ".razor", ".vue", ".svelte", ".jsx", ".tsx")
+
+
+def markup_kind_of(path):
+    """markup, or None for a file without element boundaries."""
+    return MARKUP if path.rsplit("/", 1)[-1].lower().endswith(MARKUP_SUFFIXES) else None
+
+
+def kind_for(path, scope=RESOURCE):
+    """The boundary kind of `path` for a scope: an IaC kind for "resource", markup for "element"; None: unsupported."""
+    return markup_kind_of(path) if scope == ELEMENT else kind_of(path)
 
 
 # --- YAML ------------------------------------------------------------------------------------------------------------
@@ -222,6 +242,109 @@ def hcl_blocks(text):
     return out
 
 
+# --- markup start tags (contract 1.7) -------------------------------------------------------------------------------
+
+_TAG_NAME = re.compile(r"[A-Za-z][\w:.-]*")
+_CODE_HOSTED = (".jsx", ".tsx", ".cshtml", ".razor")  # markup inside code: a tag never directly follows an operand
+_JSX = (".jsx", ".tsx")
+_RAW_TEXT = ("script", "style")  # HTML raw-text elements: their content is not markup
+_MAX_TAG = 20000  # a start tag longer than this is not one (an unbalanced quote or brace ran away)
+
+
+def _tag_end(text, k):
+    """The index of the `>` that closes the start tag whose attributes begin at `k`, or None when what began is not a
+    start tag (a `<` outside quotes and expressions, or no `>` before the end). Quoted values are skipped, and so are
+    `{…}` expressions (JSX; nested braces and the strings inside them) and Razor `@(…)` expressions."""
+    n = len(text)
+    depth = 0          # braces / Razor parentheses
+    closers = []
+    i = k
+    limit = min(n, k + _MAX_TAG)
+    while i < limit:
+        ch = text[i]
+        if ch in "\"'" or (ch == "`" and depth):
+            j = i + 1
+            while j < n and text[j] != ch:
+                j += 2 if (text[j] == "\\" and depth) else 1
+            if j >= n:
+                return None
+            i = j + 1
+            continue
+        if ch == "{":
+            depth += 1
+            closers.append("}")
+        elif ch == "(" and (depth or (i > 0 and text[i - 1] == "@")):
+            depth += 1
+            closers.append(")")
+        elif depth and ch == closers[-1]:
+            depth -= 1
+            closers.pop()
+        elif not depth:
+            if ch == ">":
+                return i
+            if ch == "<":
+                return None
+        i += 1
+    return None
+
+
+def markup_start_tags(text, path=""):
+    """[(first line, last line)] of every element start tag of a markup file, in order, 1-based and inclusive.
+    Comments (`<!-- -->`), declarations and processing instructions are skipped, end tags are not start tags, and the
+    content of `<script>` / `<style>` is not markup (outside JSX). In a file where markup is embedded in code (`*.jsx`,
+    `*.tsx`, `*.cshtml`, `*.razor`) a `<` directly after an operand (`Map<string>`, `a<b`) opens no tag; everywhere a
+    tag name must be followed by whitespace, `/` or `>` (`a < b`, `i <n;` open none)."""
+    name = path.rsplit("/", 1)[-1].lower()
+    code_hosted, jsx = name.endswith(_CODE_HOSTED), name.endswith(_JSX)
+    newlines = [k for k, ch in enumerate(text) if ch == "\n"]
+
+    def line_at(k):
+        return bisect.bisect_left(newlines, k) + 1
+
+    out = []
+    i, n = 0, len(text)
+    lower = None
+    while True:
+        j = text.find("<", i)
+        if j < 0:
+            break
+        if text.startswith("<!--", j):
+            e = text.find("-->", j + 4)
+            i = n if e < 0 else e + 3
+            continue
+        if text.startswith("<!", j) or text.startswith("<?", j):
+            e = text.find(">", j)
+            i = n if e < 0 else e + 1
+            continue
+        m = _TAG_NAME.match(text, j + 1)
+        if not m:
+            i = j + 1
+            continue
+        if code_hosted:
+            b = j - 1
+            while b >= 0 and text[b] in " \t":
+                b -= 1
+            if b >= 0 and (text[b].isalnum() or text[b] in "_$)]"):
+                i = j + 1
+                continue
+        after = m.end()
+        if after < n and not (text[after].isspace() or text[after] in "/>"):
+            i = j + 1
+            continue
+        end = _tag_end(text, after)
+        if end is None:
+            i = j + 1
+            continue
+        out.append((line_at(j), line_at(end)))
+        i = end + 1
+        tag = m.group(0).lower()
+        if not jsx and tag in _RAW_TEXT and text[end - 1] != "/":
+            lower = lower if lower is not None else text.lower()
+            c = lower.find("</" + tag, i)
+            i = n if c < 0 else c
+    return out
+
+
 # --- boundaries of one file -----------------------------------------------------------------------------------------
 
 class Boundaries:
@@ -246,7 +369,9 @@ class Boundaries:
         return out
 
 
-def boundaries(path, text):
+def boundaries(path, text, scope=RESOURCE):
+    if scope == ELEMENT:
+        return Boundaries(MARKUP, markup_start_tags(text, path)) if markup_kind_of(path) else None
     k = kind_of(path)
     if k == YAML:
         return Boundaries(k, yaml_documents(text))
@@ -259,23 +384,30 @@ def boundaries(path, text):
 
 
 class ResourceIndex:
-    """Boundaries per repository-relative path, read through `source` (path -> text or None) and cached. `get`
-    returns a Boundaries, "unsupported" (no boundaries for this file type) or "unavailable" (no source, or the source
-    cannot read the file)."""
+    """Boundaries per repository-relative path and scope ("resource": IaC resources, contract 1.6; "element": markup
+    start tags, contract 1.7), read through `source` (path -> text or None) and cached. `get` returns a Boundaries,
+    "unsupported" (no boundaries of that scope for this file type) or "unavailable" (no source, or the source cannot
+    read the file)."""
 
     def __init__(self, source):
         self.source = source
         self._cache = {}
+        self._text = {}
 
-    def get(self, path):
-        if path in self._cache:
-            return self._cache[path]
-        if kind_of(path) is None:
+    def _read(self, path):
+        if path not in self._text:
+            self._text[path] = self.source(path) if self.source is not None else None
+        return self._text[path]
+
+    def get(self, path, scope=RESOURCE):
+        if (path, scope) in self._cache:
+            return self._cache[(path, scope)]
+        if kind_for(path, scope) is None:
             got = UNSUPPORTED
         else:
-            text = self.source(path) if self.source is not None else None
-            got = UNAVAILABLE if text is None else boundaries(path, text)
-        self._cache[path] = got
+            text = self._read(path)
+            got = UNAVAILABLE if text is None else boundaries(path, text, scope)
+        self._cache[(path, scope)] = got
         return got
 
 

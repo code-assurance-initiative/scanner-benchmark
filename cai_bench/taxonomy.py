@@ -4,14 +4,19 @@ Contract 1.5: a concept may carry `"matchScope": "file"` — its defect IS a who
 the concept anywhere in an entry's file is on the entry's site (see scoring.py).
 Contract 1.6: or `"matchScope": "resource"` — an IaC concept whose defect is a property (usually an absence) of a whole
 resource, so a result of the concept anywhere in the entry's resource (YAML document, Dockerfile stage, top-level HCL
-block; see resources.py) is on the entry's site. Absent, the scope is the site: the entry's lines decide, within the
-line tolerance. No other value is valid.
+block; see resources.py) is on the entry's site.
+Contract 1.7: or `"matchScope": "element"` — a markup element's property that can be an absence (no accessible name, no
+label, a missing required ARIA state …), so a result of the concept anywhere in the element's START TAG is on the site
+of an entry whose lines lie in it; or `"matchScope": "group"` — a relation among several files or modules none of
+which is more its site than another (a dependency cycle), so a result of the concept located in, or listing, the
+entry's file is on the entry's site. Absent, the scope is the site: the entry's lines decide, within the line
+tolerance. No other value is valid.
 """
 import json
 import os
 
 TAXONOMY_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "taxonomy.json")
-MATCH_SCOPES = ("file", "resource")
+MATCH_SCOPES = ("file", "resource", "element", "group")
 
 _default = {}
 
@@ -48,3 +53,13 @@ def file_scope_concepts(taxonomy=None):
 def resource_scope_concepts(taxonomy=None):
     """Contract 1.6: the IaC concepts whose defect is a property of a whole resource."""
     return scope_concepts("resource", taxonomy)
+
+
+def element_scope_concepts(taxonomy=None):
+    """Contract 1.7: the markup concepts whose defect is a property — possibly an absence — of one element."""
+    return scope_concepts("element", taxonomy)
+
+
+def group_scope_concepts(taxonomy=None):
+    """Contract 1.7: the concepts whose defect is a relation among several files, each equally its site."""
+    return scope_concepts("group", taxonomy)

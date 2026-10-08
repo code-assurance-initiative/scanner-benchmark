@@ -50,6 +50,15 @@ CASES = [
 # Every multi-concept dimension: real message shapes (verbatim from local Watchdog scans, truncated; a few D7 / D10 rows
 # that no local scan carries are written in the engine's own title format) -> the ONE concept they evidence, or none.
 DIMENSION_CASES = [
+    ('AC4', 'Composite <ul role="listbox"> never reports its active option: This role="listbox" is the tab stop for the whole widget', ['invalid-aria-usage']),
+    ('AC4', 'Click handler on a non-interactive <div>: This <div> has a click handler but no role', ['non-keyboard-accessible-interaction']),
+    ('AC4', 'Click handler on a <span> nested inside <button>: This <span> carries its own click handler', ['non-keyboard-accessible-interaction']),
+    ('AC4', 'Positive tabindex (3): A positive tabindex reorders keyboard focus', ['non-keyboard-accessible-interaction']),
+    ('AC4', 'Clickable role="radio" that no keyboard user can reach: This role="radio" has a click handler', ['non-keyboard-accessible-interaction']),
+    ('AC4', "Clickable element isn't keyboard-operable: This element has a click handler", ['non-keyboard-accessible-interaction']),
+    ('AC4', 'Hover-only interaction on <span>: This <span> reveals content on hover only', ['non-keyboard-accessible-interaction']),
+    ('AC4', 'Anchor without href: An <a> without href is not focusable', ['non-keyboard-accessible-interaction']),
+    ('AC4', 'Link used as a button (placeholder href): href="#" with a click handler', ['non-keyboard-accessible-interaction']),
     ('AC6', 'Focus outline removed inline: outline:none/0 in an inline style removes the keyboard focus ring with no chance of a :focus replacement.', ['focus-outline-removed']),
     ('AC6', 'Animation without a prefers-reduced-motion guard: This stylesheet animates but never checks prefers-reduced-motion', ['motion-without-reduced-motion']),
     ('AC6', "Low contrast Tailwind colour pair (2.9:1): This element's Tailwind text/background colour utilities fall below", ['visual-and-motion-safety']),
@@ -335,7 +344,12 @@ class WatchdogMapping(unittest.TestCase):
         for c, p in kids.items():
             self.assertEqual(M.ancestors(c), [p])
             self.assertLessEqual(set(DOC["concepts"][c]["dimensions"]), set(DOC["concepts"][p]["dimensions"]), c)
-            self.assertIsNone(M.family_of(c), c)
+            # an umbrella takes no family; a child shares one only with concepts outside its umbrella (contract 1.7:
+            # container-confinement-profile-unset with the posture workload-syscall-confinement)
+            self.assertIsNone(M.family_of(p), p)
+            if M.family_of(c) is not None:
+                self.assertEqual([o for o, q in kids.items() if q == p and o != c
+                                  and M.family_of(o) == M.family_of(c)], [], c)
 
     def test_umbrella_children_partition_the_pre_split_ids(self):
         # every D31 id the umbrella claimed before the split lands on the umbrella or on one of its children, so an
@@ -383,7 +397,7 @@ class WatchdogMapping(unittest.TestCase):
                 self.assertEqual(sorted(M.concepts_of(rule, msg, {})), want)
 
     def test_cases_cover_every_multi_concept_dimension(self):
-        self.assertEqual(len(MULTI), 22)  # 1.4: AC6 split; R1 (floating-promise batch)
+        self.assertEqual(len(MULTI), 23)  # 1.4: AC6 split; R1 (floating-promise batch); 1.7: AC4 (composite ARIA state)
         self.assertEqual(sorted(set(MULTI) - {r for r, _, w in DIMENSION_CASES if w} - {r for r, *_ in CASES}), [])
 
     def test_no_multi_concept_dimension_keeps_a_bare_ruleid_rule(self):

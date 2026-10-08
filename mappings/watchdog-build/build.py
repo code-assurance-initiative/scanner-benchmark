@@ -85,7 +85,8 @@ def rule_for(ds):
 
 # Contract 1.1 discriminators (discrim.py): every multi-concept dimension decides its concept by message title.
 # DISCRIM: concept -> dimension -> [condition]; a dimension listed for a concept gets one rule object per condition.
-from discrim import SPEC, FAMILY, IGNORE, LOCATION_FROM_MESSAGE, PRECISE_PARENT, SITES_FROM_MESSAGE, SUMMARY_OF_CONCEPT
+from discrim import (SPEC, FAMILY, IGNORE, LOCATION_FROM_MESSAGE, PRECISE_PARENT, SITES_FROM_MESSAGE, SUBJECT_FROM_MESSAGE,
+                     SUMMARY_OF_CONCEPT)
 for cid, par in PRECISE_PARENT.items():  # discrim.py's D31 split and the taxonomy agree on every umbrella
     assert next(c for c in C if c["id"] == cid).get("parent") == par, (cid, par)
 DISCRIM = OrderedDict()
@@ -131,6 +132,7 @@ mapping["notes"] = [
     "Contract 1.4 `unmapped`: taxonomy concepts no Watchdog rule detects (census in mappings/watchdog-build/concepts.py UNMAPPED_CENSUS) are mapped with no rule and no dimension; a plant of one is a Watchdog FN — a real defect it cannot see. `summaryOfConcept`: X2/PF3/X5 ratio rows that summarise a located concept over the repository without a site (their per-site rows are Info, never in SARIF); they find no located plant and are not noise. Family `untrusted-data-executed`: insecure-deserialization + code-injection. AC6 is split: focus-outline-removed and motion-without-reduced-motion are children of the umbrella visual-and-motion-safety, which keeps the contrast rows.",
     "Location: physicalLocation.artifactLocation.uri = Finding.FilePath (repo-relative) and region.startLine = LineNumber, with any non-positive or missing line written as 1 (SarifReportRenderer.cs:331-355). A file-level finding therefore matches only entries within lineTolerance of line 1; a repository-level finding has an empty locations array.",
     "Runtime cards (AX*1) and X31 are mapped for completeness although they are out of scope for v1 (see coverage/matrix.json).",
+    "Contract 1.7: `subjectFromMessage` says where a D30 advisory, a D12 package row and a D11 flaky-test row STATE their subject (the vulnerable package, not the parent it arrived through; the test identity with its doubled class read once, without the glued package label); subjects are searched there only. `sitesFromMessage` also reads the members of an R9 import cycle (group scope), the files of a D16 off-boarding row and a D34 orphan fold row, and both files of a D35 pair. Element- and group-scope concepts are a TAXONOMY property (matchScope). Mapping pass (census of every title of the local training and holdout scans): AC4's composite-active-option title is invalid-aria-usage; D29's four dereference rules are null-dereference; D36's empty-version packaging title is release-hygiene; D12 Floating … dependency rows, and the measurement disclosures of D8, D11, D30 and D43 (the measurement could not be taken), are offConcept; X2's non-.NET ratio row and X5's TypeScript ratio rows are summaryOfConcept; container-confinement-profile-unset and workload-syscall-confinement are the family syscall-confinement; P12's post-merge row is located at the workflow it names.",
 ]
 mapping["concepts"] = OrderedDict()
 for cid in concept_ids:
@@ -158,7 +160,13 @@ for cid in concept_ids:
     if cid in PARENT:
         par = PARENT[cid]
         assert set(ds) <= set(by_concept[par]), (cid, "child mapped on a dimension its umbrella is not", par)
-        assert FAMILY.get(cid) is None and FAMILY.get(par) is None, (cid, "an umbrella and its children take no family")
+        # an umbrella takes no family (a key naming it scores exactly as before the split); a child may share a family
+        # only with concepts outside its umbrella (contract 1.7: container-confinement-profile-unset and the posture
+        # workload-syscall-confinement), so no sibling child ever stands in for another
+        assert FAMILY.get(par) is None, (cid, "an umbrella takes no family", par)
+        if FAMILY.get(cid) is not None:
+            assert not [o for o, f in FAMILY.items() if f == FAMILY[cid] and o != cid and PARENT.get(o) == par], \
+                (cid, "a child shares a family with a sibling child")
         spec["parent"] = par
     mapping["concepts"][cid] = spec
 mapping["ruleDimension"] = [OrderedDict(rule=r"^([A-Z]+[0-9]+)$", dimension="$1")]
@@ -171,10 +179,17 @@ for sm in SUMMARY_OF_CONCEPT:
 mapping["summaryOfConcept"] = SUMMARY_OF_CONCEPT
 mapping["ignore"] = IGNORE
 mapping["locationFromMessage"] = LOCATION_FROM_MESSAGE
-for sm in SITES_FROM_MESSAGE:  # contract 1.5: only duplication concepts take clone-group sites
-    assert set(sm["concepts"]) <= {"duplicated-code"}, sm
+# contract 1.5: clone-group sites for duplication; 1.7: the members of a cycle (group scope) and the files a
+# file-scope git-history row is about
+SITE_CONCEPTS = {"duplicated-code", "module-dependency-cycle", "knowledge-concentration", "knowledge-freshness",
+                 "change-coupling"}
+for sm in SITES_FROM_MESSAGE:
+    assert set(sm["concepts"]) <= SITE_CONCEPTS, sm
     assert all(set(by_concept[c]) >= {sm["rule"].strip("^$")} for c in sm["concepts"]), sm
 mapping["sitesFromMessage"] = SITES_FROM_MESSAGE
+for sf in SUBJECT_FROM_MESSAGE:  # contract 1.7
+    assert "subject" in re.compile(sf["within"]).groupindex, sf
+mapping["subjectFromMessage"] = SUBJECT_FROM_MESSAGE
 mapping["offConcept"] = OFF
 mapping["unevidenced"] = UNEVIDENCED
 

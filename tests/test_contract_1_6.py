@@ -13,6 +13,7 @@ import sys
 import tempfile
 import unittest
 
+from cai_bench import CONTRACT_VERSION
 from cai_bench.keyfile import load_json
 from cai_bench.mapping import Mapping
 from cai_bench.resources import (ResourceIndex, dir_source, dockerfile_stages, git_source, hcl_blocks, kind_of,
@@ -160,7 +161,7 @@ class Taxonomy(unittest.TestCase):
 
     def test_taxonomy_json_scopes(self):
         tax = load_json(os.path.join(ROOT, "taxonomy.json"))
-        self.assertEqual({c.get("matchScope") for c in tax["concepts"]}, {None, "file", "resource"})
+        self.assertEqual({c.get("matchScope") for c in tax["concepts"]}, {None, "file", "resource", "element", "group"})
         self.assertEqual({c["id"] for c in tax["concepts"] if c.get("matchScope") == "resource"}, RESOURCE_SCOPE)
 
     def test_line_valued_iac_concepts_stay_line_based(self):
@@ -383,7 +384,7 @@ class Cli(unittest.TestCase):
 
             out = run("--repo-dir", os.path.join(d, "repo"))
             self.assertEqual(entry(out, "PRB")["outcome"], "TP")
-            self.assertEqual(out["harness"]["contract"], "1.6")
+            self.assertEqual(out["harness"]["contract"], CONTRACT_VERSION)
             out = run()
             self.assertEqual(entry(out, "PRB")["outcome"], "FN")
             self.assertEqual(entry(out, "PRB")["matchScope"], "resource-unavailable")

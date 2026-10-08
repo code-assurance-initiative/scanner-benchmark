@@ -5440,7 +5440,8 @@
         "container-runs-as-root",
         "container-confinement-profile-unset",
         "privileged-container",
-        "overly-permissive-rbac"
+        "overly-permissive-rbac",
+        "null-dereference"
       ],
       "requires": [
         "contained scan (external scanner baked in the analyzer image): semgrep"
@@ -5592,9 +5593,9 @@
           ],
           "source": "key v1.0.0",
           "entries": {
-            "must-fire": 6,
+            "must-fire": 7,
             "must-not-fire": 4,
-            "clean": 324
+            "clean": 405
           },
           "note": "not planned for this dimension; labelled by the frozen key"
         },
@@ -5610,7 +5611,7 @@
           "entries": {
             "must-fire": 1,
             "must-not-fire": 4,
-            "clean": 522
+            "clean": 532
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
@@ -5657,9 +5658,9 @@
           ],
           "source": "key v1.0.0",
           "entries": {
-            "must-fire": 6,
+            "must-fire": 7,
             "must-not-fire": 3,
-            "clean": 249
+            "clean": 332
           },
           "note": "not planned for this dimension; labelled by the frozen key"
         },
@@ -5707,7 +5708,7 @@
           "entries": {
             "must-fire": 3,
             "must-not-fire": 11,
-            "clean": 1142
+            "clean": 1163
           },
           "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
@@ -5724,7 +5725,7 @@
           "entries": {
             "must-fire": 2,
             "must-not-fire": 5,
-            "clean": 472
+            "clean": 481
           },
           "wildcardClean": 82,
           "note": "not planned for this dimension; labelled by the frozen key"
@@ -5740,7 +5741,7 @@
           "source": "key v1.0.0",
           "entries": {
             "must-not-fire": 2,
-            "clean": 643,
+            "clean": 655,
             "not-applicable": 1
           },
           "wildcardClean": 161,
@@ -5757,7 +5758,7 @@
           "source": "key v1.0.0",
           "entries": {
             "must-not-fire": 3,
-            "clean": 802,
+            "clean": 817,
             "not-applicable": 1
           },
           "wildcardClean": 177,
@@ -5776,7 +5777,7 @@
           "entries": {
             "must-fire": 1,
             "must-not-fire": 4,
-            "clean": 419,
+            "clean": 427,
             "not-applicable": 2
           },
           "wildcardClean": 101,
@@ -5791,7 +5792,7 @@
           ],
           "source": "key v1.0.0",
           "entries": {
-            "clean": 539,
+            "clean": 549,
             "not-applicable": 1
           },
           "wildcardClean": 76,
@@ -6917,7 +6918,8 @@
         "dependencies-not-locked",
         "ci-secret-exposure",
         "ci-token-excessive-permissions",
-        "secret-in-process-arguments"
+        "secret-in-process-arguments",
+        "release-hygiene"
       ],
       "requires": [],
       "status": "in-scope",
@@ -7002,9 +7004,23 @@
           ],
           "source": "key v1.0.0",
           "entries": {
-            "clean": 93
+            "clean": 103
           },
           "wildcardClean": 134,
+          "note": "not planned for this dimension; labelled by the frozen key"
+        },
+        {
+          "repo": "bench-csharp-maturity-history",
+          "phase": 2,
+          "labels": [
+            "must-fire",
+            "clean"
+          ],
+          "source": "key v1.0.0",
+          "entries": {
+            "must-fire": 1,
+            "clean": 249
+          },
           "note": "not planned for this dimension; labelled by the frozen key"
         },
         {
@@ -7016,7 +7032,7 @@
           ],
           "source": "key v1.0.0",
           "entries": {
-            "clean": 195,
+            "clean": 216,
             "score-band": 1
           },
           "wildcardClean": 102,
@@ -8969,7 +8985,8 @@
         "catalogPolarity": "deduction"
       },
       "concepts": [
-        "non-keyboard-accessible-interaction"
+        "non-keyboard-accessible-interaction",
+        "invalid-aria-usage"
       ],
       "requires": [],
       "status": "in-scope",
@@ -8982,7 +8999,7 @@
           ],
           "source": "key v1.0.0",
           "entries": {
-            "not-applicable": 1
+            "not-applicable": 2
           },
           "wildcardClean": 99,
           "note": "baseline is an API with no markup"
@@ -8995,7 +9012,7 @@
           ],
           "source": "key v1.0.0",
           "entries": {
-            "not-applicable": 1
+            "not-applicable": 2
           },
           "wildcardClean": 80,
           "note": "baseline is an API with no markup"
@@ -9010,9 +9027,9 @@
           ],
           "source": "key v1.1.0",
           "entries": {
-            "must-fire": 3,
-            "must-not-fire": 5,
-            "clean": 71
+            "must-fire": 4,
+            "must-not-fire": 6,
+            "clean": 142
           }
         },
         {
@@ -9024,8 +9041,8 @@
           ],
           "source": "key v1.0.0",
           "entries": {
-            "clean": 10,
-            "not-applicable": 1
+            "clean": 20,
+            "not-applicable": 2
           },
           "wildcardClean": 134,
           "note": "not planned for this dimension; labelled by the frozen key"
@@ -9040,9 +9057,9 @@
           ],
           "source": "key v1.0.0",
           "entries": {
-            "must-fire": 3,
-            "must-not-fire": 3,
-            "clean": 136
+            "must-fire": 4,
+            "must-not-fire": 5,
+            "clean": 272
           },
           "note": "not planned for this dimension; labelled by the frozen key"
         },
@@ -9055,8 +9072,8 @@
           ],
           "source": "key v1.0.0",
           "entries": {
-            "clean": 21,
-            "not-applicable": 1
+            "clean": 42,
+            "not-applicable": 2
           },
           "wildcardClean": 102,
           "note": "not planned for this dimension; labelled by the frozen key"
@@ -9070,8 +9087,8 @@
           ],
           "source": "key v1.0.0",
           "entries": {
-            "clean": 9,
-            "not-applicable": 1
+            "clean": 18,
+            "not-applicable": 2
           },
           "wildcardClean": 82,
           "note": "not planned for this dimension; labelled by the frozen key"
@@ -9085,8 +9102,8 @@
           ],
           "source": "key v1.0.0",
           "entries": {
-            "clean": 12,
-            "not-applicable": 1
+            "clean": 24,
+            "not-applicable": 2
           },
           "wildcardClean": 161,
           "note": "not planned for this dimension; labelled by the frozen key"
@@ -9100,8 +9117,8 @@
           ],
           "source": "key v1.0.0",
           "entries": {
-            "clean": 15,
-            "not-applicable": 1
+            "clean": 30,
+            "not-applicable": 2
           },
           "wildcardClean": 177,
           "note": "not planned for this dimension; labelled by the frozen key"
@@ -9115,8 +9132,8 @@
           ],
           "source": "key v1.0.0",
           "entries": {
-            "clean": 8,
-            "not-applicable": 1
+            "clean": 16,
+            "not-applicable": 2
           },
           "wildcardClean": 101,
           "note": "not planned for this dimension; labelled by the frozen key"
@@ -9133,7 +9150,7 @@
           "entries": {
             "must-fire": 1,
             "must-not-fire": 1,
-            "clean": 8
+            "clean": 18
           },
           "wildcardClean": 76,
           "note": "not planned for this dimension; labelled by the frozen key"

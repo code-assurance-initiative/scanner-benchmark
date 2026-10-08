@@ -50,3 +50,16 @@ the catalog snapshot of kennel `7730bae242^` with the other inputs at `162b41f65
 Contract 1.6 additions. `concepts.py` `RESOURCE_SCOPE` (concept -> why its defect is a property, usually an absence, of a
 whole IaC resource) sets the taxonomy's `"matchScope": "resource"`; the comment above it says why the present-value IaC
 concepts stay line-based. Again a taxonomy property, not mapping knowledge: the mapping is unchanged but for its note.
+
+Contract 1.7 additions. `concepts.py` `ELEMENT_SCOPE` and `GROUP_SCOPE` (concept -> reason) set the taxonomy's
+`"matchScope": "element"` (a markup element's property that can be an absence) and `"group"` (a dependency cycle: every
+member is equally its site). `discrim.py` adds `SUBJECT_FROM_MESSAGE` (→ the mapping's `subjectFromMessage`: where a
+D30, D12 or D11 row states its subject), `sitesFromMessage` for R9 cycle members and the files D16, D34 and D35 rows
+name (`build.py` allows sites for those concepts and duplication only), P12's post-merge row in
+`locationFromMessage`, and the mapping pass over every title of the local training and holdout scans: AC4 is
+discriminated (its composite-active-option title is `invalid-aria-usage`), D8, D11, D30 and D43 list their measurement
+disclosures as `offConcept`, D12's `Floating … dependency` rows are `offConcept`, D29's dereference rules are
+`null-dereference`, D36's empty-version packaging row is `release-hygiene`, X2's non-.NET and X5's TypeScript ratio rows
+are `summaryOfConcept`, and the family `syscall-confinement` joins `container-confinement-profile-unset` and
+`workload-syscall-confinement` (an umbrella still takes no family; a child may share one only with concepts outside its
+umbrella).

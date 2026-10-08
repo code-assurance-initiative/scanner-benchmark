@@ -20,6 +20,9 @@ the repository without naming a site (see scoring.py).
 Contract 1.5: a mapping-level `sitesFromMessage` list [{rule, message?, concepts?, within?, patterns, source?}] reads
 the further sites a result names in its message (the other members of a clone group): each is an ADDITIONAL location
 of the result (see scoring.py).
+Contract 1.7: a mapping-level `subjectFromMessage` list [{rule, message?, within, source?}] says where a message STATES
+its subject: `within` is a regex with a named group `subject`; for a result the first matching entry applies to, its
+subjects (contract 1.2) are searched in that group of `within`'s first match only (see scoring.py).
 """
 import re
 
@@ -185,6 +188,17 @@ class Mapping:
             self.sites_from_message.append((_rx(sm["rule"], f"{w}.rule"),
                                             _rx(sm["message"], f"{w}.message", re.IGNORECASE) if "message" in sm
                                             else None, set(concepts) if concepts else None, within, compiled))
+        self.subject_from_message = []  # 1.7: where a message states its subject
+        for i, sf in enumerate(doc.get("subjectFromMessage", []) or []):
+            w = f"subjectFromMessage[{i}]"
+            if not isinstance(sf, dict) or "rule" not in sf or "within" not in sf:
+                raise MappingError(f"mapping: {w} needs a 'rule' regex and a 'within' regex")
+            within = _rx(sf["within"], f"{w}.within")
+            if "subject" not in within.groupindex:
+                raise MappingError(f"mapping: {w}.within needs a named group 'subject'")
+            self.subject_from_message.append((_rx(sf["rule"], f"{w}.rule"),
+                                              _rx(sf["message"], f"{w}.message", re.IGNORECASE) if "message" in sf
+                                              else None, within))
         self.rule_dimension = []
         for i, rd in enumerate(doc.get("ruleDimension", []) or []):
             try:
@@ -281,6 +295,20 @@ class Mapping:
                     if site not in out:
                         out.append(site)
         return out
+
+    def subject_text(self, rule_id, message):
+        """Contract 1.7: the part of the message that states the result's subject — the `subject` group of `within`'s
+        first match, for the first `subjectFromMessage` entry whose rule (and message) regexes match and whose `within`
+        matches — or None (the whole message is searched, as in contract 1.2)."""
+        if rule_id is None or not message:
+            return None
+        for rule, msg, within in self.subject_from_message:
+            if not rule.search(rule_id) or (msg is not None and not msg.search(message)):
+                continue
+            m = within.search(message)
+            if m and m.group("subject"):
+                return m.group("subject")
+        return None
 
     def family_of(self, concept):
         return self.families.get(concept)
