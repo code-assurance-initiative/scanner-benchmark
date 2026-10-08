@@ -1,0 +1,245 @@
+{
+ "repo": "code-assurance-initiative/estate-quellbrook-dispatch",
+ "tag": "v1.0.0",
+ "commit": "4c68f6cd2fe39038ad0464222e7453e81bd8d068",
+ "keySha256": "b9da8f498f17ea3276a411076de44dfcadceafb870920dacc2a1c44673058e5e",
+ "keyVersion": "1.0.0",
+ "scanner": "cai-reference",
+ "engineVersion": "CAI reference implementation (cai-reference 0.1.0), reference-implementation d3c2e24, Release build, rubric-2026.10.2; default configuration (no --nuget-packages)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-08",
+   "sarifSha256": "61cf3cbf8d8b5a4fa62970c62f52481efea0ba95039a74a18612dcd92db5bbbd",
+   "outputs": {
+    "findings.sarif": "61cf3cbf8d8b5a4fa62970c62f52481efea0ba95039a74a18612dcd92db5bbbd",
+    "scores.json": "04cf1d6c3e35391efd89ebe9de82bb6fc9270481df9292e3e4050d2a68ea2ce9",
+    "evidence.json": "a3700e0f3cbaead1bef91fecedd43a98b8ea898f692056d5e71eeddeb12c60d7"
+   },
+   "harness": {
+    "name": "cai_bench",
+    "version": "1.5.0",
+    "contract": "1.6"
+   },
+   "mapping": {
+    "scanner": "cai-reference",
+    "version": "rubric-2026.10.2"
+   },
+   "configuration": {
+    "label": "default",
+    "headline": true
+   },
+   "outcomes": {
+    "tp": 4,
+    "fn": 1,
+    "fp": 0,
+    "tn": 222,
+    "trapFp": 0,
+    "trapTn": 15,
+    "results": 7,
+    "noise": 3,
+    "redundant": 0,
+    "uncovered": 11,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 4,
+    "recall": 0.8,
+    "trapResistance": 1.0,
+    "noiseRate": 0.42857142857142855,
+    "fileLevelRecall": 0.8,
+    "locationSources": {
+     "sarif": 7,
+     "message": 0,
+     "sitesFromMessage": 0,
+     "none": 11
+    },
+    "fileScopeMatches": 0,
+    "resultsWithMessageSites": 0,
+    "resourceScopeMatches": 0,
+    "resourceScope": {
+     "source": "materialised estate-quellbrook-dispatch @ v1.0.0",
+     "entries": 0,
+     "applied": 0,
+     "unavailable": 0,
+     "unsupported": 0
+    },
+    "pathMatches": {
+     "exact": 7,
+     "suffix": 0
+    }
+   }
+  }
+ ],
+ "outcomes": [
+  {
+   "ruleId": "audit-trail",
+   "outcome": "uncovered",
+   "attributedConcept": "audit-trail",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "audit-trail",
+   "outcome": "uncovered",
+   "attributedConcept": "audit-trail",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-retention-policy",
+   "outcome": "uncovered",
+   "attributedConcept": "data-retention-policy",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-retention-policy",
+   "outcome": "uncovered",
+   "attributedConcept": "data-retention-policy",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-subject-rights",
+   "outcome": "uncovered",
+   "attributedConcept": "data-subject-rights",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-subject-rights",
+   "outcome": "uncovered",
+   "attributedConcept": "data-subject-rights",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-subject-rights",
+   "outcome": "uncovered",
+   "attributedConcept": "data-subject-rights",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "scattered-domain-rule",
+   "outcome": "unmatched-fp",
+   "attributedConcept": "scattered-domain-rule",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "architecture-rules-unenforced",
+   "file": "docs/adr/0002-endpoints-call-application-handlers.md",
+   "outcome": "uncovered",
+   "attributedConcept": "architecture-rules-unenforced",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "churn-complexity-hotspot",
+   "file": "src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs",
+   "outcome": "tp",
+   "entryId": "DSP-005",
+   "attributedConcept": "churn-complexity-hotspot",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "high-cognitive-complexity",
+   "file": "src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs",
+   "line": 16,
+   "outcome": "tp",
+   "entryId": "DSP-002",
+   "attributedConcept": "high-cognitive-complexity",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "high-cyclomatic-complexity",
+   "file": "src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs",
+   "line": 16,
+   "outcome": "tp",
+   "entryId": "DSP-001",
+   "attributedConcept": "high-cyclomatic-complexity",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "duplicated-code",
+   "file": "src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs",
+   "line": 43,
+   "outcome": "unmatched-fp",
+   "attributedConcept": "duplicated-code",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "duplicated-code",
+   "file": "src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs",
+   "line": 55,
+   "outcome": "tp",
+   "entryId": "DSP-003",
+   "attributedConcept": "duplicated-code",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "duplicated-code",
+   "file": "src/Quellbrook.Dispatch.Domain/Assignment/StandardAssignmentPolicy.cs",
+   "line": 35,
+   "outcome": "unmatched-fp",
+   "attributedConcept": "duplicated-code",
+   "locationSource": "sarif"
+  }
+ ],
+ "verdictScope": "every noise row of the RI's headline run on the 15 C# training units (14 of 14), judged under the five-class protocol of results/watchdog/README.md; collapse first, then false-positive > opinion-not-fact > redundant > shape-irrelevant > valid; uncertain = valid",
+ "verdicts": [
+  {
+   "ruleId": "scattered-domain-rule",
+   "file": null,
+   "line": null,
+   "message": "the rule over Driver.{Active,ShiftHours} is decided in 2 places outside Driver (ExpressAssignmentPolicy at ExpressAssignmentPolicy.cs:55, StandardAssignmentPolicy at StandardAssignmentPolicy.cs:35); it belongs on the type that owns the data",
+   "outcome": "unmatched-fp",
+   "entryId": null,
+   "class": "valid",
+   "reason": "Factually true: the driver-eligibility rule `!driver.Active || driver.ShiftHours < minimumShiftHours` is decided in ExpressAssignmentPolicy.cs:55 and StandardAssignmentPolicy.cs:35, outside Driver. It is the copied block of DSP-003 seen through the domain-modelling lens; multi-lens detection of one issue is not redundant under the protocol. The key labels no DM9 entry here.",
+   "action": "recorded as noise of the scanner (no key or unit change)"
+  },
+  {
+   "ruleId": "duplicated-code",
+   "file": "src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs",
+   "line": 43,
+   "message": "Lines 43\u201365 duplicate 72+ tokens also found at src/Quellbrook.Dispatch.Domain/Assignment/StandardAssignmentPolicy.cs:23",
+   "outcome": "unmatched-fp",
+   "entryId": null,
+   "class": "redundant",
+   "reason": "The clone block of DSP-003 (lines 48-63) as the RI windows it (43-65, starting 5 lines early); DSP-003 is already found by the RI's predicate row at line 55.",
+   "action": "recorded as noise of the scanner (no key or unit change)"
+  },
+  {
+   "ruleId": "duplicated-code",
+   "file": "src/Quellbrook.Dispatch.Domain/Assignment/StandardAssignmentPolicy.cs",
+   "line": 35,
+   "message": "Predicate `!driver.Active || driver.ShiftHours < minimumShiftHours` is written out identically in 2 files",
+   "outcome": "unmatched-fp",
+   "entryId": null,
+   "class": "redundant",
+   "reason": "The original half of DSP-003's copy (StandardAssignmentPolicy); same remediation.",
+   "action": "recorded as noise of the scanner (no key or unit change)"
+  }
+ ],
+ "falseNegatives": [
+  {
+   "entryId": "DSP-004",
+   "concept": "adr-conformance",
+   "file": "docs/adr/0002-endpoints-call-application-handlers.md",
+   "lines": null,
+   "mechanism": "no-rule",
+   "reason": "no rule of the scanner maps the concept (needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls)"
+  }
+ ]
+}

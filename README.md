@@ -188,6 +188,11 @@ command above reproduces the row (score bands need the scanner's dimension score
   recall gaps and noise by mechanism (with backlog ids), score bands, model non-determinism, and how to re-measure a
   new engine against it (`results/watchdog/rescore.py` + `python3 -m cai_bench compare`). Machine-readable:
   [`baseline-2026-10-07.json`](results/watchdog/baseline-2026-10-07.json).
+- [`results/cai-reference/COMPARISON-TRAINING.md`](results/cai-reference/COMPARISON-TRAINING.md) — the CAI reference
+  implementation (C#/.NET) over the 15 C# units, scored by the same harness 1.6 as Watchdog and set beside it: headline,
+  per lens, per dimension, mechanisms, and a reproduction of its self-reported numbers. **In-sample for that engine**,
+  which was calibrated on these units (see the caveat there). Mapping: `mappings/cai-reference.json` (its generated
+  mapping plus the taxonomy's parents, `mappings/cai-reference-build/`).
 - [`coverage/MATRIX.md`](coverage/MATRIX.md) — every Watchdog dimension, whether it is in scope, and which frozen
   repositories label it (read from their keys at the registered tags).
 

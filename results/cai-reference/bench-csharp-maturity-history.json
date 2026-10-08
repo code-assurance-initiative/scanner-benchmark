@@ -1,0 +1,218 @@
+{
+ "repo": "code-assurance-initiative/bench-csharp-maturity-history",
+ "tag": "v1.0.0",
+ "commit": "825b11e569fdd41491144a749eaf604603a3d7fa",
+ "keySha256": "d21bdbf2ddb77cad41c2dfb8d0886904b574438d56cb07b93b201506ef6559f7",
+ "keyVersion": "1.0.0",
+ "scanner": "cai-reference",
+ "engineVersion": "CAI reference implementation (cai-reference 0.1.0), reference-implementation d3c2e24, Release build, rubric-2026.10.2; default configuration (no --nuget-packages)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-08",
+   "sarifSha256": "b49555ced59d150b5c29af0c23e20e19b35a4e87ba518b611dbdb03200b3ae60",
+   "outputs": {
+    "findings.sarif": "b49555ced59d150b5c29af0c23e20e19b35a4e87ba518b611dbdb03200b3ae60",
+    "scores.json": "b50a7b7e88dedb9ea6ee8baf2b0d2f69b3008e5122e93a1df6e1c8563ccc3e10",
+    "evidence.json": "42fa96dfa5567ada837b7af79e2c7a300f521ee79d8aeb420d7e877a8329000a"
+   },
+   "harness": {
+    "name": "cai_bench",
+    "version": "1.5.0",
+    "contract": "1.6"
+   },
+   "mapping": {
+    "scanner": "cai-reference",
+    "version": "rubric-2026.10.2"
+   },
+   "configuration": {
+    "label": "default",
+    "headline": true
+   },
+   "outcomes": {
+    "tp": 5,
+    "fn": 2,
+    "fp": 0,
+    "tn": 260,
+    "trapFp": 0,
+    "trapTn": 10,
+    "results": 7,
+    "noise": 2,
+    "redundant": 0,
+    "uncovered": 6,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 5,
+    "recall": 0.7142857142857143,
+    "trapResistance": 1.0,
+    "noiseRate": 0.2857142857142857,
+    "fileLevelRecall": 0.7142857142857143,
+    "locationSources": {
+     "sarif": 13,
+     "message": 0,
+     "sitesFromMessage": 0,
+     "none": 0
+    },
+    "fileScopeMatches": 0,
+    "resultsWithMessageSites": 0,
+    "resourceScopeMatches": 0,
+    "resourceScope": {
+     "source": "materialised bench-csharp-maturity-history @ v1.0.0",
+     "entries": 0,
+     "applied": 0,
+     "unavailable": 0,
+     "unsupported": 0
+    },
+    "pathMatches": {
+     "exact": 13,
+     "suffix": 0
+    }
+   }
+  }
+ ],
+ "outcomes": [
+  {
+   "ruleId": "release-hygiene",
+   "file": "CHANGELOG.md",
+   "line": 1,
+   "outcome": "tp",
+   "entryId": "REL-001",
+   "attributedConcept": "release-hygiene",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "change-coupling",
+   "file": "src/ClinicScheduling.Api/Contracts/AppointmentResponse.cs",
+   "outcome": "tp",
+   "entryId": "CPL-001",
+   "attributedConcept": "change-coupling",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "test-coverage",
+   "file": "src/ClinicScheduling.Application/Booking/RecordNoShow.cs",
+   "outcome": "uncovered",
+   "attributedConcept": "test-coverage",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "test-coverage",
+   "file": "src/ClinicScheduling.Application/Booking/RescheduleAppointment.cs",
+   "outcome": "uncovered",
+   "attributedConcept": "test-coverage",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "test-coverage",
+   "file": "src/ClinicScheduling.Application/Series/BookTreatmentSeries.cs",
+   "outcome": "uncovered",
+   "attributedConcept": "test-coverage",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "churn-complexity-hotspot",
+   "file": "src/ClinicScheduling.Domain/Availability/SlotFinder.cs",
+   "outcome": "tp",
+   "entryId": "HOT-001",
+   "attributedConcept": "churn-complexity-hotspot",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "high-cognitive-complexity",
+   "file": "src/ClinicScheduling.Domain/Availability/SlotFinder.cs",
+   "line": 11,
+   "outcome": "uncovered",
+   "attributedConcept": "high-cognitive-complexity",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "high-cyclomatic-complexity",
+   "file": "src/ClinicScheduling.Domain/Availability/SlotFinder.cs",
+   "line": 11,
+   "outcome": "uncovered",
+   "attributedConcept": "high-cyclomatic-complexity",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "long-method",
+   "file": "src/ClinicScheduling.Domain/Availability/SlotFinder.cs",
+   "line": 11,
+   "outcome": "uncovered",
+   "attributedConcept": "long-method",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "knowledge-concentration",
+   "file": "src/ClinicScheduling.Domain/Policies/CancellationPolicy.cs",
+   "outcome": "tp",
+   "entryId": "SIL-001",
+   "attributedConcept": "knowledge-concentration",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "knowledge-freshness",
+   "file": "src/ClinicScheduling.Domain/Recurrence/RecurrenceExpander.cs",
+   "outcome": "tp",
+   "entryId": "STL-001",
+   "attributedConcept": "knowledge-freshness",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "knowledge-freshness",
+   "file": "src/ClinicScheduling.Domain/Recurrence/RecurrenceRule.cs",
+   "outcome": "unmatched-fp",
+   "attributedConcept": "knowledge-freshness",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "change-coupling",
+   "file": "src/ClinicScheduling.Infrastructure/PatientPortal/PortalAppointmentFeed.cs",
+   "outcome": "unmatched-fp",
+   "attributedConcept": "change-coupling",
+   "locationSource": "sarif"
+  }
+ ],
+ "verdictScope": "every noise row of the RI's headline run on the 15 C# training units (14 of 14), judged under the five-class protocol of results/watchdog/README.md; collapse first, then false-positive > opinion-not-fact > redundant > shape-irrelevant > valid; uncertain = valid",
+ "verdicts": [
+  {
+   "ruleId": "knowledge-freshness",
+   "file": "src/ClinicScheduling.Domain/Recurrence/RecurrenceRule.cs",
+   "line": null,
+   "message": "RecurrenceRule.cs was last changed 268 days before HEAD and everyone who touched it has been silent for 90+ days",
+   "outcome": "unmatched-fp",
+   "entryId": null,
+   "class": "redundant",
+   "reason": "STL-001 keys the stale recurrence module ('RecurrenceRule + RecurrenceExpander', one commit by an author who left) on RecurrenceExpander.cs, which the RI also reports (TP). This row is the module's other file: the same lost knowledge, cleared by the same handover.",
+   "action": "recorded as noise of the scanner (no key or unit change)"
+  },
+  {
+   "ruleId": "change-coupling",
+   "file": "src/ClinicScheduling.Infrastructure/PatientPortal/PortalAppointmentFeed.cs",
+   "line": null,
+   "message": "PortalAppointmentFeed.cs and AppointmentResponse.cs changed together in 9 commits (82 % of the time) with no code dependency between them",
+   "outcome": "unmatched-fp",
+   "entryId": null,
+   "class": "redundant",
+   "reason": "CPL-001 keys the coupled pair (AppointmentResponse \u2194 PortalAppointmentFeed) on AppointmentResponse.cs, which the RI reports (TP); this row is the pair's other file, same remediation.",
+   "action": "recorded as noise of the scanner (no key or unit change)"
+  }
+ ],
+ "falseNegatives": [
+  {
+   "entryId": "ADR-001",
+   "concept": "adr-conformance",
+   "file": "docs/adr/0004-minimal-api-endpoints.md",
+   "lines": null,
+   "mechanism": "no-rule",
+   "reason": "no rule of the scanner maps the concept (needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls)"
+  },
+  {
+   "entryId": "DOC-001",
+   "concept": "documentation-accuracy",
+   "file": null,
+   "lines": null,
+   "mechanism": "no-rule",
+   "reason": "no rule of the scanner maps the concept (needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls)"
+  }
+ ]
+}

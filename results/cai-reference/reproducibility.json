@@ -1,0 +1,101 @@
+{
+ "units": "the 15 C# training units at their latest registered tags",
+ "scans": "the RI's headline SARIFs (results/cai-reference/<unit>.json, sarifSha256)",
+ "harness": "cai_bench 1.5.0",
+ "claimed": {
+  "source": "reference-implementation RESULTS.md (cai_bench 1.3.1, contract 1.4, generated mapping, no --repo-dir)",
+  "recall": "213/225",
+  "trapResistance": "260/260",
+  "noise": "11/270"
+ },
+ "rows": {
+  "generated mapping, contract 1.4": {
+   "tp": 213,
+   "fn": 12,
+   "trapTn": 260,
+   "trapFp": 0,
+   "noise": 11,
+   "results": 270,
+   "fileLevelTp": 213,
+   "redundant": 46,
+   "uncovered": 144
+  },
+  "generated mapping, contract 1.5": {
+   "tp": 213,
+   "fn": 12,
+   "trapTn": 260,
+   "trapFp": 0,
+   "noise": 11,
+   "results": 270,
+   "fileLevelTp": 213,
+   "redundant": 46,
+   "uncovered": 144
+  },
+  "generated mapping, contract 1.6, no unit files": {
+   "tp": 213,
+   "fn": 12,
+   "trapTn": 260,
+   "trapFp": 0,
+   "noise": 11,
+   "results": 270,
+   "fileLevelTp": 213,
+   "redundant": 46,
+   "uncovered": 144
+  },
+  "generated mapping, contract 1.6, unit files (--repo-dir)": {
+   "tp": 213,
+   "fn": 12,
+   "trapTn": 260,
+   "trapFp": 0,
+   "noise": 11,
+   "results": 270,
+   "fileLevelTp": 213,
+   "redundant": 46,
+   "uncovered": 144
+  },
+  "built mapping, contract 1.4": {
+   "tp": 213,
+   "fn": 12,
+   "trapTn": 260,
+   "trapFp": 0,
+   "noise": 14,
+   "results": 273,
+   "fileLevelTp": 213,
+   "redundant": 46,
+   "uncovered": 141
+  },
+  "built mapping, contract 1.5": {
+   "tp": 213,
+   "fn": 12,
+   "trapTn": 260,
+   "trapFp": 0,
+   "noise": 14,
+   "results": 273,
+   "fileLevelTp": 213,
+   "redundant": 46,
+   "uncovered": 141
+  },
+  "built mapping, contract 1.6, no unit files": {
+   "tp": 213,
+   "fn": 12,
+   "trapTn": 260,
+   "trapFp": 0,
+   "noise": 14,
+   "results": 273,
+   "fileLevelTp": 213,
+   "redundant": 46,
+   "uncovered": 141
+  },
+  "built mapping, contract 1.6, unit files (--repo-dir)": {
+   "tp": 213,
+   "fn": 12,
+   "trapTn": 260,
+   "trapFp": 0,
+   "noise": 14,
+   "results": 273,
+   "fileLevelTp": 213,
+   "redundant": 46,
+   "uncovered": 141
+  }
+ }
+}

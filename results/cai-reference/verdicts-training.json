@@ -1,0 +1,60 @@
+{
+ "scope": "every noise row of the RI's headline run on the 15 C# training units (14 of 14), judged under the five-class protocol of results/watchdog/README.md; collapse first, then false-positive > opinion-not-fact > redundant > shape-irrelevant > valid; uncertain = valid",
+ "units": {
+  "bench-csharp-codehealth": {
+   "verdicts": [
+    {"ruleId": "duplicated-code", "file": "src/Shipping.Rates.Core/Carriers/AlderParcelAdapter.cs", "line": 37, "class": "redundant",
+     "reason": "The request-building clone of CH-006 (AlderParcelAdapter lines 44-97, copied from CorvidCourierAdapter). The RI starts the clone block at line 37 (its message states lines 37-59), 7 lines above the plant's first line, so the ±3 rule leaves it unmatched; CH-006 is already found by the RI's row at line 74. One remediation (extract the shared request/response code) clears both."},
+    {"ruleId": "duplicated-code", "file": "src/Shipping.Rates.Core/Carriers/CorvidCourierAdapter.cs", "line": 33, "class": "redundant",
+     "reason": "The original half of the same clone pair (CorvidCourierAdapter lines 33-56 = AlderParcelAdapter 37-59). The key places the defect at the copy (CH-006, Alder); reporting both halves is the RI's deliberate convention (README 'both halves of a pair are real locations'). Same remediation as CH-006."},
+    {"ruleId": "duplicated-code", "file": "src/Shipping.Rates.Core/Carriers/CorvidCourierAdapter.cs", "line": 70, "class": "redundant",
+     "reason": "The original half of the response-mapping clone whose copy (AlderParcelAdapter:74) is the TP for CH-006."},
+    {"ruleId": "duplicated-code", "file": "src/Shipping.Rates.Tools/Printing/LabelPrinter.cs", "line": 19, "class": "redundant",
+     "reason": "The second copy of the label-file predicate of CH-007; the RI's row at LabelArchive.cs:34 is the TP. CH-007's rationale names both sites; one extraction clears both."}
+   ]
+  },
+  "bench-csharp-domain-events": {
+   "verdicts": [
+    {"ruleId": "domain-event-never-handled", "file": "src/Rentals.Lending.Domain/Loans/ExtendLoanEvent.cs", "line": 5, "class": "valid",
+     "reason": "Factually true: Loan.cs:76 raises ExtendLoanEvent and no handler, projection or IntegrationEventMapper case consumes it. The unit's README lists this event under 'Deliberately not certified either way' (its consequence happens through the command's second handler, ED2-001): the key makes no judgement, so under 'uncertain = valid' it is signal the harness scores as unlabelled noise."},
+    {"ruleId": "domain-event-never-handled", "file": "src/Rentals.Lending.Domain/Members/MemberEvents.cs", "line": 9, "class": "valid",
+     "reason": "Factually true: Member.cs:104 raises MemberReinstated and nothing handles, folds or maps it. The README lists it among 'transitions nothing in this design reacts to', deliberately not certified either way; uncertain = valid."}
+   ]
+  },
+  "bench-csharp-maturity-history": {
+   "verdicts": [
+    {"ruleId": "knowledge-freshness", "file": "src/ClinicScheduling.Domain/Recurrence/RecurrenceRule.cs", "line": null, "class": "redundant",
+     "reason": "STL-001 keys the stale recurrence module ('RecurrenceRule + RecurrenceExpander', one commit by an author who left) on RecurrenceExpander.cs, which the RI also reports (TP). This row is the module's other file: the same lost knowledge, cleared by the same handover."},
+    {"ruleId": "change-coupling", "file": "src/ClinicScheduling.Infrastructure/PatientPortal/PortalAppointmentFeed.cs", "line": null, "class": "redundant",
+     "reason": "CPL-001 keys the coupled pair (AppointmentResponse ↔ PortalAppointmentFeed) on AppointmentResponse.cs, which the RI reports (TP); this row is the pair's other file, same remediation."}
+   ]
+  },
+  "bench-csharp-security-iac": {
+   "verdicts": [
+    {"ruleId": "container-confinement-profile-unset", "file": "deploy/k8s/node-agent/daemonset.yaml", "line": 33, "class": "valid",
+     "reason": "Factually true: the fluent-bit container (lines 29-63) sets no seccompProfile/appArmorProfile, and the key neither plants nor certifies this concept in the file (it plants privileged-container IAC-005 at lines 29-33). Matched as noise only because the mapping's parent declaration (contract 1.3) makes the key's umbrella coverage apply; under the generated mapping it was 'uncovered'."},
+    {"ruleId": "container-writable-root-filesystem", "file": "deploy/k8s/node-agent/daemonset.yaml", "line": 33, "class": "valid",
+     "reason": "Factually true: no readOnlyRootFilesystem on the fluent-bit container; removing privileged: true (IAC-005) would not set it, so it is separately actionable. Unlabelled by the key."},
+    {"ruleId": "container-missing-resource-requests", "file": "deploy/k8s/reminders/deployment.yaml", "line": 24, "class": "redundant",
+     "reason": "IAC-009 (container-missing-resource-limits, same container, lines 24-41) states 'sets no CPU or memory requests or limits'; the RI finds IAC-009 and reports the requests half separately. One resources block clears both."}
+   ]
+  },
+  "estate-quellbrook-dispatch": {
+   "verdicts": [
+    {"ruleId": "scattered-domain-rule", "file": null, "line": null, "class": "valid",
+     "reason": "Factually true: the driver-eligibility rule `!driver.Active || driver.ShiftHours < minimumShiftHours` is decided in ExpressAssignmentPolicy.cs:55 and StandardAssignmentPolicy.cs:35, outside Driver. It is the copied block of DSP-003 seen through the domain-modelling lens; multi-lens detection of one issue is not redundant under the protocol. The key labels no DM9 entry here."},
+    {"ruleId": "duplicated-code", "file": "src/Quellbrook.Dispatch.Domain/Assignment/ExpressAssignmentPolicy.cs", "line": 43, "class": "redundant",
+     "reason": "The clone block of DSP-003 (lines 48-63) as the RI windows it (43-65, starting 5 lines early); DSP-003 is already found by the RI's predicate row at line 55."},
+    {"ruleId": "duplicated-code", "file": "src/Quellbrook.Dispatch.Domain/Assignment/StandardAssignmentPolicy.cs", "line": 35, "class": "redundant",
+     "reason": "The original half of DSP-003's copy (StandardAssignmentPolicy); same remediation."}
+   ]
+  },
+  "bench-csharp-security-dependencies": {
+   "fnOverrides": {
+    "DEP-005": {"mechanism": "no-rule", "reason": "deprecated-dependency needs package-registry deprecation metadata; the engine runs offline (mapping: unmapped)"},
+    "DEP-006": {"mechanism": "no-rule", "reason": "outdated-dependency needs the registry's latest versions; the engine runs offline (mapping: unmapped)"},
+    "DEP-007": {"mechanism": "configuration", "reason": "license-policy-violation is measured only with --nuget-packages (a restored NuGet cache); the default configuration passes none and the evidence bundle lists D14 under notMeasured"}
+   }
+  }
+ }
+}

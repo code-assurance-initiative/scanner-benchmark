@@ -1,0 +1,355 @@
+{
+ "repo": "code-assurance-initiative/bench-csharp-security-injection",
+ "tag": "v1.0.0",
+ "commit": "f89620bdbd2260b8e2d4e1fa93fdca31fb9296d8",
+ "keySha256": "96e3264c685890b4090e4e17973d1730967642719f6d3389293aa330fb16421e",
+ "keyVersion": "1.0.0",
+ "scanner": "cai-reference",
+ "engineVersion": "CAI reference implementation (cai-reference 0.1.0), reference-implementation d3c2e24, Release build, rubric-2026.10.2; default configuration (no --nuget-packages)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-08",
+   "sarifSha256": "ee82fca025af00a4d112326af879971c8124d0762f444722d64f60e47093dd71",
+   "outputs": {
+    "findings.sarif": "ee82fca025af00a4d112326af879971c8124d0762f444722d64f60e47093dd71",
+    "scores.json": "77fefcf41e72f22649564ece6e64130324c4733c686382820d1d7dad850f5fe2",
+    "evidence.json": "5d040ae36b5fdfc8170b5722a3604deac19e408936b2f579d0b9bbf55dbbe121"
+   },
+   "harness": {
+    "name": "cai_bench",
+    "version": "1.5.0",
+    "contract": "1.6"
+   },
+   "mapping": {
+    "scanner": "cai-reference",
+    "version": "rubric-2026.10.2"
+   },
+   "configuration": {
+    "label": "default",
+    "headline": true
+   },
+   "outcomes": {
+    "tp": 20,
+    "fn": 0,
+    "fp": 0,
+    "tn": 118,
+    "trapFp": 0,
+    "trapTn": 23,
+    "results": 22,
+    "noise": 0,
+    "redundant": 2,
+    "uncovered": 11,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 20,
+    "recall": 1.0,
+    "trapResistance": 1.0,
+    "noiseRate": 0.0,
+    "fileLevelRecall": 1.0,
+    "locationSources": {
+     "sarif": 29,
+     "message": 0,
+     "sitesFromMessage": 0,
+     "none": 4
+    },
+    "fileScopeMatches": 0,
+    "resultsWithMessageSites": 0,
+    "resourceScopeMatches": 0,
+    "resourceScope": {
+     "source": "materialised bench-csharp-security-injection @ v1.0.0",
+     "entries": 0,
+     "applied": 0,
+     "unavailable": 0,
+     "unsupported": 0
+    },
+    "pathMatches": {
+     "exact": 29,
+     "suffix": 0
+    }
+   }
+  }
+ ],
+ "outcomes": [
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "versioned-schema-migrations",
+   "outcome": "uncovered",
+   "attributedConcept": "versioned-schema-migrations",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "path-traversal",
+   "file": "src/ReportDesk.Api/Attachments/AttachmentStore.cs",
+   "line": 13,
+   "outcome": "tp",
+   "entryId": "PATH-001",
+   "attributedConcept": "path-traversal",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "server-side-request-forgery",
+   "file": "src/ReportDesk.Api/Controllers/ImportsController.cs",
+   "line": 22,
+   "outcome": "tp",
+   "entryId": "SSRF-001",
+   "attributedConcept": "server-side-request-forgery",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "open-redirect",
+   "file": "src/ReportDesk.Api/Controllers/ReportsController.cs",
+   "line": 78,
+   "outcome": "tp",
+   "entryId": "REDIR-001",
+   "attributedConcept": "open-redirect",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "cross-site-scripting",
+   "file": "src/ReportDesk.Api/Controllers/SearchWidgetController.cs",
+   "line": 25,
+   "outcome": "tp",
+   "entryId": "XSS-001",
+   "attributedConcept": "cross-site-scripting",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "command-injection",
+   "file": "src/ReportDesk.Api/Conversion/DocumentConverter.cs",
+   "line": 19,
+   "outcome": "tp",
+   "entryId": "CMD-001",
+   "attributedConcept": "command-injection",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "sensitive-data-in-logs",
+   "file": "src/ReportDesk.Api/Delivery/ReportMailer.cs",
+   "line": 13,
+   "outcome": "tp",
+   "entryId": "PII-001",
+   "attributedConcept": "sensitive-data-in-logs",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "sensitive-data-in-logs",
+   "file": "src/ReportDesk.Api/Delivery/ReportMailer.cs",
+   "line": 13,
+   "outcome": "redundant",
+   "entryId": "PII-001",
+   "attributedConcept": "sensitive-data-in-logs",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "sensitive-data-in-url",
+   "file": "src/ReportDesk.Api/Delivery/SubscriberDirectoryClient.cs",
+   "line": 11,
+   "outcome": "tp",
+   "entryId": "PII-002",
+   "attributedConcept": "sensitive-data-in-url",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "missing-cancellation-propagation",
+   "file": "src/ReportDesk.Api/Documents/DocumentRepository.cs",
+   "line": 19,
+   "outcome": "uncovered",
+   "attributedConcept": "missing-cancellation-propagation",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "high-cyclomatic-complexity",
+   "file": "src/ReportDesk.Api/Feeds/FeedAddressPolicy.cs",
+   "line": 12,
+   "outcome": "uncovered",
+   "attributedConcept": "high-cyclomatic-complexity",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "duplicated-code",
+   "file": "src/ReportDesk.Api/Feeds/FeedAddressPolicy.cs",
+   "line": 27,
+   "outcome": "uncovered",
+   "attributedConcept": "duplicated-code",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "unbounded-allocation-from-untrusted-length",
+   "file": "src/ReportDesk.Api/Importing/BundleReader.cs",
+   "line": 15,
+   "outcome": "tp",
+   "entryId": "LEN-001",
+   "attributedConcept": "unbounded-allocation-from-untrusted-length",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "xpath-injection",
+   "file": "src/ReportDesk.Api/Metadata/MetadataFieldReader.cs",
+   "line": 13,
+   "outcome": "tp",
+   "entryId": "XPATH-001",
+   "attributedConcept": "xpath-injection",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "uncontrolled-recursion",
+   "file": "src/ReportDesk.Api/Metadata/MetadataFlattener.cs",
+   "line": 30,
+   "outcome": "tp",
+   "entryId": "REC-001",
+   "attributedConcept": "uncontrolled-recursion",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "xml-external-entity",
+   "file": "src/ReportDesk.Api/Metadata/MetadataImporter.cs",
+   "line": 14,
+   "outcome": "tp",
+   "entryId": "XXE-001",
+   "attributedConcept": "xml-external-entity",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "ldap-injection",
+   "file": "src/ReportDesk.Api/People/OwnerDirectory.cs",
+   "line": 12,
+   "outcome": "tp",
+   "entryId": "LDAP-001",
+   "attributedConcept": "ldap-injection",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "silent-error-fallback",
+   "file": "src/ReportDesk.Api/Previews/DocumentCardRenderer.cs",
+   "line": 27,
+   "outcome": "uncovered",
+   "attributedConcept": "silent-error-fallback",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "cross-site-scripting",
+   "file": "src/ReportDesk.Api/Previews/MetadataPreviewRenderer.cs",
+   "line": 23,
+   "outcome": "tp",
+   "entryId": "XSS-002",
+   "attributedConcept": "cross-site-scripting",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "oversized-module",
+   "file": "src/ReportDesk.Api/ReportDesk.Api.csproj",
+   "outcome": "uncovered",
+   "attributedConcept": "oversized-module",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "sql-injection",
+   "file": "src/ReportDesk.Api/Reports/ReportRepository.cs",
+   "line": 13,
+   "outcome": "tp",
+   "entryId": "SQL-002",
+   "attributedConcept": "sql-injection",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "sql-injection",
+   "file": "src/ReportDesk.Api/Reports/ReportRepository.cs",
+   "line": 14,
+   "outcome": "redundant",
+   "entryId": "SQL-002",
+   "attributedConcept": "sql-injection",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "insecure-deserialization",
+   "file": "src/ReportDesk.Api/SavedSearches/SavedSearchSerializer.cs",
+   "line": 10,
+   "outcome": "tp",
+   "entryId": "DESER-001",
+   "attributedConcept": "insecure-deserialization",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "sql-injection",
+   "file": "src/ReportDesk.Api/SavedSearches/SavedSearchStore.cs",
+   "line": 31,
+   "outcome": "tp",
+   "entryId": "SQL-003",
+   "attributedConcept": "sql-injection",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "sql-injection",
+   "file": "src/ReportDesk.Api/Search/DocumentSearchRepository.cs",
+   "line": 14,
+   "outcome": "tp",
+   "entryId": "SQL-001",
+   "attributedConcept": "sql-injection",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "regex-denial-of-service",
+   "file": "src/ReportDesk.Api/Search/HighlightService.cs",
+   "line": 13,
+   "outcome": "tp",
+   "entryId": "REDOS-001",
+   "attributedConcept": "regex-denial-of-service",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "insufficient-password-hashing",
+   "file": "src/ReportDesk.Api/Shares/SharePasswordHasher.cs",
+   "line": 12,
+   "outcome": "tp",
+   "entryId": "HASH-001",
+   "attributedConcept": "weak-hash-algorithm",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "high-cyclomatic-complexity",
+   "file": "src/ReportDesk.Api/Webhooks/CallbackAddressPolicy.cs",
+   "line": 12,
+   "outcome": "uncovered",
+   "attributedConcept": "high-cyclomatic-complexity",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "server-side-request-forgery",
+   "file": "src/ReportDesk.Api/Webhooks/CallbackAddressPolicy.cs",
+   "line": 20,
+   "outcome": "tp",
+   "entryId": "SSRF-002",
+   "attributedConcept": "server-side-request-forgery",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "duplicated-code",
+   "file": "src/ReportDesk.Api/Webhooks/CallbackAddressPolicy.cs",
+   "line": 27,
+   "outcome": "uncovered",
+   "attributedConcept": "duplicated-code",
+   "locationSource": "sarif"
+  }
+ ],
+ "verdictScope": "no five-class verdicts for this unit",
+ "verdicts": [],
+ "falseNegatives": []
+}

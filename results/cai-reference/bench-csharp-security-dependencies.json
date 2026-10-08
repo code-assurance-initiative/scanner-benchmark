@@ -1,0 +1,381 @@
+{
+ "repo": "code-assurance-initiative/bench-csharp-security-dependencies",
+ "tag": "v1.1.0",
+ "commit": "212ee97591df17ea5ce804a34e459c06c7519c36",
+ "keySha256": "ec030bcfd1de78b732d764793843b346a9654f7c6f25316e71e3f89815e6baf4",
+ "keyVersion": "1.1.0",
+ "scanner": "cai-reference",
+ "engineVersion": "CAI reference implementation (cai-reference 0.1.0), reference-implementation d3c2e24, Release build, rubric-2026.10.2; default configuration (no --nuget-packages)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-08",
+   "sarifSha256": "e1caf67a6ceb3cf20e12ca9ce240b43c2878385290fb56fb3912f3d96b519d8c",
+   "outputs": {
+    "findings.sarif": "e1caf67a6ceb3cf20e12ca9ce240b43c2878385290fb56fb3912f3d96b519d8c",
+    "scores.json": "fcb117bbbb04f51204ed7f85371e1e4e70d3122437b330c531a202a0452c3262",
+    "evidence.json": "fa34ae38039fa897b4b6dd0e8269b1996ab766d6b66a4e19869a5368813c6b23"
+   },
+   "harness": {
+    "name": "cai_bench",
+    "version": "1.5.0",
+    "contract": "1.6"
+   },
+   "mapping": {
+    "scanner": "cai-reference",
+    "version": "rubric-2026.10.2"
+   },
+   "configuration": {
+    "label": "default",
+    "headline": true
+   },
+   "outcomes": {
+    "tp": 5,
+    "fn": 3,
+    "fp": 0,
+    "tn": 108,
+    "trapFp": 0,
+    "trapTn": 8,
+    "results": 27,
+    "noise": 0,
+    "redundant": 22,
+    "uncovered": 4,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 5,
+    "recall": 0.625,
+    "trapResistance": 1.0,
+    "noiseRate": 0.0,
+    "fileLevelRecall": 0.625,
+    "locationSources": {
+     "sarif": 28,
+     "message": 0,
+     "sitesFromMessage": 0,
+     "none": 3
+    },
+    "fileScopeMatches": 0,
+    "resultsWithMessageSites": 0,
+    "resourceScopeMatches": 0,
+    "resourceScope": {
+     "source": "materialised bench-csharp-security-dependencies @ v1.1.0",
+     "entries": 0,
+     "applied": 0,
+     "unavailable": 0,
+     "unsupported": 0
+    },
+    "pathMatches": {
+     "exact": 28,
+     "suffix": 0
+    }
+   }
+  }
+ ],
+ "outcomes": [
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "release-hygiene",
+   "file": "CHANGELOG.md",
+   "line": 1,
+   "outcome": "uncovered",
+   "attributedConcept": "release-hygiene",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 14,
+   "outcome": "tp",
+   "entryId": "DEP-001",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 14,
+   "outcome": "redundant",
+   "entryId": "DEP-001",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 91,
+   "outcome": "tp",
+   "entryId": "DEP-003",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 91,
+   "outcome": "redundant",
+   "entryId": "DEP-003",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 91,
+   "outcome": "redundant",
+   "entryId": "DEP-003",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 91,
+   "outcome": "redundant",
+   "entryId": "DEP-003",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 91,
+   "outcome": "redundant",
+   "entryId": "DEP-003",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 91,
+   "outcome": "redundant",
+   "entryId": "DEP-003",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 91,
+   "outcome": "redundant",
+   "entryId": "DEP-003",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 91,
+   "outcome": "redundant",
+   "entryId": "DEP-003",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 91,
+   "outcome": "redundant",
+   "entryId": "DEP-003",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 91,
+   "outcome": "redundant",
+   "entryId": "DEP-003",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 91,
+   "outcome": "redundant",
+   "entryId": "DEP-003",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 91,
+   "outcome": "redundant",
+   "entryId": "DEP-003",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 91,
+   "outcome": "redundant",
+   "entryId": "DEP-003",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "src/Invoicing.Api/packages.lock.json",
+   "line": 91,
+   "outcome": "redundant",
+   "entryId": "DEP-003",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "tests/Invoicing.UnitTests/packages.lock.json",
+   "line": 42,
+   "outcome": "tp",
+   "entryId": "DEP-004",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "tests/Invoicing.UnitTests/packages.lock.json",
+   "line": 42,
+   "outcome": "redundant",
+   "entryId": "DEP-004",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "tests/Invoicing.UnitTests/packages.lock.json",
+   "line": 42,
+   "outcome": "redundant",
+   "entryId": "DEP-004",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "tests/Invoicing.UnitTests/packages.lock.json",
+   "line": 42,
+   "outcome": "redundant",
+   "entryId": "DEP-004",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "end-of-life-platform",
+   "file": "tools/Invoicing.ArchiveExporter/Invoicing.ArchiveExporter.csproj",
+   "line": 5,
+   "outcome": "tp",
+   "entryId": "DEP-008",
+   "attributedConcept": "end-of-life-platform",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "tools/Invoicing.ArchiveExporter/packages.lock.json",
+   "line": 25,
+   "outcome": "tp",
+   "entryId": "DEP-002",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "tools/Invoicing.ArchiveExporter/packages.lock.json",
+   "line": 25,
+   "outcome": "redundant",
+   "entryId": "DEP-002",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "tools/Invoicing.ArchiveExporter/packages.lock.json",
+   "line": 25,
+   "outcome": "redundant",
+   "entryId": "DEP-002",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "tools/Invoicing.ArchiveExporter/packages.lock.json",
+   "line": 25,
+   "outcome": "redundant",
+   "entryId": "DEP-002",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "tools/Invoicing.ArchiveExporter/packages.lock.json",
+   "line": 25,
+   "outcome": "redundant",
+   "entryId": "DEP-002",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerable-dependency",
+   "file": "tools/Invoicing.ArchiveExporter/packages.lock.json",
+   "line": 25,
+   "outcome": "redundant",
+   "entryId": "DEP-002",
+   "attributedConcept": "vulnerable-dependency",
+   "locationSource": "sarif"
+  }
+ ],
+ "verdictScope": "no five-class verdicts for this unit",
+ "verdicts": [],
+ "falseNegatives": [
+  {
+   "entryId": "DEP-005",
+   "concept": "deprecated-dependency",
+   "file": "Directory.Packages.props",
+   "lines": [
+    17,
+    17
+   ],
+   "mechanism": "no-rule",
+   "reason": "deprecated-dependency needs package-registry deprecation metadata; the engine runs offline (mapping: unmapped)"
+  },
+  {
+   "entryId": "DEP-006",
+   "concept": "outdated-dependency",
+   "file": "Directory.Packages.props",
+   "lines": [
+    26,
+    26
+   ],
+   "mechanism": "no-rule",
+   "reason": "outdated-dependency needs the registry's latest versions; the engine runs offline (mapping: unmapped)"
+  },
+  {
+   "entryId": "DEP-007",
+   "concept": "license-policy-violation",
+   "file": "Directory.Packages.props",
+   "lines": [
+    23,
+    23
+   ],
+   "mechanism": "configuration",
+   "reason": "license-policy-violation is measured only with --nuget-packages (a restored NuGet cache); the default configuration passes none and the evidence bundle lists D14 under notMeasured"
+  }
+ ]
+}

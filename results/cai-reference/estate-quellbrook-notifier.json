@@ -1,0 +1,157 @@
+{
+ "repo": "code-assurance-initiative/estate-quellbrook-notifier",
+ "tag": "v1.0.0",
+ "commit": "cfab2803fb3dbb8b68bb87ea668f2f26aa506cdd",
+ "keySha256": "b4dabc406c3f50b150c188abd9014db0deab3c225a3b90cec0429a249e054e3c",
+ "keyVersion": "1.0.0",
+ "scanner": "cai-reference",
+ "engineVersion": "CAI reference implementation (cai-reference 0.1.0), reference-implementation d3c2e24, Release build, rubric-2026.10.2; default configuration (no --nuget-packages)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-08",
+   "sarifSha256": "a6d86991004e953ef43dd3dffb05431a125d4cf2babcb6d2ceeccc18d9dcdc9f",
+   "outputs": {
+    "findings.sarif": "a6d86991004e953ef43dd3dffb05431a125d4cf2babcb6d2ceeccc18d9dcdc9f",
+    "scores.json": "768a2091d7eba22e932fc820cc03a509c67c827a072e58d1fb0bc7eda0f6601c",
+    "evidence.json": "9b1130e45c0fba2aaa8556e894335824cad4d25162e7e75466c61827c3ad88f9"
+   },
+   "harness": {
+    "name": "cai_bench",
+    "version": "1.5.0",
+    "contract": "1.6"
+   },
+   "mapping": {
+    "scanner": "cai-reference",
+    "version": "rubric-2026.10.2"
+   },
+   "configuration": {
+    "label": "default",
+    "headline": true
+   },
+   "outcomes": {
+    "tp": 2,
+    "fn": 0,
+    "fp": 0,
+    "tn": 132,
+    "trapFp": 0,
+    "trapTn": 8,
+    "results": 2,
+    "noise": 0,
+    "redundant": 0,
+    "uncovered": 10,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 2,
+    "recall": 1.0,
+    "trapResistance": 1.0,
+    "noiseRate": 0.0,
+    "fileLevelRecall": 1.0,
+    "locationSources": {
+     "sarif": 2,
+     "message": 0,
+     "sitesFromMessage": 0,
+     "none": 10
+    },
+    "fileScopeMatches": 0,
+    "resultsWithMessageSites": 0,
+    "resourceScopeMatches": 0,
+    "resourceScope": {
+     "source": "materialised estate-quellbrook-notifier @ v1.0.0",
+     "entries": 0,
+     "applied": 0,
+     "unavailable": 0,
+     "unsupported": 0
+    },
+    "pathMatches": {
+     "exact": 2,
+     "suffix": 0
+    }
+   }
+  }
+ ],
+ "outcomes": [
+  {
+   "ruleId": "audit-trail",
+   "outcome": "uncovered",
+   "attributedConcept": "audit-trail",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "audit-trail",
+   "outcome": "uncovered",
+   "attributedConcept": "audit-trail",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-encryption-controls",
+   "outcome": "uncovered",
+   "attributedConcept": "data-encryption-controls",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-encryption-controls",
+   "outcome": "uncovered",
+   "attributedConcept": "data-encryption-controls",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-subject-rights",
+   "outcome": "uncovered",
+   "attributedConcept": "data-subject-rights",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-subject-rights",
+   "outcome": "uncovered",
+   "attributedConcept": "data-subject-rights",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-subject-rights",
+   "outcome": "uncovered",
+   "attributedConcept": "data-subject-rights",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "sensitive-data-in-logs",
+   "file": "src/Quellbrook.Notifier/Channels/EmailSender.cs",
+   "line": 34,
+   "outcome": "tp",
+   "entryId": "NTF-002",
+   "attributedConcept": "sensitive-data-in-logs",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "secret-in-version-history",
+   "file": "src/Quellbrook.Notifier/appsettings.json",
+   "line": 15,
+   "outcome": "tp",
+   "entryId": "NTF-001",
+   "attributedConcept": "secret-in-version-history",
+   "locationSource": "sarif",
+   "commitSha": "a033c7cf647a114975fc8d1cbcba5ab046d6427a"
+  }
+ ],
+ "verdictScope": "no five-class verdicts for this unit",
+ "verdicts": [],
+ "falseNegatives": []
+}

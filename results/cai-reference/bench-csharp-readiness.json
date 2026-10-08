@@ -1,0 +1,193 @@
+{
+ "repo": "code-assurance-initiative/bench-csharp-readiness",
+ "tag": "v1.0.0",
+ "commit": "74427c03c9754acadfcc65d229f3de95804e71f8",
+ "keySha256": "99b0727ad27fb5bc165e00bab6fba035211178f45c210bf064a9f2f3888caa92",
+ "keyVersion": "1.0.0",
+ "scanner": "cai-reference",
+ "engineVersion": "CAI reference implementation (cai-reference 0.1.0), reference-implementation d3c2e24, Release build, rubric-2026.10.2; default configuration (no --nuget-packages)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-08",
+   "sarifSha256": "6b6d29a4aaac3fc6551dd402a45c258cb4aeb0206942977ce7131e8da7b595bc",
+   "outputs": {
+    "findings.sarif": "6b6d29a4aaac3fc6551dd402a45c258cb4aeb0206942977ce7131e8da7b595bc",
+    "scores.json": "0b01d582facf5fad0ce822345bd1cf82a44bd5d224458d3685893bdf8d9c631b",
+    "evidence.json": "f55d82f85b58eefcfe7ac2d23b811ec7f238503d8f5497f4b052713e565d672b"
+   },
+   "harness": {
+    "name": "cai_bench",
+    "version": "1.5.0",
+    "contract": "1.6"
+   },
+   "mapping": {
+    "scanner": "cai-reference",
+    "version": "rubric-2026.10.2"
+   },
+   "configuration": {
+    "label": "default",
+    "headline": true
+   },
+   "outcomes": {
+    "tp": 12,
+    "fn": 0,
+    "fp": 0,
+    "tn": 187,
+    "trapFp": 0,
+    "trapTn": 25,
+    "results": 13,
+    "noise": 0,
+    "redundant": 1,
+    "uncovered": 0,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 12,
+    "recall": 1.0,
+    "trapResistance": 1.0,
+    "noiseRate": 0.0,
+    "fileLevelRecall": 1.0,
+    "locationSources": {
+     "sarif": 12,
+     "message": 0,
+     "sitesFromMessage": 0,
+     "none": 1
+    },
+    "fileScopeMatches": 0,
+    "resultsWithMessageSites": 0,
+    "resourceScopeMatches": 0,
+    "resourceScope": {
+     "source": "materialised bench-csharp-readiness @ v1.0.0",
+     "entries": 0,
+     "applied": 0,
+     "unavailable": 0,
+     "unsupported": 0
+    },
+    "pathMatches": {
+     "exact": 12,
+     "suffix": 0
+    }
+   }
+  }
+ ],
+ "outcomes": [
+  {
+   "ruleId": "ci-test-gate-integrity",
+   "outcome": "tp",
+   "entryId": "RDY-009",
+   "attributedConcept": "ci-test-gate-integrity",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "inbound-input-validation",
+   "file": "src/ParcelTracking.Api/Contracts/RedirectParcelRequest.cs",
+   "line": 3,
+   "outcome": "tp",
+   "entryId": "RDY-005",
+   "attributedConcept": "inbound-input-validation",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "missing-authorization",
+   "file": "src/ParcelTracking.Api/Controllers/ReportsController.cs",
+   "line": 10,
+   "outcome": "tp",
+   "entryId": "RDY-004",
+   "attributedConcept": "missing-authorization",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "https-enforcement",
+   "file": "src/ParcelTracking.Api/Hosting/ApiPipeline.cs",
+   "line": 18,
+   "outcome": "tp",
+   "entryId": "RDY-011",
+   "attributedConcept": "https-enforcement",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "security-response-headers",
+   "file": "src/ParcelTracking.Api/Hosting/ApiPipeline.cs",
+   "line": 21,
+   "outcome": "tp",
+   "entryId": "RDY-010",
+   "attributedConcept": "security-response-headers",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "non-structured-log-message",
+   "file": "src/ParcelTracking.Infrastructure/Carriers/CarrierApiClient.cs",
+   "line": 38,
+   "outcome": "tp",
+   "entryId": "RDY-012",
+   "attributedConcept": "non-structured-log-message",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "outbound-http-resilience",
+   "file": "src/ParcelTracking.Infrastructure/DependencyInjection.cs",
+   "line": 70,
+   "outcome": "tp",
+   "entryId": "RDY-001",
+   "attributedConcept": "outbound-http-resilience",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "empty-catch-block",
+   "file": "src/ParcelTracking.Infrastructure/Health/CarrierApiHealthCheck.cs",
+   "line": 21,
+   "outcome": "tp",
+   "entryId": "RDY-007",
+   "attributedConcept": "empty-catch-block",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "missing-cancellation-propagation",
+   "file": "src/ParcelTracking.Infrastructure/Persistence/ParcelStore.cs",
+   "line": 13,
+   "outcome": "tp",
+   "entryId": "RDY-002",
+   "attributedConcept": "missing-cancellation-propagation",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "observability",
+   "file": "src/ParcelTracking.Worker/NotificationDispatcher.cs",
+   "line": 45,
+   "outcome": "tp",
+   "entryId": "RDY-006",
+   "attributedConcept": "observability",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "observability",
+   "file": "src/ParcelTracking.Worker/NotificationDispatcher.cs",
+   "line": 50,
+   "outcome": "redundant",
+   "entryId": "RDY-006",
+   "attributedConcept": "observability",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "versioned-schema-migrations",
+   "file": "src/ParcelTracking.Worker/Program.cs",
+   "line": 46,
+   "outcome": "tp",
+   "entryId": "RDY-008",
+   "attributedConcept": "versioned-schema-migrations",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "missing-cancellation-propagation",
+   "file": "src/ParcelTracking.Worker/TrackingPoller.cs",
+   "line": 16,
+   "outcome": "tp",
+   "entryId": "RDY-003",
+   "attributedConcept": "missing-cancellation-propagation",
+   "locationSource": "sarif"
+  }
+ ],
+ "verdictScope": "no five-class verdicts for this unit",
+ "verdicts": [],
+ "falseNegatives": []
+}

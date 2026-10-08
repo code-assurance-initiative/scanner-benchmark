@@ -1,0 +1,316 @@
+{
+ "repo": "code-assurance-initiative/bench-csharp-blazor-a11y",
+ "tag": "v1.0.0",
+ "commit": "fc4090774c0e6275973199566dbddeb7c439d448",
+ "keySha256": "b27fff90b3df91789073f0c8147a963bbe27f45eab2698093464b3e93f9b4eeb",
+ "keyVersion": "1.0.0",
+ "scanner": "cai-reference",
+ "engineVersion": "CAI reference implementation (cai-reference 0.1.0), reference-implementation d3c2e24, Release build, rubric-2026.10.2; default configuration (no --nuget-packages)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-08",
+   "sarifSha256": "ff0ff25c99bb2aa9573fe577070dd54167ff2b98167f4592d64207b7104d76ae",
+   "outputs": {
+    "findings.sarif": "ff0ff25c99bb2aa9573fe577070dd54167ff2b98167f4592d64207b7104d76ae",
+    "scores.json": "e210916a8d30edf77017af5fdec825b480f3a565d7879d3edbf56e5a0c09d133",
+    "evidence.json": "9c5b91687b87402d39ce8e92a666d4e2a1ccbc5d6ca8003f483547f1533c3a75"
+   },
+   "harness": {
+    "name": "cai_bench",
+    "version": "1.5.0",
+    "contract": "1.6"
+   },
+   "mapping": {
+    "scanner": "cai-reference",
+    "version": "rubric-2026.10.2"
+   },
+   "configuration": {
+    "label": "default",
+    "headline": true
+   },
+   "outcomes": {
+    "tp": 22,
+    "fn": 3,
+    "fp": 0,
+    "tn": 158,
+    "trapFp": 0,
+    "trapTn": 22,
+    "results": 22,
+    "noise": 0,
+    "redundant": 0,
+    "uncovered": 1,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 22,
+    "recall": 0.88,
+    "trapResistance": 1.0,
+    "noiseRate": 0.0,
+    "fileLevelRecall": 0.88,
+    "locationSources": {
+     "sarif": 22,
+     "message": 0,
+     "sitesFromMessage": 0,
+     "none": 1
+    },
+    "fileScopeMatches": 0,
+    "resultsWithMessageSites": 0,
+    "resourceScopeMatches": 0,
+    "resourceScope": {
+     "source": "materialised bench-csharp-blazor-a11y @ v1.0.0",
+     "entries": 0,
+     "applied": 0,
+     "unavailable": 0,
+     "unsupported": 0
+    },
+    "pathMatches": {
+     "exact": 22,
+     "suffix": 0
+    }
+   }
+  }
+ ],
+ "outcomes": [
+  {
+   "ruleId": "accessibility-checks-in-ci",
+   "outcome": "tp",
+   "entryId": "BA-022",
+   "attributedConcept": "accessibility-checks-in-ci",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "focus-outline-removed",
+   "file": "src/HarbourLane.Bookings.Web/Components/Layout/NavMenu.razor.css",
+   "line": 25,
+   "outcome": "tp",
+   "entryId": "BA-017",
+   "attributedConcept": "focus-outline-removed",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "non-keyboard-accessible-interaction",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/Book.razor",
+   "line": 17,
+   "outcome": "tp",
+   "entryId": "BA-008",
+   "attributedConcept": "non-keyboard-accessible-interaction",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "form-error-not-associated",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/Book.razor",
+   "line": 58,
+   "outcome": "tp",
+   "entryId": "BA-018",
+   "attributedConcept": "form-error-not-associated",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "form-control-without-label",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/Calendar.razor",
+   "line": 28,
+   "outcome": "tp",
+   "entryId": "BA-003",
+   "attributedConcept": "form-control-without-label",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "non-keyboard-accessible-interaction",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/Calendar.razor",
+   "line": 60,
+   "outcome": "tp",
+   "entryId": "BA-007",
+   "attributedConcept": "non-keyboard-accessible-interaction",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "visual-and-motion-safety",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/Calendar.razor.css",
+   "line": 34,
+   "outcome": "tp",
+   "entryId": "BA-012",
+   "attributedConcept": "visual-and-motion-safety",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "autoplay-media-without-control",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/Home.razor",
+   "line": 6,
+   "outcome": "tp",
+   "entryId": "BA-013",
+   "attributedConcept": "autoplay-media-without-control",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "form-control-without-label",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/MyBookings.razor",
+   "line": 10,
+   "outcome": "tp",
+   "entryId": "BA-004",
+   "attributedConcept": "form-control-without-label",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "non-keyboard-accessible-interaction",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/MyBookings.razor",
+   "line": 30,
+   "outcome": "tp",
+   "entryId": "BA-009",
+   "attributedConcept": "non-keyboard-accessible-interaction",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "js-interop-contract-mismatch",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/MyBookings.razor.cs",
+   "line": 54,
+   "outcome": "tp",
+   "entryId": "BA-021",
+   "attributedConcept": "js-interop-contract-mismatch",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "missing-text-alternative",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/RoomDetail.razor",
+   "line": 18,
+   "outcome": "tp",
+   "entryId": "BA-001",
+   "attributedConcept": "missing-text-alternative",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "cross-site-scripting",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/RoomDetail.razor",
+   "line": 36,
+   "outcome": "tp",
+   "entryId": "BA-019",
+   "attributedConcept": "cross-site-scripting",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "page-structure-violation",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/Settings.razor",
+   "line": 13,
+   "outcome": "tp",
+   "entryId": "BA-006",
+   "attributedConcept": "page-structure-violation",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "invalid-aria-usage",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/Settings.razor",
+   "line": 16,
+   "outcome": "tp",
+   "entryId": "BA-011",
+   "attributedConcept": "invalid-aria-usage",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "modal-focus-not-managed",
+   "file": "src/HarbourLane.Bookings.Web/Components/Shared/ConfirmDialog.razor",
+   "line": 4,
+   "outcome": "tp",
+   "entryId": "BA-010",
+   "attributedConcept": "modal-focus-not-managed",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "motion-without-reduced-motion",
+   "file": "src/HarbourLane.Bookings.Web/Components/Shared/LoadingSkeleton.razor",
+   "line": 12,
+   "outcome": "tp",
+   "entryId": "BA-014",
+   "attributedConcept": "motion-without-reduced-motion",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "js-interop-contract-mismatch",
+   "file": "src/HarbourLane.Bookings.Web/Components/Shared/RoomMap.razor",
+   "line": 31,
+   "outcome": "tp",
+   "entryId": "BA-020",
+   "attributedConcept": "js-interop-contract-mismatch",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "missing-text-alternative",
+   "file": "src/HarbourLane.Bookings.Web/Components/Shared/RoomTourVideo.razor",
+   "line": 2,
+   "outcome": "tp",
+   "entryId": "BA-002",
+   "attributedConcept": "missing-text-alternative",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "motion-without-reduced-motion",
+   "file": "src/HarbourLane.Bookings.Web/Components/Shared/ToastHost.razor.css",
+   "line": 19,
+   "outcome": "tp",
+   "entryId": "BA-015",
+   "attributedConcept": "motion-without-reduced-motion",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "page-structure-violation",
+   "file": "src/HarbourLane.Bookings.Web/Pages/Shared/_AdminLayout.cshtml",
+   "line": 2,
+   "outcome": "tp",
+   "entryId": "BA-005",
+   "attributedConcept": "page-structure-violation",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "focus-outline-removed",
+   "file": "src/HarbourLane.Bookings.Web/Pages/Shared/_AdminLayout.cshtml",
+   "line": 15,
+   "outcome": "tp",
+   "entryId": "BA-016",
+   "attributedConcept": "focus-outline-removed",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "test-without-assertion",
+   "file": "tests/HarbourLane.Bookings.UnitTests/Components/NoticeBannerTests.cs",
+   "line": 19,
+   "outcome": "uncovered",
+   "attributedConcept": "test-without-assertion",
+   "locationSource": "sarif"
+  }
+ ],
+ "verdictScope": "no five-class verdicts for this unit",
+ "verdicts": [],
+ "falseNegatives": [
+  {
+   "entryId": "BA-023",
+   "concept": "alt-text-quality",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/Home.razor",
+   "lines": [
+    27,
+    27
+   ],
+   "mechanism": "no-rule",
+   "reason": "no rule of the scanner maps the concept (needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls)"
+  },
+  {
+   "entryId": "BA-024",
+   "concept": "link-and-button-text-quality",
+   "file": "src/HarbourLane.Bookings.Web/Components/Pages/Home.razor",
+   "lines": [
+    36,
+    36
+   ],
+   "mechanism": "no-rule",
+   "reason": "no rule of the scanner maps the concept (needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls)"
+  },
+  {
+   "entryId": "BA-025",
+   "concept": "heading-and-label-text-quality",
+   "file": "src/HarbourLane.Bookings.Web/Pages/Admin/EditRoom.cshtml",
+   "lines": [
+    25,
+    25
+   ],
+   "mechanism": "no-rule",
+   "reason": "no rule of the scanner maps the concept (needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls)"
+  }
+ ]
+}

@@ -1,0 +1,291 @@
+{
+ "repo": "code-assurance-initiative/bench-csharp-architecture",
+ "tag": "v1.1.0",
+ "commit": "bcfb68f9b696acbe866844d1faa2fe9e98c9d3a0",
+ "keySha256": "85b26bbaf25a9e8919717505c345f88a28d9fc2998b87fd39088cdfb36deb65e",
+ "keyVersion": "1.1.0",
+ "scanner": "cai-reference",
+ "engineVersion": "CAI reference implementation (cai-reference 0.1.0), reference-implementation d3c2e24, Release build, rubric-2026.10.2; default configuration (no --nuget-packages)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-08",
+   "sarifSha256": "cbf4e061f1c9e041e6e9634d0c19a8fbc6139b0715d5040279673b194f95659b",
+   "outputs": {
+    "findings.sarif": "cbf4e061f1c9e041e6e9634d0c19a8fbc6139b0715d5040279673b194f95659b",
+    "scores.json": "b4591077a6f4d27f45c8b15a7b55db4f37af7811bbfa5cc70bbbb2689dc51738",
+    "evidence.json": "dfc124b78c819443ec9cafcf6f5be0405b0bce5eb654795f4bba64f7ee5ff564"
+   },
+   "harness": {
+    "name": "cai_bench",
+    "version": "1.5.0",
+    "contract": "1.6"
+   },
+   "mapping": {
+    "scanner": "cai-reference",
+    "version": "rubric-2026.10.2"
+   },
+   "configuration": {
+    "label": "default",
+    "headline": true
+   },
+   "outcomes": {
+    "tp": 17,
+    "fn": 0,
+    "fp": 0,
+    "tn": 259,
+    "trapFp": 0,
+    "trapTn": 22,
+    "results": 18,
+    "noise": 0,
+    "redundant": 1,
+    "uncovered": 9,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 17,
+    "recall": 1.0,
+    "trapResistance": 1.0,
+    "noiseRate": 0.0,
+    "fileLevelRecall": 1.0,
+    "locationSources": {
+     "sarif": 19,
+     "message": 0,
+     "sitesFromMessage": 0,
+     "none": 8
+    },
+    "fileScopeMatches": 0,
+    "resultsWithMessageSites": 0,
+    "resourceScopeMatches": 0,
+    "resourceScope": {
+     "source": "materialised bench-csharp-architecture @ v1.1.0",
+     "entries": 0,
+     "applied": 0,
+     "unavailable": 0,
+     "unsupported": 0
+    },
+    "pathMatches": {
+     "exact": 19,
+     "suffix": 0
+    }
+   }
+  }
+ ],
+ "outcomes": [
+  {
+   "ruleId": "data-encryption-controls",
+   "outcome": "uncovered",
+   "attributedConcept": "data-encryption-controls",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-encryption-controls",
+   "outcome": "uncovered",
+   "attributedConcept": "data-encryption-controls",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-subject-rights",
+   "outcome": "uncovered",
+   "attributedConcept": "data-subject-rights",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-subject-rights",
+   "outcome": "uncovered",
+   "attributedConcept": "data-subject-rights",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-subject-rights",
+   "outcome": "uncovered",
+   "attributedConcept": "data-subject-rights",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "architecture-rules-unenforced",
+   "file": "docs/adr/0003-vertical-slices.md",
+   "outcome": "tp",
+   "entryId": "ARU-001",
+   "attributedConcept": "architecture-rules-unenforced",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "architecture-rules-unenforced",
+   "file": "docs/adr/0004-thin-controllers.md",
+   "outcome": "tp",
+   "entryId": "ARU-002",
+   "attributedConcept": "architecture-rules-unenforced",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "layer-dependency-violation",
+   "file": "src/FleetOps.Api/Controllers/FleetDashboardController.cs",
+   "line": 14,
+   "outcome": "tp",
+   "entryId": "LAY-003",
+   "attributedConcept": "layer-dependency-violation",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "business-logic-in-controller",
+   "file": "src/FleetOps.Api/Controllers/WorkOrdersController.cs",
+   "line": 47,
+   "outcome": "tp",
+   "entryId": "BLC-001",
+   "attributedConcept": "business-logic-in-controller",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "call-indirection",
+   "file": "src/FleetOps.Application/Facades/WorkOrderFacade.cs",
+   "line": 8,
+   "outcome": "tp",
+   "entryId": "IND-001",
+   "attributedConcept": "call-indirection",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "cross-slice-coupling",
+   "file": "src/FleetOps.Application/Features/Inspections/RecordInspectionHandler.cs",
+   "line": 17,
+   "outcome": "tp",
+   "entryId": "SLC-001",
+   "attributedConcept": "cross-slice-coupling",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "query-with-side-effects",
+   "file": "src/FleetOps.Application/Features/WorkOrders/GetWorkOrderHandler.cs",
+   "line": 24,
+   "outcome": "tp",
+   "entryId": "CQS-001",
+   "attributedConcept": "query-with-side-effects",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "layer-dependency-violation",
+   "file": "src/FleetOps.Domain/FleetOps.Domain.csproj",
+   "outcome": "tp",
+   "entryId": "LAY-001",
+   "attributedConcept": "layer-dependency-violation",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "layer-dependency-violation",
+   "file": "src/FleetOps.Domain/Maintenance/MaintenanceDueEvaluator.cs",
+   "line": 2,
+   "outcome": "tp",
+   "entryId": "LAY-002",
+   "attributedConcept": "layer-dependency-violation",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "domain-depends-on-infrastructure",
+   "file": "src/FleetOps.Domain/Maintenance/MaintenanceDueEvaluator.cs",
+   "line": 7,
+   "outcome": "tp",
+   "entryId": "DOM-001",
+   "attributedConcept": "domain-depends-on-infrastructure",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "value-object-mutability",
+   "file": "src/FleetOps.Domain/Maintenance/MaintenancePlan.cs",
+   "line": 7,
+   "outcome": "uncovered",
+   "attributedConcept": "value-object-mutability",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "module-dependency-cycle",
+   "file": "src/FleetOps.Infrastructure/Email/ReminderMailer.cs",
+   "line": 2,
+   "outcome": "tp",
+   "entryId": "CYC-001",
+   "attributedConcept": "module-dependency-cycle",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "oversized-module",
+   "file": "src/FleetOps.Infrastructure/FleetOps.Infrastructure.csproj",
+   "outcome": "tp",
+   "entryId": "GOD-001",
+   "attributedConcept": "oversized-module",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "captive-dependency",
+   "file": "src/FleetOps.Infrastructure/FuelCards/FuelPriceCache.cs",
+   "line": 4,
+   "outcome": "tp",
+   "entryId": "CAP-001",
+   "attributedConcept": "captive-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "captive-dependency",
+   "file": "src/FleetOps.Infrastructure/FuelCards/FuelPriceCache.cs",
+   "line": 11,
+   "outcome": "redundant",
+   "entryId": "CAP-001",
+   "attributedConcept": "captive-dependency",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "unsynchronized-shared-state",
+   "file": "src/FleetOps.Infrastructure/Geocoding/GeocodingCache.cs",
+   "line": 7,
+   "outcome": "tp",
+   "entryId": "SNG-001",
+   "attributedConcept": "unsynchronized-shared-state",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "fat-interface",
+   "file": "src/FleetOps.Infrastructure/Reporting/IFleetReporting.cs",
+   "line": 6,
+   "outcome": "tp",
+   "entryId": "FAT-001",
+   "attributedConcept": "fat-interface",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "solution-structure",
+   "file": "src/FleetOps.Notifications/FleetOps.Notifications.csproj",
+   "outcome": "tp",
+   "entryId": "SHL-001",
+   "attributedConcept": "solution-structure",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "unstable-dependency",
+   "file": "src/FleetOps.ServiceDefaults/FleetOps.ServiceDefaults.csproj",
+   "line": 8,
+   "outcome": "tp",
+   "entryId": "SDP-001",
+   "attributedConcept": "unstable-dependency",
+   "locationSource": "sarif"
+  }
+ ],
+ "verdictScope": "no five-class verdicts for this unit",
+ "verdicts": [],
+ "falseNegatives": []
+}

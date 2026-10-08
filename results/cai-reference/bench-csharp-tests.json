@@ -1,0 +1,204 @@
+{
+ "repo": "code-assurance-initiative/bench-csharp-tests",
+ "tag": "v1.0.0",
+ "commit": "a2dce40268f1a26379f7ba3828aec9e9f93e999e",
+ "keySha256": "53bdee5a56ae27d7376992b5ea1491d6a99f9430a63b95463da0b43491e1cbb7",
+ "keyVersion": "1.0.0",
+ "scanner": "cai-reference",
+ "engineVersion": "CAI reference implementation (cai-reference 0.1.0), reference-implementation d3c2e24, Release build, rubric-2026.10.2; default configuration (no --nuget-packages)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-08",
+   "sarifSha256": "3950a5705c3fefa25eacea74c09033fb8175f5762a2aca56eb77607785302069",
+   "outputs": {
+    "findings.sarif": "3950a5705c3fefa25eacea74c09033fb8175f5762a2aca56eb77607785302069",
+    "scores.json": "8f18f056b230b6e1f8df77ae45a7afd60c5757f5b1e5419414536de61dbb0e1c",
+    "evidence.json": "0ce038b0220e144335c82af20f8376e8feecfa48640a4b496ad219a18e9b5778"
+   },
+   "harness": {
+    "name": "cai_bench",
+    "version": "1.5.0",
+    "contract": "1.6"
+   },
+   "mapping": {
+    "scanner": "cai-reference",
+    "version": "rubric-2026.10.2"
+   },
+   "configuration": {
+    "label": "default",
+    "headline": true
+   },
+   "outcomes": {
+    "tp": 11,
+    "fn": 0,
+    "fp": 0,
+    "tn": 95,
+    "trapFp": 0,
+    "trapTn": 13,
+    "results": 12,
+    "noise": 0,
+    "redundant": 1,
+    "uncovered": 3,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 11,
+    "recall": 1.0,
+    "trapResistance": 1.0,
+    "noiseRate": 0.0,
+    "fileLevelRecall": 1.0,
+    "locationSources": {
+     "sarif": 13,
+     "message": 0,
+     "sitesFromMessage": 0,
+     "none": 2
+    },
+    "fileScopeMatches": 0,
+    "resultsWithMessageSites": 0,
+    "resourceScopeMatches": 0,
+    "resourceScope": {
+     "source": "materialised bench-csharp-tests @ v1.0.0",
+     "entries": 0,
+     "applied": 0,
+     "unavailable": 0,
+     "unsupported": 0
+    },
+    "pathMatches": {
+     "exact": 13,
+     "suffix": 0
+    }
+   }
+  }
+ ],
+ "outcomes": [
+  {
+   "ruleId": "ci-test-gate-integrity",
+   "outcome": "tp",
+   "entryId": "GATE-001",
+   "attributedConcept": "ci-test-gate-integrity",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "ci-test-gate-integrity",
+   "outcome": "redundant",
+   "entryId": "GATE-001",
+   "attributedConcept": "ci-test-gate-integrity",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "inbound-input-validation",
+   "file": "src/Fx.Conversion.Api/Contracts/MoneyDto.cs",
+   "line": 5,
+   "outcome": "uncovered",
+   "attributedConcept": "inbound-input-validation",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "production-depends-on-test-code",
+   "file": "src/Fx.Conversion.Api/Fx.Conversion.Api.csproj",
+   "outcome": "tp",
+   "entryId": "AX8-001",
+   "attributedConcept": "production-depends-on-test-code",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "unsynchronized-shared-state",
+   "file": "src/Fx.Conversion.Core/Currencies/CurrencyCatalog.cs",
+   "line": 8,
+   "outcome": "uncovered",
+   "attributedConcept": "unsynchronized-shared-state",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "test-coverage",
+   "file": "src/Fx.Conversion.Core/Rounding/CashRounding.cs",
+   "outcome": "tp",
+   "entryId": "COV-001",
+   "attributedConcept": "test-coverage",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "outbound-http-resilience",
+   "file": "src/Fx.Conversion.Rates/EcbServiceCollectionExtensions.cs",
+   "line": 19,
+   "outcome": "uncovered",
+   "attributedConcept": "outbound-http-resilience",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "test-without-assertion",
+   "file": "tests/Fx.Conversion.UnitTests/Allocation/AllocatorTests.cs",
+   "line": 43,
+   "outcome": "tp",
+   "entryId": "TQ-002",
+   "attributedConcept": "test-without-assertion",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "test-failure-swallowed",
+   "file": "tests/Fx.Conversion.UnitTests/Monetary/MoneyFormatterTests.cs",
+   "line": 43,
+   "outcome": "tp",
+   "entryId": "TQ-008",
+   "attributedConcept": "test-failure-swallowed",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "excessive-mocking",
+   "file": "tests/Fx.Conversion.UnitTests/Quotes/QuoteServiceTests.cs",
+   "line": 19,
+   "outcome": "tp",
+   "entryId": "TQ-007",
+   "attributedConcept": "excessive-mocking",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "test-without-assertion",
+   "file": "tests/Fx.Conversion.UnitTests/Rates/CurrencyConverterTests.cs",
+   "line": 42,
+   "outcome": "tp",
+   "entryId": "TQ-001",
+   "attributedConcept": "test-without-assertion",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "skipped-test-without-reason",
+   "file": "tests/Fx.Conversion.UnitTests/Rates/CurrencyConverterTests.cs",
+   "line": 50,
+   "outcome": "tp",
+   "entryId": "TQ-003",
+   "attributedConcept": "skipped-test-without-reason",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "flaky-test",
+   "file": "tests/Fx.Conversion.UnitTests/Rates/EcbRateSourceTests.cs",
+   "line": 64,
+   "outcome": "tp",
+   "entryId": "TQ-005",
+   "attributedConcept": "flaky-test",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "flaky-test",
+   "file": "tests/Fx.Conversion.UnitTests/Rates/RateRefreshServiceTests.cs",
+   "line": 25,
+   "outcome": "tp",
+   "entryId": "TQ-004",
+   "attributedConcept": "flaky-test",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "flaky-test",
+   "file": "tests/Fx.Conversion.UnitTests/Rates/RateTableTests.cs",
+   "line": 60,
+   "outcome": "tp",
+   "entryId": "TQ-006",
+   "attributedConcept": "flaky-test",
+   "locationSource": "sarif"
+  }
+ ],
+ "verdictScope": "no five-class verdicts for this unit",
+ "verdicts": [],
+ "falseNegatives": []
+}

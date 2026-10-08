@@ -1,0 +1,77 @@
+{
+ "repo": "code-assurance-initiative/bench-csharp-baseline-clean",
+ "tag": "v1.0.0",
+ "commit": "dfc1f39bf76d5c79f84e6d544e2300ab4e835151",
+ "keySha256": "b03513609f4cea6ce1dc439098576db967482702cb47018ed6946e415d973ef0",
+ "keyVersion": "1.0.0",
+ "scanner": "cai-reference",
+ "engineVersion": "CAI reference implementation (cai-reference 0.1.0), reference-implementation d3c2e24, Release build, rubric-2026.10.2; default configuration (no --nuget-packages)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-08",
+   "sarifSha256": "d605cf1ee104f4070e988b2d7dcebec59486c6a15bce9c157cd040983dc3f15a",
+   "outputs": {
+    "findings.sarif": "d605cf1ee104f4070e988b2d7dcebec59486c6a15bce9c157cd040983dc3f15a",
+    "scores.json": "c479aae90984466c409665ba0e6305a3eb907e9cb1c1c59464db89668e546ce9",
+    "evidence.json": "ca3e0bf4c7965cfb65b77993ef37d5dd3c4a91c5bf23097e7bfc671a83ce249f"
+   },
+   "harness": {
+    "name": "cai_bench",
+    "version": "1.5.0",
+    "contract": "1.6"
+   },
+   "mapping": {
+    "scanner": "cai-reference",
+    "version": "rubric-2026.10.2"
+   },
+   "configuration": {
+    "label": "default",
+    "headline": true
+   },
+   "outcomes": {
+    "tp": 0,
+    "fn": 0,
+    "fp": 0,
+    "tn": 146,
+    "trapFp": 0,
+    "trapTn": 1,
+    "results": 0,
+    "noise": 0,
+    "redundant": 0,
+    "uncovered": 0,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 0,
+    "recall": null,
+    "trapResistance": 1.0,
+    "noiseRate": null,
+    "fileLevelRecall": null,
+    "locationSources": {
+     "sarif": 0,
+     "message": 0,
+     "sitesFromMessage": 0,
+     "none": 0
+    },
+    "fileScopeMatches": 0,
+    "resultsWithMessageSites": 0,
+    "resourceScopeMatches": 0,
+    "resourceScope": {
+     "source": "materialised bench-csharp-baseline-clean @ v1.0.0",
+     "entries": 0,
+     "applied": 0,
+     "unavailable": 0,
+     "unsupported": 0
+    },
+    "pathMatches": {
+     "exact": 0,
+     "suffix": 0
+    }
+   }
+  }
+ ],
+ "outcomes": [],
+ "verdictScope": "no five-class verdicts for this unit",
+ "verdicts": [],
+ "falseNegatives": []
+}

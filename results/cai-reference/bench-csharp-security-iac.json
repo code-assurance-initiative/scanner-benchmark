@@ -1,0 +1,400 @@
+{
+ "repo": "code-assurance-initiative/bench-csharp-security-iac",
+ "tag": "v1.2.0",
+ "commit": "a863ef30d8652b9b177f0e4eb18a95ca68fd77d3",
+ "keySha256": "66d02bd775e26fef5b4a77668823770afa4146c043ecb6c2d57e493bf516e036",
+ "keyVersion": "1.2.0",
+ "scanner": "cai-reference",
+ "engineVersion": "CAI reference implementation (cai-reference 0.1.0), reference-implementation d3c2e24, Release build, rubric-2026.10.2; default configuration (no --nuget-packages)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-08",
+   "sarifSha256": "a5cf1984880da2650aa41d397a4253f728a49e466d69800104b115aaf838b3a6",
+   "outputs": {
+    "findings.sarif": "a5cf1984880da2650aa41d397a4253f728a49e466d69800104b115aaf838b3a6",
+    "scores.json": "28bef4f563258c514f5d9e2d504e5f50cba3eb9a88bdf88042a1ca889bc52b7d",
+    "evidence.json": "e5ca9129c033ecd67cb6279979355a16c26515138cbd52fcff88f23ed0124e8c"
+   },
+   "harness": {
+    "name": "cai_bench",
+    "version": "1.5.0",
+    "contract": "1.6"
+   },
+   "mapping": {
+    "scanner": "cai-reference",
+    "version": "rubric-2026.10.2"
+   },
+   "configuration": {
+    "label": "default",
+    "headline": true
+   },
+   "outcomes": {
+    "tp": 19,
+    "fn": 0,
+    "fp": 0,
+    "tn": 107,
+    "trapFp": 0,
+    "trapTn": 20,
+    "results": 25,
+    "noise": 3,
+    "redundant": 3,
+    "uncovered": 10,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 19,
+    "recall": 1.0,
+    "trapResistance": 1.0,
+    "noiseRate": 0.12,
+    "fileLevelRecall": 1.0,
+    "locationSources": {
+     "sarif": 28,
+     "message": 0,
+     "sitesFromMessage": 0,
+     "none": 7
+    },
+    "fileScopeMatches": 0,
+    "resultsWithMessageSites": 0,
+    "resourceScopeMatches": 0,
+    "resourceScope": {
+     "source": "materialised bench-csharp-security-iac @ v1.2.0",
+     "entries": 7,
+     "applied": 7,
+     "unavailable": 0,
+     "unsupported": 0
+    },
+    "pathMatches": {
+     "exact": 28,
+     "suffix": 0
+    }
+   }
+  }
+ ],
+ "outcomes": [
+  {
+   "ruleId": "build-provenance-and-signing",
+   "outcome": "uncovered",
+   "attributedConcept": "build-provenance-and-signing",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "build-provenance-and-signing",
+   "outcome": "uncovered",
+   "attributedConcept": "build-provenance-and-signing",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "build-provenance-and-signing",
+   "outcome": "uncovered",
+   "attributedConcept": "build-provenance-and-signing",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "versioned-schema-migrations",
+   "outcome": "uncovered",
+   "attributedConcept": "versioned-schema-migrations",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "secret-in-process-arguments",
+   "file": ".github/workflows/deploy.yml",
+   "line": 33,
+   "outcome": "tp",
+   "entryId": "IAC-018",
+   "attributedConcept": "secret-in-process-arguments",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "secret-in-process-arguments",
+   "file": ".github/workflows/deploy.yml",
+   "line": 34,
+   "outcome": "redundant",
+   "entryId": "IAC-018",
+   "attributedConcept": "secret-in-process-arguments",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "ci-workflow-injection",
+   "file": ".github/workflows/issue-triage.yml",
+   "line": 20,
+   "outcome": "tp",
+   "entryId": "IAC-019",
+   "attributedConcept": "ci-workflow-injection",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "ci-secret-exposure",
+   "file": ".github/workflows/pr-preview.yml",
+   "line": 18,
+   "outcome": "tp",
+   "entryId": "IAC-017",
+   "attributedConcept": "ci-secret-exposure",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "ci-token-excessive-permissions",
+   "file": ".github/workflows/release.yml",
+   "line": 7,
+   "outcome": "tp",
+   "entryId": "IAC-015",
+   "attributedConcept": "ci-token-excessive-permissions",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "unpinned-ci-action",
+   "file": ".github/workflows/release.yml",
+   "line": 23,
+   "outcome": "tp",
+   "entryId": "IAC-016",
+   "attributedConcept": "unpinned-ci-action",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "readme-quality",
+   "file": "README.md",
+   "line": 1,
+   "outcome": "uncovered",
+   "attributedConcept": "readme-quality",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "vulnerability-disclosure-policy",
+   "file": "SECURITY.md",
+   "line": 1,
+   "outcome": "uncovered",
+   "attributedConcept": "vulnerability-disclosure-policy",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "deployment-rollback-safety",
+   "file": "deploy/k8s/api/deployment.yaml",
+   "outcome": "uncovered",
+   "attributedConcept": "deployment-rollback-safety",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "cleartext-transmission",
+   "file": "deploy/k8s/api/ingress.yaml",
+   "line": 9,
+   "outcome": "tp",
+   "entryId": "IAC-013",
+   "attributedConcept": "cleartext-transmission",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "host-namespace-sharing",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 19,
+   "outcome": "tp",
+   "entryId": "IAC-004",
+   "attributedConcept": "host-namespace-sharing",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "mutable-image-reference",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 29,
+   "outcome": "tp",
+   "entryId": "IAC-007",
+   "attributedConcept": "mutable-image-reference",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "container-confinement-profile-unset",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 33,
+   "outcome": "unmatched-fp",
+   "attributedConcept": "container-excessive-privilege",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "container-writable-root-filesystem",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 33,
+   "outcome": "unmatched-fp",
+   "attributedConcept": "container-excessive-privilege",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "privileged-container",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 33,
+   "outcome": "tp",
+   "entryId": "IAC-005",
+   "attributedConcept": "privileged-container",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "host-path-mount",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 68,
+   "outcome": "tp",
+   "entryId": "IAC-006",
+   "attributedConcept": "host-path-mount",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "host-path-mount",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 71,
+   "outcome": "redundant",
+   "entryId": "IAC-006",
+   "attributedConcept": "host-path-mount",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "overly-permissive-rbac",
+   "file": "deploy/k8s/node-agent/rbac.yaml",
+   "line": 7,
+   "outcome": "tp",
+   "entryId": "IAC-014",
+   "attributedConcept": "overly-permissive-rbac",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "automounted-service-account-token",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 20,
+   "outcome": "tp",
+   "entryId": "IAC-011",
+   "attributedConcept": "automounted-service-account-token",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "container-missing-resource-limits",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 24,
+   "outcome": "tp",
+   "entryId": "IAC-009",
+   "attributedConcept": "container-missing-resource-limits",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "container-missing-resource-requests",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 24,
+   "outcome": "unmatched-fp",
+   "attributedConcept": "iac-misconfiguration",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "container-security-context-missing",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 24,
+   "outcome": "tp",
+   "entryId": "IAC-008",
+   "attributedConcept": "container-security-context-missing",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "missing-health-probes",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 24,
+   "outcome": "tp",
+   "entryId": "IAC-010",
+   "attributedConcept": "missing-health-probes",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "hardcoded-credential",
+   "file": "deploy/k8s/reminders/secret.yaml",
+   "line": 8,
+   "outcome": "tp",
+   "entryId": "IAC-012",
+   "attributedConcept": "hardcoded-credential",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "container-runs-as-root",
+   "file": "src/Depot.Slots.Reminders/Dockerfile",
+   "line": 17,
+   "outcome": "tp",
+   "entryId": "IAC-001",
+   "attributedConcept": "container-runs-as-root",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "mutable-image-reference",
+   "file": "src/Depot.Slots.Reminders/Dockerfile",
+   "line": 17,
+   "outcome": "tp",
+   "entryId": "IAC-002",
+   "attributedConcept": "mutable-image-reference",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "hardcoded-credential",
+   "file": "src/Depot.Slots.Reminders/Dockerfile",
+   "line": 22,
+   "outcome": "tp",
+   "entryId": "IAC-003",
+   "attributedConcept": "hardcoded-credential",
+   "locationSource": "sarif",
+   "commitSha": "75cf84a01c8aa6f980a3f6d9bb364039e4493229"
+  },
+  {
+   "ruleId": "hardcoded-credential",
+   "file": "src/Depot.Slots.Reminders/Dockerfile",
+   "line": 22,
+   "outcome": "redundant",
+   "entryId": "IAC-003",
+   "attributedConcept": "hardcoded-credential",
+   "locationSource": "sarif"
+  }
+ ],
+ "verdictScope": "every noise row of the RI's headline run on the 15 C# training units (14 of 14), judged under the five-class protocol of results/watchdog/README.md; collapse first, then false-positive > opinion-not-fact > redundant > shape-irrelevant > valid; uncertain = valid",
+ "verdicts": [
+  {
+   "ruleId": "container-confinement-profile-unset",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 33,
+   "message": "fluent-bit has no seccomp or AppArmor profile",
+   "outcome": "unmatched-fp",
+   "entryId": null,
+   "class": "valid",
+   "reason": "Factually true: the fluent-bit container (lines 29-63) sets no seccompProfile/appArmorProfile, and the key neither plants nor certifies this concept in the file (it plants privileged-container IAC-005 at lines 29-33). Matched as noise only because the mapping's parent declaration (contract 1.3) makes the key's umbrella coverage apply; under the generated mapping it was 'uncovered'.",
+   "action": "recorded as noise of the scanner (no key or unit change)"
+  },
+  {
+   "ruleId": "container-writable-root-filesystem",
+   "file": "deploy/k8s/node-agent/daemonset.yaml",
+   "line": 33,
+   "message": "fluent-bit has a writable root filesystem",
+   "outcome": "unmatched-fp",
+   "entryId": null,
+   "class": "valid",
+   "reason": "Factually true: no readOnlyRootFilesystem on the fluent-bit container; removing privileged: true (IAC-005) would not set it, so it is separately actionable. Unlabelled by the key.",
+   "action": "recorded as noise of the scanner (no key or unit change)"
+  },
+  {
+   "ruleId": "container-missing-resource-requests",
+   "file": "deploy/k8s/reminders/deployment.yaml",
+   "line": 24,
+   "message": "reminders has no resource requests: the scheduler places it blind",
+   "outcome": "unmatched-fp",
+   "entryId": null,
+   "class": "redundant",
+   "reason": "IAC-009 (container-missing-resource-limits, same container, lines 24-41) states 'sets no CPU or memory requests or limits'; the RI finds IAC-009 and reports the requests half separately. One resources block clears both.",
+   "action": "recorded as noise of the scanner (no key or unit change)"
+  }
+ ],
+ "falseNegatives": []
+}

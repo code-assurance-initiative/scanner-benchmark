@@ -1,0 +1,144 @@
+{
+ "repo": "code-assurance-initiative/estate-quellbrook-orders",
+ "tag": "v1.0.0",
+ "commit": "227ea390af526080dcc4748095abff75de5087b4",
+ "keySha256": "356f0e66cb77419f3980c79b2ea5af20e0f41fc80beb4915893d2475035ba347",
+ "keyVersion": "1.0.0",
+ "scanner": "cai-reference",
+ "engineVersion": "CAI reference implementation (cai-reference 0.1.0), reference-implementation d3c2e24, Release build, rubric-2026.10.2; default configuration (no --nuget-packages)",
+ "scans": [
+  {
+   "iteration": 1,
+   "date": "2026-10-08",
+   "sarifSha256": "904a636179319da14691e7911a1ce38bbc0ae94348583c08a0b6857ad4a74e90",
+   "outputs": {
+    "findings.sarif": "904a636179319da14691e7911a1ce38bbc0ae94348583c08a0b6857ad4a74e90",
+    "scores.json": "cef85a5eaf6683e302c49bcd7db1d02ff6279cb48e0ea33b30cede54f5e86fb4",
+    "evidence.json": "f3b905f0dd86b5fa240ee050696a70b64475f8b128cce67eb7d87081806aba9e"
+   },
+   "harness": {
+    "name": "cai_bench",
+    "version": "1.5.0",
+    "contract": "1.6"
+   },
+   "mapping": {
+    "scanner": "cai-reference",
+    "version": "rubric-2026.10.2"
+   },
+   "configuration": {
+    "label": "default",
+    "headline": true
+   },
+   "outcomes": {
+    "tp": 2,
+    "fn": 0,
+    "fp": 0,
+    "tn": 200,
+    "trapFp": 0,
+    "trapTn": 12,
+    "results": 2,
+    "noise": 0,
+    "redundant": 0,
+    "uncovered": 8,
+    "summaryRows": 0,
+    "summaryOfConcept": 0,
+    "fileLevelTp": 2,
+    "recall": 1.0,
+    "trapResistance": 1.0,
+    "noiseRate": 0.0,
+    "fileLevelRecall": 1.0,
+    "locationSources": {
+     "sarif": 2,
+     "message": 0,
+     "sitesFromMessage": 0,
+     "none": 8
+    },
+    "fileScopeMatches": 0,
+    "resultsWithMessageSites": 0,
+    "resourceScopeMatches": 0,
+    "resourceScope": {
+     "source": "materialised estate-quellbrook-orders @ v1.0.0",
+     "entries": 0,
+     "applied": 0,
+     "unavailable": 0,
+     "unsupported": 0
+    },
+    "pathMatches": {
+     "exact": 2,
+     "suffix": 0
+    }
+   }
+  }
+ ],
+ "outcomes": [
+  {
+   "ruleId": "data-retention-policy",
+   "outcome": "uncovered",
+   "attributedConcept": "data-retention-policy",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-retention-policy",
+   "outcome": "uncovered",
+   "attributedConcept": "data-retention-policy",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-subject-rights",
+   "outcome": "uncovered",
+   "attributedConcept": "data-subject-rights",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-subject-rights",
+   "outcome": "uncovered",
+   "attributedConcept": "data-subject-rights",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "data-subject-rights",
+   "outcome": "uncovered",
+   "attributedConcept": "data-subject-rights",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "disaster-recovery-evidence",
+   "outcome": "uncovered",
+   "attributedConcept": "disaster-recovery-evidence",
+   "locationSource": "none"
+  },
+  {
+   "ruleId": "publicly-mutable-entity-state",
+   "file": "src/Quellbrook.Orders.Domain/Orders/Parcel.cs",
+   "line": 15,
+   "outcome": "tp",
+   "entryId": "ORD-001",
+   "attributedConcept": "publicly-mutable-entity-state",
+   "locationSource": "sarif"
+  },
+  {
+   "ruleId": "missing-cancellation-propagation",
+   "file": "src/Quellbrook.Orders.Infrastructure/Persistence/OrderQueries.cs",
+   "line": 9,
+   "outcome": "tp",
+   "entryId": "ORD-002",
+   "attributedConcept": "missing-cancellation-propagation",
+   "locationSource": "sarif"
+  }
+ ],
+ "verdictScope": "no five-class verdicts for this unit",
+ "verdicts": [],
+ "falseNegatives": []
+}
