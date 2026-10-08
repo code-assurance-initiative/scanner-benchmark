@@ -127,6 +127,29 @@ class ComparisonHelpers(unittest.TestCase):
         self.assertEqual(UNIT_FILES.fn_mechanism({"concept": "sql-injection"}, M, report)[0], "elsewhere")
         self.assertEqual(UNIT_FILES.fn_mechanism({"concept": "path-traversal"}, M, report)[0], "silent")
 
+    def test_verdict_disambiguation_by_commit_and_message(self):
+        res = [{"run": 0, "resultIndex": 0, "ruleId": "r", "file": "f", "line": 3, "commitSha": None,
+                "outcome": "trap-fp", "concepts": ["r"]},
+               {"run": 0, "resultIndex": 1, "ruleId": "r", "file": "f", "line": 3, "commitSha": "abcdef12",
+                "outcome": "trap-fp", "concepts": ["r"]}]
+        report = {"results": res, "entries": []}
+        row = {"name": "u", "repo": "o/u", "tag": "v1", "commit": "c", "keySha256": "k", "keyVersion": "1",
+               "scan": {"sarifSha256": "s"}, "summary": {}}
+        msgs = {(0, 0): "current copy", (0, 1): "history copy"}
+
+        def one(v):
+            doc = UNIT_FILES.build_unit(row, report, "/nonexistent", msgs, M,
+                                        {"verdicts": [dict(v, ruleId="r", file="f", line=3, **{"class": "redundant",
+                                                                                            "reason": "x"})]},
+                                        "i", "2026-10-08")
+            return doc["verdicts"][0]["message"]
+
+        with self.assertRaises(SystemExit):
+            one({})
+        self.assertEqual(one({"commitSha": None}), "current copy")
+        self.assertEqual(one({"commitSha": "abcdef"}), "history copy")
+        self.assertEqual(one({"messageContains": "history"}), "history copy")
+
 
 if __name__ == "__main__":
     unittest.main()

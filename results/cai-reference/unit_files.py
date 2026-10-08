@@ -17,7 +17,8 @@ from the report and the mapping, unless the verdict file overrides it for that e
 
 Verdict file: {"scope": "…", "units": {"<unit>": {"verdicts": [{"file", "line", "ruleId", "class", "reason",
 "action"}], "fnOverrides": {"<entry id>": {"mechanism", "reason"}}}}}. A verdict names its result by (ruleId, file,
-line) and must match exactly one result of the unit, or the build fails. Standard library only.
+line) — narrowed, when two results share them, by `commitSha` (a prefix; null = a result without one) and
+`messageContains` — and must match exactly one result of the unit, or the build fails. Standard library only.
 """
 import argparse
 import hashlib
@@ -61,7 +62,10 @@ def build_unit(row, report, scan_dir, messages, mapping, curated, instrument, da
     for v in curated.get("verdicts", []):
         if v["class"] not in CLASSES:
             raise SystemExit(f"{row['name']}: verdict class {v['class']!r} is not one of {CLASSES}")
-        hits = [r for r in results if (r["ruleId"], r["file"], r["line"]) == (v["ruleId"], v.get("file"), v.get("line"))]
+        hits = [r for r in results if (r["ruleId"], r["file"], r["line"]) == (v["ruleId"], v.get("file"), v.get("line"))
+                and ("commitSha" not in v or (r.get("commitSha") or None) == v["commitSha"]
+                     or (v["commitSha"] and (r.get("commitSha") or "").startswith(v["commitSha"])))
+                and ("messageContains" not in v or v["messageContains"] in (messages[(r["run"], r["resultIndex"])] or ""))]
         if len(hits) != 1:
             raise SystemExit(f"{row['name']}: verdict {v['ruleId']} {v.get('file')}:{v.get('line')} matches "
                              f"{len(hits)} results (needs exactly 1)")
