@@ -92,3 +92,16 @@ def read_key(name, tag, key_sha256, units_dir=None, set_dir=None, workspace=None
         return raw
     raise UnitNotFound(f"{name}: tag {tag} not found (tried: {', '.join(tried) or 'no source given/existing'}); "
                        f"materialise the unit from the training set or pass --units-dir/--set-dir")
+
+
+def files_source(name, tag, units_dir=None, set_dir=None, workspace=None):
+    """Contract 1.6: a source (resources.git_source) reading unit `name`'s files at `tag` from the first source that
+    has the tag — the files the key was written against, for resource boundaries — or None when none has it."""
+    from .resources import git_source
+    for desc, args in sources(name, units_dir, set_dir, workspace):
+        if subprocess.run(["git", *args, "rev-parse", "-q", "--verify", f"refs/tags/{tag}"],
+                          capture_output=True).returncode == 0:
+            src = git_source(args[1], f"refs/tags/{tag}")
+            src.description = f"{desc.split()[0]} {name} @ {tag}"  # no machine-local path in a recorded report
+            return src
+    return None

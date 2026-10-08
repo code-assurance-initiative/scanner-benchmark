@@ -50,10 +50,11 @@ class Taxonomy(unittest.TestCase):
             "churn-complexity-hotspot", "knowledge-concentration", "knowledge-freshness", "change-coupling",
             "oversized-module", "unstable-dependency", "module-off-main-sequence"}))
 
-    def test_taxonomy_json_carries_match_scope_only_as_file(self):
+    def test_taxonomy_json_carries_match_scope_file_exactly_for_them(self):
+        # contract 1.6 adds "resource" (tests/test_contract_1_6.py); "file" is still exactly the file-scope concepts
         tax = load_json(os.path.join(ROOT, "taxonomy.json"))
-        scopes = {c.get("matchScope") for c in tax["concepts"]}
-        self.assertEqual(scopes, {None, "file"})
+        self.assertEqual({c["id"] for c in tax["concepts"] if c.get("matchScope") == "file"}, file_scope_concepts())
+        self.assertLessEqual({c.get("matchScope") for c in tax["concepts"]}, {None, "file", "resource"})
 
     def test_a_bad_match_scope_is_refused(self):
         with self.assertRaises(ValueError):

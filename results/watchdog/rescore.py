@@ -13,6 +13,8 @@ For each repository of the baseline: the key is read at its tag from the first s
 — and its sha256 must equal the baseline's; the scan is the one directory
 under `<scans-root>/<repo>/` holding a `report.sarif` (and `scorecard.json`, for the score bands) — the sidecar
 directory `tools/multilang/scan.py` prints. With `--baseline-scans` the scans named in the baseline are used instead.
+Contract 1.6: the unit's files at the tag (resource boundaries of IaC files) are read from the same sources, first that
+has the tag (`cai_bench.units.files_source`); each repository's summary records it as `resourceScope.source`.
 Standard library only.
 """
 import argparse
@@ -29,7 +31,7 @@ sys.path.insert(0, os.path.join(ROOT, "mappings"))
 from cai_bench import CONTRACT_VERSION, __version__  # noqa: E402
 from cai_bench.mapping import Mapping  # noqa: E402
 from cai_bench.sarif import read_results  # noqa: E402
-from cai_bench.units import default_set_dir, read_key  # noqa: E402
+from cai_bench.units import default_set_dir, files_source, read_key  # noqa: E402
 from cai_bench.scoring import score  # noqa: E402
 from watchdog_scores import scores as scorecard_scores  # noqa: E402
 
@@ -74,9 +76,12 @@ def rescore_repo(b, workspace, scan_dir, mapping, units_dir=None, set_dir=None):
     if os.path.exists(card):
         with open(card, encoding="utf-8") as f:
             scores = scorecard_scores(json.load(f))
-    report = score(key, read_results(json.loads(sarif_bytes), ()), mapping, scores)
+    # contract 1.6: the unit's files at the tag, for resource boundaries (YAML documents, Dockerfile stages, HCL blocks)
+    src = files_source(name, tag, units_dir=units_dir, set_dir=set_dir, workspace=workspace)
+    report = score(key, read_results(json.loads(sarif_bytes), ()), mapping, scores, source=src)
     fns = [{"id": e["id"], "concept": e["concept"], "file": e.get("file"), "lines": e.get("lines"),
-            "subject": e.get("subject"), "fileLevel": e.get("fileLevel")}
+            "subject": e.get("subject"), "fileLevel": e.get("fileLevel"),
+            **({"matchScope": e["matchScope"]} if e.get("matchScope") else {})}
            for e in report["entries"] if e["label"] == "must-fire" and e["outcome"] == "FN"]
     return {"repo": key.get("repo"), "name": name, "tag": tag, "commit": b.get("commit"), "keySha256": b["keySha256"],
             "keyVersion": key.get("keyVersion"), "languages": [b["language"]], "family": b["family"],

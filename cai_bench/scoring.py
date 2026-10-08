@@ -63,6 +63,16 @@ own location anywhere in the file, then a message site. Each result row says whi
 (`locationSource`: sarif | message | sitesFromMessage | none, and `site`) and whether the file scope did
 (`matchScope: "file"`). `score(..., contract="1.4")` scores without either rule (a frozen 1.4 measurement re-scores
 exactly).
+
+Location equivalence (contract 1.6). Resource-scope concepts: an IaC concept whose taxonomy `matchScope` is "resource"
+(its defect is a property, usually an ABSENCE, of a whole resource: no limits, no probes, no securityContext, no USER,
+no HEALTHCHECK) matches an entry that names it anywhere in the entry's RESOURCE — one YAML document, one Dockerfile
+build stage (the lines before the first FROM are in every stage), one top-level HCL block (resources.py) — plants,
+traps and clean regions that list it alike, never through a "*" region; consumption and redundancy stay one-to-one, and
+a result on the entry's lines is preferred. The boundaries are read from the unit's files (`source`: a callable
+path -> text, resources.dir_source / git_source); a file the source cannot read keeps the line rule and its entry row
+says `matchScope: "resource-unavailable"` (an unsupported file type: "resource-unsupported"). `score(...,
+contract="1.5")` scores without the resource rule.
 """
 import re
 
@@ -70,7 +80,8 @@ from . import CONTRACT_VERSION
 from .keyfile import entry_concepts, line_tolerance
 from .mapping import UNMAPPED
 from .paths import norm, path_match, repo_relative, same_file
-from .taxonomy import file_scope_concepts
+from .resources import UNAVAILABLE, UNSUPPORTED, ResourceIndex
+from .taxonomy import file_scope_concepts, resource_scope_concepts
 
 NOISE = ("trap-fp", "clean-fp", "na-fp", "unmatched-fp")
 NO_RULE = "(no scanner rule)"  # by_dimension row: entries whose concept no dimension of the scanner maps
@@ -182,18 +193,23 @@ def _result_concepts_for(entry, result, family_of=None):
 
 
 # Location levels of matching (contract 1.5), strongest first: the result's own location on the entry's lines; then
-# also anywhere in the entry's file for a file-scope concept; then also every further site its message names.
+# also anywhere in the entry's file for a file-scope concept, or (1.6) in the entry's resource for a resource-scope
+# concept; then also every further site its message names.
 SITE, FILE_SCOPE, MESSAGE_SITES = 0, 1, 2
 
 
 class Matcher:
-    def __init__(self, entries, results, tol, mapping=None, file_scope=frozenset()):
+    def __init__(self, entries, results, tol, mapping=None, file_scope=frozenset(), resource_scope=frozenset(),
+                 resources=None):
         self.entries = [dict(e, _file=norm(e["file"])) if "file" in e else dict(e, _file=None)
                         for e in entries if e["label"] != "score-band"]
         self.results = results
         self.tol = tol
         self.file_scope = frozenset(file_scope)
-        self.levels = ([SITE] + ([FILE_SCOPE] if self.file_scope else [])
+        self.resource_scope = frozenset(resource_scope)
+        self.resources = resources if resources is not None else ResourceIndex(None)
+        self._entry_resources = {}
+        self.levels = ([SITE] + ([FILE_SCOPE] if self.file_scope or self.resource_scope else [])
                        + ([MESSAGE_SITES] if any(r.get("sites") for r in results) else []))
         self.widest = self.levels[-1]
         self.family_of = mapping.family_of if mapping is not None else (lambda c: None)
@@ -209,26 +225,63 @@ class Matcher:
             covered.update(c for c, f in mapping.families.items() if f in fams)
         self.covered = covered
 
-    def _file_scoped(self, entry, concepts):
-        """Contract 1.5: the entry's site is its whole file for these result concepts — the entry NAMES a file-scope
-        concept (a plant's or trap's own concept, a clean region's listed one; never a "*" region) that the result
-        counts as, or (family pass) the plant's or trap's own concept is file-scope."""
-        if not self.file_scope or entry_concepts(entry) == STAR:
+    @staticmethod
+    def _scoped(entry, concepts, scope):
+        """The entry NAMES a concept of `scope` (a plant's or trap's own concept, a clean region's listed one; never a
+        "*" region) that the result counts as, or (family pass) the plant's or trap's own concept is in `scope`."""
+        if not scope or entry_concepts(entry) == STAR:
             return False
-        if entry["label"] in FAMILY_LABELS and entry["concept"] in self.file_scope:
+        if entry["label"] in FAMILY_LABELS and entry["concept"] in scope:
             return True
-        return any(c in self.file_scope for c in concepts)
+        return any(c in scope for c in concepts)
+
+    def _file_scoped(self, entry, concepts):
+        """Contract 1.5: the entry's site is its whole file for these result concepts."""
+        return self._scoped(entry, concepts, self.file_scope)
+
+    def resource_status(self, entry):
+        """Contract 1.6, for a located entry with lines that names a resource-scope concept: (status, boundaries,
+        resource ids of the entry's lines) — status "resource", "resource-unavailable" or "resource-unsupported";
+        None for any other entry."""
+        if entry["id"] in self._entry_resources:
+            return self._entry_resources[entry["id"]]
+        got = None
+        cs = entry_concepts(entry)
+        if (self.resource_scope and entry["_file"] is not None and "lines" in entry and "commit" not in entry
+                and cs != STAR and any(c in self.resource_scope for c in cs)):
+            b = self.resources.get(entry["_file"])
+            if b == UNAVAILABLE:
+                got = ("resource-unavailable", None, None)
+            elif b == UNSUPPORTED:
+                got = ("resource-unsupported", None, None)
+            else:
+                got = ("resource", b, b.ids_over(*entry["lines"]))
+        self._entry_resources[entry["id"]] = got
+        return got
+
+    def _in_resource(self, entry, concepts, loc):
+        """Contract 1.6: the location lies in the entry's resource (same file, a line in a resource the entry's lines
+        are in) and the entry names a resource-scope concept the result counts as."""
+        if not self._scoped(entry, concepts, self.resource_scope):
+            return False
+        st = self.resource_status(entry)
+        if st is None or st[0] != "resource" or not _covers(entry, loc, self.tol, whole_file=True):
+            return False
+        return bool(st[1].ids_at(loc.get("line")) & st[2])
 
     def covering(self, entry, result, concepts, level=None):
         """(location, scope) by which the result lies on the located entry's site at `level` (default: the widest):
         location is the result itself or one of its message sites, scope "site" or "file"; None when it does not."""
         level = self.widest if level is None else level
-        whole = level >= FILE_SCOPE and self._file_scoped(entry, concepts)
+        scoped = level >= FILE_SCOPE
+        whole = scoped and self._file_scoped(entry, concepts)
         for loc in [result] + (result.get("sites") or [] if level >= MESSAGE_SITES else []):
             if _covers(entry, loc, self.tol):
                 return loc, "site"
             if whole and _covers(entry, loc, self.tol, whole_file=True):
                 return loc, "file"
+            if scoped and self._in_resource(entry, concepts, loc):
+                return loc, "resource"
         return None
 
     def _on_located(self, result, c):
@@ -282,8 +335,8 @@ class Matcher:
                 loc, scope = how
                 if loc is not self.results[i]:
                     res_out[i]["site"] = {k: loc[k] for k in ("file", "line", "endLine")}
-                if scope == "file":
-                    res_out[i]["scope"] = "file"
+                if scope in ("file", "resource"):
+                    res_out[i]["scope"] = scope
 
         def concept_for(entry, r):
             if entry["label"] in FAMILY_LABELS:
@@ -450,7 +503,7 @@ def by_concept(matcher, out):
     return {k: finish(v) for k, v in sorted(rows.items(), key=lambda kv: (kv[0] in (STAR, UNMAPPED), kv[0]))}
 
 
-def by_dimension(entries, results, mapping, tol, file_scope=frozenset()):
+def by_dimension(entries, results, mapping, tol, file_scope=frozenset(), resource_scope=frozenset(), resources=None):
     """Per scanner dimension, matching re-run within the dimension: only its own results against the entries whose
     concept maps to it (and every `"*"` clean region), so a hit by one dimension is never credited to another."""
     dims = []
@@ -474,7 +527,7 @@ def by_dimension(entries, results, mapping, tol, file_scope=frozenset()):
             if cs == STAR or any(d in mapping.dimensions_of_concept(c) for c in cs):
                 ents.append(e)
         rs = [r for r in results if r["dimension"] == d]
-        m = Matcher(ents, rs, tol, mapping, file_scope)
+        m = Matcher(ents, rs, tol, mapping, file_scope, resource_scope, resources)
         rows[d] = totals(m, m.run())
     # contract 1.4: plants and traps of a concept no dimension of the scanner maps (a must-fire there is an FN)
     ruleless = [e for e in entries if e["label"] in ("must-fire", "must-not-fire")
@@ -514,20 +567,25 @@ def score_bands(entries, scores, mapping):
 
 # --- the whole run --------------------------------------------------------------------------------------------------
 
-CONTRACTS = ("1.4", "1.5")
+CONTRACTS = ("1.4", "1.5", "1.6")
 
 
-def score(key, results, mapping, scores=None, contract=None, taxonomy=None):
+def score(key, results, mapping, scores=None, contract=None, taxonomy=None, source=None):
     """Score `results` (from sarif.read_results) against `key` under `mapping`. Returns the full report dict.
 
     `contract` (default: the current one) "1.4" scores without the 1.5 location-equivalence rules, so a measurement
-    frozen under 1.4 re-scores exactly. `taxonomy` (a parsed taxonomy.json) overrides the harness's own for the
-    file-scope concepts."""
+    frozen under 1.4 re-scores exactly; "1.5" without the 1.6 resource scope. `taxonomy` (a parsed taxonomy.json)
+    overrides the harness's own for the file- and resource-scope concepts. `source` (contract 1.6; a callable
+    repository-relative path -> text or None, see resources.dir_source / git_source) reads the unit's files for
+    resource boundaries; without it every resource-scope entry keeps the line rule (`resource-unavailable`)."""
     contract = contract or CONTRACT_VERSION
     if contract not in CONTRACTS:
         raise ValueError(f"score: contract {contract!r} is not one of {CONTRACTS}")
     equivalence = contract != "1.4"
     file_scope = file_scope_concepts(taxonomy) if equivalence else frozenset()
+    resource_rule = contract not in ("1.4", "1.5")
+    resource_scope = resource_scope_concepts(taxonomy) if resource_rule else frozenset()
+    resources = ResourceIndex(source)
     tol = line_tolerance(key)
     entries = key["entries"]
     repo_name = (key.get("repo") or "").rsplit("/", 1)[-1] or None
@@ -564,7 +622,7 @@ def score(key, results, mapping, scores=None, contract=None, taxonomy=None):
                               "commitSha": r.get("commitSha")})
             if sites:
                 r["sites"] = sites
-    m = Matcher(entries, results, tol, mapping, file_scope)
+    m = Matcher(entries, results, tol, mapping, file_scope, resource_scope, resources)
     out = m.run()
     for r, o in zip(results, out["results"]):
         r.pop("site", None), r.pop("matchScope", None)
@@ -588,6 +646,11 @@ def score(key, results, mapping, scores=None, contract=None, taxonomy=None):
         row["redundant"] = [_brief(results[i]) for i in o["redundant"]]
         if o.get("summarisedBy"):
             row["summarisedBy"] = list(o["summarisedBy"])
+        st = m.resource_status(e)
+        if st is not None:  # contract 1.6: how the resource scope applied to this entry
+            row["matchScope"] = st[0]
+            if st[1] is not None:
+                row["resourceKind"] = st[1].kind
         entry_rows.append(row)
 
     result_rows = []
@@ -608,12 +671,19 @@ def score(key, results, mapping, scores=None, contract=None, taxonomy=None):
     if equivalence:
         summary["fileScopeMatches"] = sum(r.get("matchScope") == "file" for r in results)
         summary["resultsWithMessageSites"] = sum(bool(r.get("sites")) for r in results)
+    if resource_rule:
+        statuses = [x.get("matchScope") for x in entry_rows]
+        summary["resourceScopeMatches"] = sum(r.get("matchScope") == "resource" for r in results)
+        summary["resourceScope"] = {
+            "source": getattr(source, "description", None) if source is not None else None,
+            "entries": sum(x is not None for x in statuses), "applied": statuses.count("resource"),
+            "unavailable": statuses.count("resource-unavailable"), "unsupported": statuses.count("resource-unsupported")}
     summary["pathMatches"] = {k: sum(r.get("pathMatch") == k for r in results) for k in ("exact", "suffix")}
     return {
         "lineTolerance": tol,
         "summary": summary,
         "concepts": by_concept(m, out),
-        "dimensions": by_dimension(entries, results, mapping, tol, file_scope),
+        "dimensions": by_dimension(entries, results, mapping, tol, file_scope, resource_scope, resources),
         "contract": contract,
         "scoreBands": bands,
         "unmappedConcepts": unmapped_concepts(entries, mapping),
@@ -681,6 +751,17 @@ def render(report):
     if report["summary"].get("fileScopeMatches"):
         parts += [f"{report['summary']['fileScopeMatches']} result(s) matched by file-scope (contract 1.5): a "
                   f"class-, file- or module-level concept reported elsewhere in the entry's file."]
+    if report["summary"].get("resourceScopeMatches"):
+        parts += [f"{report['summary']['resourceScopeMatches']} result(s) matched by resource-scope (contract 1.6): an "
+                  f"IaC concept whose defect is a property of a whole resource, reported elsewhere in the entry's "
+                  f"resource (YAML document, Dockerfile stage, HCL block)."]
+    rs = report["summary"].get("resourceScope") or {}
+    if rs.get("unavailable") or rs.get("unsupported"):
+        lost = [e["id"] for e in report["entries"] if e.get("matchScope") in ("resource-unavailable",
+                                                                           "resource-unsupported")]
+        parts += [f"{len(lost)} resource-scope entr(y/ies) kept the line rule — resource-unavailable (the unit's files "
+                  f"were not readable: pass --repo-dir) or resource-unsupported (no resource boundaries for the file "
+                  f"type): {', '.join(lost)}"]
     if report["scoreBands"]:
         parts += ["", "score bands:"]
         for b in report["scoreBands"]:

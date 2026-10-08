@@ -46,3 +46,7 @@ knowledge. `discrim.py` `SITES_FROM_MESSAGE` becomes the mapping's `sitesFromMes
 D4, R10 and X10 rows (census and engine source in the table); `build.py` allows it for duplication concepts only.
 The engine checkout must be at the mapping's rubric (`rubric-2026.10.1`): the frozen mapping and matrix reproduce from
 the catalog snapshot of kennel `7730bae242^` with the other inputs at `162b41f657`.
+
+Contract 1.6 additions. `concepts.py` `RESOURCE_SCOPE` (concept -> why its defect is a property, usually an absence, of a
+whole IaC resource) sets the taxonomy's `"matchScope": "resource"`; the comment above it says why the present-value IaC
+concepts stay line-based. Again a taxonomy property, not mapping knowledge: the mapping is unchanged but for its note.

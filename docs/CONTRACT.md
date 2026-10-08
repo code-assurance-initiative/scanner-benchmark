@@ -1,6 +1,67 @@
-# Harness contract (v1.5)
+# Harness contract (v1.6)
 
 The fixed interfaces between the parts of this harness. Change only with a version bump.
+
+## What changed in 1.6 (2026-10-08) — resource scope
+
+The answer-key format is unchanged; every 1.0–1.5 key and mapping stays valid. One further LOCATION-EQUIVALENCE rule
+changes outcomes. Like the 1.5 rules it is principled, scanner-neutral, symmetric for plants, traps and clean regions,
+and applies uniformly to every set (training and holdout alike); it was decided from location conventions observed
+while authoring holdout units (Kubernetes, compose, Dockerfile and Terraform scanners report absence-type
+misconfigurations at the RESOURCE or container header, where keys place them on the specific lines), before any
+holdout headline was computed. `cai_bench` 1.5.0.
+
+- **resource-scope concepts (CHANGES OUTCOMES, taxonomy).** A taxonomy concept may carry `"matchScope": "resource"`:
+  an IaC concept whose defect is a property of a whole resource and, by its definition, can be an ABSENCE — a field
+  the resource lacks has no line of its own; a scanner reports it at the resource or container header, a key at the
+  field it would go to, and neither is more precise. For an entry that NAMES such a concept and has a file and lines,
+  a result of the concept anywhere in the same RESOURCE as the entry's lines is on the entry's site — at a plant (TP),
+  at a trap (caught), in a clean region that lists the concept (clean FP); a `"*"` clean region keeps its lines.
+  Consumption stays one-to-one (a second result in the resource is `redundant`); a result on the entry's lines is
+  preferred to one elsewhere in the resource (see Matching, "Location equivalence"). A resource is:
+  - **YAML** (`*.yaml`, `*.yml`): one document. Documents split at a document marker — `---` or `...` at column 0,
+    followed by whitespace or the end of the line. YAML 1.2 forbids such a line inside any scalar (production
+    `c-forbidden`), so an indented `---` inside a block scalar, a quoted `"---"` and `----` split nothing. A `---` line
+    starts its document, a `...` line ends its own; lines holding only comments, blanks or directives join the next
+    document (at the end of the file, the previous one). A compose file is one document: its services are one
+    resource.
+  - **Dockerfile / Containerfile** (`Dockerfile`, `Dockerfile.*`, `*.Dockerfile`, `Containerfile`, …): one build
+    STAGE, from its `FROM` to the line before the next `FROM`; the lines before the first `FROM` (parser directives,
+    global `ARG`s) are the file's header and lie in every stage. Continuation lines and heredoc bodies are never
+    instructions. A stage, not the file: a multi-stage file's build stages are not the image that runs, and a key may
+    place a trap there ("the builder runs as root; it is never run").
+  - **Terraform / HCL** (`*.tf`, `*.hcl`, `*.tfvars`): one top-level construct, brace-balanced (`resource "…" "…" {
+    … }` with every nested block); strings with their `${…}` interpolations, comments and heredocs are skipped. Lines
+    outside every construct are in no resource.
+  - any other file type: no resource; the line rule applies (entry row `matchScope: "resource-unsupported"`).
+- **the unit's files (CLI `score --repo-dir`).** Boundaries are computed from the files of the scanned checkout at the
+  key's tag: `score --repo-dir <dir>`, or in code `score(..., source=…)` (`cai_bench/resources.py`: `dir_source`,
+  `git_source` — the latter reads a tag of a materialised unit, whatever its work tree holds). Without them, or when
+  the file cannot be read, the entry keeps the line rule and its row says `matchScope: "resource-unavailable"`. Only an
+  entry's own file is read; paths leaving the checkout are refused.
+- **the concepts** (`mappings/watchdog-build/concepts.py`, `RESOURCE_SCOPE`, with the reason for each):
+  `container-runs-as-root` (no non-root user enforced: no `USER` in the stage, `runAsNonRoot` unset),
+  `container-privilege-escalation-allowed` (`allowPrivilegeEscalation` not false), `container-excess-capabilities`
+  (capabilities not dropped; an added capability is one way the same property arises),
+  `container-writable-root-filesystem` (`readOnlyRootFilesystem` not true), `container-confinement-profile-unset` (no
+  seccomp/AppArmor profile), `container-security-context-missing`, `container-missing-resource-limits`,
+  `container-missing-resource-requests`, `missing-health-probes`, `missing-image-healthcheck` (absences by
+  definition) and `automounted-service-account-token` (`automountServiceAccountToken` not false). Concepts whose
+  defect is a PRESENT value keep the line rule — the value has a line a scanner can name: `privileged-container`,
+  `host-namespace-sharing`, `host-path-mount`, `overly-permissive-rbac`, `mutable-image-reference`,
+  `image-not-from-allowed-registry`, and the umbrellas `container-excessive-privilege` and `iac-misconfiguration`
+  (residues of present values: host ports, unsafe sysctls, public buckets). The taxonomy has no ingress-TLS or
+  per-workload network-policy finding (`network-egress-policy` is a repository posture); CI workflow concepts are not
+  IaC resources.
+- **report.** A result row carries `matchScope: "resource"` when the resource decided; an entry row naming a
+  resource-scope concept carries `matchScope` `resource` (with `resourceKind` `yaml-document` | `dockerfile-stage` |
+  `hcl-block`) | `resource-unavailable` | `resource-unsupported`. The summary carries `resourceScopeMatches` and
+  `resourceScope` `{source, entries, applied, unavailable, unsupported}`; the text report names every entry that kept
+  the line rule.
+- **frozen measurements.** `score(..., contract="1.5")` scores without the resource rule (and `"1.4"` without the 1.5
+  rules too), so measurements frozen under 1.4 and 1.5 re-score exactly; `results/watchdog/baseline.py` re-scores the
+  2026-10-07 baseline under 1.4 as before. The 1.6 effect on that training set is its own file
+  (`results/watchdog/rescore-harness-1.6.json`, addendum in `BASELINE-2026-10-07.md`).
 
 ## What changed in 1.5 (2026-10-07) — location equivalence
 
@@ -200,11 +261,12 @@ The answer key holds LABELS; TP/FP/TN/FN are OUTCOMES of one scanner run against
 
 Scanner-neutral concepts. `{ "version": "1.0", "concepts": [ { "id": "hardcoded-credential", "title": "…",
 "cwe": "CWE-798" | null, "family": "security|codehealth|architecture|domain|testing|readiness|maturity|frontend|ops|compliance|ai",
-"kind": "finding|posture|metric|judged", "description": "…", "parent": "…", "matchScope": "file" } ] }`. Ids are kebab-case and never reused
+"kind": "finding|posture|metric|judged", "description": "…", "parent": "…", "matchScope": "file|resource" } ] }`. Ids are kebab-case and never reused
 (so an id is never removed either: a concept that turns out too coarse becomes an umbrella).
 
-`matchScope` (1.5, optional) is `"file"` for a concept whose defect is a whole class, file or module (see Matching,
-"Location equivalence"); absent, the entry's lines decide. No other value is valid.
+`matchScope` (optional) is `"file"` (1.5) for a concept whose defect is a whole class, file or module, or
+`"resource"` (1.6) for an IaC concept whose defect is a property — usually an absence — of a whole resource (see
+Matching, "Location equivalence"); absent, the entry's lines decide. No other value is valid.
 
 `parent` (1.3, optional) names the UMBRELLA concept this one refines (one level deep). The umbrella stays a concept: as a
 concept of its own it denotes what none of its children names (its residue), and an answer-key entry written against it
@@ -346,7 +408,8 @@ scanner knowledge.
 
 A SARIF result matches a located entry iff its ruleId matches one of the entry concept's `rules`, its path names the
 entry's `file` (see "Paths" below), and its startLine is within `lineTolerance` of `lines` (1.5: or anywhere in the file
-for a file-scope concept, or at a further site its message names — see "Location equivalence"). A
+for a file-scope concept, 1.6: or anywhere in the entry's resource for a resource-scope concept, or at a further site its
+message names — see "Location equivalence"). A
 repository-level entry matches any result of the concept that has no location or whose location is outside every
 located entry. One-to-one for `must-fire` (each entry consumes at most one result; extra results on the same site are
 `redundant`, counted once and not as noise). `clean` entries match any result whose location falls inside the region,
@@ -375,9 +438,12 @@ used the suffix rule, so a plant at the root `.nvmrc` was found by a result on `
 `locationFromMessage`) and the further sites its message names (`sitesFromMessage`). A located entry's site is its
 file and lines, except that for an entry naming a file-scope concept (taxonomy `matchScope: "file"`) — a plant's or
 trap's own concept, a concept a clean region lists, never through `"*"` — and a result of that concept, it is the whole
-file. A result is on the site when any of its locations is. In every matching pass (see "Subjects") the locations are
-tried strongest first: the result's own location on the entry's lines; then its own location anywhere in the entry's
-file (file-scope); then a listed site (on the lines, or anywhere in the file for a file-scope concept). So a result ON a
+file; for an entry naming a resource-scope concept (1.6, taxonomy `matchScope: "resource"`; same naming rule) with lines,
+it is every resource of the entry's file that the entry's lines lie in (a YAML document, a Dockerfile stage, a top-level
+HCL block — see "What changed in 1.6"), when the unit's files are available. A result is on the site when any of its
+locations is. In every matching pass (see "Subjects") the locations are tried strongest first: the result's own
+location on the entry's lines; then its own location anywhere in the entry's file (file-scope) or resource
+(resource-scope); then a listed site (on the lines, or anywhere in the file or resource for a scoped concept). So a result ON a
 plant takes it before one elsewhere in the file, and a plant is found by the result reported at it before a result
 that merely lists it. Whether a result lies outside every located entry of its concept (repository-level matching) is
 decided with all of its locations. File-level recall counts a listed site in the plant's file.

@@ -360,7 +360,8 @@
       "family": "security",
       "kind": "finding",
       "description": "A container image or workload whose process runs as root (UID 0) or with no non-root user enforced: no unprivileged USER in the final image stage, runAsNonRoot unset or false, runAsUser/runAsGroup 0 or a root group. Checks that demand a high (> 10000) UID or GID denote this concept too.",
-      "parent": "container-excessive-privilege"
+      "parent": "container-excessive-privilege",
+      "matchScope": "resource"
     },
     {
       "id": "privileged-container",
@@ -396,7 +397,8 @@
       "family": "security",
       "kind": "finding",
       "description": "A container whose processes can gain more privileges than they started with: allowPrivilegeEscalation not set to false, or a setuid/setgid binary granted in the image.",
-      "parent": "container-excessive-privilege"
+      "parent": "container-excessive-privilege",
+      "matchScope": "resource"
     },
     {
       "id": "container-excess-capabilities",
@@ -405,7 +407,8 @@
       "family": "security",
       "kind": "finding",
       "description": "A container that does not drop the runtime's default Linux capabilities, or adds capabilities (SYS_ADMIN, NET_RAW, …) beyond what it uses.",
-      "parent": "container-excessive-privilege"
+      "parent": "container-excessive-privilege",
+      "matchScope": "resource"
     },
     {
       "id": "container-writable-root-filesystem",
@@ -414,7 +417,8 @@
       "family": "security",
       "kind": "finding",
       "description": "A container whose root filesystem is not mounted read-only (readOnlyRootFilesystem not true), so a compromised process can modify the image's binaries and configuration.",
-      "parent": "container-excessive-privilege"
+      "parent": "container-excessive-privilege",
+      "matchScope": "resource"
     },
     {
       "id": "container-confinement-profile-unset",
@@ -423,7 +427,8 @@
       "family": "security",
       "kind": "finding",
       "description": "A container/pod specification that sets no seccomp profile (or sets Unconfined) or no AppArmor profile, so the container's system calls are not filtered. The per-workload finding; workload-syscall-confinement is the repository-wide posture.",
-      "parent": "container-excessive-privilege"
+      "parent": "container-excessive-privilege",
+      "matchScope": "resource"
     },
     {
       "id": "container-security-context-missing",
@@ -432,7 +437,8 @@
       "family": "security",
       "kind": "finding",
       "description": "A container or pod with no securityContext at all, so every runtime default applies: privilege escalation allowed, default capabilities kept, writable root filesystem, no non-root requirement.",
-      "parent": "container-excessive-privilege"
+      "parent": "container-excessive-privilege",
+      "matchScope": "resource"
     },
     {
       "id": "container-missing-resource-limits",
@@ -440,7 +446,8 @@
       "cwe": "CWE-770",
       "family": "security",
       "kind": "finding",
-      "description": "A container/pod specification without CPU/memory limits."
+      "description": "A container/pod specification without CPU/memory limits.",
+      "matchScope": "resource"
     },
     {
       "id": "mutable-image-reference",
@@ -465,7 +472,8 @@
       "family": "readiness",
       "kind": "finding",
       "description": "A Kubernetes container that serves traffic or runs a loop but defines no liveness and/or readiness probe, so a hung process is never restarted and a rollout is not gated on the new pod being healthy.",
-      "parent": "iac-misconfiguration"
+      "parent": "iac-misconfiguration",
+      "matchScope": "resource"
     },
     {
       "id": "missing-image-healthcheck",
@@ -474,7 +482,8 @@
       "family": "readiness",
       "kind": "finding",
       "description": "A Dockerfile with no HEALTHCHECK instruction, for an image run by an engine that honours it (Docker, Compose, Swarm). Kubernetes ignores HEALTHCHECK: an image run only there is not missing one (its probes are missing-health-probes).",
-      "parent": "iac-misconfiguration"
+      "parent": "iac-misconfiguration",
+      "matchScope": "resource"
     },
     {
       "id": "automounted-service-account-token",
@@ -483,7 +492,8 @@
       "family": "security",
       "kind": "finding",
       "description": "A pod (template) that does not set automountServiceAccountToken: false and names no dedicated service account, so the namespace's API credential is mounted into a workload that never calls the Kubernetes API.",
-      "parent": "iac-misconfiguration"
+      "parent": "iac-misconfiguration",
+      "matchScope": "resource"
     },
     {
       "id": "overly-permissive-rbac",
@@ -510,7 +520,8 @@
       "family": "readiness",
       "kind": "finding",
       "description": "A container/pod specification without CPU/memory requests, so the scheduler cannot place it sensibly (requests, not limits: container-missing-resource-limits is the limits concept).",
-      "parent": "iac-misconfiguration"
+      "parent": "iac-misconfiguration",
+      "matchScope": "resource"
     },
     {
       "id": "vulnerable-dependency",

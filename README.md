@@ -13,7 +13,7 @@ measures, per concept and per scanner dimension:
 
 This repository holds the harness: the answer-key schema, the scanner-neutral concept taxonomy (CWE-anchored where a
 CWE exists), one mapping per scanner, the scoring CLI, the registry of frozen benchmark units, and recorded
-results. The units themselves are in the training set. The fixed formats and the exact matching rules are in [`docs/CONTRACT.md`](docs/CONTRACT.md) (contract 1.5).
+results. The units themselves are in the training set. The fixed formats and the exact matching rules are in [`docs/CONTRACT.md`](docs/CONTRACT.md) (contract 1.6).
 
 ## Labels and outcomes
 
@@ -98,7 +98,7 @@ python3 -m cai_bench score \
     --sarif report.sarif \
     --mapping mappings/<scanner>.json \
     [--scores scores.json] [--repo-root-prefix /abs/path/of/checkout] [--json report.json] \
-    [--configuration-label "<non-default configuration>"]
+    [--repo-dir units/bench-csharp-security-secrets] [--configuration-label "<non-default configuration>"]
 ```
 
 `score` prints a per-concept and a per-scanner-dimension table (recall, trap resistance, noise, TP/FN/FP/TN,
@@ -123,6 +123,10 @@ ruleId, file, line) with its outcome — so a reader can audit every number.
   SARIF `ruleId`, narrowed where one rule id carries several concepts by regexes over the message text and by
   required result properties. Scanner roll-up rows can be listed under `ignore` and are reported as `summary`, in no
   metric. A scanner with no mapping file cannot be scored — write one first.
+- `--repo-dir` is the scanned checkout (the materialised unit at the key's tag). Contract 1.6 reads IaC resource
+  boundaries from its files — a YAML document, a Dockerfile build stage, a top-level HCL block — so that an absence-type
+  IaC concept (no limits, no probes, no securityContext, no USER, no HEALTHCHECK) reported anywhere in the entry's
+  resource is on the entry's site. Without it those entries keep the line rule and say `resource-unavailable`.
 - A result carrying SARIF `properties.commitSha` is a history finding; an entry with `commit` matches it by commit
   in the same file, at any line.
 - `score-band` entries need `--scores`, a JSON object `{ "<concept or scanner dimension>": <0–100> }`. An entry with
@@ -160,7 +164,7 @@ training-set-2026/tools/materialize.sh <repo> units --tag <tag>          # a fre
 python3 -m cai_bench sha256 --key units/<repo>/benchmark/answer-key.json # must equal keySha256 in registry.json
 <scanner> units/<repo> --format sarif --output report.sarif              # sha256 of the SARIF scored is recorded
 python3 -m cai_bench score --key units/<repo>/benchmark/answer-key.json --sarif report.sarif \
-    --mapping mappings/<scanner>.json --scores scores.json --json report.json
+    --mapping mappings/<scanner>.json --scores scores.json --repo-dir units/<repo> --json report.json
 ```
 
 For all 25 units at once — materialise, scan, re-score, compare — follow
@@ -230,7 +234,7 @@ generation is a new set repository, never a rewrite of an old one — and **priv
 ## Layout
 
 ```
-docs/CONTRACT.md                   fixed formats, matching and metric semantics (v1.5)
+docs/CONTRACT.md                   fixed formats, matching and metric semantics (v1.6)
 schema/answer-key.schema.json      JSON Schema (draft 2020-12) for benchmark/answer-key.json
 taxonomy.json                      scanner-neutral concepts
 mappings/<scanner>.json            concept -> the scanner's rule ids and dimensions

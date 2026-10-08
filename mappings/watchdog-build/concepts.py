@@ -371,3 +371,40 @@ for _c in C:
     if _c["id"] in FILE_SCOPE:
         _c["matchScope"] = "file"
 assert set(FILE_SCOPE) <= {_c["id"] for _c in C}, set(FILE_SCOPE) - {_c["id"] for _c in C}
+
+# ---------------- contract 1.6: resource-scope concepts (taxonomy `matchScope: "resource"`) ----------------
+# An IaC concept whose defect is a property of a whole RESOURCE — by its definition it can be an ABSENCE (a field the
+# resource lacks), which has no line of its own: a scanner reports it at the resource or container header, a key at
+# the field it would go to, and neither is more precise than the other. A result of the concept anywhere in the
+# entry's resource is on the entry's site: one YAML document, one Dockerfile build stage (the lines before the first
+# FROM are in every stage), one top-level HCL block (cai_bench/resources.py). One-to-one consumption unchanged.
+# Concepts whose defect is a PRESENT value stay line-based — the value has a line a scanner can name:
+# privileged-container (privileged: true), host-namespace-sharing (hostNetwork/hostPID/hostIPC: true, network_mode:
+# host), host-path-mount (the hostPath volume / socket bind), overly-permissive-rbac (the rule or roleRef that grants),
+# mutable-image-reference and image-not-from-allowed-registry (the image reference). The umbrellas
+# container-excessive-privilege and iac-misconfiguration stay line-based too (their residues are present values: a
+# host port, an unsafe sysctl, a public bucket, an exposed admin port). The taxonomy has no ingress-TLS or per-workload
+# network-policy finding (network-egress-policy is a repository posture), and CI workflow concepts are not IaC
+# resources.
+RESOURCE_SCOPE = {
+    "container-runs-as-root": "no non-root user enforced (no USER in the stage, runAsNonRoot unset) is a property of the "
+                              "workload or image stage, usually an absence",
+    "container-privilege-escalation-allowed": "allowPrivilegeEscalation not set to false: an absence in the container "
+                                              "spec",
+    "container-excess-capabilities": "capabilities not dropped is an absence in the container spec (an added "
+                                     "capability is one way the same property arises)",
+    "container-writable-root-filesystem": "readOnlyRootFilesystem not true: an absence in the container spec",
+    "container-confinement-profile-unset": "no seccomp/AppArmor profile: an absence in the pod or container spec",
+    "container-security-context-missing": "no securityContext at all: an absence by definition",
+    "container-missing-resource-limits": "no CPU/memory limits: an absence by definition",
+    "container-missing-resource-requests": "no CPU/memory requests: an absence by definition",
+    "missing-health-probes": "no liveness/readiness probe: an absence by definition",
+    "missing-image-healthcheck": "no HEALTHCHECK instruction in the image stage: an absence by definition",
+    "automounted-service-account-token": "automountServiceAccountToken not set to false (and no dedicated service "
+                                         "account): an absence in the pod spec",
+}
+for _c in C:
+    if _c["id"] in RESOURCE_SCOPE:
+        assert "matchScope" not in _c, _c["id"]
+        _c["matchScope"] = "resource"
+assert set(RESOURCE_SCOPE) <= {_c["id"] for _c in C}, set(RESOURCE_SCOPE) - {_c["id"] for _c in C}

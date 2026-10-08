@@ -2,11 +2,13 @@
 import argparse
 import hashlib
 import json
+import os
 import sys
 
 from . import CONTRACT_VERSION, __version__
 from .keyfile import KeyError_, load_json, validate_key
 from .mapping import Mapping, MappingError
+from .resources import dir_source
 from .sarif import SarifError, read_results
 from .scoring import render, score
 
@@ -67,7 +69,9 @@ def cmd_score(a):
     if not isinstance(scores, dict):
         return _fail("scores: expected an object {concept-or-dimension: score}")
 
-    report = score(key, results, mapping, scores)
+    if a.repo_dir and not os.path.isdir(a.repo_dir):
+        return _fail(f"--repo-dir {a.repo_dir} is not a directory")
+    report = score(key, results, mapping, scores, source=dir_source(a.repo_dir) if a.repo_dir else None)
     report = {
         "harness": {"name": "cai_bench", "version": __version__, "contract": CONTRACT_VERSION},
         "key": {"path": a.key, "sha256": sha256_file(a.key), "repo": key.get("repo"), "keyVersion": key.get("keyVersion")},
@@ -141,6 +145,10 @@ def main(argv=None):
     s.add_argument("--scores", help="JSON {concept-or-dimension: 0-100 score} for score-band entries")
     s.add_argument("--repo-root-prefix", action="append",
                    help="path prefix to strip from result paths (repeatable); suffix matching works without it")
+    s.add_argument("--repo-dir",
+                   help="the scanned checkout (a materialised unit at the key's tag): contract 1.6 reads resource "
+                        "boundaries (YAML documents, Dockerfile stages, HCL blocks) from its files; without it every "
+                        "resource-scope entry keeps the line rule and says resource-unavailable")
     s.add_argument("--json", help="write the full report, every individual outcome included, here")
     s.add_argument("--configuration-label",
                    help="the scan ran in a NON-default scanner configuration (e.g. 'wcag-2.2 framework on'): stamped "
