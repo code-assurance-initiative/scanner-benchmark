@@ -9,7 +9,7 @@ sys.path.insert(0, HERE)
 from concepts import C, FILE_SCOPE, UNMAPPED, UNMAPPED_CENSUS
 from dims import D, PHASE, CB, TB, CS, SCORE_DIMS
 
-KENNEL = os.environ.get("WATCHDOG_SOURCE", "/home/jimmy/RiderProjects/kennel.canine.dev")  # the Watchdog engine checkout (read only)
+KENNEL = os.environ.get("WATCHDOG_SOURCE", "/home/jimmy/RiderProjects/kennel-wt-scanner-bench")  # the Watchdog engine checkout (read only)
 OUT = os.path.dirname(os.path.dirname(HERE))  # this repository
 
 cat = json.load(open(f"{KENNEL}/engine/rubrics/rubric-catalog-snapshot.json"))
