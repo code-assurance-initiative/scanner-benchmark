@@ -1,0 +1,2340 @@
+{
+  "scanner": "semgrep",
+  "version": "semgrep-ce 1.179.0, config p/default",
+  "notes": [
+    "Authored for PILOT-2026-10 by the pilot operator; Semgrep publishes no mapping to this taxonomy (mappings/semgrep-build/build.py holds the curated table and how it was decided).",
+    "SARIF ruleId format: the full dotted Semgrep rule id, e.g. generic.secrets.security.detected-github-token.detected-github-token; one rule = one concept, so no message discrimination is needed.",
+    "Rule set: p/default as served by the Semgrep registry on 2026-10-08 (1074 rules); scan command `semgrep scan --config p/default --metrics=off --sarif`, default .semgrepignore (which skips test directories among others).",
+    "Dimensions: each concept is reported under its home CAI rubric dimension (see build.py), not a Semgrep grouping \u2014 Semgrep has none that corresponds to the rubric.",
+    "Rules for languages the training set does not contain (Python, Java, Go, Ruby, PHP, Terraform, \u2026) are not mapped: on these units their results are `uncovered`."
+  ],
+  "concepts": {
+    "accessibility-checks-in-ci": {
+      "rules": [],
+      "dimensions": []
+    },
+    "adr-conformance": {
+      "rules": [],
+      "dimensions": []
+    },
+    "adr-quality": {
+      "rules": [],
+      "dimensions": []
+    },
+    "allocation-awareness": {
+      "rules": [],
+      "dimensions": []
+    },
+    "alt-text-quality": {
+      "rules": [],
+      "dimensions": []
+    },
+    "ambient-nondeterminism-in-domain": {
+      "rules": [],
+      "dimensions": []
+    },
+    "anemic-domain-model": {
+      "rules": [],
+      "dimensions": []
+    },
+    "architecture-documentation": {
+      "rules": [],
+      "dimensions": []
+    },
+    "architecture-rules-unenforced": {
+      "rules": [],
+      "dimensions": []
+    },
+    "architecture-style-fit": {
+      "rules": [],
+      "dimensions": []
+    },
+    "argument-guard-tests-wrong-condition": {
+      "rules": [],
+      "dimensions": []
+    },
+    "async-void-method": {
+      "rules": [],
+      "dimensions": []
+    },
+    "audit-trail": {
+      "rules": [],
+      "dimensions": []
+    },
+    "authorization-enforcement": {
+      "rules": [],
+      "dimensions": []
+    },
+    "automounted-service-account-token": {
+      "rules": [],
+      "dimensions": [],
+      "parent": "iac-misconfiguration"
+    },
+    "autoplay-media-without-control": {
+      "rules": [],
+      "dimensions": []
+    },
+    "benchmark-discipline": {
+      "rules": [],
+      "dimensions": []
+    },
+    "blocking-on-async-code": {
+      "rules": [],
+      "dimensions": []
+    },
+    "boundary-type-leakage": {
+      "rules": [],
+      "dimensions": []
+    },
+    "build-provenance-and-signing": {
+      "rules": [],
+      "dimensions": []
+    },
+    "business-logic-in-controller": {
+      "rules": [],
+      "dimensions": []
+    },
+    "business-logic-share": {
+      "rules": [],
+      "dimensions": []
+    },
+    "call-indirection": {
+      "rules": [],
+      "dimensions": []
+    },
+    "captive-dependency": {
+      "rules": [],
+      "dimensions": []
+    },
+    "change-coupling": {
+      "rules": [],
+      "dimensions": []
+    },
+    "churn-complexity-hotspot": {
+      "rules": [],
+      "dimensions": []
+    },
+    "ci-build-and-test-pipeline": {
+      "rules": [],
+      "dimensions": []
+    },
+    "ci-secret-exposure": {
+      "rules": [
+        "^yaml\\.github\\-actions\\.security\\.pull\\-request\\-target\\-code\\-checkout(?:\\.pull\\-request\\-target\\-code\\-checkout)?$",
+        "^yaml\\.github\\-actions\\.security\\.workflow\\-run\\-target\\-code\\-checkout(?:\\.workflow\\-run\\-target\\-code\\-checkout)?$",
+        "^yaml\\.github\\-actions\\.security\\.secrets\\-inherit(?:\\.secrets\\-inherit)?$",
+        "^yaml\\.github\\-actions\\.security\\.gha\\-workflow\\-env\\-secret(?:\\.gha\\-workflow\\-env\\-secret)?$"
+      ],
+      "dimensions": [
+        "D36"
+      ]
+    },
+    "ci-test-gate-integrity": {
+      "rules": [],
+      "dimensions": []
+    },
+    "ci-token-excessive-permissions": {
+      "rules": [],
+      "dimensions": []
+    },
+    "ci-workflow-injection": {
+      "rules": [
+        "^yaml\\.github\\-actions\\.security\\.run\\-shell\\-injection(?:\\.run\\-shell\\-injection)?$",
+        "^yaml\\.github\\-actions\\.security\\.github\\-script\\-injection(?:\\.github\\-script\\-injection)?$",
+        "^yaml\\.argo\\.security\\.argo\\-workflow\\-parameter\\-command\\-injection(?:\\.argo\\-workflow\\-parameter\\-command\\-injection)?$"
+      ],
+      "dimensions": [
+        "D36"
+      ]
+    },
+    "cleartext-transmission": {
+      "rules": [
+        "^problem\\-based\\-packs\\.insecure\\-transport\\.js\\-node\\.ftp\\-request(?:\\.ftp\\-request)?$",
+        "^problem\\-based\\-packs\\.insecure\\-transport\\.js\\-node\\.http\\-request(?:\\.http\\-request)?$",
+        "^problem\\-based\\-packs\\.insecure\\-transport\\.js\\-node\\.rest\\-http\\-client\\-support(?:\\.rest\\-http\\-client\\-support)?$",
+        "^problem\\-based\\-packs\\.insecure\\-transport\\.js\\-node\\.telnet\\-request(?:\\.telnet\\-request)?$",
+        "^problem\\-based\\-packs\\.insecure\\-transport\\.js\\-node\\.using\\-http\\-server(?:\\.using\\-http\\-server)?$",
+        "^javascript\\.lang\\.security\\.detect\\-insecure\\-websocket(?:\\.detect\\-insecure\\-websocket)?$",
+        "^typescript\\.react\\.security\\.react\\-insecure\\-request(?:\\.react\\-insecure\\-request)?$",
+        "^javascript\\.sequelize\\.security\\.audit\\.sequelize\\-enforce\\-tls(?:\\.sequelize\\-enforce\\-tls)?$",
+        "^javascript\\.grpc\\.security\\.grpc\\-nodejs\\-insecure\\-connection(?:\\.grpc\\-nodejs\\-insecure\\-connection)?$",
+        "^html\\.security\\.plaintext\\-http\\-link(?:\\.plaintext\\-http\\-link)?$",
+        "^generic\\.nginx\\.security\\.insecure\\-redirect(?:\\.insecure\\-redirect)?$",
+        "^typescript\\.aws\\-cdk\\.security\\.audit\\.awscdk\\-bucket\\-enforcessl\\.aws\\-cdk\\-bucket\\-enforcessl(?:\\.aws\\-cdk\\-bucket\\-enforcessl)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "code-injection": {
+      "rules": [
+        "^csharp\\.dotnet\\.security\\.razor\\-template\\-injection(?:\\.razor\\-template\\-injection)?$",
+        "^javascript\\.browser\\.security\\.eval\\-detected(?:\\.eval\\-detected)?$",
+        "^javascript\\.lang\\.security\\.detect\\-eval\\-with\\-expression(?:\\.detect\\-eval\\-with\\-expression)?$",
+        "^javascript\\.lang\\.security\\.audit\\.code\\-string\\-concat(?:\\.code\\-string\\-concat)?$",
+        "^javascript\\.aws\\-lambda\\.security\\.tainted\\-eval(?:\\.tainted\\-eval)?$",
+        "^javascript\\.aws\\-lambda\\.security\\.vm\\-runincontext\\-injection(?:\\.vm\\-runincontext\\-injection)?$",
+        "^javascript\\.express\\.security\\.express\\-vm\\-injection(?:\\.express\\-vm\\-injection)?$",
+        "^javascript\\.express\\.security\\.express\\-vm2\\-injection(?:\\.express\\-vm2\\-injection)?$",
+        "^javascript\\.express\\.security\\.express\\-sandbox\\-injection\\.express\\-sandbox\\-code\\-injection(?:\\.express\\-sandbox\\-code\\-injection)?$",
+        "^javascript\\.express\\.security\\.express\\-insecure\\-template\\-usage(?:\\.express\\-insecure\\-template\\-usage)?$",
+        "^javascript\\.express\\.security\\.require\\-request(?:\\.require\\-request)?$",
+        "^javascript\\.sandbox\\.security\\.audit\\.sandbox\\-code\\-injection(?:\\.sandbox\\-code\\-injection)?$",
+        "^javascript\\.vm2\\.security\\.audit\\.vm2\\-code\\-injection(?:\\.vm2\\-code\\-injection)?$",
+        "^javascript\\.vm2\\.security\\.audit\\.vm2\\-context\\-injection(?:\\.vm2\\-context\\-injection)?$",
+        "^javascript\\.thenify\\.security\\.audit\\.multiargs\\-code\\-execution(?:\\.multiargs\\-code\\-execution)?$",
+        "^javascript\\.bluebird\\.security\\.audit\\.tofastproperties\\-code\\-execution(?:\\.tofastproperties\\-code\\-execution)?$",
+        "^javascript\\.playwright\\.security\\.audit\\.playwright\\-addinitscript\\-code\\-injection(?:\\.playwright\\-addinitscript\\-code\\-injection)?$",
+        "^javascript\\.playwright\\.security\\.audit\\.playwright\\-evaluate\\-arg\\-injection(?:\\.playwright\\-evaluate\\-arg\\-injection)?$",
+        "^javascript\\.playwright\\.security\\.audit\\.playwright\\-evaluate\\-code\\-injection(?:\\.playwright\\-evaluate\\-code\\-injection)?$",
+        "^javascript\\.puppeteer\\.security\\.audit\\.puppeteer\\-evaluate\\-arg\\-injection(?:\\.puppeteer\\-evaluate\\-arg\\-injection)?$",
+        "^javascript\\.puppeteer\\.security\\.audit\\.puppeteer\\-evaluate\\-code\\-injection(?:\\.puppeteer\\-evaluate\\-code\\-injection)?$",
+        "^javascript\\.chrome\\-remote\\-interface\\.security\\.audit\\.chrome\\-remote\\-interface\\-compilescript\\-injection(?:\\.chrome\\-remote\\-interface\\-compilescript\\-injection)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ],
+      "family": "untrusted-data-executed"
+    },
+    "collection-modified-during-enumeration": {
+      "rules": [],
+      "dimensions": []
+    },
+    "command-injection": {
+      "rules": [
+        "^csharp\\.lang\\.security\\.injections\\.os\\-command\\.os\\-command\\-injection(?:\\.os\\-command\\-injection)?$",
+        "^javascript\\.aws\\-lambda\\.security\\.detect\\-child\\-process(?:\\.detect\\-child\\-process)?$",
+        "^javascript\\.lang\\.security\\.detect\\-child\\-process(?:\\.detect\\-child\\-process)?$",
+        "^javascript\\.lang\\.security\\.audit\\.spawn\\-shell\\-true(?:\\.spawn\\-shell\\-true)?$",
+        "^javascript\\.lang\\.security\\.audit\\.dangerous\\-spawn\\-shell(?:\\.dangerous\\-spawn\\-shell)?$",
+        "^javascript\\.lang\\.security\\.spawn\\-git\\-clone(?:\\.spawn\\-git\\-clone)?$",
+        "^javascript\\.shelljs\\.security\\.shelljs\\-exec\\-injection(?:\\.shelljs\\-exec\\-injection)?$",
+        "^javascript\\.deno\\.security\\.audit\\.deno\\-dangerous\\-run(?:\\.deno\\-dangerous\\-run)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "command-with-multiple-handlers": {
+      "rules": [],
+      "dimensions": []
+    },
+    "commented-out-code": {
+      "rules": [],
+      "dimensions": []
+    },
+    "committed-private-key": {
+      "rules": [
+        "^generic\\.secrets\\.security\\.detected\\-private\\-key(?:\\.detected\\-private\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-pgp\\-private\\-key\\-block(?:\\.detected\\-pgp\\-private\\-key\\-block)?$"
+      ],
+      "dimensions": [
+        "D13"
+      ],
+      "family": "hardcoded-secret"
+    },
+    "compiled-code-size": {
+      "rules": [],
+      "dimensions": []
+    },
+    "consent-not-checked": {
+      "rules": [],
+      "dimensions": []
+    },
+    "constructible-invalid-entity": {
+      "rules": [],
+      "dimensions": []
+    },
+    "container-confinement-profile-unset": {
+      "rules": [
+        "^yaml\\.kubernetes\\.security\\.seccomp\\-confinement\\-disabled(?:\\.seccomp\\-confinement\\-disabled)?$",
+        "^yaml\\.docker\\-compose\\.security\\.seccomp\\-confinement\\-disabled(?:\\.seccomp\\-confinement\\-disabled)?$",
+        "^yaml\\.docker\\-compose\\.security\\.selinux\\-separation\\-disabled(?:\\.selinux\\-separation\\-disabled)?$"
+      ],
+      "dimensions": [
+        "D31"
+      ],
+      "parent": "container-excessive-privilege"
+    },
+    "container-excess-capabilities": {
+      "rules": [],
+      "dimensions": [],
+      "parent": "container-excessive-privilege"
+    },
+    "container-excessive-privilege": {
+      "rules": [],
+      "dimensions": []
+    },
+    "container-missing-resource-limits": {
+      "rules": [],
+      "dimensions": []
+    },
+    "container-missing-resource-requests": {
+      "rules": [],
+      "dimensions": [],
+      "parent": "iac-misconfiguration"
+    },
+    "container-privilege-escalation-allowed": {
+      "rules": [
+        "^yaml\\.kubernetes\\.security\\.allow\\-privilege\\-escalation(?:\\.allow\\-privilege\\-escalation)?$",
+        "^yaml\\.kubernetes\\.security\\.allow\\-privilege\\-escalation\\-true(?:\\.allow\\-privilege\\-escalation\\-true)?$",
+        "^yaml\\.docker\\-compose\\.security\\.no\\-new\\-privileges(?:\\.no\\-new\\-privileges)?$"
+      ],
+      "dimensions": [
+        "D31"
+      ],
+      "parent": "container-excessive-privilege"
+    },
+    "container-runs-as-root": {
+      "rules": [
+        "^yaml\\.kubernetes\\.security\\.run\\-as\\-non\\-root(?:\\.run\\-as\\-non\\-root)?$",
+        "^dockerfile\\.security\\.missing\\-user(?:\\.missing\\-user)?$",
+        "^dockerfile\\.security\\.missing\\-user\\-entrypoint(?:\\.missing\\-user\\-entrypoint)?$",
+        "^dockerfile\\.security\\.last\\-user\\-is\\-root(?:\\.last\\-user\\-is\\-root)?$"
+      ],
+      "dimensions": [
+        "D31"
+      ],
+      "parent": "container-excessive-privilege"
+    },
+    "container-security-context-missing": {
+      "rules": [
+        "^yaml\\.kubernetes\\.security\\.allow\\-privilege\\-escalation\\-no\\-securitycontext(?:\\.allow\\-privilege\\-escalation\\-no\\-securitycontext)?$"
+      ],
+      "dimensions": [
+        "D31"
+      ],
+      "parent": "container-excessive-privilege"
+    },
+    "container-writable-root-filesystem": {
+      "rules": [
+        "^yaml\\.docker\\-compose\\.security\\.writable\\-filesystem\\-service(?:\\.writable\\-filesystem\\-service)?$"
+      ],
+      "dimensions": [
+        "D31"
+      ],
+      "parent": "container-excessive-privilege"
+    },
+    "contradictory-support-guard": {
+      "rules": [],
+      "dimensions": []
+    },
+    "cross-aggregate-object-reference": {
+      "rules": [],
+      "dimensions": []
+    },
+    "cross-site-scripting": {
+      "rules": [
+        "^javascript\\.angular\\.security\\.",
+        "^typescript\\.angular\\.security\\.audit\\.angular\\-domsanitizer\\.angular\\-bypasssecuritytrust(?:\\.angular\\-bypasssecuritytrust)?$",
+        "^javascript\\.audit\\.detect\\-replaceall\\-sanitization(?:\\.detect\\-replaceall\\-sanitization)?$",
+        "^javascript\\.aws\\-lambda\\.security\\.tainted\\-html\\-response(?:\\.tainted\\-html\\-response)?$",
+        "^javascript\\.aws\\-lambda\\.security\\.tainted\\-html\\-string(?:\\.tainted\\-html\\-string)?$",
+        "^javascript\\.browser\\.security\\.raw\\-html\\-concat(?:\\.raw\\-html\\-concat)?$",
+        "^javascript\\.express\\.security\\.audit\\.xss\\.",
+        "^javascript\\.express\\.security\\.injection\\.raw\\-html\\-format(?:\\.raw\\-html\\-format)?$",
+        "^javascript\\.fbjs\\.security\\.audit\\.insecure\\-createnodesfrommarkup(?:\\.insecure\\-createnodesfrommarkup)?$",
+        "^javascript\\.lang\\.security\\.audit\\.unknown\\-value\\-with\\-script\\-tag(?:\\.unknown\\-value\\-with\\-script\\-tag)?$",
+        "^javascript\\.lang\\.security\\.detect\\-disable\\-mustache\\-escape(?:\\.detect\\-disable\\-mustache\\-escape)?$",
+        "^javascript\\.monaco\\-editor\\.security\\.audit\\.monaco\\-hover\\-htmlsupport(?:\\.monaco\\-hover\\-htmlsupport)?$",
+        "^javascript\\.serialize\\-javascript\\.security\\.audit\\.unsafe\\-serialize\\-javascript(?:\\.unsafe\\-serialize\\-javascript)?$",
+        "^javascript\\.vue\\.security\\.audit\\.xss\\.templates\\.avoid\\-v\\-html(?:\\.avoid\\-v\\-html)?$",
+        "^typescript\\.react\\.security\\.audit\\.react\\-dangerouslysetinnerhtml(?:\\.react\\-dangerouslysetinnerhtml)?$",
+        "^typescript\\.react\\.security\\.audit\\.react\\-unsanitized\\-method(?:\\.react\\-unsanitized\\-method)?$",
+        "^typescript\\.react\\.security\\.react\\-markdown\\-insecure\\-html(?:\\.react\\-markdown\\-insecure\\-html)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "cross-slice-coupling": {
+      "rules": [],
+      "dimensions": []
+    },
+    "data-encryption-controls": {
+      "rules": [],
+      "dimensions": []
+    },
+    "data-retention-policy": {
+      "rules": [],
+      "dimensions": []
+    },
+    "data-subject-rights": {
+      "rules": [],
+      "dimensions": []
+    },
+    "dependencies-not-locked": {
+      "rules": [],
+      "dimensions": []
+    },
+    "dependency-release-cooldown-missing": {
+      "rules": [],
+      "dimensions": []
+    },
+    "deployment-rollback-safety": {
+      "rules": [],
+      "dimensions": []
+    },
+    "deprecated-dependency": {
+      "rules": [],
+      "dimensions": []
+    },
+    "disaster-recovery-evidence": {
+      "rules": [],
+      "dimensions": []
+    },
+    "documentation-accuracy": {
+      "rules": [],
+      "dimensions": []
+    },
+    "documentation-quality": {
+      "rules": [],
+      "dimensions": []
+    },
+    "domain-depends-on-infrastructure": {
+      "rules": [],
+      "dimensions": []
+    },
+    "domain-event-never-handled": {
+      "rules": [],
+      "dimensions": []
+    },
+    "domain-vs-controller-coverage": {
+      "rules": [],
+      "dimensions": []
+    },
+    "download-without-integrity-check": {
+      "rules": [
+        "^yaml\\.github\\-actions\\.security\\.curl\\-eval(?:\\.curl\\-eval)?$",
+        "^yaml\\.github\\-actions\\.security\\.gha\\-curl\\-pipe\\-shell(?:\\.gha\\-curl\\-pipe\\-shell)?$"
+      ],
+      "dimensions": [
+        "D31"
+      ]
+    },
+    "dual-write-without-outbox": {
+      "rules": [],
+      "dimensions": []
+    },
+    "duplicated-code": {
+      "rules": [],
+      "dimensions": []
+    },
+    "empty-catch-block": {
+      "rules": [],
+      "dimensions": []
+    },
+    "end-of-life-platform": {
+      "rules": [],
+      "dimensions": []
+    },
+    "environment-separation": {
+      "rules": [],
+      "dimensions": []
+    },
+    "error-information-exposure": {
+      "rules": [
+        "^csharp\\.lang\\.security\\.stacktrace\\-disclosure(?:\\.stacktrace\\-disclosure)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "event-not-named-in-past-tense": {
+      "rules": [],
+      "dimensions": []
+    },
+    "event-schema-change-without-upcaster": {
+      "rules": [],
+      "dimensions": []
+    },
+    "excessive-mocking": {
+      "rules": [],
+      "dimensions": []
+    },
+    "executable-specifications": {
+      "rules": [],
+      "dimensions": []
+    },
+    "fat-interface": {
+      "rules": [],
+      "dimensions": []
+    },
+    "flaky-test": {
+      "rules": [],
+      "dimensions": []
+    },
+    "floating-promise": {
+      "rules": [],
+      "dimensions": []
+    },
+    "focus-outline-removed": {
+      "rules": [],
+      "dimensions": [],
+      "parent": "visual-and-motion-safety"
+    },
+    "folder-structure": {
+      "rules": [],
+      "dimensions": []
+    },
+    "form-control-without-label": {
+      "rules": [],
+      "dimensions": []
+    },
+    "form-error-not-associated": {
+      "rules": [],
+      "dimensions": []
+    },
+    "frontend-tooling-scripts": {
+      "rules": [],
+      "dimensions": []
+    },
+    "god-class": {
+      "rules": [],
+      "dimensions": []
+    },
+    "hand-rolled-structured-format-parsing": {
+      "rules": [],
+      "dimensions": []
+    },
+    "hardcoded-credential": {
+      "rules": [
+        "^generic\\.secrets\\.security\\.detected\\-amazon\\-mws\\-auth\\-token(?:\\.detected\\-amazon\\-mws\\-auth\\-token)?$",
+        "^generic\\.secrets\\.security\\.detected\\-artifactory\\-token(?:\\.detected\\-artifactory\\-token)?$",
+        "^generic\\.secrets\\.security\\.detected\\-aws\\-access\\-key\\-id\\-value(?:\\.detected\\-aws\\-access\\-key\\-id\\-value)?$",
+        "^generic\\.secrets\\.security\\.detected\\-aws\\-appsync\\-graphql\\-key(?:\\.detected\\-aws\\-appsync\\-graphql\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-aws\\-secret\\-access\\-key(?:\\.detected\\-aws\\-secret\\-access\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-aws\\-session\\-token(?:\\.detected\\-aws\\-session\\-token)?$",
+        "^generic\\.secrets\\.security\\.detected\\-codeclimate(?:\\.detected\\-codeclimate)?$",
+        "^generic\\.secrets\\.security\\.detected\\-facebook\\-access\\-token(?:\\.detected\\-facebook\\-access\\-token)?$",
+        "^generic\\.secrets\\.security\\.detected\\-facebook\\-oauth(?:\\.detected\\-facebook\\-oauth)?$",
+        "^generic\\.secrets\\.security\\.detected\\-generic\\-api\\-key(?:\\.detected\\-generic\\-api\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-generic\\-secret(?:\\.detected\\-generic\\-secret)?$",
+        "^generic\\.secrets\\.security\\.detected\\-github\\-token(?:\\.detected\\-github\\-token)?$",
+        "^generic\\.secrets\\.security\\.detected\\-google\\-oauth\\-access\\-token(?:\\.detected\\-google\\-oauth\\-access\\-token)?$",
+        "^generic\\.secrets\\.security\\.detected\\-heroku\\-api\\-key(?:\\.detected\\-heroku\\-api\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-hockeyapp(?:\\.detected\\-hockeyapp)?$",
+        "^generic\\.secrets\\.security\\.detected\\-jwt\\-token(?:\\.detected\\-jwt\\-token)?$",
+        "^generic\\.secrets\\.security\\.detected\\-kolide\\-api\\-key(?:\\.detected\\-kolide\\-api\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-mailchimp\\-api\\-key(?:\\.detected\\-mailchimp\\-api\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-mailgun\\-api\\-key(?:\\.detected\\-mailgun\\-api\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-npm\\-registry\\-auth\\-token(?:\\.detected\\-npm\\-registry\\-auth\\-token)?$",
+        "^generic\\.secrets\\.security\\.detected\\-onfido\\-live\\-api\\-token(?:\\.detected\\-onfido\\-live\\-api\\-token)?$",
+        "^generic\\.secrets\\.security\\.detected\\-outlook\\-team(?:\\.detected\\-outlook\\-team)?$",
+        "^generic\\.secrets\\.security\\.detected\\-paypal\\-braintree\\-access\\-token(?:\\.detected\\-paypal\\-braintree\\-access\\-token)?$",
+        "^generic\\.secrets\\.security\\.detected\\-picatic\\-api\\-key(?:\\.detected\\-picatic\\-api\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-sauce\\-token(?:\\.detected\\-sauce\\-token)?$",
+        "^generic\\.secrets\\.security\\.detected\\-sendgrid\\-api\\-key(?:\\.detected\\-sendgrid\\-api\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-slack\\-token(?:\\.detected\\-slack\\-token)?$",
+        "^generic\\.secrets\\.security\\.detected\\-slack\\-webhook(?:\\.detected\\-slack\\-webhook)?$",
+        "^generic\\.secrets\\.security\\.detected\\-snyk\\-api\\-key(?:\\.detected\\-snyk\\-api\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-softlayer\\-api\\-key(?:\\.detected\\-softlayer\\-api\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-sonarqube\\-docs\\-api\\-key(?:\\.detected\\-sonarqube\\-docs\\-api\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-square\\-access\\-token(?:\\.detected\\-square\\-access\\-token)?$",
+        "^generic\\.secrets\\.security\\.detected\\-square\\-oauth\\-secret(?:\\.detected\\-square\\-oauth\\-secret)?$",
+        "^generic\\.secrets\\.security\\.detected\\-stripe\\-api\\-key(?:\\.detected\\-stripe\\-api\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-stripe\\-restricted\\-api\\-key(?:\\.detected\\-stripe\\-restricted\\-api\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-telegram\\-bot\\-api\\-key(?:\\.detected\\-telegram\\-bot\\-api\\-key)?$",
+        "^generic\\.secrets\\.security\\.detected\\-twilio\\-api\\-key(?:\\.detected\\-twilio\\-api\\-key)?$",
+        "^generic\\.secrets\\.security\\.google\\-maps\\-apikeyleak(?:\\.google\\-maps\\-apikeyleak)?$"
+      ],
+      "dimensions": [
+        "D13"
+      ],
+      "family": "hardcoded-secret"
+    },
+    "hardcoded-cryptographic-key": {
+      "rules": [
+        "^javascript\\.express\\.security\\.audit\\.express\\-session\\-hardcoded\\-secret(?:\\.express\\-session\\-hardcoded\\-secret)?$",
+        "^javascript\\.express\\.security\\.express\\-jwt\\-hardcoded\\-secret(?:\\.express\\-jwt\\-hardcoded\\-secret)?$",
+        "^javascript\\.jose\\.security\\.jwt\\-hardcode\\.hardcoded\\-jwt\\-secret(?:\\.hardcoded\\-jwt\\-secret)?$",
+        "^javascript\\.jsonwebtoken\\.security\\.jwt\\-hardcode\\.hardcoded\\-jwt\\-secret(?:\\.hardcoded\\-jwt\\-secret)?$",
+        "^javascript\\.passport\\-jwt\\.security\\.passport\\-hardcode\\.hardcoded\\-passport\\-secret(?:\\.hardcoded\\-passport\\-secret)?$",
+        "^javascript\\.lang\\.security\\.audit\\.hardcoded\\-hmac\\-key(?:\\.hardcoded\\-hmac\\-key)?$"
+      ],
+      "dimensions": [
+        "D13"
+      ],
+      "family": "hardcoded-secret"
+    },
+    "hardcoded-password": {
+      "rules": [
+        "^generic\\.secrets\\.security\\.detected\\-artifactory\\-password(?:\\.detected\\-artifactory\\-password)?$",
+        "^generic\\.secrets\\.security\\.detected\\-ssh\\-password(?:\\.detected\\-ssh\\-password)?$",
+        "^generic\\.secrets\\.security\\.detected\\-bcrypt\\-hash(?:\\.detected\\-bcrypt\\-hash)?$",
+        "^generic\\.secrets\\.security\\.detected\\-etc\\-shadow(?:\\.detected\\-etc\\-shadow)?$"
+      ],
+      "dimensions": [
+        "D13"
+      ],
+      "family": "hardcoded-secret"
+    },
+    "heading-and-label-text-quality": {
+      "rules": [],
+      "dimensions": []
+    },
+    "high-cognitive-complexity": {
+      "rules": [],
+      "dimensions": []
+    },
+    "high-cyclomatic-complexity": {
+      "rules": [],
+      "dimensions": []
+    },
+    "host-namespace-sharing": {
+      "rules": [
+        "^yaml\\.kubernetes\\.security\\.hostnetwork\\-pod(?:\\.hostnetwork\\-pod)?$",
+        "^yaml\\.kubernetes\\.security\\.hostpid\\-pod(?:\\.hostpid\\-pod)?$",
+        "^yaml\\.kubernetes\\.security\\.hostipc\\-pod(?:\\.hostipc\\-pod)?$"
+      ],
+      "dimensions": [
+        "D31"
+      ],
+      "parent": "container-excessive-privilege"
+    },
+    "host-path-mount": {
+      "rules": [
+        "^yaml\\.kubernetes\\.security\\.exposing\\-docker\\-socket\\-hostpath(?:\\.exposing\\-docker\\-socket\\-hostpath)?$",
+        "^yaml\\.docker\\-compose\\.security\\.exposing\\-docker\\-socket\\-volume(?:\\.exposing\\-docker\\-socket\\-volume)?$",
+        "^dockerfile\\.security\\.dockerd\\-socket\\-mount\\.dockerfile\\-dockerd\\-socket\\-mount(?:\\.dockerfile\\-dockerd\\-socket\\-mount)?$"
+      ],
+      "dimensions": [
+        "D31"
+      ],
+      "parent": "container-excessive-privilege"
+    },
+    "https-enforcement": {
+      "rules": [],
+      "dimensions": []
+    },
+    "iac-misconfiguration": {
+      "rules": [
+        "^json\\.aws\\.security\\.public\\-s3\\-bucket(?:\\.public\\-s3\\-bucket)?$",
+        "^json\\.aws\\.security\\.public\\-s3\\-policy\\-statement(?:\\.public\\-s3\\-policy\\-statement)?$",
+        "^json\\.aws\\.security\\.wildcard\\-assume\\-role(?:\\.wildcard\\-assume\\-role)?$",
+        "^typescript\\.aws\\-cdk\\.security\\.awscdk\\-bucket\\-grantpublicaccessmethod(?:\\.awscdk\\-bucket\\-grantpublicaccessmethod)?$",
+        "^typescript\\.aws\\-cdk\\.security\\.awscdk\\-codebuild\\-project\\-public(?:\\.awscdk\\-codebuild\\-project\\-public)?$"
+      ],
+      "dimensions": [
+        "D31"
+      ]
+    },
+    "image-not-from-allowed-registry": {
+      "rules": [],
+      "dimensions": [],
+      "parent": "iac-misconfiguration"
+    },
+    "improper-certificate-validation": {
+      "rules": [
+        "^csharp\\.lang\\.security\\.cryptography\\.x509\\-subject\\-name\\-validation\\.X509\\-subject\\-name\\-validation(?:\\.X509\\-subject\\-name\\-validation)?$",
+        "^problem\\-based\\-packs\\.insecure\\-transport\\.js\\-node\\.bypass\\-tls\\-verification(?:\\.bypass\\-tls\\-verification)?$",
+        "^javascript\\.sequelize\\.security\\.audit\\.sequelize\\-tls\\-disabled\\-cert\\-validation(?:\\.sequelize\\-tls\\-disabled\\-cert\\-validation)?$",
+        "^yaml\\.kubernetes\\.security\\.skip\\-tls\\-verify\\-cluster(?:\\.skip\\-tls\\-verify\\-cluster)?$",
+        "^yaml\\.kubernetes\\.security\\.skip\\-tls\\-verify\\-service(?:\\.skip\\-tls\\-verify\\-service)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "improper-resource-disposal": {
+      "rules": [],
+      "dimensions": []
+    },
+    "inbound-input-validation": {
+      "rules": [],
+      "dimensions": []
+    },
+    "incomplete-implementation": {
+      "rules": [],
+      "dimensions": []
+    },
+    "inconsistent-naming": {
+      "rules": [],
+      "dimensions": []
+    },
+    "index-access-outside-bounds-guard": {
+      "rules": [],
+      "dimensions": []
+    },
+    "inert-configuration-option": {
+      "rules": [],
+      "dimensions": []
+    },
+    "insecure-cookie-flags": {
+      "rules": [
+        "^javascript\\.express\\.security\\.audit\\.express\\-cookie\\-settings\\.express\\-cookie\\-session\\-no\\-httponly(?:\\.express\\-cookie\\-session\\-no\\-httponly)?$",
+        "^javascript\\.express\\.security\\.audit\\.express\\-cookie\\-settings\\.express\\-cookie\\-session\\-no\\-secure(?:\\.express\\-cookie\\-session\\-no\\-secure)?$",
+        "^csharp\\.dotnet\\.security\\.web\\-config\\-insecure\\-cookie\\-settings(?:\\.web\\-config\\-insecure\\-cookie\\-settings)?$"
+      ],
+      "dimensions": [
+        "S1"
+      ]
+    },
+    "insecure-deserialization": {
+      "rules": [
+        "^csharp\\.lang\\.security\\.insecure\\-deserialization\\.",
+        "^javascript\\.express\\.security\\.audit\\.express\\-third\\-party\\-object\\-deserialization(?:\\.express\\-third\\-party\\-object\\-deserialization)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ],
+      "family": "untrusted-data-executed"
+    },
+    "insecure-randomness": {
+      "rules": [
+        "^csharp\\.dotnet\\.security\\.use_weak_rng_for_keygeneration(?:\\.use_weak_rng_for_keygeneration)?$",
+        "^javascript\\.lang\\.security\\.detect\\-pseudorandombytes\\.detect\\-pseudoRandomBytes(?:\\.detect\\-pseudoRandomBytes)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "insufficient-password-hashing": {
+      "rules": [
+        "^javascript\\.lang\\.security\\.audit\\.md5\\-used\\-as\\-password(?:\\.md5\\-used\\-as\\-password)?$",
+        "^javascript\\.argon2\\.security\\.unsafe\\-argon2\\-config(?:\\.unsafe\\-argon2\\-config)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ],
+      "family": "weak-password-hashing"
+    },
+    "integration-event-leaks-domain-type": {
+      "rules": [],
+      "dimensions": []
+    },
+    "internal-api-inconsistency": {
+      "rules": [],
+      "dimensions": []
+    },
+    "invalid-aria-usage": {
+      "rules": [],
+      "dimensions": []
+    },
+    "js-interop-contract-mismatch": {
+      "rules": [],
+      "dimensions": []
+    },
+    "knowledge-concentration": {
+      "rules": [],
+      "dimensions": []
+    },
+    "knowledge-freshness": {
+      "rules": [],
+      "dimensions": []
+    },
+    "layer-dependency-violation": {
+      "rules": [],
+      "dimensions": []
+    },
+    "ldap-injection": {
+      "rules": [],
+      "dimensions": []
+    },
+    "library-api-versioning": {
+      "rules": [],
+      "dimensions": []
+    },
+    "license-policy-violation": {
+      "rules": [],
+      "dimensions": []
+    },
+    "link-and-button-text-quality": {
+      "rules": [],
+      "dimensions": []
+    },
+    "lock-release-state-mismatch": {
+      "rules": [],
+      "dimensions": []
+    },
+    "log-injection": {
+      "rules": [
+        "^javascript\\.lang\\.security\\.audit\\.unsafe\\-formatstring(?:\\.unsafe\\-formatstring)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "long-method": {
+      "rules": [],
+      "dimensions": []
+    },
+    "loop-decision-on-fixed-element": {
+      "rules": [],
+      "dimensions": []
+    },
+    "low-class-cohesion": {
+      "rules": [],
+      "dimensions": []
+    },
+    "low-value-comments": {
+      "rules": [],
+      "dimensions": []
+    },
+    "malicious-dependency": {
+      "rules": [],
+      "dimensions": []
+    },
+    "mass-assignment": {
+      "rules": [
+        "^csharp\\.dotnet\\.security\\.audit\\.mass\\-assignment(?:\\.mass\\-assignment)?$",
+        "^javascript\\.express\\.security\\.express\\-data\\-exfiltration(?:\\.express\\-data\\-exfiltration)?$",
+        "^javascript\\.lang\\.security\\.insecure\\-object\\-assign(?:\\.insecure\\-object\\-assign)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "misplaced-dev-dependency": {
+      "rules": [],
+      "dimensions": []
+    },
+    "missing-authorization": {
+      "rules": [],
+      "dimensions": []
+    },
+    "missing-cancellation-propagation": {
+      "rules": [],
+      "dimensions": []
+    },
+    "missing-configure-await": {
+      "rules": [],
+      "dimensions": []
+    },
+    "missing-health-probes": {
+      "rules": [],
+      "dimensions": [],
+      "parent": "iac-misconfiguration"
+    },
+    "missing-image-healthcheck": {
+      "rules": [],
+      "dimensions": [],
+      "parent": "iac-misconfiguration"
+    },
+    "missing-subresource-integrity": {
+      "rules": [
+        "^html\\.security\\.audit\\.missing\\-integrity(?:\\.missing\\-integrity)?$",
+        "^generic\\.visualforce\\.security\\.ncino\\.html\\.usesriforcdns\\.use\\-SRI\\-for\\-CDNs(?:\\.use\\-SRI\\-for\\-CDNs)?$"
+      ],
+      "dimensions": [
+        "S1"
+      ]
+    },
+    "missing-text-alternative": {
+      "rules": [],
+      "dimensions": []
+    },
+    "modal-focus-not-managed": {
+      "rules": [],
+      "dimensions": []
+    },
+    "module-dependency-cycle": {
+      "rules": [],
+      "dimensions": []
+    },
+    "module-off-main-sequence": {
+      "rules": [],
+      "dimensions": []
+    },
+    "motion-without-reduced-motion": {
+      "rules": [],
+      "dimensions": [],
+      "parent": "visual-and-motion-safety"
+    },
+    "multi-aggregate-transaction": {
+      "rules": [],
+      "dimensions": []
+    },
+    "mutable-image-reference": {
+      "rules": [],
+      "dimensions": []
+    },
+    "mutable-persisted-event": {
+      "rules": [],
+      "dimensions": []
+    },
+    "network-egress-policy": {
+      "rules": [],
+      "dimensions": []
+    },
+    "non-idempotent-message-handler": {
+      "rules": [],
+      "dimensions": []
+    },
+    "non-keyboard-accessible-interaction": {
+      "rules": [],
+      "dimensions": []
+    },
+    "non-structured-log-message": {
+      "rules": [],
+      "dimensions": []
+    },
+    "nondeterministic-event-fold": {
+      "rules": [],
+      "dimensions": []
+    },
+    "nosql-injection": {
+      "rules": [
+        "^javascript\\.aws\\-lambda\\.security\\.dynamodb\\-request\\-object(?:\\.dynamodb\\-request\\-object)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "not-implemented-placeholder": {
+      "rules": [],
+      "dimensions": []
+    },
+    "null-dereference": {
+      "rules": [],
+      "dimensions": []
+    },
+    "null-forgiving-suppression": {
+      "rules": [],
+      "dimensions": []
+    },
+    "nullable-analysis-disabled": {
+      "rules": [],
+      "dimensions": []
+    },
+    "observability": {
+      "rules": [],
+      "dimensions": []
+    },
+    "obsolete-symbol-still-used": {
+      "rules": [],
+      "dimensions": []
+    },
+    "open-redirect": {
+      "rules": [
+        "^javascript\\.browser\\.security\\.open\\-redirect\\.js\\-open\\-redirect(?:\\.js\\-open\\-redirect)?$",
+        "^javascript\\.express\\.security\\.audit\\.express\\-open\\-redirect(?:\\.express\\-open\\-redirect)?$",
+        "^typescript\\.nestjs\\.security\\.audit\\.nestjs\\-open\\-redirect(?:\\.nestjs\\-open\\-redirect)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "outbound-http-resilience": {
+      "rules": [],
+      "dimensions": []
+    },
+    "outdated-dependency": {
+      "rules": [],
+      "dimensions": []
+    },
+    "overly-permissive-rbac": {
+      "rules": [
+        "^yaml\\.kubernetes\\.security\\.legacy\\-api\\-clusterrole\\-excessive\\-permissions(?:\\.legacy\\-api\\-clusterrole\\-excessive\\-permissions)?$"
+      ],
+      "dimensions": [
+        "D31"
+      ],
+      "parent": "iac-misconfiguration"
+    },
+    "oversized-module": {
+      "rules": [],
+      "dimensions": []
+    },
+    "oversized-source-file": {
+      "rules": [],
+      "dimensions": []
+    },
+    "page-structure-violation": {
+      "rules": [],
+      "dimensions": []
+    },
+    "path-traversal": {
+      "rules": [
+        "^csharp\\.lang\\.security\\.filesystem\\.unsafe\\-path\\-combine(?:\\.unsafe\\-path\\-combine)?$",
+        "^javascript\\.lang\\.security\\.audit\\.path\\-traversal\\.path\\-join\\-resolve\\-traversal(?:\\.path\\-join\\-resolve\\-traversal)?$",
+        "^javascript\\.express\\.security\\.audit\\.express\\-path\\-join\\-resolve\\-traversal(?:\\.express\\-path\\-join\\-resolve\\-traversal)?$",
+        "^javascript\\.express\\.security\\.audit\\.express\\-res\\-sendfile(?:\\.express\\-res\\-sendfile)?$",
+        "^javascript\\.express\\.security\\.audit\\.res\\-render\\-injection(?:\\.res\\-render\\-injection)?$",
+        "^generic\\.nginx\\.security\\.alias\\-path\\-traversal(?:\\.alias\\-path\\-traversal)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "personal-data-in-event-store": {
+      "rules": [],
+      "dimensions": []
+    },
+    "personal-data-inventory": {
+      "rules": [],
+      "dimensions": []
+    },
+    "pointless-catch-rethrow": {
+      "rules": [],
+      "dimensions": []
+    },
+    "prerelease-dependency": {
+      "rules": [],
+      "dimensions": []
+    },
+    "primitive-entity-identifier": {
+      "rules": [],
+      "dimensions": []
+    },
+    "primitive-obsession": {
+      "rules": [],
+      "dimensions": []
+    },
+    "privileged-container": {
+      "rules": [
+        "^yaml\\.kubernetes\\.security\\.privileged\\-container(?:\\.privileged\\-container)?$",
+        "^yaml\\.docker\\-compose\\.security\\.privileged\\-service(?:\\.privileged\\-service)?$"
+      ],
+      "dimensions": [
+        "D31"
+      ],
+      "parent": "container-excessive-privilege"
+    },
+    "production-depends-on-test-code": {
+      "rules": [],
+      "dimensions": []
+    },
+    "prototype-pollution": {
+      "rules": [
+        "^javascript\\.lang\\.security\\.audit\\.prototype\\-pollution\\.prototype\\-pollution\\-loop(?:\\.prototype\\-pollution\\-loop)?$",
+        "^javascript\\.express\\.security\\.audit\\.remote\\-property\\-injection(?:\\.remote\\-property\\-injection)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "publicly-mutable-entity-state": {
+      "rules": [],
+      "dimensions": []
+    },
+    "query-with-side-effects": {
+      "rules": [],
+      "dimensions": []
+    },
+    "react-hook-missing-dependency": {
+      "rules": [],
+      "dimensions": []
+    },
+    "react-index-as-key": {
+      "rules": [],
+      "dimensions": []
+    },
+    "react-state-mutation": {
+      "rules": [],
+      "dimensions": []
+    },
+    "readme-quality": {
+      "rules": [],
+      "dimensions": []
+    },
+    "redundant-condition-operand": {
+      "rules": [],
+      "dimensions": []
+    },
+    "regex-denial-of-service": {
+      "rules": [
+        "^csharp\\.lang\\.security\\.regular\\-expression\\-dos\\.",
+        "^javascript\\.lang\\.security\\.audit\\.detect\\-non\\-literal\\-regexp(?:\\.detect\\-non\\-literal\\-regexp)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "release-hygiene": {
+      "rules": [],
+      "dimensions": []
+    },
+    "repository-for-non-aggregate": {
+      "rules": [],
+      "dimensions": []
+    },
+    "reproducible-boot": {
+      "rules": [],
+      "dimensions": []
+    },
+    "rethrow-resets-stack-trace": {
+      "rules": [],
+      "dimensions": []
+    },
+    "runtime-threat-detection-and-admission": {
+      "rules": [],
+      "dimensions": []
+    },
+    "scattered-domain-rule": {
+      "rules": [],
+      "dimensions": []
+    },
+    "secret-in-process-arguments": {
+      "rules": [],
+      "dimensions": []
+    },
+    "secret-in-version-history": {
+      "rules": [],
+      "dimensions": []
+    },
+    "security-response-headers": {
+      "rules": [
+        "^javascript\\.express\\.security\\.x\\-frame\\-options\\-misconfiguration(?:\\.x\\-frame\\-options\\-misconfiguration)?$",
+        "^typescript\\.nestjs\\.security\\.audit\\.nestjs\\-header\\-xss\\-disabled(?:\\.nestjs\\-header\\-xss\\-disabled)?$",
+        "^generic\\.nginx\\.security\\.header\\-redefinition(?:\\.header\\-redefinition)?$"
+      ],
+      "dimensions": [
+        "S1"
+      ]
+    },
+    "security-tooling-in-ci": {
+      "rules": [],
+      "dimensions": []
+    },
+    "sensitive-data-in-browser-storage": {
+      "rules": [
+        "^typescript\\.react\\.security\\.audit\\.react\\-jwt\\-in\\-localstorage(?:\\.react\\-jwt\\-in\\-localstorage)?$"
+      ],
+      "dimensions": [
+        "D32"
+      ]
+    },
+    "sensitive-data-in-logs": {
+      "rules": [],
+      "dimensions": []
+    },
+    "sensitive-data-in-token-payload": {
+      "rules": [
+        "^javascript\\.jose\\.security\\.audit\\.jose\\-exposed\\-data(?:\\.jose\\-exposed\\-data)?$",
+        "^javascript\\.jsonwebtoken\\.security\\.audit\\.jwt\\-exposed\\-data(?:\\.jwt\\-exposed\\-data)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "sensitive-data-in-url": {
+      "rules": [],
+      "dimensions": []
+    },
+    "server-side-request-forgery": {
+      "rules": [
+        "^csharp\\.lang\\.security\\.ssrf\\.http\\-client\\.ssrf(?:\\.ssrf)?$",
+        "^csharp\\.lang\\.security\\.ssrf\\.rest\\-client\\.ssrf(?:\\.ssrf)?$",
+        "^csharp\\.lang\\.security\\.ssrf\\.web\\-client\\.ssrf(?:\\.ssrf)?$",
+        "^csharp\\.lang\\.security\\.ssrf\\.web\\-request\\.ssrf(?:\\.ssrf)?$",
+        "^javascript\\.express\\.security\\.audit\\.express\\-ssrf(?:\\.express\\-ssrf)?$",
+        "^javascript\\.apollo\\.security\\.apollo\\-axios\\-ssrf(?:\\.apollo\\-axios\\-ssrf)?$",
+        "^javascript\\.playwright\\.security\\.audit\\.playwright\\-goto\\-injection(?:\\.playwright\\-goto\\-injection)?$",
+        "^javascript\\.playwright\\.security\\.audit\\.playwright\\-setcontent\\-injection(?:\\.playwright\\-setcontent\\-injection)?$",
+        "^javascript\\.puppeteer\\.security\\.audit\\.puppeteer\\-goto\\-injection(?:\\.puppeteer\\-goto\\-injection)?$",
+        "^javascript\\.puppeteer\\.security\\.audit\\.puppeteer\\-setcontent\\-injection(?:\\.puppeteer\\-setcontent\\-injection)?$",
+        "^javascript\\.phantom\\.security\\.audit\\.phantom\\-injection(?:\\.phantom\\-injection)?$",
+        "^javascript\\.express\\.security\\.express\\-phantom\\-injection(?:\\.express\\-phantom\\-injection)?$",
+        "^javascript\\.express\\.security\\.express\\-puppeteer\\-injection(?:\\.express\\-puppeteer\\-injection)?$",
+        "^javascript\\.express\\.security\\.express\\-wkhtml\\-injection\\.express\\-wkhtmltoimage\\-injection(?:\\.express\\-wkhtmltoimage\\-injection)?$",
+        "^javascript\\.express\\.security\\.express\\-wkhtml\\-injection\\.express\\-wkhtmltopdf\\-injection(?:\\.express\\-wkhtmltopdf\\-injection)?$",
+        "^javascript\\.wkhtmltoimage\\.security\\.audit\\.wkhtmltoimage\\-injection(?:\\.wkhtmltoimage\\-injection)?$",
+        "^javascript\\.wkhtmltopdf\\.security\\.audit\\.wkhtmltopdf\\-injection(?:\\.wkhtmltopdf\\-injection)?$",
+        "^generic\\.nginx\\.security\\.dynamic\\-proxy\\-host(?:\\.dynamic\\-proxy\\-host)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "side-effect-in-conditional-guard": {
+      "rules": [],
+      "dimensions": []
+    },
+    "silent-error-fallback": {
+      "rules": [],
+      "dimensions": []
+    },
+    "skipped-test-without-reason": {
+      "rules": [],
+      "dimensions": []
+    },
+    "solution-structure": {
+      "rules": [],
+      "dimensions": []
+    },
+    "sql-injection": {
+      "rules": [
+        "^csharp\\.lang\\.security\\.sqli\\.csharp\\-sqli(?:\\.csharp\\-sqli)?$",
+        "^javascript\\.aws\\-lambda\\.security\\.knex\\-sqli(?:\\.knex\\-sqli)?$",
+        "^javascript\\.aws\\-lambda\\.security\\.mysql\\-sqli(?:\\.mysql\\-sqli)?$",
+        "^javascript\\.aws\\-lambda\\.security\\.pg\\-sqli(?:\\.pg\\-sqli)?$",
+        "^javascript\\.aws\\-lambda\\.security\\.sequelize\\-sqli(?:\\.sequelize\\-sqli)?$",
+        "^javascript\\.lang\\.security\\.audit\\.sqli\\.node\\-knex\\-sqli(?:\\.node\\-knex\\-sqli)?$",
+        "^javascript\\.lang\\.security\\.audit\\.sqli\\.node\\-mssql\\-sqli(?:\\.node\\-mssql\\-sqli)?$",
+        "^javascript\\.lang\\.security\\.audit\\.sqli\\.node\\-mysql\\-sqli(?:\\.node\\-mysql\\-sqli)?$",
+        "^javascript\\.lang\\.security\\.audit\\.sqli\\.node\\-postgres\\-sqli(?:\\.node\\-postgres\\-sqli)?$",
+        "^javascript\\.sequelize\\.security\\.audit\\.sequelize\\-injection\\-express\\.express\\-sequelize\\-injection(?:\\.express\\-sequelize\\-injection)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "suppressed-diagnostic": {
+      "rules": [],
+      "dimensions": []
+    },
+    "synchronous-remote-call-in-event-handler": {
+      "rules": [],
+      "dimensions": []
+    },
+    "technical-debt-marker": {
+      "rules": [],
+      "dimensions": []
+    },
+    "test-coverage": {
+      "rules": [],
+      "dimensions": []
+    },
+    "test-failure-swallowed": {
+      "rules": [],
+      "dimensions": []
+    },
+    "test-only-api-in-production-code": {
+      "rules": [],
+      "dimensions": []
+    },
+    "test-pyramid-distribution": {
+      "rules": [],
+      "dimensions": []
+    },
+    "test-without-assertion": {
+      "rules": [],
+      "dimensions": []
+    },
+    "third-party-data-flow": {
+      "rules": [],
+      "dimensions": []
+    },
+    "token-signature-or-expiry-not-validated": {
+      "rules": [
+        "^csharp\\.lang\\.security\\.ad\\.jwt\\-tokenvalidationparameters\\-no\\-expiry\\-validation(?:\\.jwt\\-tokenvalidationparameters\\-no\\-expiry\\-validation)?$",
+        "^javascript\\.jsonwebtoken\\.security\\.audit\\.jwt\\-decode\\-without\\-verify(?:\\.jwt\\-decode\\-without\\-verify)?$",
+        "^javascript\\.jwt\\-simple\\.security\\.jwt\\-simple\\-noverify(?:\\.jwt\\-simple\\-noverify)?$",
+        "^javascript\\.jose\\.security\\.jwt\\-none\\-alg(?:\\.jwt\\-none\\-alg)?$",
+        "^javascript\\.jsonwebtoken\\.security\\.jwt\\-none\\-alg(?:\\.jwt\\-none\\-alg)?$",
+        "^typescript\\.react\\.security\\.audit\\.react\\-jwt\\-decoded\\-property(?:\\.react\\-jwt\\-decoded\\-property)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "type-lookup-by-simple-name": {
+      "rules": [],
+      "dimensions": []
+    },
+    "unauthenticated-reachable-endpoint": {
+      "rules": [],
+      "dimensions": []
+    },
+    "unbounded-allocation-from-untrusted-length": {
+      "rules": [],
+      "dimensions": []
+    },
+    "unbounded-truncation-loop": {
+      "rules": [],
+      "dimensions": []
+    },
+    "unchecked-any-external-data": {
+      "rules": [],
+      "dimensions": []
+    },
+    "uncontrolled-recursion": {
+      "rules": [],
+      "dimensions": []
+    },
+    "undeclared-dependency": {
+      "rules": [],
+      "dimensions": []
+    },
+    "undocumented-api-endpoint": {
+      "rules": [],
+      "dimensions": []
+    },
+    "undrained-child-process-stream": {
+      "rules": [],
+      "dimensions": []
+    },
+    "unexpected-exposed-port": {
+      "rules": [],
+      "dimensions": []
+    },
+    "unguarded-expensive-debug-logging": {
+      "rules": [],
+      "dimensions": []
+    },
+    "unpinned-ci-action": {
+      "rules": [
+        "^yaml\\.github\\-actions\\.security\\.github\\-actions\\-mutable\\-action\\-tag(?:\\.github\\-actions\\-mutable\\-action\\-tag)?$"
+      ],
+      "dimensions": [
+        "D36"
+      ]
+    },
+    "unreachable-code": {
+      "rules": [],
+      "dimensions": []
+    },
+    "unrestored-process-global-state": {
+      "rules": [],
+      "dimensions": []
+    },
+    "unstable-dependency": {
+      "rules": [],
+      "dimensions": []
+    },
+    "unsynchronized-callback-handoff": {
+      "rules": [],
+      "dimensions": []
+    },
+    "unsynchronized-shared-state": {
+      "rules": [],
+      "dimensions": []
+    },
+    "untyped-javascript-share": {
+      "rules": [],
+      "dimensions": []
+    },
+    "unused-code": {
+      "rules": [],
+      "dimensions": []
+    },
+    "unused-dependency": {
+      "rules": [],
+      "dimensions": []
+    },
+    "value-object-mutability": {
+      "rules": [],
+      "dimensions": []
+    },
+    "versioned-schema-migrations": {
+      "rules": [],
+      "dimensions": []
+    },
+    "visual-and-motion-safety": {
+      "rules": [],
+      "dimensions": []
+    },
+    "vulnerability-disclosure-policy": {
+      "rules": [],
+      "dimensions": []
+    },
+    "vulnerability-disclosure-policy-quality": {
+      "rules": [],
+      "dimensions": []
+    },
+    "vulnerable-dependency": {
+      "rules": [],
+      "dimensions": []
+    },
+    "weak-cryptographic-algorithm": {
+      "rules": [
+        "^csharp\\.dotnet\\.security\\.use_ecb_mode(?:\\.use_ecb_mode)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "weak-hash-algorithm": {
+      "rules": [],
+      "dimensions": [],
+      "family": "weak-password-hashing"
+    },
+    "workload-syscall-confinement": {
+      "rules": [],
+      "dimensions": []
+    },
+    "xml-external-entity": {
+      "rules": [
+        "^csharp\\.lang\\.security\\.xxe\\.",
+        "^javascript\\.express\\.security\\.audit\\.express\\-libxml\\-noent(?:\\.express\\-libxml\\-noent)?$",
+        "^javascript\\.express\\.security\\.audit\\.express\\-libxml\\-vm\\-noent(?:\\.express\\-libxml\\-vm\\-noent)?$",
+        "^javascript\\.express\\.security\\.audit\\.express\\-xml2json\\-xxe\\-event(?:\\.express\\-xml2json\\-xxe\\-event)?$",
+        "^javascript\\.express\\.security\\.express\\-expat\\-xxe(?:\\.express\\-expat\\-xxe)?$",
+        "^javascript\\.express\\.security\\.express\\-xml2json\\-xxe(?:\\.express\\-xml2json\\-xxe)?$",
+        "^javascript\\.node\\-expat\\.security\\.audit\\.expat\\-xxe(?:\\.expat\\-xxe)?$",
+        "^javascript\\.sax\\.security\\.audit\\.sax\\-xxe(?:\\.sax\\-xxe)?$",
+        "^javascript\\.xml2json\\.security\\.audit\\.xml2json\\-xxe(?:\\.xml2json\\-xxe)?$"
+      ],
+      "dimensions": [
+        "D29"
+      ]
+    },
+    "xpath-injection": {
+      "rules": [],
+      "dimensions": []
+    }
+  },
+  "unmapped": [
+    {
+      "concept": "accessibility-checks-in-ci",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "adr-conformance",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "adr-quality",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "allocation-awareness",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "alt-text-quality",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "ambient-nondeterminism-in-domain",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "anemic-domain-model",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "architecture-documentation",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "architecture-rules-unenforced",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "architecture-style-fit",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "argument-guard-tests-wrong-condition",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "async-void-method",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "audit-trail",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "authorization-enforcement",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "automounted-service-account-token",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "autoplay-media-without-control",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "benchmark-discipline",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "blocking-on-async-code",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "boundary-type-leakage",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "build-provenance-and-signing",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "business-logic-in-controller",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "business-logic-share",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "call-indirection",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "captive-dependency",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "change-coupling",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "churn-complexity-hotspot",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "ci-build-and-test-pipeline",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "ci-test-gate-integrity",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "ci-token-excessive-permissions",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "collection-modified-during-enumeration",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "command-with-multiple-handlers",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "commented-out-code",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "compiled-code-size",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "consent-not-checked",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "constructible-invalid-entity",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "container-excess-capabilities",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "container-excessive-privilege",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "container-missing-resource-limits",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "container-missing-resource-requests",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "contradictory-support-guard",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "cross-aggregate-object-reference",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "cross-slice-coupling",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "data-encryption-controls",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "data-retention-policy",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "data-subject-rights",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "dependencies-not-locked",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "dependency-release-cooldown-missing",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "deployment-rollback-safety",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "deprecated-dependency",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "disaster-recovery-evidence",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "documentation-accuracy",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "documentation-quality",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "domain-depends-on-infrastructure",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "domain-event-never-handled",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "domain-vs-controller-coverage",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "dual-write-without-outbox",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "duplicated-code",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "empty-catch-block",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "end-of-life-platform",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "environment-separation",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "event-not-named-in-past-tense",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "event-schema-change-without-upcaster",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "excessive-mocking",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "executable-specifications",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "fat-interface",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "flaky-test",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "floating-promise",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "focus-outline-removed",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "folder-structure",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "form-control-without-label",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "form-error-not-associated",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "frontend-tooling-scripts",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "god-class",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "hand-rolled-structured-format-parsing",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "heading-and-label-text-quality",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "high-cognitive-complexity",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "high-cyclomatic-complexity",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "https-enforcement",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "image-not-from-allowed-registry",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "improper-resource-disposal",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "inbound-input-validation",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "incomplete-implementation",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "inconsistent-naming",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "index-access-outside-bounds-guard",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "inert-configuration-option",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "integration-event-leaks-domain-type",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "internal-api-inconsistency",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "invalid-aria-usage",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "js-interop-contract-mismatch",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "knowledge-concentration",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "knowledge-freshness",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "layer-dependency-violation",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "ldap-injection",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "library-api-versioning",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "license-policy-violation",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "link-and-button-text-quality",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "lock-release-state-mismatch",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "long-method",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "loop-decision-on-fixed-element",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "low-class-cohesion",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "low-value-comments",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "malicious-dependency",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "misplaced-dev-dependency",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "missing-authorization",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "missing-cancellation-propagation",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "missing-configure-await",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "missing-health-probes",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "missing-image-healthcheck",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "missing-text-alternative",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "modal-focus-not-managed",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "module-dependency-cycle",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "module-off-main-sequence",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "motion-without-reduced-motion",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "multi-aggregate-transaction",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "mutable-image-reference",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "mutable-persisted-event",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "network-egress-policy",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "non-idempotent-message-handler",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "non-keyboard-accessible-interaction",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "non-structured-log-message",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "nondeterministic-event-fold",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "not-implemented-placeholder",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "null-dereference",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "null-forgiving-suppression",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "nullable-analysis-disabled",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "observability",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "obsolete-symbol-still-used",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "outbound-http-resilience",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "outdated-dependency",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "oversized-module",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "oversized-source-file",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "page-structure-violation",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "personal-data-in-event-store",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "personal-data-inventory",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "pointless-catch-rethrow",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "prerelease-dependency",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "primitive-entity-identifier",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "primitive-obsession",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "production-depends-on-test-code",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "publicly-mutable-entity-state",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "query-with-side-effects",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "react-hook-missing-dependency",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "react-index-as-key",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "react-state-mutation",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "readme-quality",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "redundant-condition-operand",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "release-hygiene",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "repository-for-non-aggregate",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "reproducible-boot",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "rethrow-resets-stack-trace",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "runtime-threat-detection-and-admission",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "scattered-domain-rule",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "secret-in-process-arguments",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "secret-in-version-history",
+      "reason": "Semgrep CE scans the working tree only, never git history"
+    },
+    {
+      "concept": "security-tooling-in-ci",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "sensitive-data-in-logs",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "sensitive-data-in-url",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "side-effect-in-conditional-guard",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "silent-error-fallback",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "skipped-test-without-reason",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "solution-structure",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "suppressed-diagnostic",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "synchronous-remote-call-in-event-handler",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "technical-debt-marker",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "test-coverage",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "test-failure-swallowed",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "test-only-api-in-production-code",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "test-pyramid-distribution",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "test-without-assertion",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "third-party-data-flow",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "type-lookup-by-simple-name",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "unauthenticated-reachable-endpoint",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "unbounded-allocation-from-untrusted-length",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "unbounded-truncation-loop",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "unchecked-any-external-data",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "uncontrolled-recursion",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "undeclared-dependency",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "undocumented-api-endpoint",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "undrained-child-process-stream",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "unexpected-exposed-port",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "unguarded-expensive-debug-logging",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "unreachable-code",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "unrestored-process-global-state",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "unstable-dependency",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "unsynchronized-callback-handoff",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "unsynchronized-shared-state",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "untyped-javascript-share",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "unused-code",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "unused-dependency",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "value-object-mutability",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "versioned-schema-migrations",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "visual-and-motion-safety",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "vulnerability-disclosure-policy",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "vulnerability-disclosure-policy-quality",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "vulnerable-dependency",
+      "reason": "Semgrep CE (p/default) has no dependency/advisory scanning (Supply Chain is a separate, non-CE product)"
+    },
+    {
+      "concept": "weak-hash-algorithm",
+      "reason": "p/default has no C#/JS rule for a weak hash outside password hashing (md5-used-as-password maps to insufficient-password-hashing, its family sibling)"
+    },
+    {
+      "concept": "workload-syscall-confinement",
+      "reason": "no p/default rule detects this"
+    },
+    {
+      "concept": "xpath-injection",
+      "reason": "no p/default rule detects this"
+    }
+  ],
+  "offConcept": [
+    {
+      "rule": "^csharp\\.dotnet\\.security\\.mvc\\-missing\\-antiforgery(?:\\.mvc\\-missing\\-antiforgery)?$",
+      "source": "CSRF (CWE-352): no CSRF concept in the taxonomy"
+    },
+    {
+      "rule": "^javascript\\.express\\.security\\.audit\\.express\\-check\\-csurf\\-middleware\\-usage(?:\\.express\\-check\\-csurf\\-middleware\\-usage)?$",
+      "source": "CSRF (CWE-352): no concept"
+    },
+    {
+      "rule": "^javascript\\.lang\\.security\\.detect\\-no\\-csrf\\-before\\-method\\-override(?:\\.detect\\-no\\-csrf\\-before\\-method\\-override)?$",
+      "source": "CSRF (CWE-352): no concept"
+    },
+    {
+      "rule": "^python\\.django\\.security\\.django\\-no\\-csrf\\-token(?:\\.django\\-no\\-csrf\\-token)?$",
+      "source": "CSRF in an HTML form (CWE-352): no concept"
+    },
+    {
+      "rule": "^javascript\\.express\\.security\\.cors\\-misconfiguration(?:\\.cors\\-misconfiguration)?$",
+      "source": "CORS policy (CWE-346): no concept"
+    },
+    {
+      "rule": "^typescript\\.lang\\.security\\.audit\\.cors\\-regex\\-wildcard(?:\\.cors\\-regex\\-wildcard)?$",
+      "source": "CORS policy (CWE-183): no concept"
+    },
+    {
+      "rule": "^typescript\\.nestjs\\.security\\.audit\\.nestjs\\-header\\-cors\\-any(?:\\.nestjs\\-header\\-cors\\-any)?$",
+      "source": "CORS policy (CWE-183): no concept"
+    },
+    {
+      "rule": "^csharp\\.dotnet\\.security\\.net\\-webconfig\\-debug(?:\\.net\\-webconfig\\-debug)?$",
+      "source": "debug compilation in web.config: no concept"
+    },
+    {
+      "rule": "^csharp\\.dotnet\\.security\\.net\\-webconfig\\-trace\\-enabled(?:\\.net\\-webconfig\\-trace\\-enabled)?$",
+      "source": "ASP.NET tracing enabled: no concept"
+    },
+    {
+      "rule": "^csharp\\.lang\\.security\\.http\\.http\\-listener\\-wildcard\\-bindings(?:\\.http\\-listener\\-wildcard\\-bindings)?$",
+      "source": "wildcard listener prefix (CWE-706): no concept"
+    },
+    {
+      "rule": "^csharp\\.lang\\.security\\.memory\\.memory\\-marshal\\-create\\-span(?:\\.memory\\-marshal\\-create\\-span)?$",
+      "source": "out-of-bounds span (CWE-125): no concept"
+    },
+    {
+      "rule": "^javascript\\.express\\.security\\.audit\\.express\\-cookie\\-settings\\.express\\-cookie\\-session\\-default\\-name(?:\\.express\\-cookie\\-session\\-default\\-name)?$",
+      "source": "cookie name / domain / path / expiry hardening: not the Secure/HttpOnly/SameSite flags of insecure-cookie-flags"
+    },
+    {
+      "rule": "^javascript\\.express\\.security\\.audit\\.express\\-cookie\\-settings\\.express\\-cookie\\-session\\-no\\-domain(?:\\.express\\-cookie\\-session\\-no\\-domain)?$",
+      "source": "as above"
+    },
+    {
+      "rule": "^javascript\\.express\\.security\\.audit\\.express\\-cookie\\-settings\\.express\\-cookie\\-session\\-no\\-expires(?:\\.express\\-cookie\\-session\\-no\\-expires)?$",
+      "source": "as above"
+    },
+    {
+      "rule": "^javascript\\.express\\.security\\.audit\\.express\\-cookie\\-settings\\.express\\-cookie\\-session\\-no\\-path(?:\\.express\\-cookie\\-session\\-no\\-path)?$",
+      "source": "as above"
+    },
+    {
+      "rule": "^javascript\\.express\\.security\\.audit\\.express\\-jwt\\-not\\-revoked(?:\\.express\\-jwt\\-not\\-revoked)?$",
+      "source": "token revocation: no concept"
+    },
+    {
+      "rule": "^javascript\\.express\\.security\\.audit\\.express\\-check\\-directory\\-listing(?:\\.express\\-check\\-directory\\-listing)?$",
+      "source": "directory listing (CWE-548): no concept"
+    },
+    {
+      "rule": "^javascript\\.express\\.security\\.audit\\.express\\-detect\\-notevil\\-usage(?:\\.express\\-detect\\-notevil\\-usage)?$",
+      "source": "unmaintained sandbox library: no concept"
+    },
+    {
+      "rule": "^javascript\\.ajv\\.security\\.audit\\.ajv\\-allerrors\\-true(?:\\.ajv\\-allerrors\\-true)?$",
+      "source": "validator resource use (CWE-400): no concept"
+    },
+    {
+      "rule": "^javascript\\.lang\\.security\\.detect\\-buffer\\-noassert(?:\\.detect\\-buffer\\-noassert)?$",
+      "source": "buffer bounds (CWE-119): no concept"
+    },
+    {
+      "rule": "^javascript\\.lang\\.security\\.audit\\.incomplete\\-sanitization(?:\\.incomplete\\-sanitization)?$",
+      "source": "first-occurrence-only replace used for escaping: context-free, not a specific injection concept"
+    },
+    {
+      "rule": "^javascript\\.intercom\\.security\\.audit\\.intercom\\-settings\\-user\\-identifier\\-without\\-user\\-hash(?:\\.intercom\\-settings\\-user\\-identifier\\-without\\-user\\-hash)?$",
+      "source": "no concept"
+    },
+    {
+      "rule": "^javascript\\.node\\-crypto\\.security\\.aead\\-no\\-final(?:\\.aead\\-no\\-final)?$",
+      "source": "AEAD misuse: not a deprecated primitive (weak-cryptographic-algorithm)"
+    },
+    {
+      "rule": "^javascript\\.node\\-crypto\\.security\\.create\\-de\\-cipher\\-no\\-iv(?:\\.create\\-de\\-cipher\\-no\\-iv)?$",
+      "source": "IV misuse: not a deprecated primitive"
+    },
+    {
+      "rule": "^javascript\\.node\\-crypto\\.security\\.gcm\\-no\\-tag\\-length(?:\\.gcm\\-no\\-tag\\-length)?$",
+      "source": "GCM tag length: not a deprecated primitive"
+    },
+    {
+      "rule": "^javascript\\.sequelize\\.security\\.audit\\.sequelize\\-weak\\-tls\\-version(?:\\.sequelize\\-weak\\-tls\\-version)?$",
+      "source": "old TLS version: not cleartext, not a primitive"
+    },
+    {
+      "rule": "^problem\\-based\\-packs\\.insecure\\-transport\\.js\\-node\\.disallow\\-old\\-tls\\-versions1(?:\\.disallow\\-old\\-tls\\-versions1)?$",
+      "source": "old TLS version: as above"
+    },
+    {
+      "rule": "^problem\\-based\\-packs\\.insecure\\-transport\\.js\\-node\\.disallow\\-old\\-tls\\-versions2(?:\\.disallow\\-old\\-tls\\-versions2)?$",
+      "source": "old TLS version: as above"
+    },
+    {
+      "rule": "^generic\\.nginx\\.security\\.insecure\\-ssl\\-version(?:\\.insecure\\-ssl\\-version)?$",
+      "source": "old TLS version: as above"
+    },
+    {
+      "rule": "^generic\\.nginx\\.security\\.missing\\-ssl\\-version(?:\\.missing\\-ssl\\-version)?$",
+      "source": "old TLS version: as above"
+    },
+    {
+      "rule": "^generic\\.nginx\\.security\\.dynamic\\-proxy\\-scheme(?:\\.dynamic\\-proxy\\-scheme)?$",
+      "source": "no concept"
+    },
+    {
+      "rule": "^generic\\.nginx\\.security\\.header\\-injection(?:\\.header\\-injection)?$",
+      "source": "HTTP header injection (CWE-113): no concept"
+    },
+    {
+      "rule": "^generic\\.nginx\\.security\\.missing\\-internal(?:\\.missing\\-internal)?$",
+      "source": "no concept"
+    },
+    {
+      "rule": "^generic\\.nginx\\.security\\.possible\\-h2c\\-smuggling\\.possible\\-nginx\\-h2c\\-smuggling(?:\\.possible\\-nginx\\-h2c\\-smuggling)?$",
+      "source": "request smuggling (CWE-444): no concept"
+    },
+    {
+      "rule": "^dockerfile\\.security\\.no\\-sudo\\-in\\-dockerfile(?:\\.no\\-sudo\\-in\\-dockerfile)?$",
+      "source": "sudo in a build step: not one of the container-privilege concepts"
+    },
+    {
+      "rule": "^dockerfile\\.audit\\.dockerfile\\-pip\\-extra\\-index\\-url(?:\\.dockerfile\\-pip\\-extra\\-index\\-url)?$",
+      "source": "dependency confusion (CWE-427): no concept"
+    },
+    {
+      "rule": "^yaml\\.github\\-actions\\.security\\.allowed\\-unsecure\\-commands(?:\\.allowed\\-unsecure\\-commands)?$",
+      "source": "deprecated set-env/add-path commands enabled: no concept"
+    },
+    {
+      "rule": "^yaml\\.github\\-actions\\.security\\.detect\\-shai\\-hulud\\-backdoor(?:\\.detect\\-shai\\-hulud\\-backdoor)?$",
+      "source": "a known backdoor workflow: no concept"
+    },
+    {
+      "rule": "^generic\\.unicode\\.security\\.bidi\\.contains\\-bidirectional\\-characters(?:\\.contains\\-bidirectional\\-characters)?$",
+      "source": "Trojan Source (bidi characters): no concept"
+    },
+    {
+      "rule": "^generic\\.ci\\.security\\.bash\\-reverse\\-shell\\.bash_reverse_shell(?:\\.bash_reverse_shell)?$",
+      "source": "reverse shell in CI: no concept"
+    },
+    {
+      "rule": "^yaml\\.kubernetes\\.security\\.env\\.flask\\-debugging\\-enabled(?:\\.flask\\-debugging\\-enabled)?$",
+      "source": "Flask debug mode: no concept"
+    },
+    {
+      "rule": "^yaml\\.openapi\\.security\\.",
+      "source": "OpenAPI / plugin-manifest rules: no concept"
+    },
+    {
+      "rule": "^typescript\\.aws\\-cdk\\.security\\.audit\\.awscdk\\-bucket\\-encryption(?:\\.awscdk\\-bucket\\-encryption)?$",
+      "source": "encryption at rest: data-encryption-controls is a repository posture, not a per-resource finding"
+    },
+    {
+      "rule": "^typescript\\.aws\\-cdk\\.security\\.audit\\.awscdk\\-sqs\\-unencryptedqueue(?:\\.awscdk\\-sqs\\-unencryptedqueue)?$",
+      "source": "as above"
+    }
+  ]
+}
