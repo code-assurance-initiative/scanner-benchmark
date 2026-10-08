@@ -1,0 +1,42 @@
+name: Register an engine for a challenge window
+description: Take part in the next benchmark challenge window. Everything here is frozen when registration closes.
+title: "Register: <engine> <version> for <window>"
+labels: [challenge, registration]
+body:
+  - type: input
+    id: window
+    attributes: {label: Window, description: "The window id from challenge/calendar.json, e.g. 2026-q4"}
+    validations: {required: true}
+  - type: input
+    id: engine
+    attributes: {label: Engine name and version}
+    validations: {required: true}
+  - type: input
+    id: image
+    attributes: {label: Container image, by digest, description: "registry/name@sha256:… — see docs/CHALLENGE-RUN.md for what the container must do"}
+    validations: {required: true}
+  - type: input
+    id: configuration
+    attributes: {label: Configuration label, description: "Name the configuration (default, or what you changed)"}
+    validations: {required: true}
+  - type: input
+    id: mapping
+    attributes: {label: Mapping, description: "Path of your mapping in mappings/ (open a PR) or a URL, with its sha256"}
+    validations: {required: true}
+  - type: checkboxes
+    id: hosted
+    attributes:
+      label: Hosted run
+      options:
+        - label: This engine cannot be submitted as a container; it needs embargoed, time-boxed access to the holdout (the result will say "hosted run")
+  - type: textarea
+    id: interests
+    attributes: {label: Declared interests, description: "Who builds the engine, and any affiliation with the Code Assurance Initiative or its steering group"}
+    validations: {required: true}
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Terms
+      options:
+        - label: I understand the engine gets one run per window, nothing submitted can change after registration closes, and every result — good or bad — is published.
+          required: true

@@ -15,6 +15,12 @@ This repository holds the harness: the answer-key schema, the scanner-neutral co
 CWE exists), one mapping per scanner, the scoring CLI, the registry of frozen benchmark units, and recorded
 results. The units themselves are in the training set. The fixed formats and the exact matching rules are in [`docs/CONTRACT.md`](docs/CONTRACT.md) (contract 1.6).
 
+## The benchmark challenge
+
+Every quarter a sealed holdout is opened for any engine that registers: one offline run per engine, every result
+published, the holdout revealed afterwards. The calendar is [challenge/calendar.json](challenge/calendar.json), each
+window is announced here at least 30 days ahead, and how to take part is in [docs/CHALLENGE-RUN.md](docs/CHALLENGE-RUN.md).
+
 ## Labels and outcomes
 
 The answer key holds **labels**. TP / FP / TN / FN are **outcomes** of one scanner run against it.
