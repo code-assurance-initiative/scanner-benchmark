@@ -581,6 +581,257 @@
             "bundleSha256": "5badcaa5c1f2623d7acd2a85342c0ed0fe53da178a2675ae19dd8d559151fa28"
           }
         ]
+      },
+      "freeze": {
+        "setVersion": "1.0.0",
+        "tag": "v1.0.0",
+        "tagCommit": "303bfdd32752383077a92f470cce54cb4f2bf863",
+        "registrySha256": "000fcee6ac9a8f8559a93a6469e4fd418d4276a933dda91dbfbd8d423428cc8a",
+        "unitCount": 40,
+        "frozenAt": "2026-10-09T01:16:44+00:00",
+        "note": "Second public commitment (method §9): sha256 of the set's registry.json at v1.0.0, which pins every unit's commit and key hash, plus every unit identified by the sha256 of its name. Keys cannot change after results are published without it showing.",
+        "units": [
+          {
+            "unit": "sha256:0239c443ed4234c9563cffcbcd740dffdb10af971842a5c2cd34bdc82f90dbdb",
+            "commit": "d6e6af3ccd18c416bf6cb57ffe62a1d11fcf50d3",
+            "keySha256": "104e49544cea5ce0c7f3d8802506454c663cf9388eb4574c3f384374e22d090e",
+            "bundleSha256": "41de870dbde1698cef8ca70ca84358df36ece058582ce7d7d897f7f220c73b13"
+          },
+          {
+            "unit": "sha256:0eb2e8d3cb4235d17d12f58d977639b0c8c7d756f37c38e6bfab4ee480198279",
+            "commit": "6dc6e06dfdd4e2c6b55aba372e0306529df3ff3c",
+            "keySha256": "c08cfe6eac5dba47277d9de2e3c2a5d3b64d748aa7d64d36d00534ca4dc5d30a",
+            "bundleSha256": "c5f7b65e95b55aa9c834462b7b314c76c91e5063f09011448544722c12447d72"
+          },
+          {
+            "unit": "sha256:1e09117c8eddcae8d2f531c6dfc08fd371ed60463baea5d166fed4c5e8470085",
+            "commit": "bbc066dc051bc76d7cbb4a3b4b77f2f479aa781f",
+            "keySha256": "1abc257d8a03b897c873692fb2923ac15a1b4cc84bad7f1f2542e349f1c5ca8b",
+            "bundleSha256": "4890110155a59f44500f5d39043e8eb9e1739d030680751a93ff78008e993ef8"
+          },
+          {
+            "unit": "sha256:2284f4dbfdcb2367da007418a544943d774c57e298a0fd1ba6a435b00a4145cf",
+            "commit": "f4e553d498d86954b0ac75ff633bd30251a99af9",
+            "keySha256": "7854ea8840df94bcc4b80d7157fbf4000acef900e543d3a6d2d44be770f8962e",
+            "bundleSha256": "e746b69bdcd6bfd250312d738cd32b0694614c239030d57a538180c1182bc20f"
+          },
+          {
+            "unit": "sha256:28481e62ddd93af4afdd8a7b5c35b1569078664b4f66026f1d8470a9dbdf808d",
+            "commit": "26905828c49769471944923fc6105fd0587b6b3e",
+            "keySha256": "8944bc2d9d9ee402198e5a08edffea5f726e05cc7c01c04398e8b6893d97becd",
+            "bundleSha256": "925edc4c0c0f1c07e31624d50a8766eec09dccc22ecdc11d940d92d37fd82acd"
+          },
+          {
+            "unit": "sha256:2f1a989a97356919767929f34f15a469aacc0f6551f048e8637da1052a4a90cd",
+            "commit": "8afa5cf6b046b0eb7989bda8595f63cec2dbf2d3",
+            "keySha256": "d0ad9ebae946dbf514331ac39c649344caac10a53cc9dffa2d1aa7a0528bfb8d",
+            "bundleSha256": "78399bb05658e26a5ffb18a7ed6d27d00f8dbb26d67392b5d138cdd049ae7044"
+          },
+          {
+            "unit": "sha256:32aa1a3c7aa178d489e3bc2042e4ba6e7e1411ecb1a28eb26b38b32cf656a8fe",
+            "commit": "432c712cce1e3ee479f692130dfdc7f333c41840",
+            "keySha256": "171929844ad8bc8645a53501957d62ef81fe0cc7de2be0bb2d7ea8b073688306",
+            "bundleSha256": "d81cc3158afebf192fb7527adfd8908c6c1185b5d8920f699e592fc0bd2f0bad"
+          },
+          {
+            "unit": "sha256:3bf6ff2f8a345127ec83d5e4924abe18f4a4484c5e7e1274887a8ddf8303c080",
+            "commit": "cbfea0c39fa395fb463900865852ebcef2706235",
+            "keySha256": "3a21c73a855fd09b3510c2fd12867cef4bb3a227f956b7f253823a46ae3ae268",
+            "bundleSha256": "3f9da22c27db086fb85c492a7887cf3b1d14f28a82f180cace5ba7bb4b40baf6"
+          },
+          {
+            "unit": "sha256:48d29b66c3df5112eadeda7c229ad3a6fd2e5fadb7fc5e44d47e44d56847b5ad",
+            "commit": "0b5538df4448bb33f8e2bd59c03a1ef29d87bfd5",
+            "keySha256": "3a136a49edaa167ef56c1c84117d343f93c02a70de4a1c5cfbe696b3ed3fdcb4",
+            "bundleSha256": "c6502360bec014b8af508836513c2f32414c1a8b6c72183190a8658bac2699f6"
+          },
+          {
+            "unit": "sha256:5a5b15c8029b46165ec87510fb5a0343d2b0cc699953c0e4251d6b69a078b2f9",
+            "commit": "6a296695cb93fd68ee2718d0304636a18d48b2bf",
+            "keySha256": "69e7835c64846e75a83c315704cf9cec23d263f05bf4f0486ea322f5a5f985bb",
+            "bundleSha256": "2dd187341121157d5d8d15ef0f24e8d2a508c1964e630e9aa2dbe17831dd6cf8"
+          },
+          {
+            "unit": "sha256:5c5f0076ff182a697f8e4d6bb64d7ede94b0b138c9119cc103de5fe285690208",
+            "commit": "658782bcc92ec1783d96b5fd328e8698fd5b94af",
+            "keySha256": "6ba385e37e48ba3708dab6c487130c988419e798790221a6093a3d790fe272c0",
+            "bundleSha256": "7a82ad917a5abcecc668a8bed7381e46531ec8fe3145474304b51ce27c6e9ca3"
+          },
+          {
+            "unit": "sha256:612693f522b6b055707a78b0db1fdbe0b104965047833c9b2058c9a95890574b",
+            "commit": "dd159e353faec720f3d24d949102f4943f4c8db2",
+            "keySha256": "82a0c2d43425a79b65602053970106a6e1d99151270bd472e16c7814a2c3f4b7",
+            "bundleSha256": "68bf9870cdf06e150ac13e11e330ec59e5dc741b9de5ff0d960d6d9e6d3fb8e3"
+          },
+          {
+            "unit": "sha256:667e230913b44c2e5eea45309190c3d3e07f2e11b040ab907deac2994f80af3c",
+            "commit": "fe419e8110410f454287859a697129c4d7d68517",
+            "keySha256": "2541fefb1cc1e9a96b22250a43e94403e3e9bd73ce8f7a3448d17e81ce9fc822",
+            "bundleSha256": "73a97f79c5081a23019013c08468eab5be2816935ad8f210fe7c4c95558018ea"
+          },
+          {
+            "unit": "sha256:6bc377031d82d284cd5cf6fb878e71a3d55ee9f15f604c1f262e4e2dc115cf59",
+            "commit": "017f7a23b0f43a518c551e1e74b4391ab81e0fce",
+            "keySha256": "e78d105dcf7ce60ddf55747a8e63cd90f6d7f99508f32bc4ebae5d6e2c31f370",
+            "bundleSha256": "9a9d8407a5e344aa5d1982a79fec457e2302f21853ee06fcb1f70faf23039c43"
+          },
+          {
+            "unit": "sha256:729365b64268f330e9cc618b37d310d04688a98bb89513085aa04b4975abc329",
+            "commit": "92cbe8ee54f5001b3c3d166c96b0ed11d631e777",
+            "keySha256": "98613457baa6ad13596e78ec69681bed6c79debbb470e0e5a33a3c2339956014",
+            "bundleSha256": "fba3a0517cb439df4b57bf4a1d1fded7407d984c0990c852deb06c7ac8b57acf"
+          },
+          {
+            "unit": "sha256:7e427eac324060c8463cef5bc1df0496a02aed45d4045c7cf8446b8568f9ae50",
+            "commit": "e350d720bb176ba58c0d86345050cb44b5dfee1b",
+            "keySha256": "5516ecbd736a2a248b66eee0619f72d6f14beb10636cd7a3454b266f8b47ae46",
+            "bundleSha256": "79e5a57397425af8e9f5e34a23beca12eda5f43970a5221aea762aa8d4d144c0"
+          },
+          {
+            "unit": "sha256:8514af1ee46d637ad46868085039ca3216f82378ce56ea24bc1562f0e0c1c7fc",
+            "commit": "28008e089ee542cbd208082ccfb1f5f8cb0c7a75",
+            "keySha256": "850456b0b851b8d8d1557b81d16d3671e71b9d8cd7b3febbd16c25e9ce50b6a4",
+            "bundleSha256": "1af1b522744b14f0dfd1eb83b77e8c8fb694d21ae21d4680b4290cd3f2ec5f19"
+          },
+          {
+            "unit": "sha256:8d8b36d648af4a2b7329e319dd4d51c4cc85d8911511ee4bcf9ea9a5d4e5beea",
+            "commit": "408b23091cbbf0804e08236493ffb40b7f31c15d",
+            "keySha256": "66b537f090318408a128af5cb368e7355902f9ec747abe3664eb147d6b4d2d82",
+            "bundleSha256": "8bc9e991fe9d46921030cc4ecf547626ba2c22bca9fc53018a681223bbac9403"
+          },
+          {
+            "unit": "sha256:92ec288f8cefe8e021d5f63f940e7f59a715adf49fc6cc4f0a911c302758e696",
+            "commit": "d24717cad2e96889de65a9170bd9377f9000fbc6",
+            "keySha256": "c68979fc5385a18ebcb283685684b672b690efed7a96a54980064a0a44d77f54",
+            "bundleSha256": "780b037ab0a5060c26e95fe094b8214c298fd50f9654bd1ef7fac6975fc65871"
+          },
+          {
+            "unit": "sha256:949353dc7908589f264995261e249e148881bd085d0b27e45e379e93f44503a3",
+            "commit": "c4f63727ad7315e85cbb13e5c4a91d8e4a9e3f55",
+            "keySha256": "7118d28e6c2342863b9bc5f5f3309118cda589396395edbb39a17db0deeb27ca",
+            "bundleSha256": "b5a544f5ef887202b8df2a69ebaf7460b16200d48df70aa4ca89a170d807a1ab"
+          },
+          {
+            "unit": "sha256:9f995ef0dea3d3b4f528b7b2c47b776a376aae8e082f41716152d50f973817a0",
+            "commit": "6a4520b10623c4a929c7bf202b6d6c2c0ccfc364",
+            "keySha256": "7838441dbf4ae16fc3f20348bbd6af7a2d45496e7dd0f9552f54bc7b9bc2f8c0",
+            "bundleSha256": "14821c9af44a0255a1263709c498796774c8ebbf1101b4765be67be08091ea62"
+          },
+          {
+            "unit": "sha256:a1fdce14cb31f2c167eaf36db319f545767e56611c555e675ca6e7a8a51cd8f0",
+            "commit": "b9a174394822ec0c48ebed38d724f074d54ff07b",
+            "keySha256": "9d0a0b78f04ac8a04d34ad744f799cba6b98ee7bd27c22425c69b6ec7c385eb7",
+            "bundleSha256": "7e17bb34a747666c375a83fd7e60c2618d1df2110be878b5aede518a4aee4b7c"
+          },
+          {
+            "unit": "sha256:a20ca8d2896e022d85122f0530a370979d870a937bef8d43fd0283a8f19487b5",
+            "commit": "51806d9502ed3ab7bbee24a901ff200ce575aaad",
+            "keySha256": "2c2148fc0908e93426218e840c914cd0621a8246d3a527ecc06325a58cbd76cd",
+            "bundleSha256": "5214ad15d8cd0de01435cc03aa96ba1197e478eafd77f05dd62371df72deaf9e"
+          },
+          {
+            "unit": "sha256:a5141deb074c069b5913eb42be1c55b840d5f5c652c2607d9a0b3a03ac0c4f9b",
+            "commit": "d3e37ba415cfcfdd13473dabe0c1e94781433665",
+            "keySha256": "16e1da2f6fd6863d1903d5faf3cf00a39e3d4a12d93b4b8ed4d47e27ca0df940",
+            "bundleSha256": "5482bb45329d9bda5aed92b4181ae83ec48cd0cf84be5542d93f90ccda693e7b"
+          },
+          {
+            "unit": "sha256:ae93942986422b6e68b6d6635e63d964b8b8f700268d3e8742075d25ea3c9570",
+            "commit": "931154f9a4a8be1943f7d2503503166fa2c3bd8c",
+            "keySha256": "3c1dcf19b3838942991f34af8d9e1da2fc167680bd634be2646a84160027c766",
+            "bundleSha256": "d00cd53aa5c83e2c41230b7a29d137b3046b1261cdaa6d3db89b73e80fcc749d"
+          },
+          {
+            "unit": "sha256:b3e698338a4a04a22e2bdf803248ad79bee85c0e17691204076667d336e5e892",
+            "commit": "d930ea0da004bd1d5e7568138c7867e643e66660",
+            "keySha256": "21742ec0ac6a0b0315d90d44fd2d561db2aa72d07b0aa67252b1688bd079f0fd",
+            "bundleSha256": "01ac47f43fff63fc591dce0dd59c72e5a6078558f66eeca45f56421d37f85de3"
+          },
+          {
+            "unit": "sha256:b51d0e97252e0585d44282ceb4e283d46f1b4f0450fbdeab667614a319113847",
+            "commit": "f7bf711edcda1d0a27f6217d8d7046444596c787",
+            "keySha256": "567c0c032bcccaf25de5dd19a98afc102c0161a0e61a41c0769a9b28ac827930",
+            "bundleSha256": "cb423eef40561690da9ef97fed9d6bb47c313b0a5d6fae4fa38052a2abe3ae00"
+          },
+          {
+            "unit": "sha256:be7b2eb0f970037030008af6a222fe20875165818fa0ab059debf425bbbfc248",
+            "commit": "d2dd71ca53a46964c89961619378b4a8a8c9a774",
+            "keySha256": "1e942dd220858f63e3ea2b1eec67eee73bf3e286df51f6ea64d15f1228cba7fb",
+            "bundleSha256": "5ce1b0e4af23651227a894007cba8da0a4e867f548ba648461dd17cb3b1c9fd9"
+          },
+          {
+            "unit": "sha256:bf0aae2c651e737d31e36e598cb4498de87651f65f7a4573f56b8b8f7f9ff2ab",
+            "commit": "73ac332b5e2828357a8e7565a8c2c9f20d813077",
+            "keySha256": "3fedb408bc5185e82c72973d896631ffc0df93d2316b5329d27680ea9b63554c",
+            "bundleSha256": "531f3a94b1153a5fe637b1b3fa0be7b4d39d3c568b1e485e78e784efe2e5aa5e"
+          },
+          {
+            "unit": "sha256:c3ce0e2226d66fd74ec751676c51830fd64bf6a5f9c2d232cddac5646da91e64",
+            "commit": "fa520d9940f3cbbebd705ee4ca14101aa59cc6ff",
+            "keySha256": "532af2eac3f5f9b650aceed80ba6a85689e7d6feeaf134c549b4ddad3c213d61",
+            "bundleSha256": "7cadd88012488cf7546c2173277016bb6177dfe9a3fba75ca2429a6d1549185c"
+          },
+          {
+            "unit": "sha256:c6e44e925595d8fc238aaaf50f2634e3b5ffa657fd0ede5872f8066da3fabbfc",
+            "commit": "d836b7d00ebffe4036b292630754332e3a9cb8b1",
+            "keySha256": "7e094f62132097760a4824046aa3784eb21a099787458959dee32e672715b60e",
+            "bundleSha256": "62763062c065e848e75b108fda83f544e756436a15d7de47455d7733135a14ee"
+          },
+          {
+            "unit": "sha256:cc449cb1a4ff48ef27bbc174859905e2bd0750c88940ff2726211204ce91f867",
+            "commit": "2a55f0719d3615d23f2744fea2910debfbbba770",
+            "keySha256": "2352ba3b4ebb9f53c0d94aeb55732a294e3f2b59707e0421d91d223255b4378b",
+            "bundleSha256": "f8a40c294732985610cf22e6b62947d912319b921d3f7474391edf6c84571f33"
+          },
+          {
+            "unit": "sha256:d137900c8c61e745b2b25f21ccb7dc725d45610b04821a6c7459321a8156e464",
+            "commit": "f6c95efadb86ca233ce80c7376bcffc14451ee1f",
+            "keySha256": "728b04ba6e061a04d3e07243c533dc6da05e3e37d6bb46dab62458e151fcc289",
+            "bundleSha256": "1d486bfaaf8e2609019dbf17900dfeb9645982a620096d1eb754f66d75f17e15"
+          },
+          {
+            "unit": "sha256:d1f77c79ac79f2d25580ab275cf60ae677683e99cf354b632cebd308def33267",
+            "commit": "685b6875c483c9af0b6a3523febfcf204f7bb3c7",
+            "keySha256": "3f443bf3ab31719704ade0b660f676d6156991f1c56c2ecb4715d9d974604cbc",
+            "bundleSha256": "719947f2277234048ef1b306aa70de8d0d8e1182bc6e28285002bb75eb03fbd5"
+          },
+          {
+            "unit": "sha256:d214d17a253c567458434c53fd998f6f03d3a7c265bdfc55b411a8501339e44d",
+            "commit": "3db41b77ad06a4c9cc5bfa0f2ae37a180eebc736",
+            "keySha256": "4f4da91925f06cfceea270f734da3452b602e341328d84b45836282d4a528872",
+            "bundleSha256": "c062e14e60974ad6cf24a9eff2bc570afe0252835f55a84fcd91962a75939020"
+          },
+          {
+            "unit": "sha256:dc3cc23412fb0fe86c34a30e5a6709360fbfb80f2bc2785b945822fd2a6222dc",
+            "commit": "616422c79b038e80827624ae46b2f3a69a2b36f2",
+            "keySha256": "e1a47bf38948d615eb436fb957766653ac136f97022c1cb9d58dbd7731f3ba49",
+            "bundleSha256": "e3f9ef633d93330c47e7c50fd483ddead221aff4842f009fab978ddbe94a3a60"
+          },
+          {
+            "unit": "sha256:ddacc5b87082951782481a12a7d1ffa8048ac5bd4dbdd6d0830115cf290516e1",
+            "commit": "81b12e201875ca123583e499fcb3143ca56ca31b",
+            "keySha256": "617fd1afcff99079d409db6c99b5d2aaf41af6fc404517f0de0393dbe9501ebc",
+            "bundleSha256": "eda6d7a4df81bdc8097ced311c09ddadaa8353583b53632d33286a30abdb0565"
+          },
+          {
+            "unit": "sha256:e3810df6ef032f53bce7f9624364fa04a1e96d58689e2e29a2bbde4ad2d5daec",
+            "commit": "9e02e4b071cce8dd0473e416cc1f15815bd91d7a",
+            "keySha256": "a56e38041c103ca4fcdb9d86eda6e8addfe6a982e415d52c372b7f65afa0748f",
+            "bundleSha256": "49a149fe5de419a34a9bf01f33e9d52dbc5ee8b9ae95e6bcd7c0c1cf977557b6"
+          },
+          {
+            "unit": "sha256:f366c72290da891a7f7a44ba6c2b61a1abdde6ba5e65bc97ea653667e33da4fe",
+            "commit": "fafe79357a9d7e8d5a6ec605c2c30ef50575ebbb",
+            "keySha256": "7f354fd107f74b520b99486bf2e80d62174f179db17fa442b823135da7dec9e0",
+            "bundleSha256": "03e0b7ad61331fc13054aa08b386a17295feb603be16062e881de632b53bf07e"
+          },
+          {
+            "unit": "sha256:fe73450f110324535df8ac838145232e7c3ea69b9f695edb72ec65c650532690",
+            "commit": "cea1e02ba0be576f5b19059c26bb38e88307aeb7",
+            "keySha256": "7fa0f44e6ef10455d1c195aeac05355b8abb777aebd70c55207aa9ee9b39d36c",
+            "bundleSha256": "5badcaa5c1f2623d7acd2a85342c0ed0fe53da178a2675ae19dd8d559151fa28"
+          }
+        ]
       }
     }
   ]
