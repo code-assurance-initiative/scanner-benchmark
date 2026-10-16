@@ -247,6 +247,8 @@ generation is a new set repository, never a rewrite of an old one — and **priv
   it was computed from.
 - Recorded results for a scanner live under `results/<scanner>/`. They never feed back into the keys except through
   the authoring loop above, before freeze.
+- **A key is disputed only through [`disputes/`](disputes/README.md).** Every decision is appended to
+  `disputes/ledger.json`, which is append-only; a scanner's output is never evidence that a key is wrong.
 
 ## Layout
 
@@ -256,9 +258,11 @@ schema/answer-key.schema.json      JSON Schema (draft 2020-12) for benchmark/ans
 taxonomy.json                      scanner-neutral concepts
 mappings/<scanner>.json            concept -> the scanner's rule ids and dimensions
 registry.json                      frozen benchmark units (unit id, tag, commit, keySha256, source bundle in the set)
+disputes/                          answer-key dispute process (README.md) and its append-only ledger (ledger.json)
 coverage/                          coverage matrix (matrix.json, MATRIX.md, render_matrix.py)
 results/<scanner>/                 recorded results per scanner (watchdog: SUMMARY.md, BASELINE-*.md + baseline-*.json, final-scores.json, <repo>.json)
 cai_bench/                         the CLI (python3 -m cai_bench); cai_bench/units.py reads a key from the set
+tools/                             the challenge calendar (challenge.py) and the dispute ledger check (disputes.py)
 tests/                             its tests, with fixture keys, SARIF, taxonomy and mapping
 ```
 

@@ -33,8 +33,11 @@ docker run --rm --network none --read-only --tmpfs /tmp \
    recorded.
 3. **Reveal:** the holdout (units, answer keys, authoring log), the raw SARIF and the scores of every engine are
    published together under `results/`. Anyone can check them against the sealed hashes.
-4. **Disputes:** for 30 days after reveal anyone may dispute an answer-key entry. A corrected entry gets a new key
-   version and every engine's result in the window is rescored against it.
+4. **Disputes:** for 30 days after reveal anyone may dispute an answer-key entry, and a scanner's owner may dispute
+   an entry for 30 days after its own verdict is published. A corrected entry gets a new key version and every
+   engine's result in the window is rescored against it, published beside the original. Who files and how, what
+   counts as evidence, who decides and every outcome: [disputes/README.md](../disputes/README.md), the process adopted
+   by [CAI decision 0001](https://github.com/code-assurance-initiative/CodeAssuranceIndex/blob/main/docs/decisions/0001-adopt-the-answer-key-dispute-path.md).
 5. **Release:** the revealed holdout joins the public training set.
 
 ## Today

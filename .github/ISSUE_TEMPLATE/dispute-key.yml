@@ -1,0 +1,69 @@
+name: Dispute an answer-key entry
+description: One entry of one key version is wrong. The process is disputes/README.md (CAI decision 0001). State everything here, not as a link alone.
+title: "Dispute: <unit> <tag> <entry id>"
+labels: [dispute, answer-key]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Read [disputes/README.md](https://github.com/code-assurance-initiative/scanner-benchmark/blob/main/disputes/README.md) first: who may file and when, who decides, and the possible outcomes. **A scanner's output is never evidence that a key is wrong**; a dispute whose only support is "our scanner disagrees" is closed as not evidenced.
+  # 1. The disputed key and entry.
+  - type: input
+    id: set
+    attributes: {label: Set, description: "e.g. training-set-2026, or a revealed holdout"}
+    validations: {required: true}
+  - type: input
+    id: unit
+    attributes: {label: Unit}
+    validations: {required: true}
+  - type: input
+    id: tag
+    attributes: {label: Tag, description: "The frozen tag scored, e.g. v1.0.0"}
+    validations: {required: true}
+  - type: input
+    id: key-version
+    attributes: {label: Key version}
+    validations: {required: true}
+  - type: input
+    id: key-sha256
+    attributes: {label: keySha256, description: "The sha256 of the disputed key, as registered in registry.json"}
+    validations: {required: true}
+  - type: input
+    id: entry-id
+    attributes: {label: Entry id}
+    validations: {required: true}
+  # 2. The direction.
+  - type: dropdown
+    id: direction
+    attributes:
+      label: Direction
+      options:
+        - must-fire-not-a-defect (a plant that is not a defect, or not where the key says)
+        - must-not-fire-is-a-defect (a trap that is in fact a defect)
+    validations: {required: true}
+  # 3. The scanner evidence, if any.
+  - type: textarea
+    id: scanner-evidence
+    attributes:
+      label: Scanner evidence (if any)
+      description: "Rule id, location and message of the result, or the statement that no result was emitted within the key's line tolerance; the engine version and configuration label. A scanner owner disputing after its own published verdict names that verdict's publication id here."
+  # 4. The argument and the independent evidence.
+  - type: textarea
+    id: argument
+    attributes:
+      label: Argument and independent evidence
+      description: "The code at the frozen tag (quoted, with lines), the concept's definition in taxonomy.json applied to that code, the repository's own history, the authoring journal. Quote it here; a link alone is not evidence."
+    validations: {required: true}
+  # 5. The claimant.
+  - type: input
+    id: claimant
+    attributes: {label: Claimant}
+    validations: {required: true}
+  - type: input
+    id: affiliation
+    attributes: {label: Affiliation}
+    validations: {required: true}
+  - type: textarea
+    id: conflict
+    attributes: {label: Conflict declaration, description: "Which scanner you own or work for, if any. Write \"none\" if none."}
+    validations: {required: true}
