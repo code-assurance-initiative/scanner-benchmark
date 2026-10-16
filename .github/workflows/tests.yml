@@ -1,0 +1,25 @@
+name: Tests
+# The harness's own tests (python3 -m unittest) on every push and pull request. Until 2026-10-16 nothing ran them in
+# CI; the dispute ledger's append-only check (tests/test_disputes.py, CAI decision 0001) is a guard only if something
+# runs it on the commit that would break it.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unittest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          # Full history: the ledger is compared against every committed version of itself, and the check refuses a
+          # shallow clone rather than passing on the one commit it can see.
+          fetch-depth: 0
+      - name: Harness tests
+        run: python3 -m unittest -v
+      - name: Dispute ledger
+        run: python3 -m tools.disputes validate && python3 -m tools.disputes stats
