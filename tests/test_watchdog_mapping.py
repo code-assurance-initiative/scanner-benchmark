@@ -452,3 +452,31 @@ class ScoreDimensions(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class OwnRuleIdPrefixes(unittest.TestCase):
+    """The engine renamed its own semgrep rule ids from `watchdog-…` to `canine-…` (2026-11-02/03). Until this mapping
+    accepted the new prefix, no own D29 rule could be credited: `Medium: canine-quoted-interpolation-into-sql-literal-rust`
+    matched no concept, so every bench arm since the rename scored our own rules' plants as misses on both sides of a
+    comparison and no gate could see it. Both prefixes are accepted so frozen results under the old ids still score."""
+
+    CASES = [
+        ("D29", "Medium: canine-quoted-interpolation-into-sql-literal-rust: …", "sql-injection"),
+        ("D29", "Medium: watchdog-quoted-interpolation-into-sql-literal-rust: …", "sql-injection"),
+        ("D29", "High: canine-sql-built-from-request-input-js: …", "sql-injection"),
+        ("D29", "Medium: canine-quoted-interpolation-into-sql-literal-js: …", "sql-injection"),
+        ("D29", "Medium: canine-error-detail-sent-to-client-js: …", "error-information-exposure"),
+        ("D29", "Medium: canine-exception-message-in-response-csharp: …", "error-information-exposure"),
+        ("D29", "Medium: canine-reflected-xss-node-http-response-js: …", "cross-site-scripting"),
+        ("D29", "Medium: canine-ssrf-js: …", "server-side-request-forgery"),
+        ("D29", "Medium: canine-zip-slip-csharp: …", "path-traversal"),
+    ]
+
+    def test_both_prefixes_map_to_the_concept(self):
+        for rule, msg, want in self.CASES:
+            with self.subTest(msg=msg[:60]):
+                self.assertIn(want, set(M.concepts_of(rule, msg, {})))
+
+    def test_no_bare_legacy_prefix_pattern_remains(self):
+        raw = open(os.path.join(ROOT, "mappings", "watchdog.json"), encoding="utf-8").read()
+        self.assertNotIn("(?:watchdog-)?", raw)
