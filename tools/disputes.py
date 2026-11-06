@@ -36,7 +36,7 @@ REQUIRED = ("case", "filed", "date", "set", "unit", "entryId", "keyVersion", "ke
             "claimant", "claimantScanner", "labeller", "adjudicator", "evidence")
 NULLABLE = ("claimantScanner", "publication")
 
-# Plain MAJOR.MINOR.PATCH. A version with build metadata (Watchdog's "1.0.0+wd.1") belongs to one scanner's own copy
+# Plain MAJOR.MINOR.PATCH. A version with build metadata (e.g. "1.0.0+wd.1") belongs to one scanner's own copy
 # of the keys and is never a CAI key version (proposal 0001 §3), so it is refused rather than compared.
 VERSION = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 SHA256 = re.compile(r"^[0-9a-f]{64}$")

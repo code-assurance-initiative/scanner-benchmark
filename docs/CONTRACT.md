@@ -2,6 +2,22 @@
 
 The fixed interfaces between the parts of this harness. Change only with a version bump.
 
+## What changed in 1.8 (2026-11-06) — the standard names no producer; unplaced rules are reported
+
+Decision 0012. **No scoring rule changes**: every outcome under 1.7 is the same under 1.8, so measurements frozen under
+1.7 re-score exactly.
+
+- **A mapping is the producer's own file.** The harness holds no producer's mapping and `compare --mapping` has no
+  default; a producer maintains its mapping beside its engine and passes it with `--mapping`. A published result names
+  the mapping it was scored with (a copy kept with the result, or its URL and sha256), so anyone can reproduce it.
+- **Unplaced rules are reported.** Each scored run's report carries `unplacedRules`: the rule ids (with the title key,
+  the message up to its first `:`) of results the mapping places on no concept, does not `ignore`, does not declare a
+  summary row and does not declare `offConcept`. A non-empty list means the scanner emitted rules its mapping cannot
+  place, so the run is not a recall measurement for the concepts those rules could denote; a published result lists
+  them. (This replaces decision 0008's coverage rule, which a producer had to state about its own mapping.)
+- **`taxonomy.json` and `coverage/matrix.json` are CAI's own sources**, edited by pull request; no producer's tool
+  generates them. Concept scopes are the taxonomy's `matchScope` fields.
+
 ## What changed in 1.7 (2026-10-09) — assignment, stated subjects, element and group scope
 
 The answer-key format is unchanged; every 1.0–1.6 key and mapping stays valid. Four rules change outcomes. Each is
@@ -38,7 +54,7 @@ holdout headline was computed. `cai_bench` 1.6.0.
   names such a concept and has a file, a result of the concept located in the entry's file — its own location, or a
   member its message lists (`sitesFromMessage`) — is on the entry's site, at a plant, a trap or a clean region listing
   the concept; a `"*"` clean region keeps its lines. Consumption stays one-to-one: one cycle row finds one plant. The
-  concept: `module-dependency-cycle` (`mappings/watchdog-build/concepts.py`, `GROUP_SCOPE`).
+  concept: `module-dependency-cycle` (taxonomy `matchScope: "group"`).
 - **element-scope concepts (CHANGES OUTCOMES, taxonomy).** A taxonomy concept may carry `"matchScope": "element"`: a
   markup concept whose defect is a property of ONE element and, by its definition, can be an ABSENCE — an attribute the
   element lacks has no line of its own; a scanner reports it at the element, a key at the attribute line it would go
@@ -92,28 +108,6 @@ Considered in the same round and NOT adopted (decided from definitions, with the
   site cannot match a located entry; a row naming a file is given that file through `locationFromMessage` (1.3) and
   then matches whole-file entries only.
 
-Watchdog mapping changes shipped with 1.7 (census of every result title of the local training and holdout scans; each
-title lands on the concept it denotes or on none, `mappings/watchdog-build/discrim.py`):
-`subjectFromMessage` for D30 advisories, D12 package rows and D11 flaky-test rows (the doubled class of a .NET test
-identity read once; the root package label glued to a JavaScript test path dropped); `sitesFromMessage` for R9 import
-cycles (members, group scope), D16 off-boarding rows and D34 orphan folds (the files they name), D35 coupled pairs (both
-files); `locationFromMessage` for P12's post-merge row (the workflow it names, no line); AC4 discriminated — its
-"Composite … never reports its active option" title is `invalid-aria-usage` (a missing required ARIA state); D29's four
-dereference rules (`unchecked-catch-binding-deref-ts` and three Go nil-dereference rules) are `null-dereference`; D36's
-"Packaging script can name the release artifact with an empty version" is `release-hygiene`; D12's "Floating …
-dependency" rows are `offConcept` (a range naming no release is a manifest property; whether the build is locked is
-the lockfile's, whose absence has its own rows — the reasoning of the existing "Unbounded dependency requirement"
-entry); the measurement disclosures of D8 ("Coverage not measured"), D11 ("Test reliability not measured", suites that
-cannot install or run nothing) and D30/D43 ("Scanner failed to run") are `offConcept`; X2's non-.NET ratio row ("Not all
-async functions that make a request accept an AbortSignal" and its Go/PHP/Dart/Kotlin forms) and X5's two TypeScript
-ratio rows are `summaryOfConcept`; `container-confinement-profile-unset` and `workload-syscall-confinement` form the
-family `syscall-confinement` (one defect at two granularities, as the taxonomy defines them; an umbrella still takes no
-family, a child shares one only with concepts outside its umbrella). Score bands keep their dimensions
-(`scoreDimensions`: invalid-aria-usage → AC5, null-dereference → X5, release-hygiene → P6). Titles still without a
-concept, each with its reason in `offConcept`: D36 "Release publish has no approval gate", "npm publish authenticates
-with a long-lived registry token"; IC1 skips that carry a reason; D17 "DemotedWarningsAsErrors"; D29 nginx
-`header-redefinition`.
-
 ## What changed in 1.6 (2026-10-08) — resource scope
 
 The answer-key format is unchanged; every 1.0–1.5 key and mapping stays valid. One further LOCATION-EQUIVALENCE rule
@@ -151,7 +145,7 @@ holdout headline was computed. `cai_bench` 1.5.0.
   `git_source` — the latter reads a tag of a materialised unit, whatever its work tree holds). Without them, or when
   the file cannot be read, the entry keeps the line rule and its row says `matchScope: "resource-unavailable"`. Only an
   entry's own file is read; paths leaving the checkout are refused.
-- **the concepts** (`mappings/watchdog-build/concepts.py`, `RESOURCE_SCOPE`, with the reason for each):
+- **the concepts** (taxonomy `matchScope: "resource"`):
   `container-runs-as-root` (no non-root user enforced: no `USER` in the stage, `runAsNonRoot` unset),
   `container-privilege-escalation-allowed` (`allowPrivilegeEscalation` not false), `container-excess-capabilities`
   (capabilities not dropped; an added capability is one way the same property arises),
@@ -190,7 +184,7 @@ computed. `cai_bench` 1.4.0.
   lists the concept (clean FP); a `"*"` clean region does not name the concept and keeps its lines. Consumption stays
   one-to-one: a second result in the file is `redundant`. A result on the entry's lines is preferred to one elsewhere
   in the file (see Matching, "Location equivalence"). The concepts, with the reason each is file-scope
-  (`mappings/watchdog-build/concepts.py`, `FILE_SCOPE`):
+  (taxonomy `matchScope: "file"`):
   `god-class`, `low-class-cohesion`, `fat-interface`, `anemic-domain-model` (the defect is the class, interface or
   entity type as a whole), `oversized-source-file` (the file as a whole), `churn-complexity-hotspot`,
   `knowledge-concentration`, `knowledge-freshness`, `change-coupling` (per-file metrics over the file's history), and
@@ -217,12 +211,6 @@ computed. `cai_bench` 1.4.0.
   the mapping and matrix at its frozen commit. The 1.5 effect on that training set is its own file
   (`results/watchdog/rescore-harness-1.5.json`, addendum in `BASELINE-2026-10-07.md`).
 
-Watchdog mapping changes shipped with 1.5: `sitesFromMessage` for D4 (`{path}:{start}-{end} | …`, spans), R10
-(`{path}:{line} · …`, the "+N more site(s) not listed" tail is not a site; the "Duplication concentrated across N
-sibling directories" row names directories and yields none) and X10 (`in N files — {path}, {path}.`, files without a
-line), all for `duplicated-code` (the only duplication concept). Census in `mappings/watchdog-build/discrim.py`,
-`SITES_FROM_MESSAGE`.
-
 ## What changed in 1.4 (2026-10-07)
 
 The answer-key format is unchanged; every 1.0–1.3 key and mapping stays valid. Two outcome rules change (paths and
@@ -234,7 +222,7 @@ summary rows), the rest is additive:
   fallback for a path that cannot be made repository-relative (see Matching, "Paths"). Each result carries `pathMatch`
   (`exact` | `suffix`), the summary `pathMatches`. Consequence: a RELATIVE uri is taken as relative to the repository
   root, so a scanner that reports paths relative to a sub-directory no longer suffix-matches (give it a SARIF
-  `uriBaseId` or report from the root). On the frozen Watchdog scans no outcome changed: Watchdog writes repo-relative
+  `uriBaseId` or report from the root). On the frozen published scans no outcome changed: their scanner writes repo-relative
   uris, and no plant shared a basename with another file of its concept.
   The key validator's cross-entry checks (a plant overlapping a trap or lying inside a clean region) compare entry
   paths the same way — exactly, repo-relative — so a plant in the root `CHANGELOG.md` and a clean certificate on
@@ -262,17 +250,6 @@ summary rows), the rest is additive:
   `frozenCoverageCleanOnly`; `beyondReference` lists the concepts no reference-scanner rule maps, with the repositories
   that plant them.
 
-Watchdog mapping changes shipped with 1.4: ten `unmapped` concepts (business-logic-in-controller,
-value-object-mutability, domain-event-never-handled, event-schema-change-without-upcaster, react-index-as-key,
-react-hook-missing-dependency, react-state-mutation, form-error-not-associated, modal-focus-not-managed,
-autoplay-media-without-control — census in `mappings/watchdog-build/concepts.py`, `UNMAPPED_CENSUS`); AC6 split — new
-`focus-outline-removed` and `motion-without-reduced-motion` are children of the umbrella `visual-and-motion-safety`,
-which keeps the contrast rows; family `untrusted-data-executed` = `insecure-deserialization` + `code-injection` (a
-type-embedding deserializer on untrusted input is code execution: a scanner reporting the deserialization site as code
-injection found the defect, and is charged symmetrically at a trap); `summaryOfConcept` for X2, PF3 and X5 ratio rows.
-`excessive-mocking` (a mock-dominated test) and `pointless-catch-rethrow` already existed: their dimensions (D10, X3)
-cover them, no title evidences them (`unevidenced`), so they are not `unmapped`.
-
 ## What changed in 1.3 (2026-10-07) — backward compatible
 
 Three finished results files (bench-csharp-security-injection, -iac, -dependencies) showed three gaps. A scanner that
@@ -290,13 +267,6 @@ valid 1.0/1.1/1.2 key and mapping means the same under 1.3, and the answer-key f
 - **report** — each result carries `locationSource` (`sarif` | `message` | `none`), the summary carries
   `locationSources` (how many results took each), each must-fire entry row carries `fileLevel`, and every counts row
   carries `fileLevelTp` and `fileLevelRecall`. The text table has a `fileRec*` column with its footnote.
-
-Watchdog mapping changes shipped with 1.3 (mapping data, no contract impact of their own): `weak-hash-algorithm` and
-`insufficient-password-hashing` are one family (`weak-password-hashing`); `watchdog-secret-interpolated-into-run` maps to
-`secret-in-process-arguments` (its own CWE-214; a secret expanded into a run script reaches the script file and the argv
-of the commands it launches, and no untrusted code receives it, which is what `ci-secret-exposure` denotes — the two are
-deliberately NOT a family); new concept `log-injection` (CWE-117) evidenced by D29 `crlf-injection-logs`; and
-`container-excessive-privilege` / `iac-misconfiguration` became umbrellas over fifteen precise concepts.
 
 ## What changed in 1.2 (2026-10-07) — backward compatible
 
@@ -360,7 +330,7 @@ The answer key holds LABELS; TP/FP/TN/FN are OUTCOMES of one scanner run against
       // "commit": "e920ad5",            // 1.1, optional, must-fire/must-not-fire only, needs file: see Matching
       // "subject": "Newtonsoft.Json",   // 1.2, optional, must-fire/must-not-fire/clean only: see Matching, Subjects
       "rationale": "…why this is (or is not) a defect, in one or two sentences…",
-      "scannerHints": { "watchdog": ["D13"] }   // optional, informative; the authoritative mapping is mappings/<scanner>.json
+      "scannerHints": { "example-scanner": ["D13"] }   // optional, informative; the authoritative mapping is mappings/<scanner>.json
     },
     { "id": "CLN-001", "label": "clean", "concepts": "*", "file": "src/Billing/Invoice.cs", "rationale": "…" },
     { "id": "NA-001", "label": "not-applicable", "concept": "sql-injection", "rationale": "no database access" },
@@ -390,7 +360,7 @@ keeps its meaning (see Matching, "Umbrella concepts"). New keys name the precise
 
 ```jsonc
 {
-  "scanner": "watchdog",
+  "scanner": "example-scanner",
   "version": "rubric-2026.10.1",
   "concepts": {
     "hardcoded-credential": {
@@ -417,7 +387,7 @@ keeps its meaning (see Matching, "Umbrella concepts"). New keys name the precise
   },
   "ruleDimension": [ { "rule": "^(D\\d+)", "dimension": "$1" } ],  // ruleId → dimension
   "unmapped": [                             // 1.4, optional: concepts no rule of this scanner detects
-    { "concept": "react-index-as-key", "reason": "no Watchdog rule detects this" }  // in `concepts` with rules: [], dimensions: []
+    { "concept": "react-index-as-key", "reason": "no rule of this scanner detects this" }  // in `concepts` with rules: [], dimensions: []
   ],
   "summaryOfConcept": [                     // 1.4, optional: unlocated rows that summarise a located concept
     { "rule": "^X2$", "message": "^Not all async methods take a CancellationToken:", "reason": "…" }
@@ -503,34 +473,12 @@ to it, so they map to no concept; recorded so the omission is visibly deliberate
 (`[{concept, dimension, source}]`: a dimension listed for a concept although none of its results evidences it at
 this scanner version, so it has no rule item). They change no outcome, so they need no version bump.
 
-**Watchdog `locationFromMessage` (1.3).** D36's workflow rows (token permissions, secrets in env, advisory schedule,
-release gates) are written without a location but name `basename:line` sites; secret-argv rows name the workflow path
-only. Two entries cover them (`mappings/watchdog-build/discrim.py`, `LOCATION_FROM_MESSAGE`). A basename suffix-matches
-every file of that name, so two workflows of one name in different directories would both match it.
+Note: bench repositories stay vendor-neutral, so they normally omit `scannerHints`. A scanner's mapping is the
+producer's own file, maintained with the producer's engine and passed to the harness with `--mapping`; the harness and
+this contract name no producer (decision 0012). The history of one producer's mapping changes before decision 0012
+lives with that producer's mapping.
 
-**Watchdog umbrellas (1.3).** `container-excessive-privilege` is the parent of `container-runs-as-root`,
-`privileged-container`, `host-namespace-sharing`, `host-path-mount`, `container-privilege-escalation-allowed`,
-`container-excess-capabilities`, `container-writable-root-filesystem`, `container-confinement-profile-unset` and
-`container-security-context-missing`; `iac-misconfiguration` of `missing-health-probes`, `missing-image-healthcheck`,
-`automounted-service-account-token`, `overly-permissive-rbac`, `image-not-from-allowed-registry` and
-`container-missing-resource-requests`. The children partition the umbrellas' pre-split D31/D29 rule ids (asserted when
-the mapping is built), so a key naming an umbrella scores exactly as it did under 1.2.
-
-**Watchdog `scoreDimensions` (1.2).** `dependencies-not-locked` → SC1 (not D12, D36); `security-tooling-in-ci` → P3
-(not D36); `high-cognitive-complexity` → D2 (R2 raises rows on cyclomatic complexity only); `duplicated-code` → D4,
-R10 (not X10, a single-predicate finding). Curated in `mappings/watchdog-build/dims.py` (`SCORE_DIMS`).
-
-**Watchdog (rubric-2026.10.1).** Watchdog's ruleId is the bare dimension id, so the message title decides the
-concept. In `mappings/watchdog.json` every multi-concept in-scope dimension is fully discriminated: D3, D5, D7, D10,
-D12, D13, D17, D28, D29, D31, D32, D36, IC1, PF3, R1, R2, R8, S1, X1, X3 and X5, plus SC1. Each result lands on exactly
-the concept its title denotes, or on none (`offConcept`). The tables are curated in
-`mappings/watchdog-build/discrim.py`, with the engine source line of each title format. The out-of-scope runtime
-card AXR1 is not discriminated. Single-concept dimensions keep the bare ruleId rule.
-
-Note: bench repositories stay vendor-neutral, so they normally omit `scannerHints`; the harness mappings carry
-scanner knowledge.
-
-## Matching (mirrors kennel tools/multilang/matching.py semantics)
+## Matching
 
 A SARIF result matches a located entry iff its ruleId matches one of the entry concept's `rules`, its path names the
 entry's `file` (see "Paths" below), and its startLine is within `lineTolerance` of `lines` (1.5: or anywhere in the file

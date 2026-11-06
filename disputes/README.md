@@ -46,8 +46,8 @@ The adjudicator is **neither the claimant, nor anyone affiliated with the claima
 the adjudicator and records the assignment, and any recusal, on the issue. Where the coordinator authored the entry,
 the adjudicator is a second maintainer or an external reviewer. The adjudicator is named in the decision.
 
-**Today that rule bites hard, and it is meant to.** The coordinator also maintains Watchdog, a scanner measured here,
-and the current keys were authored under the coordinator. So a dispute filed by Watchdog, or about any entry the
+**Today that rule bites hard, and it is meant to.** The coordinator also maintains CCA (formerly Watchdog), a scanner measured here,
+and the current keys were authored under the coordinator. So a dispute filed by CCA, or about any entry the
 coordinator labelled, needs a second maintainer or an external reviewer, and there is no second maintainer yet. Such a
 dispute stays open and visible until one is found, past the 14-day target if it must. The target is not met by
 relaxing the recusal.

@@ -3,5 +3,5 @@
 Implements docs/CONTRACT.md (v1.7). Python 3 standard library only.
 """
 
-CONTRACT_VERSION = "1.7"
+CONTRACT_VERSION = "1.8"
 __version__ = "1.6.0"

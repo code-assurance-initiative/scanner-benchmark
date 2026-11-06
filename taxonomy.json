@@ -1984,6 +1984,278 @@
       "family": "compliance",
       "kind": "finding",
       "description": "Personal data is used for a purpose whose lawful basis is the data subject's consent (marketing, optional SMS or push messages, profiling) on a path that never checks that consent was given and not withdrawn, so people who refused or withdrew it are processed anyway."
+    },
+    {
+      "id": "client-controlled-identity",
+      "title": "Identity or role taken from an unverified client value",
+      "cwe": "CWE-565",
+      "family": "security",
+      "kind": "finding",
+      "description": "The server decides WHO the caller is, or WHAT role it has, from a value the client sends and the server never verifies: an unsigned cookie holding a user id or an admin flag, a header, a hidden form field, a query parameter or a body field naming the acting user. Anyone can set the value, so anyone can be anyone. It differs from `missing-authorization` (there IS an identity check, but its input is forgeable) and from `missing-ownership-check` (there the identity is genuine and the RECORD is not scoped to it). A signed or server-side session value is not this concept."
+    },
+    {
+      "id": "missing-ownership-check",
+      "title": "Missing object-level authorization (insecure direct object reference)",
+      "cwe": "CWE-639",
+      "family": "security",
+      "kind": "finding",
+      "description": "An authenticated caller reads, changes or deletes a record named by an identifier the caller supplies (a path id, a query or body field), and nothing scopes the record to the caller: the lookup is by id alone and no comparison of the record's owner with the caller's genuine identity decides the response. The caller is signed in — that is what separates it from `missing-authorization` — but may act on everyone's records. The site is the lookup or write that uses the caller's id unscoped."
+    },
+    {
+      "id": "missing-function-level-authorization",
+      "title": "Role check missing on a privileged function",
+      "cwe": "CWE-285",
+      "family": "security",
+      "kind": "finding",
+      "description": "An endpoint that performs a privileged function (administration, other users' management, configuration, reporting over all accounts) checks that the caller is signed in, or nothing beyond a hidden link, but not that the caller holds the role the function needs, so any ordinary user who calls it directly succeeds. Hiding the link in the UI is not a check."
+    },
+    {
+      "id": "cross-site-request-forgery",
+      "title": "State-changing request without anti-forgery protection",
+      "cwe": "CWE-352",
+      "family": "security",
+      "kind": "finding",
+      "description": "A request that changes state is authenticated only by credentials the browser attaches on its own (a session cookie, basic auth) and the server checks no anti-forgery token, origin or equivalent, so another site can make the victim's browser send it. The site is the handler, or the framework set-up that disables or omits the protection (`site: file` where there is no single line)."
+    },
+    {
+      "id": "unrestricted-file-upload",
+      "title": "Unrestricted upload of a dangerous file",
+      "cwe": "CWE-434",
+      "family": "security",
+      "kind": "finding",
+      "description": "An upload handler stores (and usually serves) a caller-supplied file without the checks its purpose needs — of type by content, of extension against an allowlist, of size — or with a check the caller controls (a client-sent content type, a check only in the browser), so executable or active content lands where it runs or is served. The site is the handler's accept/store statement."
+    },
+    {
+      "id": "weak-password-requirements",
+      "title": "Weak password requirements",
+      "cwe": "CWE-521",
+      "family": "security",
+      "kind": "finding",
+      "description": "Registration or password change accepts passwords with no or trivial strength rules (any length, empty, a single character class), so accounts end up with guessable passwords. The site is the validation that is missing or too weak."
+    },
+    {
+      "id": "weak-password-recovery",
+      "title": "Weak password recovery mechanism",
+      "cwe": "CWE-640",
+      "family": "security",
+      "kind": "finding",
+      "description": "A forgotten-password mechanism lets someone who is not the account holder reset the password: a security answer that is public or guessable, a reset token derived from data the attacker knows (the e-mail, a timestamp), a token not bound to the account or never expiring, or a reset that trusts a caller-supplied account name without proof."
+    },
+    {
+      "id": "session-fixation",
+      "title": "Session identifier not renewed at login",
+      "cwe": "CWE-384",
+      "family": "security",
+      "kind": "finding",
+      "description": "After a successful login the application keeps the session identifier the browser arrived with, instead of issuing a new one, so an attacker who planted that identifier before login holds the authenticated session afterwards."
+    },
+    {
+      "id": "account-enumeration",
+      "title": "Response reveals whether an account exists",
+      "cwe": "CWE-204",
+      "family": "security",
+      "kind": "finding",
+      "description": "A login, registration or password-recovery endpoint answers differently (a different message, status code or observable behaviour) depending on whether the supplied user name or e-mail exists, so a caller can list valid accounts before guessing passwords."
+    },
+    {
+      "id": "missing-authentication-rate-limit",
+      "title": "No limit on authentication attempts",
+      "cwe": "CWE-307",
+      "family": "security",
+      "kind": "finding",
+      "description": "A login, password-reset, one-time-code or similar credential check can be tried without bound: no attempt counter, lockout, delay that grows, or throttle keyed to the account or the client, so passwords and codes can be guessed automatically. A fixed short sleep or a CSRF token is not a limit. A missing limit has no line of its own; the site is the credential check that runs unthrottled."
+    },
+    {
+      "id": "insufficient-session-expiration",
+      "title": "Session without expiry",
+      "cwe": "CWE-613",
+      "family": "security",
+      "kind": "finding",
+      "description": "A session or authentication token is issued with no idle or absolute lifetime (no maxAge / expires, no server-side expiry), so it stays valid until an explicit logout, and one captured once, or left open on a shared machine, stays usable indefinitely. The site is the session or token configuration that omits it."
+    },
+    {
+      "id": "token-issuer-or-audience-not-validated",
+      "title": "Security token issuer or audience not validated",
+      "cwe": "CWE-345",
+      "family": "security",
+      "kind": "finding",
+      "description": "Bearer-token validation accepts a correctly signed token without checking that its issuer is the expected authority or that its audience is this service (for example `ValidateIssuer = false`, `ValidateAudience = false`), so a token minted for another relying party, or by another issuer sharing the key, is accepted. The signature and the lifetime are `token-signature-or-expiry-not-validated`."
+    },
+    {
+      "id": "excessive-data-exposure",
+      "title": "Response returns properties the caller must not receive",
+      "cwe": "CWE-213",
+      "family": "security",
+      "kind": "finding",
+      "description": "A response serialises a stored object, or a field of it, without a server-side step that restricts it to what this caller may receive, so credentials, password hashes, tokens, role flags, full identity or payment numbers, or other users' private attributes leave the server. The endpoint may correctly decide that the caller may see the object; the defect is that nobody chose its properties (OWASP API3:2023, read side). Hiding the fields later in client-side code does not restrict them."
+    },
+    {
+      "id": "unsafe-reflection",
+      "title": "Request value selects the class or method the server runs",
+      "cwe": "CWE-470",
+      "family": "security",
+      "kind": "finding",
+      "description": "A request value is resolved into a class, constant or method (`constantize`, `const_get`, `send`, `Class.forName`, `Type.GetType`, `getattr`) and then instantiated or invoked without an allowlist, so the caller chooses which code the server constructs or runs. Deserialisation that picks a type from the payload is `insecure-deserialization`."
+    },
+    {
+      "id": "cryptographic-key-reuse",
+      "title": "One key and IV for security tokens and user-chosen plaintexts",
+      "cwe": "CWE-323",
+      "family": "security",
+      "kind": "finding",
+      "description": "The same symmetric key, with a fixed or repeated IV or nonce, is used both to mint a security value (an authentication token, a signature) and to encrypt values a user can choose and read back, so the user obtains the ciphertext of any plaintext — including a valid token for another identity."
+    },
+    {
+      "id": "cleartext-storage-of-sensitive-data",
+      "title": "Sensitive field stored in plaintext",
+      "cwe": "CWE-312",
+      "family": "security",
+      "kind": "finding",
+      "description": "A field holding high-sensitivity data (a national identity number, payment card, bank account) or a secret that proves identity on its own (a TOTP seed, a recovery code, an API secret) is written to the store in plaintext, not encrypted under a key held outside that store, so read access to the store or its backups is enough to read it or impersonate the account. The repository-wide posture \"no encryption of stored personal data anywhere\" is the suite concept `data-encryption-controls`; this concept is one named field the documentation says is left unprotected. Passwords are `insufficient-password-hashing`."
+    },
+    {
+      "id": "output-encoding-disabled",
+      "title": "Framework output encoding switched off",
+      "cwe": "CWE-116",
+      "family": "security",
+      "kind": "finding",
+      "description": "A template engine's or serializer's automatic output encoding is turned off for the whole application (template autoescape set to false, HTML-entity escaping in JSON disabled), so every output the framework would have encoded is written raw. The site is the setting. Each sink that then writes untrusted text into markup is `cross-site-scripting` on its own."
+    },
+    {
+      "id": "file-inclusion",
+      "title": "Request-controlled file included as code",
+      "cwe": "CWE-98",
+      "family": "security",
+      "kind": "finding",
+      "description": "A path or URL the request controls is passed to a construct that loads and EXECUTES a file as program code (PHP `include`/`require` and their `_once` forms, or equivalents) without restricting it to a fixed set of known files. A local name executes or discloses any file the process can read, including uploads and logs the attacker wrote; a URL, where the runtime allows it, executes remote code. Unlike `path-traversal`, the consequence is execution, and a name without traversal sequences can be enough."
+    },
+    {
+      "id": "client-side-enforced-security-check",
+      "title": "Server trusts the client that a security step was passed",
+      "cwe": "CWE-602",
+      "family": "security",
+      "kind": "finding",
+      "description": "A server-side handler decides that a prerequisite security step (a CAPTCHA, a re-authentication, a confirmation, an earlier wizard step) has been completed from a value the client sends — a step number, a \"passed\" flag — instead of from state the server recorded when the step actually succeeded, so the client sends that value and skips the step."
+    },
+    {
+      "id": "leftover-debug-bypass",
+      "title": "Development bypass of a security check left in the shipped path",
+      "cwe": "CWE-489",
+      "family": "security",
+      "kind": "finding",
+      "description": "Code written for development or testing remains in the shipped path and lets a request skip a security check when it carries fixed literal values (a magic parameter value, a specific User-Agent or header), so anyone who learns the literals passes the check."
+    },
+    {
+      "id": "debug-mode-enabled",
+      "title": "Framework debug mode on in the served application",
+      "cwe": "CWE-489",
+      "family": "security",
+      "kind": "finding",
+      "description": "The application turns on its framework's debug mode (Flask/Werkzeug `debug=True`, `app.debug`, Django `DEBUG = True`, a developer exception page) in code or configuration the shipped entry point uses, so error responses carry stack traces, settings and locals and, with Werkzeug, an interactive console that runs code. The site is the statement that enables it; a value read from the environment with a false default is not this concept."
+    },
+    {
+      "id": "weak-content-security-policy",
+      "title": "Content-Security-Policy that does not restrict scripts",
+      "cwe": "CWE-693",
+      "family": "security",
+      "kind": "finding",
+      "description": "The application sends a Content-Security-Policy whose script directives do not restrict which scripts run: they allowlist hosts that serve arbitrary user-supplied content (public CDNs for npm/GitHub files, paste sites), allow `'unsafe-inline'` or `'unsafe-eval'`, or use a nonce that is constant rather than fresh per response, so an injected script runs although a policy is present. A missing policy is `security-response-headers`."
+    },
+    {
+      "id": "spoofable-client-ip-header",
+      "title": "Client IP taken from a header the client sets",
+      "cwe": "CWE-348",
+      "family": "security",
+      "kind": "finding",
+      "description": "The program takes the client's IP address — for logging, rate limiting or an access decision — from a request header the client can set (`X-Forwarded-For`, `X-Real-IP`, `Client-IP`) without first establishing that the request came through a trusted proxy that sets it, so the client chooses the address recorded or checked."
+    },
+    {
+      "id": "missing-security-event-logging",
+      "title": "Security-relevant action with no audit record",
+      "cwe": "CWE-778",
+      "family": "security",
+      "kind": "finding",
+      "description": "A handler performs a security-relevant action — a successful or failed sign-in, a password or role change, a lockout — and completes it without writing any audit record, so the event can be neither detected nor reconstructed. The site is the branch with no logging call. Logging that exists but is incomplete is this concept only where the documentation names the missing event."
+    },
+    {
+      "id": "missing-input-validation",
+      "title": "Business value accepted without the check its rule needs",
+      "cwe": "CWE-20",
+      "family": "security",
+      "kind": "finding",
+      "description": "A business value from the request — a quantity, price, rating, coupon, date, balance or step — is used without the range or consistency check the business rule needs (negative quantities, a zero-star rating the UI forbids, an expired coupon), so the caller obtains an outcome the rule excludes. Used in K only where the application's documentation names the missing check; it is never a catch-all for \"input not validated\"."
+    },
+    {
+      "id": "exposed-directory-listing",
+      "title": "Browsable listing of a non-public directory",
+      "cwe": "CWE-548",
+      "family": "security",
+      "kind": "finding",
+      "description": "The web server publishes a browsable index — and usually per-file download — of a directory whose contents are not meant for the public (backups, logs, keys, deployment or configuration files), so anyone can enumerate and fetch them without guessing names. The site is the route or static-serving registration that turns the listing on."
+    },
+    {
+      "id": "encoded-token-without-integrity",
+      "title": "Server-issued token trusted by decoding, without a MAC or signature",
+      "cwe": "CWE-345",
+      "family": "security",
+      "kind": "finding",
+      "description": "The server decides that a token it issued (a coupon, a progress or continue code, a ticket) is genuine by decoding a reversible encoding (Base64, Base85, hashids with a public salt) and checking its format, with no MAC or signature, so anyone who learns the encoding mints valid tokens with chosen contents. A JWT is `token-signature-or-expiry-not-validated`."
+    },
+    {
+      "id": "unverified-password-change",
+      "title": "Password change without the current password",
+      "cwe": "CWE-620",
+      "family": "security",
+      "kind": "finding",
+      "description": "An endpoint that sets a new password for the signed-in account accepts the request without verifying the current password (or verifies it only when the caller chooses to send it), so a stolen session or a forged request takes the account over permanently."
+    },
+    {
+      "id": "validation-before-canonicalization",
+      "title": "Security check on the raw value, use of a transformed one",
+      "cwe": "CWE-180",
+      "family": "security",
+      "kind": "finding",
+      "description": "A security check (an extension allowlist, a path or name filter) runs on the raw input, and the program then transforms the value (cuts it at a null byte, decodes, normalises) before using it, so a value that passes the check is used in a different, forbidden form. The site is the check together with the later transformation."
+    },
+    {
+      "id": "jsonp-cross-origin-data-exposure",
+      "title": "Caller's data served as JSONP",
+      "cwe": "CWE-942",
+      "family": "security",
+      "kind": "finding",
+      "description": "An endpoint that answers with the data of the caller identified by ambient credentials (a cookie) wraps the response in a caller-named callback (JSONP), so any third-party page can load it as a script and read the data across origins."
+    },
+    {
+      "id": "predictable-derived-credential",
+      "title": "Credential derived from public account attributes",
+      "cwe": "CWE-1391",
+      "family": "security",
+      "kind": "finding",
+      "description": "The program sets or presents an account's password (or another credential) as a deterministic function of public attributes such as the e-mail address or user name (reversed, encoded, hashed without a secret), so anyone who knows the attribute and the function authenticates as the account."
+    },
+    {
+      "id": "non-constant-time-secret-comparison",
+      "title": "Secret compared in time that depends on the match",
+      "cwe": "CWE-208",
+      "family": "security",
+      "kind": "finding",
+      "description": "A secret value (a MAC tag, signature, token, password verifier) is compared with caller-supplied input by a routine whose running time depends on how much of the input matches — a byte loop that returns at the first difference, a plain string equality — so repeated timing measurements reveal the secret piece by piece. A comparison made for authentication values (`MessageDigest.isEqual`, `CryptographicOperations.FixedTimeEquals`, `crypto.timingSafeEqual`, `hmac.compare_digest`) is not this concept."
+    },
+    {
+      "id": "fail-open-verification-check",
+      "title": "Verification that succeeds when its inputs are absent",
+      "cwe": "CWE-287",
+      "family": "security",
+      "kind": "finding",
+      "description": "An authentication or account-verification routine checks each expected credential or answer only if the request carries it, and reports success when none of the checks ran, so a caller who removes or renames the fields is verified without knowing any secret. The defect is the default-allow shape of the check, not the strength of the secret."
+    },
+    {
+      "id": "host-header-in-generated-link",
+      "title": "Secret-bearing link built from the request's Host header",
+      "cwe": "CWE-640",
+      "family": "security",
+      "kind": "finding",
+      "description": "An absolute URL that carries a secret — a password-reset or account-confirmation link sent by e-mail — is composed from the incoming request's `Host` (or `X-Forwarded-Host`) header instead of a configured origin, so an attacker who requests the link for a victim with a forged host receives the secret when the victim clicks. It is one specific `weak-password-recovery` mechanism, kept apart because its site and its repair (a configured origin) are its own."
     }
   ]
 }

@@ -87,13 +87,13 @@ class MappingFile(unittest.TestCase):
 
 
 class ComparisonHelpers(unittest.TestCase):
-    WD = Mapping(load_json(os.path.join(ROOT, "mappings", "watchdog.json")))
+    WD = Mapping(load_json(os.path.join(ROOT, "tests", "fixtures", "example-scanner-mapping.json")))
 
     def test_canonical_dimension_prefers_side_a_then_side_b_and_umbrellas_follow_children(self):
         self.assertEqual(COMPARE.canonical_dimension("hardcoded-credential", M, self.WD), "D13")
         self.assertEqual(COMPARE.canonical_dimension("container-excessive-privilege", M, self.WD), "D31")
         self.assertEqual(COMPARE.canonical_dimension("iac-misconfiguration", M, self.WD), "D31")
-        # a concept the RI does not detect falls back to Watchdog's dimension
+        # a concept the RI does not detect falls back to the other scanner's dimension
         self.assertEqual(COMPARE.canonical_dimension("deprecated-dependency", M, self.WD),
                          self.WD.dims["deprecated-dependency"][0])
 

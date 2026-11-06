@@ -735,7 +735,7 @@ def score_bands(entries, scores, mapping):
 
 # --- the whole run --------------------------------------------------------------------------------------------------
 
-CONTRACTS = ("1.4", "1.5", "1.6", "1.7")
+CONTRACTS = ("1.4", "1.5", "1.6", "1.7", "1.8")
 
 
 def score(key, results, mapping, scores=None, contract=None, taxonomy=None, source=None):
@@ -878,10 +878,27 @@ def score(key, results, mapping, scores=None, contract=None, taxonomy=None, sour
         "contract": contract,
         "scoreBands": bands,
         "unmappedConcepts": unmapped_concepts(entries, mapping),
+        "unplacedRules": unplaced_rules(results, mapping),
         "summaryOfConcept": soc,
         "entries": entry_rows,
         "results": result_rows,
     }
+
+
+def unplaced_rules(results, mapping):
+    """Contract 1.8: the rule ids (with the title key, the message up to its first ':') of results the mapping places
+    on no concept, does not ignore, does not declare a summary row and does not declare off-concept. A non-empty list
+    means the scanner emitted rules its mapping cannot place, so the run is not a recall measurement for the concepts
+    those rules could denote; a published result lists them."""
+    out = set()
+    for r in results:
+        if r.get("concepts") or r.get("ignoreReason") or r.get("summaryOf"):
+            continue
+        if mapping.off_concept(r["ruleId"], r.get("message")):
+            continue
+        title = (r.get("message") or "").split(":", 1)[0].strip()
+        out.add((r["ruleId"] or "", title))
+    return [{"ruleId": rid, "title": t} for rid, t in sorted(out)]
 
 
 def unmapped_concepts(entries, mapping):
@@ -972,6 +989,11 @@ def render(report):
             got = ", ".join(f"{s['source']}={s['score']}" for s in b["scores"]) or "-"
             parts.append(f"  {b['id']:<12} {b['concept']:<32} band {b['band'][0]}-{b['band'][1]}  "
                          f"score {got}  -> {b['outcome']}")
+    if report.get("unplacedRules"):
+        parts += ["", "rules this scanner emitted that its mapping places on no concept (contract 1.8: not a recall "
+                      "measurement for the concepts they could denote): "
+                  + ", ".join(f"{u['ruleId']} {u['title']!r}" for u in report["unplacedRules"][:20])
+                  + (" …" if len(report["unplacedRules"]) > 20 else "")]
     if report.get("unmappedConcepts"):
         parts += ["", "concepts no rule of this scanner maps (each plant of them is an FN: a real defect the scanner "
                       "cannot see): " + ", ".join(report["unmappedConcepts"])]

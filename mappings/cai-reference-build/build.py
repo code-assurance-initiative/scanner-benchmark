@@ -10,8 +10,7 @@ privilege` and `iac-misconfiguration` as unmapped with the reason "umbrella: thi
 concepts", and maps `visual-and-motion-safety` while also emitting its children `focus-outline-removed` and
 `motion-without-reduced-motion` separately. Contract 1.3 says a mapping's `parent` should mirror the taxonomy's, and
 the harness reads umbrellas from the mapping only — without it a key entry naming an umbrella (a plant, a trap, or a
-clean region listing it) never sees the children's results, which is neither the engine's stated intent nor what the
-Watchdog mapping gets. This step adds exactly the taxonomy's `parent` to every child concept and changes nothing else
+clean region listing it) never sees the children's results, which is not the engine's stated intent. This step adds exactly the taxonomy's `parent` to every child concept and changes nothing else
 (rules, dimensions, unmapped and their reasons stay as generated). `--check` exits 1 when the committed mapping is not
 the build of the given generated file.
 """

@@ -11,7 +11,7 @@ from tests.helpers import MAPPING_DOC, TAXONOMY, band, clean, entry, key, mf, mn
 
 PROPS = "Directory.Packages.props"
 
-# Shapes of real Watchdog dependency rows (bench-csharp-security-dependencies iter2): no location, package in message.
+# Shapes of real scanner dependency rows (bench-csharp-security-dependencies iter2): no location, package in message.
 DEPS = copy.deepcopy(MAPPING_DOC)
 DEPS["concepts"].update({
     "vulnerable-dependency": {"rules": ["^D12$", "^D30$"], "messages": ["^Vulnerable: ", "^\\w+ CVE: "],

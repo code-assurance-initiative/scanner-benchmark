@@ -7,8 +7,8 @@ Checks, all fatal:
   * every row is either `in-scope` with at least one repository carrying a label other than `not-applicable`,
     or `out-of-scope` with a non-empty reason (no row may lack both);
   * every label is a contract label kind; every concept exists in taxonomy.json;
-  * every (concept, dimension) pair of a row is present in mappings/watchdog.json;
-  * (contract 1.4) every `beyondReference` concept exists in taxonomy.json, is listed in the mapping's `unmapped`
+  * (decision 0012) the matrix and the taxonomy are CAI's own files; no producer's mapping is read;
+  * (contract 1.4) every `beyondReference` concept exists in taxonomy.json and no row measures it,
     and is mapped on no dimension, and every `unmapped` concept is in `beyondReference`.
 
 Not fatal, rendered and printed: the frozen-key coverage gaps (in-scope rows with no FROZEN repository of a language
@@ -40,7 +40,7 @@ def load(rel):
     return json.loads((ROOT / rel).read_text(encoding="utf-8"))
 
 
-def validate(matrix, taxonomy, mapping, catalog_path):
+def validate(matrix, taxonomy, catalog_path):
     rows = matrix["rows"]
     ids = [r["id"] for r in rows]
     dupes = [i for i, n in Counter(ids).items() if n > 1]
@@ -61,7 +61,6 @@ def validate(matrix, taxonomy, mapping, catalog_path):
             fail(f"matrix ids differ from catalog: missing {sorted(cat_ids - set(ids))}, extra {sorted(set(ids) - cat_ids)}")
 
     concepts = {c["id"]: c for c in taxonomy["concepts"]}
-    mapped = mapping["concepts"]
     for r in rows:
         rid = r["id"]
         if r["kind"] not in KINDS:
@@ -86,18 +85,13 @@ def validate(matrix, taxonomy, mapping, catalog_path):
         for cid in r["concepts"]:
             if cid not in concepts:
                 fail(f"{rid}: concept {cid!r} not in taxonomy.json")
-            if cid not in mapped or rid not in mapped[cid]["dimensions"]:
-                fail(f"{rid}: mappings/watchdog.json does not map concept {cid!r} to dimension {rid}")
-    unmapped = {u["concept"] for u in mapping.get("unmapped", [])}
-    beyond = {b["concept"] for b in matrix.get("beyondReference", [])}
-    if unmapped != beyond:
-        fail(f"beyondReference {sorted(beyond)} differs from the mapping's unmapped {sorted(unmapped)}")
+    measured = {cid for r in rows for cid in r.get("concepts", [])}
     for b in matrix.get("beyondReference", []):
         cid = b["concept"]
         if cid not in concepts:
             fail(f"beyondReference: concept {cid!r} not in taxonomy.json")
-        if mapped.get(cid, {}).get("rules") or mapped.get(cid, {}).get("dimensions"):
-            fail(f"beyondReference: concept {cid!r} is mapped by mappings/watchdog.json")
+        if cid in measured:
+            fail(f"beyondReference: concept {cid!r} is measured by a row")
         for c in b.get("repos", []):
             if set(c["labels"]) - LABELS:
                 fail(f"beyondReference {cid}: unknown label(s) for {c['repo']}")
@@ -129,23 +123,12 @@ def render(matrix):
         "A frozen repository's labels are read from its key at the registered tag; *(plan)* marks a repository not "
         "frozen yet (planned labels); — marks a frozen repository planned for the row whose key labels none of its "
         "concepts. "
-        "Repositories marked **★** are Phase 1. Languages: C# / TS relevance (yes · partial · no). "
-        "Edition: Inc = Included in the downloadable edition; WC = withheld (commercial); WNS = withheld (not "
-        "self-sufficient: needs build/tests/model/runtime); WNM = withheld (no standalone meaning: posture). "
-        "Absence: CS = CleanScan, ER = EvidenceRequired, LLM = sampled model verdict; ↑ = reward-leaning polarity.",
+        "Repositories marked **★** are Phase 1.",
         "",
-        "| Dim | Name | Lens | Kind | C# | TS | Edition | Absence | Concepts | Status | Repositories (labels) / reason | Requires |",
-        "|---|---|---|---|---|---|---|---|---|---|---|---|",
+        "| Dim | Name | Lens | Kind | Concepts | Status | Repositories (labels) / reason | Requires |",
+        "|---|---|---|---|---|---|---|---|",
     ]
-    ed_short = {"Included": "Inc", "WithheldCommercial": "WC", "WithheldNotSelfSufficient": "WNS",
-                "WithheldNoStandaloneMeaning": "WNM", None: "—"}
     for r in rows:
-        ap = r["absencePolicy"]
-        absence = {"CleanScan": "CS", "EvidenceRequired": "ER", None: ""}[ap["absenceClass"]]
-        if ap["sampledLlm"]:
-            absence = (absence + " LLM").strip()
-        if ap["scoringPolarity"] == "reward":
-            absence = (absence + " ↑").strip()
         if r["status"] == "in-scope":
             parts = []
             for c in r["coverage"]:
@@ -158,8 +141,7 @@ def render(matrix):
             where = "**OUT:** " + md_escape(r["reason"])
         lines.append("| " + " | ".join([
             f"**{r['id']}**", md_escape(r["name"]), r["lensLabel"], r["kind"],
-            r["languages"]["csharp"], r["languages"]["typescript"], ed_short.get(r["edition"], r["edition"] or "—"),
-            absence or "—", ", ".join(r["concepts"]), r["status"], where,
+            ", ".join(r["concepts"]), r["status"], where,
             md_escape("; ".join(r.get("requires") or [])) or "—",
         ]) + " |")
     lines += ["", "## Out of scope", ""]
@@ -174,9 +156,9 @@ def render(matrix):
         c = [r["id"] for r in ins if lang in r.get("frozenCoverageCleanOnly", [])]
         lines.append(f"- **{lang}** — no frozen measuring label ({len(g)}): {', '.join(g) or 'none'}")
         lines.append(f"- **{lang}** — clean-only ({len(c)}): {', '.join(c) or 'none'}")
-    lines += ["", "## Concepts beyond the reference scanner", "",
-              "Taxonomy concepts no rule of the reference scanner detects (mapping `unmapped`): a plant of one is a "
-              "false negative for that scanner — a real defect it cannot see.", "",
+    lines += ["", "## Concepts no rubric dimension measures", "",
+              "Taxonomy concepts no row of this matrix measures: a plant of one is scored by the concept alone, for "
+              "every scanner alike.", "",
               "| Concept | CWE | Family | Repositories (labels) |", "|---|---|---|---|"]
     for b in matrix.get("beyondReference", []):
         reps = "<br>".join(f"`{c['repo'].replace('bench-', '')}` "
@@ -202,7 +184,7 @@ def main():
     ap.add_argument("--check", action="store_true", help="validate and verify MATRIX.md is current; write nothing")
     args = ap.parse_args()
     matrix = load("coverage/matrix.json")
-    validate(matrix, load("taxonomy.json"), load("mappings/watchdog.json"), args.catalog)
+    validate(matrix, load("taxonomy.json"), args.catalog)
     text = render(matrix)
     target = ROOT / "coverage" / "MATRIX.md"
     if args.check:

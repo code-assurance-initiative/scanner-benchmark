@@ -6,7 +6,7 @@ basename read out of a message) falls back to the suffix rule below (`pathMatch:
 
 The suffix rule:
 
-Same rule as kennel tools/multilang/matching.py: two paths name the same file when they are equal or either is a
+The contract's rule (docs/CONTRACT.md, Matching): two paths name the same file when they are equal or either is a
 `/`-boundary suffix of the other (answer keys are repo-relative; scanners report from whatever root they ran in).
 Unlike that file's `lstrip("./")`, only a leading "./" segment is removed here — `lstrip` also eats the dot of
 ".github/…", which then no longer suffix-matches an absolute ".../.github/…" path.

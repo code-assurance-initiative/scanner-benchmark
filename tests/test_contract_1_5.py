@@ -234,9 +234,9 @@ class SitesFromMessage(unittest.TestCase):
         self.assertNotIn("sites", r["results"][0])
 
 
-class WatchdogMapping(unittest.TestCase):
-    """The real mapping on message shapes verbatim from local Watchdog scans (_scans/**/report.sarif)."""
-    W = Mapping(load_json(os.path.join(ROOT, "mappings", "watchdog.json")))
+class ExampleScannerMapping(unittest.TestCase):
+    """An illustrative scanner mapping (tests/fixtures/example-scanner-mapping.json) on realistic message shapes."""
+    W = Mapping(load_json(os.path.join(ROOT, "tests", "fixtures", "example-scanner-mapping.json")))
 
     def test_d4(self):
         msg = ("Duplicated block (24–25 lines × 2): src/Shipping.Rates.Core/Carriers/AlderParcelAdapter.cs:45-68 | "

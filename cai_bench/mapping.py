@@ -205,6 +205,11 @@ class Mapping:
                 self.rule_dimension.append((re.compile(rd["rule"]), rd["dimension"]))
             except (KeyError, TypeError, re.error) as ex:
                 raise MappingError(f"mapping: ruleDimension[{i}] is invalid: {ex}")
+        self.off = []
+        for i, o in enumerate(doc.get("offConcept", []) or []):
+            if isinstance(o, dict) and "rule" in o:
+                self.off.append((_rx(o["rule"], f"offConcept[{i}].rule"),
+                                 _rx(o["message"], f"offConcept[{i}].message") if "message" in o else None))
         self.ignore = []
         for i, ig in enumerate(doc.get("ignore", []) or []):
             w = f"ignore[{i}]"
@@ -223,6 +228,15 @@ class Mapping:
                 continue
             return reason
         return None
+
+    def off_concept(self, rule_id, message):
+        """Whether the mapping declares this result off-concept (`offConcept`: emitted by the scanner, denoting none of
+        the concepts mapped to its rule). Informational: it changes no outcome, but a result it covers is a known
+        omission, not an unplaced rule (contract 1.8)."""
+        for rule, msg in self.off:
+            if rule.search(rule_id or "") and (msg is None or msg.search(message or "")):
+                return True
+        return False
 
     def ignored(self, rule_id, message):
         """The reason of the first `ignore` entry matching this result, or None."""

@@ -160,10 +160,11 @@ def main(argv=None):
     h.set_defaults(fn=cmd_sha256)
 
     c = sub.add_parser("compare", help="per-lens / per-dimension deltas of a run against a frozen baseline")
-    c.add_argument("--baseline", required=True, help="a frozen baseline, e.g. results/watchdog/baseline-2026-10-07.json")
+    c.add_argument("--baseline", required=True, help="a frozen baseline, e.g. results/<producer>/baseline-<date>.json")
     c.add_argument("--current", required=True, help="the new run's final-scores.json (same shape as the baseline's)")
-    c.add_argument("--mapping", default="mappings/watchdog.json",
-                   help="concept -> dimension mapping used for the current run (default mappings/watchdog.json)")
+    c.add_argument("--mapping", required=True,
+                   help="the producer's concept -> dimension mapping used for the current run (decision 0012: the "
+                        "harness holds no producer's mapping)")
     c.add_argument("--all", action="store_true", help="print every dimension, not only the changed ones")
     c.add_argument("--json", help="write the deltas as JSON here")
     c.set_defaults(fn=cmd_compare)
