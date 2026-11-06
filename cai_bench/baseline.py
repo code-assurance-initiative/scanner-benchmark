@@ -1,8 +1,8 @@
 """Baselines: aggregate a scanner's per-repository final scores into per-dimension and per-lens figures, and compare
 a later run against a frozen baseline.
 
-    python3 -m cai_bench compare --baseline results/watchdog/baseline-2026-10-07.json \
-        --current <new final-scores.json> [--mapping mappings/watchdog.json] [--all] [--json delta.json]
+    python3 -m cai_bench compare --baseline results/<producer>/baseline-<date>.json \
+        --current <new final-scores.json> --mapping <the producer's mapping> [--all] [--json delta.json]
 
 Input `final-scores.json` (results/<scanner>/final-scores.json): one headline score report per registry repository,
 each with `summary`, `concepts`, `dimensions` and `scoreBands` exactly as `python3 -m cai_bench score --json` writes
@@ -13,7 +13,7 @@ Definitions (the same for the baseline and every later run, so deltas are like f
 - **Per dimension**: the sum over repositories of the harness's per-dimension rows (contract 1.4: matching re-run
   within the dimension). A plant is counted under every dimension its concept maps to, so dimension rows overlap.
 - **Per lens**: plants and traps are counted ONCE per lens, from the per-concept rows: a concept belongs to every lens
-  one of its dimensions belongs to, and a plant is found when Watchdog found it (TP of the whole run). Results and
+  one of its dimensions belongs to, and a plant is found when the scanner found it (TP of the whole run). Results and
   noise are the sum of the lens's dimension rows: every result has exactly one dimension, so lenses partition them.
   Concepts no scanner dimension maps go to the `(no scanner rule)` lens.
 - **Score bands**: a band belongs to the dimension(s) whose score was read for it, or, when unscored, to the

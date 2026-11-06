@@ -39,10 +39,10 @@ def score(k, *results, mapping=MAPPING_DOC, contract=None, src=None):
 
 class Version(unittest.TestCase):
     def test_contract_is_1_7(self):
-        self.assertEqual(CONTRACT_VERSION, "1.7")
+        self.assertGreaterEqual(tuple(int(x) for x in CONTRACT_VERSION.split(".")), (1, 7))  # 1.8 adds reporting only
 
     def test_the_report_names_its_contract(self):
-        self.assertEqual(score(key(mf("A", "sql-injection", "a.cs", [5, 5])))["contract"], "1.7")
+        self.assertEqual(score(key(mf("A", "sql-injection", "a.cs", [5, 5])))["contract"], CONTRACT_VERSION)
 
 
 # --- optimal one-to-one assignment ------------------------------------------------------------------------------------
@@ -383,7 +383,7 @@ class ElementScope(unittest.TestCase):
 
 class Shipped(unittest.TestCase):
     TAX = load_json(os.path.join(ROOT, "taxonomy.json"))
-    MAP = load_json(os.path.join(ROOT, "mappings", "watchdog.json"))
+    MAP = load_json(os.path.join(ROOT, "tests", "fixtures", "example-scanner-mapping.json"))
 
     def test_taxonomy_scopes(self):
         got = {c["id"]: c.get("matchScope") for c in self.TAX["concepts"]}

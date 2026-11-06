@@ -1,5 +1,9 @@
 # Phase 1 — which dimensions the two first repositories exercise
 
+> **Historical (2026-10-06).** A planning record of how the first two units were authored, with one producer's engine
+> as the instrument; it cites that engine's sources. It is provenance, not part of the standard: since decision 0012
+> the standard names no producer, and `coverage/matrix.json` is CAI's own.
+
 Scope: `bench-csharp-baseline-clean` and `bench-csharp-security-secrets`, measured by Watchdog rubric
 `rubric-2026.10.1`. The authoritative per-dimension rows are in `coverage/matrix.json` (`phase1` field); this file
 explains what the instrument actually reads, so plants are visible to it in principle and traps probe it.

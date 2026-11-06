@@ -3,7 +3,7 @@
 A vendor-neutral benchmark for code scanners. A set of small, public, MIT-licensed code repositories ("units", held
 together in the training set
 [`training-set-2026`](https://github.com/code-assurance-initiative/training-set-2026)), each of which contains **exactly** the defects its answer key says it contains, plus **traps** that look like defects and are not.
-Run any scanner over them (SonarQube, CodeScene, Snyk, CodeQL, Semgrep, Watchdog, …), export SARIF, and this harness
+Run any scanner over them (SonarQube, CodeScene, Snyk, CodeQL, Semgrep, …), export SARIF, and this harness
 measures, per concept and per scanner dimension:
 
 - **recall** — planted defects found ÷ planted defects;
@@ -78,7 +78,7 @@ LATEST registered one; earlier tags stay registered and valid, and are in the bu
 Frozen versions are listed in [`registry.json`](registry.json) with their tag, commit, the sha256 of their answer
 key and their `source` (the training set and the bundle that holds them). Only a registered (repo, tag, keySha256) is
 a benchmark result; anything else is a work in progress. Every tool here that reads a key (`results/watchdog/rescore.py`,
-`results/watchdog/baseline.py`, `mappings/watchdog-build/build.py`) reads it through `cai_bench/units.py`: from
+`results/watchdog/baseline.py`) reads it through `cai_bench/units.py`: from
 materialised units (`--units-dir` / `BENCH_UNITS_DIR`), else from the set's bundles (`--set-dir` / `BENCH_SET_DIR`,
 default a `training-set-2026` checkout next to this one), else from a legacy clone — always sha256-checked.
 
@@ -185,7 +185,7 @@ For all 25 units at once — materialise, scan, re-score, compare — follow
 For the recorded Watchdog results, `results/watchdog/final-scores.json` gives per repository the tag, commit, key
 sha256, the `sarifSha256` of the scan that was scored and the full outcome; a SARIF with that hash scored with the
 command above reproduces the row (score bands need the scanner's dimension scores, made by
-`mappings/watchdog_scores.py <scan>/scorecard.json`). `python3 results/watchdog/summarise.py` rebuilds
+the producer's own score adapter, as its mapping is the producer's own file: decision 0012). `python3 results/watchdog/summarise.py` rebuilds
 `SUMMARY.json` from `final-scores.json`.
 
 ## Results
@@ -205,7 +205,7 @@ command above reproduces the row (score bands need the scanner's dimension score
   per lens, per dimension, mechanisms, and a reproduction of its self-reported numbers. **In-sample for that engine**,
   which was calibrated on these units (see the caveat there). Mapping: `mappings/cai-reference.json` (its generated
   mapping plus the taxonomy's parents, `mappings/cai-reference-build/`).
-- [`coverage/MATRIX.md`](coverage/MATRIX.md) — every Watchdog dimension, whether it is in scope, and which frozen
+- [`coverage/MATRIX.md`](coverage/MATRIX.md) — every rubric dimension, whether it is in scope, and which frozen
   repositories label it (read from their keys at the registered tags).
 
 ## Adding a benchmark unit, a new set or a holdout

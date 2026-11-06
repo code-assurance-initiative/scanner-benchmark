@@ -11,7 +11,7 @@ WF = ".github/workflows/release.yml"
 DEPLOY = ".github/workflows/deploy.yml"
 DS = "deploy/k8s/node-agent/daemonset.yaml"
 
-# Shapes of real Watchdog D36 rows (bench-csharp-security-iac iter2): no SARIF location, the site in the message.
+# Shapes of real scanner D36 rows (bench-csharp-security-iac iter2): no SARIF location, the site in the message.
 GRANT = ("Workflow token grant is wider than its jobs use: 1 `permissions:` grant(s) are wider than the jobs that hold "
          "them use (release.yml:7 (write-all; held by images)). `write-all` grants every scope GitHub defines")
 ARGV = ("Secret passed as a command-line argument: 2 CI command(s) pass a credential in the command line: "

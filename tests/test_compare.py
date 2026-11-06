@@ -14,6 +14,9 @@ from cai_bench.mapping import Mapping
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WATCHDOG = os.path.join(ROOT, "results", "watchdog")
 FROZEN = os.path.join(WATCHDOG, "baseline-2026-10-07.json")
+# Decision 0012: a published result names the mapping it was scored with; the producer's mapping is no longer in the
+# harness, so the record keeps the mapping as it stood when the baseline was published (commit 46803cf).
+FROZEN_MAPPING = os.path.join(WATCHDOG, "mapping-at-baseline-2026-10-07.json")
 
 MAPPING = Mapping({
     "scanner": "fixture", "version": "1",
@@ -158,7 +161,8 @@ class FrozenWatchdogBaseline(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             out = os.path.join(d, "delta.json")
             p = subprocess.run([sys.executable, "-m", "cai_bench", "compare", "--baseline", FROZEN,
-                                "--current", os.path.join(WATCHDOG, "final-scores.json"), "--json", out],
+                                "--current", os.path.join(WATCHDOG, "final-scores.json"), "--mapping", FROZEN_MAPPING,
+                                "--json", out],
                                cwd=ROOT, capture_output=True, text=True)
             self.assertEqual(p.returncode, 0, p.stderr)
             with open(out) as f:
@@ -171,7 +175,8 @@ class FrozenWatchdogBaseline(unittest.TestCase):
     def test_cli_compare_rejects_a_non_baseline(self):
         p = subprocess.run([sys.executable, "-m", "cai_bench", "compare", "--baseline",
                             os.path.join(WATCHDOG, "SUMMARY.json"), "--current",
-                            os.path.join(WATCHDOG, "final-scores.json")], cwd=ROOT, capture_output=True, text=True)
+                            os.path.join(WATCHDOG, "final-scores.json"), "--mapping", FROZEN_MAPPING],
+                           cwd=ROOT, capture_output=True, text=True)
         self.assertEqual(p.returncode, 2)
         self.assertIn("not a baseline document", p.stderr)
 

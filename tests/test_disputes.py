@@ -82,7 +82,7 @@ class Shape(unittest.TestCase):
         self.assertTrue(has(disputes.validate([entry(newKeyVersion="0.9.0")]), "newKeyVersion", "later"))
 
     def test_a_version_local_to_one_scanner_is_not_a_cai_key_version(self):
-        # Proposal 0001 §3: a "+wd.N" version is Watchdog's own amendment and never a CAI number.
+        # Proposal 0001 §3: a "+<scanner>.N" version is one scanner's own amendment and never a CAI number.
         self.assertTrue(has(disputes.validate([entry(newKeyVersion="1.0.0+wd.1")]), "newKeyVersion"))
         self.assertTrue(has(disputes.validate([entry(keyVersion="1.0.0+wd.1")]), "keyVersion"))
 

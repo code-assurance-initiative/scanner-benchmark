@@ -1615,6 +1615,10 @@
         "D29"
       ]
     },
+    "account-enumeration": {
+      "rules": [],
+      "dimensions": []
+    },
     "adr-conformance": {
       "rules": [],
       "dimensions": []
@@ -1627,11 +1631,35 @@
       "rules": [],
       "dimensions": []
     },
+    "cleartext-storage-of-sensitive-data": {
+      "rules": [],
+      "dimensions": []
+    },
+    "client-controlled-identity": {
+      "rules": [],
+      "dimensions": []
+    },
+    "client-side-enforced-security-check": {
+      "rules": [],
+      "dimensions": []
+    },
     "consent-not-checked": {
       "rules": [],
       "dimensions": []
     },
     "container-excessive-privilege": {
+      "rules": [],
+      "dimensions": []
+    },
+    "cross-site-request-forgery": {
+      "rules": [],
+      "dimensions": []
+    },
+    "cryptographic-key-reuse": {
+      "rules": [],
+      "dimensions": []
+    },
+    "debug-mode-enabled": {
       "rules": [],
       "dimensions": []
     },
@@ -1651,7 +1679,27 @@
       "rules": [],
       "dimensions": []
     },
+    "encoded-token-without-integrity": {
+      "rules": [],
+      "dimensions": []
+    },
     "environment-separation": {
+      "rules": [],
+      "dimensions": []
+    },
+    "excessive-data-exposure": {
+      "rules": [],
+      "dimensions": []
+    },
+    "exposed-directory-listing": {
+      "rules": [],
+      "dimensions": []
+    },
+    "fail-open-verification-check": {
+      "rules": [],
+      "dimensions": []
+    },
+    "file-inclusion": {
       "rules": [],
       "dimensions": []
     },
@@ -1667,6 +1715,10 @@
       "rules": [],
       "dimensions": []
     },
+    "host-header-in-generated-link": {
+      "rules": [],
+      "dimensions": []
+    },
     "iac-misconfiguration": {
       "rules": [],
       "dimensions": []
@@ -1675,7 +1727,19 @@
       "rules": [],
       "dimensions": []
     },
+    "insufficient-session-expiration": {
+      "rules": [],
+      "dimensions": []
+    },
     "internal-api-inconsistency": {
+      "rules": [],
+      "dimensions": []
+    },
+    "jsonp-cross-origin-data-exposure": {
+      "rules": [],
+      "dimensions": []
+    },
+    "leftover-debug-bypass": {
       "rules": [],
       "dimensions": []
     },
@@ -1695,7 +1759,31 @@
       "rules": [],
       "dimensions": []
     },
+    "missing-authentication-rate-limit": {
+      "rules": [],
+      "dimensions": []
+    },
+    "missing-function-level-authorization": {
+      "rules": [],
+      "dimensions": []
+    },
+    "missing-input-validation": {
+      "rules": [],
+      "dimensions": []
+    },
+    "missing-ownership-check": {
+      "rules": [],
+      "dimensions": []
+    },
+    "missing-security-event-logging": {
+      "rules": [],
+      "dimensions": []
+    },
     "missing-subresource-integrity": {
+      "rules": [],
+      "dimensions": []
+    },
+    "non-constant-time-secret-comparison": {
       "rules": [],
       "dimensions": []
     },
@@ -1711,11 +1799,19 @@
       "rules": [],
       "dimensions": []
     },
+    "output-encoding-disabled": {
+      "rules": [],
+      "dimensions": []
+    },
     "personal-data-in-event-store": {
       "rules": [],
       "dimensions": []
     },
     "personal-data-inventory": {
+      "rules": [],
+      "dimensions": []
+    },
+    "predictable-derived-credential": {
       "rules": [],
       "dimensions": []
     },
@@ -1751,11 +1847,23 @@
       "rules": [],
       "dimensions": []
     },
+    "session-fixation": {
+      "rules": [],
+      "dimensions": []
+    },
+    "spoofable-client-ip-header": {
+      "rules": [],
+      "dimensions": []
+    },
     "test-only-api-in-production-code": {
       "rules": [],
       "dimensions": []
     },
     "third-party-data-flow": {
+      "rules": [],
+      "dimensions": []
+    },
+    "token-issuer-or-audience-not-validated": {
       "rules": [],
       "dimensions": []
     },
@@ -1779,6 +1887,14 @@
       "rules": [],
       "dimensions": []
     },
+    "unrestricted-file-upload": {
+      "rules": [],
+      "dimensions": []
+    },
+    "unsafe-reflection": {
+      "rules": [],
+      "dimensions": []
+    },
     "untyped-javascript-share": {
       "rules": [],
       "dimensions": []
@@ -1787,7 +1903,27 @@
       "rules": [],
       "dimensions": []
     },
+    "unverified-password-change": {
+      "rules": [],
+      "dimensions": []
+    },
+    "validation-before-canonicalization": {
+      "rules": [],
+      "dimensions": []
+    },
     "vulnerability-disclosure-policy-quality": {
+      "rules": [],
+      "dimensions": []
+    },
+    "weak-content-security-policy": {
+      "rules": [],
+      "dimensions": []
+    },
+    "weak-password-recovery": {
+      "rules": [],
+      "dimensions": []
+    },
+    "weak-password-requirements": {
       "rules": [],
       "dimensions": []
     }
@@ -2588,6 +2724,10 @@
   ],
   "unmapped": [
     {
+      "concept": "account-enumeration",
+      "reason": "no detector in this engine"
+    },
+    {
       "concept": "adr-conformance",
       "reason": "needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls"
     },
@@ -2600,12 +2740,36 @@
       "reason": "needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls"
     },
     {
+      "concept": "cleartext-storage-of-sensitive-data",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "client-controlled-identity",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "client-side-enforced-security-check",
+      "reason": "no detector in this engine"
+    },
+    {
       "concept": "consent-not-checked",
       "reason": "not implemented"
     },
     {
       "concept": "container-excessive-privilege",
       "reason": "umbrella: this engine emits the precise child concepts"
+    },
+    {
+      "concept": "cross-site-request-forgery",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "cryptographic-key-reuse",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "debug-mode-enabled",
+      "reason": "no detector in this engine"
     },
     {
       "concept": "dependency-release-cooldown-missing",
@@ -2624,8 +2788,28 @@
       "reason": "needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls"
     },
     {
+      "concept": "encoded-token-without-integrity",
+      "reason": "no detector in this engine"
+    },
+    {
       "concept": "environment-separation",
       "reason": "needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls"
+    },
+    {
+      "concept": "excessive-data-exposure",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "exposed-directory-listing",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "fail-open-verification-check",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "file-inclusion",
+      "reason": "no detector in this engine"
     },
     {
       "concept": "floating-promise",
@@ -2640,6 +2824,10 @@
       "reason": "needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls"
     },
     {
+      "concept": "host-header-in-generated-link",
+      "reason": "no detector in this engine"
+    },
+    {
       "concept": "iac-misconfiguration",
       "reason": "umbrella: this engine emits the precise child concepts"
     },
@@ -2648,8 +2836,20 @@
       "reason": "needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls"
     },
     {
+      "concept": "insufficient-session-expiration",
+      "reason": "no detector in this engine"
+    },
+    {
       "concept": "internal-api-inconsistency",
       "reason": "needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls"
+    },
+    {
+      "concept": "jsonp-cross-origin-data-exposure",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "leftover-debug-bypass",
+      "reason": "no detector in this engine"
     },
     {
       "concept": "link-and-button-text-quality",
@@ -2668,8 +2868,32 @@
       "reason": "npm concept"
     },
     {
+      "concept": "missing-authentication-rate-limit",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "missing-function-level-authorization",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "missing-input-validation",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "missing-ownership-check",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "missing-security-event-logging",
+      "reason": "no detector in this engine"
+    },
+    {
       "concept": "missing-subresource-integrity",
       "reason": "not implemented"
+    },
+    {
+      "concept": "non-constant-time-secret-comparison",
+      "reason": "no detector in this engine"
     },
     {
       "concept": "non-idempotent-message-handler",
@@ -2684,12 +2908,20 @@
       "reason": "needs registry data (latest versions); the engine runs offline"
     },
     {
+      "concept": "output-encoding-disabled",
+      "reason": "no detector in this engine"
+    },
+    {
       "concept": "personal-data-in-event-store",
       "reason": "needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls"
     },
     {
       "concept": "personal-data-inventory",
       "reason": "needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls"
+    },
+    {
+      "concept": "predictable-derived-credential",
+      "reason": "no detector in this engine"
     },
     {
       "concept": "primitive-obsession",
@@ -2724,12 +2956,24 @@
       "reason": "not implemented"
     },
     {
+      "concept": "session-fixation",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "spoofable-client-ip-header",
+      "reason": "no detector in this engine"
+    },
+    {
       "concept": "test-only-api-in-production-code",
       "reason": "Erlang concept"
     },
     {
       "concept": "third-party-data-flow",
       "reason": "needs runtime: observed on a booted application, which this engine never starts"
+    },
+    {
+      "concept": "token-issuer-or-audience-not-validated",
+      "reason": "no detector in this engine"
     },
     {
       "concept": "unauthenticated-reachable-endpoint",
@@ -2752,6 +2996,14 @@
       "reason": "needs runtime: observed on a booted application, which this engine never starts"
     },
     {
+      "concept": "unrestricted-file-upload",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "unsafe-reflection",
+      "reason": "no detector in this engine"
+    },
+    {
       "concept": "untyped-javascript-share",
       "reason": "JavaScript concept"
     },
@@ -2760,8 +3012,28 @@
       "reason": "npm concept"
     },
     {
+      "concept": "unverified-password-change",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "validation-before-canonicalization",
+      "reason": "no detector in this engine"
+    },
+    {
       "concept": "vulnerability-disclosure-policy-quality",
       "reason": "needs judgment: the catalog evaluates this dimension with a language model; this engine makes no model calls"
+    },
+    {
+      "concept": "weak-content-security-policy",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "weak-password-recovery",
+      "reason": "no detector in this engine"
+    },
+    {
+      "concept": "weak-password-requirements",
+      "reason": "no detector in this engine"
     }
   ]
 }

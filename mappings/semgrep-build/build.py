@@ -18,7 +18,7 @@ without that repeated segment; a stem ending in `.` matches every rule under it.
 
 Dimensions: every concept is reported under ONE CAI rubric dimension, its "home" dimension, so that per-dimension
 figures of different engines are taken over the same plants: the first dimension the CAI reference implementation's
-mapping gives the concept, else the first non-D29 dimension of the Watchdog mapping, else its first (`home_dimensions`).
+mapping gives the concept, else the first non-D29 dimension CAI's coverage matrix gives it, else its first (`home_dimensions`).
 `--check` exits 1 when the committed mapping is not the build of this file.
 """
 import argparse
@@ -274,12 +274,23 @@ def stem_regex(stem):
     return "^" + re.escape(stem) + r"(?:\." + re.escape(last) + ")?$"
 
 
-def home_dimensions(cai_reference, watchdog):
-    """concept -> its ONE home CAI dimension: cai-reference's first, else Watchdog's first non-D29, else first."""
+def matrix_dimensions(matrix):
+    """concept -> the rubric dimensions CAI's own coverage matrix says measure it, in row order (decision 0012: CAI's
+    own data, never a producer's mapping)."""
     out = {}
-    for c in set(cai_reference["concepts"]) | set(watchdog["concepts"]):
+    for r in matrix["rows"]:
+        for c in r.get("concepts", []):
+            out.setdefault(c, []).append(r["id"])
+    return out
+
+
+def home_dimensions(cai_reference, matrix):
+    """concept -> its ONE home CAI dimension: cai-reference's first, else the coverage matrix's first non-D29, else first."""
+    out = {}
+    by_matrix = matrix_dimensions(matrix)
+    for c in set(cai_reference["concepts"]) | set(by_matrix):
         a = cai_reference["concepts"].get(c, {}).get("dimensions", [])
-        b = watchdog["concepts"].get(c, {}).get("dimensions", [])
+        b = by_matrix.get(c, [])
         if a:
             out[c] = a[0]
         elif b:
@@ -287,8 +298,8 @@ def home_dimensions(cai_reference, watchdog):
     return out
 
 
-def build(taxonomy, cai_reference, watchdog):
-    home = home_dimensions(cai_reference, watchdog)
+def build(taxonomy, cai_reference, matrix):
+    home = home_dimensions(cai_reference, matrix)
     parents = {c["id"]: c["parent"] for c in taxonomy["concepts"] if c.get("parent")}
     fam = {c: f for f, cs in FAMILIES.items() for c in cs}
     ids = [c["id"] for c in taxonomy["concepts"]]
@@ -340,7 +351,7 @@ def main(argv=None):
     a = ap.parse_args(argv)
     load = lambda p: json.load(open(p, encoding="utf-8"))  # noqa: E731
     doc = build(load(a.taxonomy), load(os.path.join(ROOT, "mappings", "cai-reference.json")),
-                load(os.path.join(ROOT, "mappings", "watchdog.json")))
+                load(os.path.join(ROOT, "coverage", "matrix.json")))
     text = json.dumps(doc, indent=2) + "\n"
     if a.check:
         with open(a.out, encoding="utf-8") as f:
