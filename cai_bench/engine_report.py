@@ -22,12 +22,17 @@ def cell_f05(recall, precision):
     return 100.0 * 1.25 * precision * recall / (0.25 * precision + recall)
 
 
+def _rows(u):
+    """A unit's per-dimension rows: `dimensions` in a `cai_bench score` report, `byDimension` accepted too."""
+    return u.get("dimensions") or u.get("byDimension") or {}
+
+
 def _pool(units, language, dimension):
     tp = fn = noise = results = 0
     for u in units:
         if u["language"] != language:
             continue
-        row = u["byDimension"].get(dimension)
+        row = _rows(u).get(dimension)
         if not row:
             continue
         tp += row["tp"]
@@ -104,7 +109,7 @@ def engine_report(units, declared, supported, applicable, resamples=10_000, seed
     for u in units:
         if u["language"] in supported:
             continue
-        for d in u["byDimension"]:
+        for d in _rows(u):
             unsupported.setdefault((d, u["language"]), _cell(units, u["language"], d))
 
     return {
@@ -118,3 +123,28 @@ def engine_report(units, declared, supported, applicable, resamples=10_000, seed
         "unplanted": unplanted,
         "unsupported": unsupported,
     }
+
+
+def to_json(report):
+    """The report with its (dimension, language) keys written as rows, for a published window file."""
+    def rows(d):
+        return [{"dimension": k[0], "language": k[1], **v} for k, v in sorted(d.items())]
+    return {**report, "cells": rows(report["cells"]), "unplanted": rows(report["unplanted"]),
+            "unsupported": rows(report["unsupported"]), "interval": list(report["interval"])}
+
+
+def history(window_reports):
+    """Per (dimension, language) cell, its series over the windows given (oldest first): noise (1 − precision),
+    recall and F0.5 per window, plus the engine score and coverage per window. A window where the cell was not
+    declared or had no planted defect has no point for it, so a gap is a gap, never a zero."""
+    windows = sorted(window_reports, key=lambda r: r["window"])
+    series, scores = {}, []
+    for r in windows:
+        scores.append({"window": r["window"], "score": r["score"], "interval": r["interval"],
+                       "coverage": r["coverage"]})
+        for c in r["cells"]:
+            p = c["precision"]
+            series.setdefault((c["dimension"], c["language"]), []).append(
+                {"window": r["window"], "noise": None if p is None else 1 - p, "recall": c["recall"], "f05": c["f05"]})
+    return {"windows": [r["window"] for r in windows], "score": scores,
+            "cells": [{"dimension": d, "language": l, "points": pts} for (d, l), pts in sorted(series.items())]}

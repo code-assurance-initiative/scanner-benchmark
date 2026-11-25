@@ -77,3 +77,47 @@ class EngineReportTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class EngineReportCliTests(unittest.TestCase):
+    def test_the_command_reads_score_reports_and_writes_the_window_file(self):
+        import json, os, subprocess, sys, tempfile
+        root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        with tempfile.TemporaryDirectory() as d:
+            reps = []
+            for name, rows in (("a", {"D1": {"tp": 8, "fn": 2, "noise": 1, "results": 9}}),
+                               ("b", {"D1": {"tp": 6, "fn": 4, "noise": 3, "results": 9}})):
+                p = os.path.join(d, name + ".json")
+                json.dump({"key": {"repo": name}, "dimensions": rows}, open(p, "w"))
+                reps.append({"report": p, "language": "csharp"})
+            m = os.path.join(d, "m.json")
+            json.dump({"window": "2026-q4", "engine": {"name": "e", "supportedLanguages": ["csharp"],
+                                                        "declaredCells": [["D1", "csharp"]]},
+                       "applicableCells": [["D1", "csharp"]], "units": reps}, open(m, "w"))
+            out = os.path.join(d, "out.json")
+            p = subprocess.run([sys.executable, "-m", "cai_bench", "engine-report", "--manifest", m, "--seed", "3",
+                                "--resamples", "100", "--json", out], cwd=root, capture_output=True, text=True)
+            self.assertEqual(0, p.returncode, p.stderr)
+            r = json.load(open(out))
+            self.assertEqual("2026-q4", r["window"])
+            self.assertEqual([{"dimension": "D1", "language": "csharp"}],
+                             [{k: c[k] for k in ("dimension", "language")} for c in r["cells"]])
+            self.assertEqual(3, r["seed"])
+            self.assertAlmostEqual(r["cells"][0]["f05"], r["score"])
+
+
+class HistoryTests(unittest.TestCase):
+    def test_a_cell_missing_from_a_window_is_a_gap_not_a_zero(self):
+        from cai_bench.engine_report import history
+        w1 = {"window": "2027-q1", "score": 50.0, "interval": [40, 60], "coverage": {"declared": 1},
+              "cells": [{"dimension": "D1", "language": "csharp", "precision": 0.8, "recall": 0.5, "f05": 71.4}]}
+        w0 = {"window": "2026-q4", "score": 40.0, "interval": [30, 50], "coverage": {"declared": 2},
+              "cells": [{"dimension": "D1", "language": "csharp", "precision": 0.5, "recall": 0.5, "f05": 50.0},
+                        {"dimension": "D2", "language": "csharp", "precision": 1.0, "recall": 0.2, "f05": 55.6}]}
+        h = history([w1, w0])
+        self.assertEqual(["2026-q4", "2027-q1"], h["windows"])
+        d1 = next(c for c in h["cells"] if c["dimension"] == "D1")
+        self.assertEqual(["2026-q4", "2027-q1"], [p["window"] for p in d1["points"]])
+        self.assertAlmostEqual(0.5, d1["points"][0]["noise"])
+        d2 = next(c for c in h["cells"] if c["dimension"] == "D2")
+        self.assertEqual(["2026-q4"], [p["window"] for p in d2["points"]])

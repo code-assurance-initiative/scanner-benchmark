@@ -129,6 +129,34 @@ def cmd_compare(a):
     return 0
 
 
+def cmd_engine_report(a):
+    """CAI decision 0024 §3 over one window: the per-cell F0.5, the engine score, its coverage and its interval."""
+    from .engine_report import engine_report, to_json
+    manifest = _load(a.manifest, "manifest")
+    units = []
+    for u in manifest.get("units", []):
+        rep = _load(u["report"], "unit report")
+        units.append({"unit": u.get("unit") or rep.get("key", {}).get("repo"), "language": u["language"],
+                      "dimensions": rep.get("dimensions", {})})
+    engine = manifest["engine"]
+    report = engine_report(units, declared={tuple(c) for c in engine["declaredCells"]},
+                           supported=engine["supportedLanguages"],
+                           applicable=[tuple(c) for c in manifest["applicableCells"]],
+                           resamples=a.resamples, seed=a.seed)
+    out = {"window": manifest.get("window"), "engine": {k: engine[k] for k in engine if k != "declaredCells"},
+           **to_json(report)}
+    lo, hi = out["interval"]
+    score = out["score"]
+    print(f"engine score {score:.1f} (95 % {lo:.1f}-{hi:.1f}), coverage {out['coverage']['declared']}/"
+          f"{out['coverage']['applicable']}" if score is not None else "engine score: no declared cell with planted defects")
+    if a.json:
+        with open(a.json, "w", encoding="utf-8") as f:
+            json.dump(out, f, indent=2)
+            f.write("\n")
+        print(f"wrote {a.json}")
+    return 0
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="python3 -m cai_bench", description=f"Scanner benchmark harness (contract v{CONTRACT_VERSION}).")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -168,6 +196,16 @@ def main(argv=None):
     c.add_argument("--all", action="store_true", help="print every dimension, not only the changed ones")
     c.add_argument("--json", help="write the deltas as JSON here")
     c.set_defaults(fn=cmd_compare)
+
+    e = sub.add_parser("engine-report",
+                       help="CAI decision 0024 §3: per-cell F0.5, engine score, coverage and interval over one window")
+    e.add_argument("--manifest", required=True,
+                   help="JSON {window, engine: {name, supportedLanguages, declaredCells: [[dim, lang]]}, "
+                        "applicableCells: [[dim, lang]], units: [{report, language, unit?}]}")
+    e.add_argument("--resamples", type=int, default=10_000)
+    e.add_argument("--seed", type=int, required=True, help="the published bootstrap seed")
+    e.add_argument("--json", help="write the window's report here")
+    e.set_defaults(fn=cmd_engine_report)
 
     a = ap.parse_args(argv)
     return a.fn(a)
