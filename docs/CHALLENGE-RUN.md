@@ -58,13 +58,15 @@ Until then the reports below are provisional figures. There is no pass or fail r
 the earlier qualification scheme that had them was removed by decision 0024.
 
 **What the engine declares.** An engine maker files two issues. In the CAI repository, one issue titled *Engine
-registration* holds the engine's record: the languages it supports and the (dimension, language) cells it measures.
-Decision 0024 makes it the channel until a window's protocol names another, and it is filed by the date the window's
-protocol sets. Here, one `register-engine` issue per window (step 1 above) gives the release to run: its
+registration*: decision 0024 makes it the channel by which an engine registers and files its record, by the date the
+window's protocol sets, until a window's protocol names another channel. Under the same decision the engine declares
+the languages it supports and the (dimension, language) cells it measures; the manifest below carries that
+declaration. Here, one `register-engine` issue per window (step 1 above) gives the release to run: its
 image digest, configuration label, mapping and declared interests; decision 0024 freezes
-the release, its default configuration and its mapping when the window opens. The operators always list `applicableCells` in the
-published `window.json`, derived from the dimension pages (`docs/spec/dimensions/<id>.md` in the CAI repository) for
-those languages once the pages are published. An applicable cell the engine does not
+the release, its default configuration and its mapping when the window opens. Once the dimension pages (`docs/spec/dimensions/<id>.md`
+in the CAI repository) are published, the operators derive `applicableCells` from them for the engine's supported
+languages. Before that, decision 0024 does not say how they are set; the operators publish the list they used in
+`window.json`, so coverage can be checked against it. An applicable cell the engine does not
 declare is not measured: it lowers coverage, and its score is never shown as zero.
 
 The operators score every unit with `cai_bench score --json`, then compute the engine's report for the window:
@@ -106,8 +108,8 @@ certified-clean code or a not-applicable concept, or match nothing the answer ke
 - **Its 95 % interval:** a percentile bootstrap that resamples the units within each supported language 10,000
   times, with the seed published in the window file; with the manifest and the unit reports it reproduces exactly.
 - **Languages the engine does not support** are reported beside the score, never in it.
-- **The method:** the report links the engine's method in the engine's own public documentation; where there is none,
-  it reads *method not published* (decision 0024).
+- **The method** is not computed here. Decision 0024 has the engine's report page link the method the engine
+  describes in its own public documentation, or read *method not published* where there is none.
 
 The window files of an engine, read together (`cai_bench.engine_report.history`), give each cell's noise, recall and
 F0.5 per window: the trend its report page draws. A window in which a cell was not declared, or had no planted
