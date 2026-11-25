@@ -44,12 +44,22 @@ docker run --rm --network none --read-only --tmpfs /tmp \
 
 [CAI decision 0024](https://github.com/code-assurance-initiative/CodeAssuranceIndex/blob/main/docs/decisions/0024-a-definition-says-what-not-how.md)
 §3 makes CAI's own run of each window the measurement that counts for an engine that publishes CAI or is registered
-to be measured, from the first window whose holdout covers the languages that decision names (every language in the
-platform family of each language such an engine supports, where a platform family is the languages of one platform:
-.NET is C#, F# and Visual Basic .NET, the JVM is Java, Kotlin and Scala, BEAM is Erlang and Elixir, Apple is Swift and
-Objective-C, and every other language is a family of one; the web front of JavaScript, TypeScript, HTML and CSS, and
-C, C++, Objective-C and R; planned for the first window of 2027). Until then the reports below are provisional
-figures, with no pass, grade or ceiling.
+to be measured. It counts from the first window whose holdout covers all of these (planned for the first window of
+2027):
+
+1. every language in the platform family of each language such an engine supports. A platform family is the
+   languages of one platform: .NET (C#, F#, Visual Basic .NET), the JVM (Java, Kotlin, Scala), BEAM (Erlang, Elixir),
+   Apple (Swift, Objective-C); every other language is a family of one;
+2. the web front: JavaScript, TypeScript, HTML and CSS;
+3. C, C++, Objective-C and R.
+
+Until then the reports below are provisional figures, with no pass, grade or ceiling.
+
+**What the engine declares.** In its registration for the window (step 1 above), next to its image digest and
+mapping, the engine lists the languages it supports and the (dimension, language) cells it measures; both are frozen
+when registration closes. The operators build `applicableCells` from the dimension pages
+(`docs/spec/dimensions/<id>.md` in the CAI repository) for those languages. An applicable cell the engine does not
+declare is not measured: it lowers coverage, and its score is never shown as zero.
 
 The operators score every unit with `cai_bench score --json`, then compute the engine's report for the window:
 
@@ -79,9 +89,10 @@ certified-clean code or a not-applicable concept, or match nothing the answer ke
 
 - **Per cell:** the units of that language are pooled; recall `R` = tp ÷ (tp + fn); precision `P` = 1 − noise ÷
   results; then `F0.5 = 100 × 1.25 · P · R / (0.25 · P + R)`. A declared cell where the engine reports nothing, or
-  only noise, scores 0. A cell in which the holdout plants no defect has no F0.5 and is listed apart with its trap
-  resistance (traps left alone ÷ traps); it counts neither in the mean nor in coverage. A dimension measured only by
-  score bands has no cell here; its band agreement is in each unit's score report.
+  only noise, scores 0. A cell in which the holdout plants no defect, including a dimension measured only by score
+  bands, has no F0.5: it is listed apart under `unplanted` with its counts and trap resistance (traps left alone ÷
+  traps), and counts neither in the mean nor in coverage. Band agreement is not yet in the window file; for now it is
+  read from each unit's score report.
 - **The engine score:** the unweighted mean of the F0.5 of the declared applicable cells in which the holdout plants
   defects, with **coverage** beside it: those cells ÷ all applicable cells in which the holdout plants defects.
 - **Its 95 % interval:** a percentile bootstrap that resamples the units within each supported language 10,000
