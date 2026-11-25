@@ -47,7 +47,8 @@ docker run --rm --network none --read-only --tmpfs /tmp \
 to be measured. It counts from the first window whose holdout covers all of these (planned for the first window of
 2027):
 
-1. every language in the platform family of each language such an engine supports. A platform family is the
+1. every language in the platform family of every language supported by any engine that publishes CAI or is
+   registered to be measured in the next window. A platform family is the
    languages of one platform: .NET (C#, F#, Visual Basic .NET), the JVM (Java, Kotlin, Scala), BEAM (Erlang, Elixir),
    Apple (Swift, Objective-C); every other language is a family of one;
 2. the web front: JavaScript, TypeScript, HTML and CSS;
@@ -57,9 +58,12 @@ Until then the reports below are provisional figures, with no pass, grade or cei
 
 **What the engine declares.** The engine lists the languages it supports and the (dimension, language) cells it
 measures in its record, filed as decision 0024 sets: an issue titled *Engine registration* in the CAI repository, by
-the date the window's protocol sets. Its `register-engine` issue for the window (step 1 above) names that record next
-to its image digest and mapping, and both are frozen when registration closes. The operators build `applicableCells` from the dimension pages
-(`docs/spec/dimensions/<id>.md` in the CAI repository) for those languages. An applicable cell the engine does not
+the date the window's protocol sets, until a window's protocol names another channel. The window's `register-engine`
+issue (step 1 above) gives its image digest, configuration label, mapping and declared interests; decision 0024 freezes
+the release, its default configuration and its mapping when the window opens. The operators build `applicableCells`
+from the dimension pages (`docs/spec/dimensions/<id>.md` in the CAI repository) for those languages; until those pages
+are published, from every dimension the window's rubric catalog does not declare advisory, for every supported
+language, as listed in the published `window.json`. An applicable cell the engine does not
 declare is not measured: it lowers coverage, and its score is never shown as zero.
 
 The operators score every unit with `cai_bench score --json`, then compute the engine's report for the window:
@@ -68,8 +72,8 @@ The operators score every unit with `cai_bench score --json`, then compute the e
 python3 -m cai_bench engine-report --manifest window.json --seed <published seed> --json results/<engine>/<window>.json
 ```
 
-The example is the provisional window 2026-q4, whose holdout covers C# and TypeScript only; from the covering window an
-engine that lists C# must also list F# and Visual Basic .NET and the whole web front. `window.json` is published
+An illustrative manifest (the identifiers are examples). From the covering window an engine may list C# only if it
+also reads F#, Visual Basic .NET and the whole web front (JavaScript, TypeScript, HTML and CSS). `window.json` is published
 beside the window file, with every unit's score report, so anyone can recompute both:
 
 ```json
