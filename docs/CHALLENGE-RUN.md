@@ -62,8 +62,9 @@ registration*: decision 0024 makes it the channel by which an engine registers a
 window's protocol sets, until a window's protocol names another channel. Under the same decision the engine declares
 the languages it supports and the (dimension, language) cells it measures; the manifest below carries that
 declaration. Here, one `register-engine` issue per window (step 1 above) gives the release to run: its
-image digest, configuration label, mapping and declared interests; decision 0024 freezes
-the release, its default configuration and its mapping when the window opens. Once the dimension pages (`docs/spec/dimensions/<id>.md`
+image digest, configuration label, mapping and declared interests. The release is the engine's current release and
+the configuration its default shipped configuration, which the label names; decision 0024 freezes the release, that
+configuration and its mapping when the window opens. Once the dimension pages (`docs/spec/dimensions/<id>.md`
 in the CAI repository) are published, the operators derive `applicableCells` from them for the engine's supported
 languages. Before that, decision 0024 does not say how they are set; the operators publish the list they used in
 `window.json`, so coverage can be checked against it. An applicable cell the engine does not
@@ -87,8 +88,9 @@ beside the window file, with every unit's score report, so anyone can recompute 
  "units": [{"report": "scores/<unit>.json", "language": "csharp"}]}
 ```
 
-Only **scored** dimensions count: those the rubric catalog does not declare advisory, whatever an evidence bundle
-marks (ENGINE-QUALIFICATION.md). `applicableCells` are the cells of scored dimensions that apply, by their dimension
+Only **scored** dimensions count: those the rubric catalog (CAI's versioned list of dimensions, the properties of code
+it measures) does not declare advisory, i.e. reported but never scored, whatever an evidence bundle (the file an
+engine produces for one repository, which carries its own advisory flags) marks (ENGINE-QUALIFICATION.md). `applicableCells` are the cells of scored dimensions that apply, by their dimension
 pages, to the engine's supported languages. A declared cell counts only if it is also in `applicableCells`; a
 declared cell outside them (an advisory dimension, a dimension whose page does not cover that language, or a language
 the engine does not list as supported) is listed apart in the window file and counts neither in the score nor in
