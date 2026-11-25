@@ -58,12 +58,13 @@ Until then the reports below are provisional figures. There is no pass or fail r
 the earlier qualification scheme that had them was removed by decision 0024.
 
 **What the engine declares.** An engine maker files two issues. In the CAI repository, one issue titled *Engine
-registration* (decision 0024's channel) holds the engine's record: the languages it supports and the (dimension,
-language) cells it measures. Here, one `register-engine` issue per window (step 1 above) gives the release to run: its
+registration* holds the engine's record: the languages it supports and the (dimension, language) cells it measures.
+Decision 0024 makes it the channel until a window's protocol names another, and it is filed by the date the window's
+protocol sets. Here, one `register-engine` issue per window (step 1 above) gives the release to run: its
 image digest, configuration label, mapping and declared interests; decision 0024 freezes
-the release, its default configuration and its mapping when the window opens. The operators build `applicableCells`
-from the dimension pages (`docs/spec/dimensions/<id>.md` in the CAI repository) for those languages; until those pages
-are published, the operators list `applicableCells` in the published `window.json`, and that list is provisional. An applicable cell the engine does not
+the release, its default configuration and its mapping when the window opens. The operators always list `applicableCells` in the
+published `window.json`, derived from the dimension pages (`docs/spec/dimensions/<id>.md` in the CAI repository) for
+those languages once the pages are published. An applicable cell the engine does not
 declare is not measured: it lowers coverage, and its score is never shown as zero.
 
 The operators score every unit with `cai_bench score --json`, then compute the engine's report for the window:
@@ -98,13 +99,15 @@ certified-clean code or a not-applicable concept, or match nothing the answer ke
   results; then `F0.5 = 100 × 1.25 · P · R / (0.25 · P + R)`. A declared cell where the engine reports nothing, or
   only noise, scores 0. A cell in which the holdout plants no defect, including a dimension measured only by score
   bands, has no F0.5: it is listed apart under `unplanted` with its counts and trap resistance (traps left alone ÷
-  traps), and counts neither in the mean nor in coverage. Band agreement is not yet in the window file; for now it is
-  read from each unit's score report.
+  traps), and counts neither in the mean nor in coverage. ENGINE-QUALIFICATION.md lists these cells with their band agreement
+  as well; the window file does not compute it yet.
 - **The engine score:** the unweighted mean of the F0.5 of the declared applicable cells in which the holdout plants
   defects, with **coverage** beside it: those cells ÷ all applicable cells in which the holdout plants defects.
 - **Its 95 % interval:** a percentile bootstrap that resamples the units within each supported language 10,000
   times, with the seed published in the window file; with the manifest and the unit reports it reproduces exactly.
 - **Languages the engine does not support** are reported beside the score, never in it.
+- **The method:** the report links the engine's method in the engine's own public documentation; where there is none,
+  it reads *method not published* (decision 0024).
 
 The window files of an engine, read together (`cai_bench.engine_report.history`), give each cell's noise, recall and
 F0.5 per window: the trend its report page draws. A window in which a cell was not declared, or had no planted
