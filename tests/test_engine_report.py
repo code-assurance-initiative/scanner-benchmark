@@ -121,3 +121,20 @@ class HistoryTests(unittest.TestCase):
         self.assertAlmostEqual(0.5, d1["points"][0]["noise"])
         d2 = next(c for c in h["cells"] if c["dimension"] == "D2")
         self.assertEqual(["2026-q4"], [p["window"] for p in d2["points"]])
+
+
+class DeclaredMustBeApplicableTests(unittest.TestCase):
+    def test_a_declared_cell_outside_the_applicable_cells_is_not_counted(self):
+        units = [unit("a", "csharp", D1=(8, 2, 1, 9), X9=(1, 9, 9, 10))]
+        r = engine_report(units, declared={("D1", "csharp"), ("X9", "csharp")}, supported=["csharp"],
+                          applicable=[("D1", "csharp")], resamples=20, seed=1)
+        self.assertEqual([("D1", "csharp")], list(r["cells"]))
+        self.assertIn(("X9", "csharp"), r["notApplicable"])
+        self.assertEqual((1, 1), (r["coverage"]["declared"], r["coverage"]["applicable"]))
+
+    def test_an_unplanted_cell_shows_its_trap_resistance(self):
+        u = {"unit": "a", "language": "csharp",
+             "dimensions": {"D3": {"tp": 0, "fn": 0, "noise": 1, "results": 1, "trapTn": 3, "trapFp": 1}}}
+        r = engine_report([u], declared={("D3", "csharp")}, supported=["csharp"], applicable=[("D3", "csharp")],
+                          resamples=10, seed=1)
+        self.assertAlmostEqual(0.75, r["unplanted"][("D3", "csharp")]["trapResistance"])

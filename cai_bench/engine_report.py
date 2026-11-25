@@ -28,7 +28,7 @@ def _rows(u):
 
 
 def _pool(units, language, dimension):
-    tp = fn = noise = results = 0
+    tp = fn = noise = results = trap_tn = trap_fp = 0
     for u in units:
         if u["language"] != language:
             continue
@@ -39,17 +39,21 @@ def _pool(units, language, dimension):
         fn += row["fn"]
         noise += row["noise"]
         results += row["results"]
-    return tp, fn, noise, results
+        trap_tn += row.get("trapTn", 0)
+        trap_fp += row.get("trapFp", 0)
+    return tp, fn, noise, results, trap_tn, trap_fp
 
 
 def _cell(units, language, dimension):
-    tp, fn, noise, results = _pool(units, language, dimension)
+    tp, fn, noise, results, trap_tn, trap_fp = _pool(units, language, dimension)
     planted = tp + fn
     recall = tp / planted if planted else None
     precision = 1 - noise / results if results else None
     f05 = cell_f05(recall, precision) if planted else None
+    traps = trap_tn + trap_fp
     return {"tp": tp, "fn": fn, "noise": noise, "results": results, "planted": planted,
-            "recall": recall, "precision": precision, "f05": f05}
+            "recall": recall, "precision": precision, "f05": f05,
+            "trapResistance": trap_tn / traps if traps else None}
 
 
 def _score(units, declared):
@@ -78,8 +82,11 @@ def engine_report(units, declared, supported, applicable, resamples=10_000, seed
     applicable: the (dimension, language) cells of scored dimensions that apply, by their dimension pages.
     """
     supported = set(supported)
-    declared = {(d, l) for d, l in declared if l in supported}
     applicable = {(d, l) for d, l in applicable if l in supported}
+    # A declared cell counts only where it applies: a scored dimension whose page covers that supported language.
+    # Anything else the engine declares is listed apart, never in the score or coverage.
+    not_applicable = {(d, l): None for d, l in declared if (d, l) not in applicable}
+    declared = {(d, l) for d, l in declared if (d, l) in applicable}
 
     cells, unplanted = {}, {}
     for d, l in sorted(declared | applicable):
@@ -121,6 +128,7 @@ def engine_report(units, declared, supported, applicable, resamples=10_000, seed
         "coverage": {"declared": len(cells), "applicable": len(planted_applicable),
                      "share": len(cells) / len(planted_applicable) if planted_applicable else None},
         "unplanted": unplanted,
+        "notApplicable": {k: _cell(units, k[1], k[0]) for k in sorted(not_applicable)},
         "unsupported": unsupported,
     }
 
@@ -130,7 +138,8 @@ def to_json(report):
     def rows(d):
         return [{"dimension": k[0], "language": k[1], **v} for k, v in sorted(d.items())]
     return {**report, "cells": rows(report["cells"]), "unplanted": rows(report["unplanted"]),
-            "unsupported": rows(report["unsupported"]), "interval": list(report["interval"])}
+            "unsupported": rows(report["unsupported"]), "notApplicable": rows(report["notApplicable"]),
+            "interval": list(report["interval"])}
 
 
 def history(window_reports):
