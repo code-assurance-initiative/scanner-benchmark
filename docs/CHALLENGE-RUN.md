@@ -54,16 +54,16 @@ to be measured. It counts from the first window whose holdout covers all of thes
 2. the web front: JavaScript, TypeScript, HTML and CSS;
 3. C, C++, Objective-C and R.
 
-Until then the reports below are provisional figures, with no pass, grade or ceiling.
+Until then the reports below are provisional figures. There is no pass or fail result, no grade and no noise limit:
+the earlier qualification scheme that had them was removed by decision 0024.
 
-**What the engine declares.** The engine lists the languages it supports and the (dimension, language) cells it
-measures in its record, filed as decision 0024 sets: an issue titled *Engine registration* in the CAI repository, by
-the date the window's protocol sets, until a window's protocol names another channel. The window's `register-engine`
-issue (step 1 above) gives its image digest, configuration label, mapping and declared interests; decision 0024 freezes
+**What the engine declares.** An engine maker files two issues. In the CAI repository, one issue titled *Engine
+registration* (decision 0024's channel) holds the engine's record: the languages it supports and the (dimension,
+language) cells it measures. Here, one `register-engine` issue per window (step 1 above) gives the release to run: its
+image digest, configuration label, mapping and declared interests; decision 0024 freezes
 the release, its default configuration and its mapping when the window opens. The operators build `applicableCells`
 from the dimension pages (`docs/spec/dimensions/<id>.md` in the CAI repository) for those languages; until those pages
-are published, from every dimension the window's rubric catalog does not declare advisory, for every supported
-language, as listed in the published `window.json`. An applicable cell the engine does not
+are published, the operators list `applicableCells` in the published `window.json`, and that list is provisional. An applicable cell the engine does not
 declare is not measured: it lowers coverage, and its score is never shown as zero.
 
 The operators score every unit with `cai_bench score --json`, then compute the engine's report for the window:
