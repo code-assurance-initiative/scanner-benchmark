@@ -55,9 +55,10 @@ to be measured. It counts from the first window whose holdout covers all of thes
 
 Until then the reports below are provisional figures, with no pass, grade or ceiling.
 
-**What the engine declares.** In its registration for the window (step 1 above), next to its image digest and
-mapping, the engine lists the languages it supports and the (dimension, language) cells it measures; both are frozen
-when registration closes. The operators build `applicableCells` from the dimension pages
+**What the engine declares.** The engine lists the languages it supports and the (dimension, language) cells it
+measures in its record, filed as decision 0024 sets: an issue titled *Engine registration* in the CAI repository, by
+the date the window's protocol sets. Its `register-engine` issue for the window (step 1 above) names that record next
+to its image digest and mapping, and both are frozen when registration closes. The operators build `applicableCells` from the dimension pages
 (`docs/spec/dimensions/<id>.md` in the CAI repository) for those languages. An applicable cell the engine does not
 declare is not measured: it lowers coverage, and its score is never shown as zero.
 
@@ -67,10 +68,12 @@ The operators score every unit with `cai_bench score --json`, then compute the e
 python3 -m cai_bench engine-report --manifest window.json --seed <published seed> --json results/<engine>/<window>.json
 ```
 
-`window.json` is published beside the window file, with every unit's score report, so anyone can recompute both:
+The example is the provisional window 2026-q4, whose holdout covers C# and TypeScript only; from the covering window an
+engine that lists C# must also list F# and Visual Basic .NET and the whole web front. `window.json` is published
+beside the window file, with every unit's score report, so anyone can recompute both:
 
 ```json
-{"window": "2027-q1",
+{"window": "2026-q4",
  "engine": {"name": "<engine>", "supportedLanguages": ["csharp", "typescript"],
             "declaredCells": [["D1", "csharp"], ["D1", "typescript"]]},
  "applicableCells": [["D1", "csharp"], ["D1", "typescript"], ["D2", "csharp"]],
