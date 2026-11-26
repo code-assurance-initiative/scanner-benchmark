@@ -23,8 +23,10 @@ def cell_f05(recall, precision):
 
 
 def _rows(u):
-    """A unit's per-dimension rows: `dimensions` in a `cai_bench score` report, `byDimension` accepted too."""
-    return u.get("dimensions") or u.get("byDimension") or {}
+    """A unit's per-dimension rows. From contract 1.9 these are `caiDimensions` (the taxonomy's own assignment of
+    concepts to CAI dimensions, the same for every engine); a report without them falls back to `dimensions` (the
+    engine's own grouping) or `byDimension`."""
+    return u.get("caiDimensions") or u.get("dimensions") or u.get("byDimension") or {}
 
 
 def _pool(units, language, dimension):

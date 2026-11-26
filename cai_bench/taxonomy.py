@@ -15,6 +15,11 @@ tolerance. No other value is valid.
 import json
 import os
 
+# Contract 1.9: a concept may carry `"dimensions": [<CAI dimension id>, ...]`, the CAI standard's own assignment of the
+# concept to the scored dimensions it evidences (derived from the concept descriptions and the dimension pages, never
+# from an engine's mapping). An engine's mapping then places its rules on concepts only; per-dimension figures for the
+# CAI are attributed through these assignments, the same for every engine.
+
 TAXONOMY_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "taxonomy.json")
 MATCH_SCOPES = ("file", "resource", "element", "group")
 
@@ -63,3 +68,20 @@ def element_scope_concepts(taxonomy=None):
 def group_scope_concepts(taxonomy=None):
     """Contract 1.7: the concepts whose defect is a relation among several files, each equally its site."""
     return scope_concepts("group", taxonomy)
+
+
+def concept_dimensions(taxonomy=None):
+    """Contract 1.9: concept id -> the CAI dimensions the taxonomy assigns it (concepts without an assignment absent)."""
+    if taxonomy is None:
+        if "__dims" not in _default:
+            _default["__dims"] = concept_dimensions(load_taxonomy())
+        return _default["__dims"]
+    out = {}
+    for c in taxonomy.get("concepts") or []:
+        ds = c.get("dimensions")
+        if ds is None:
+            continue
+        if not isinstance(ds, list) or not all(isinstance(d, str) and d for d in ds):
+            raise ValueError(f"taxonomy: concept {c.get('id')!r} has dimensions {ds!r}; expected a list of dimension ids")
+        out[c["id"]] = list(ds)
+    return out

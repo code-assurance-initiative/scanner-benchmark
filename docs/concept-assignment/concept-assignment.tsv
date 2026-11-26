@@ -1,0 +1,277 @@
+concept	dimensions	votes_per_dimension	votes
+accessibility-checks-in-ci		{}	5
+account-enumeration	D29	{"D29": 4}	5
+adr-conformance	D7	{"D7": 5}	5
+adr-quality	M2	{"M2": 4}	5
+allocation-awareness	PF2	{"PF2": 5}	5
+alt-text-quality		{"AC1": 1, "AXR1": 2}	5
+ambient-nondeterminism-in-domain	DM12	{"DM12": 5}	5
+anemic-domain-model	DM4	{"DM4": 5}	5
+architecture-documentation	M2	{"M2": 5}	5
+architecture-rules-unenforced		{}	5
+architecture-style-fit	AX5	{"AX5": 5}	5
+argument-guard-tests-wrong-condition	X20	{"X20": 5}	5
+async-void-method	X1	{"X1": 5}	5
+audit-trail	C3	{"C3": 5}	5
+authorization-enforcement	C2	{"C2": 5}	5
+automounted-service-account-token	D31	{"D31": 5}	5
+autoplay-media-without-control	AXR1	{"AXR1": 5}	5
+benchmark-discipline	P3,PF1	{"P3": 4, "PF1": 5}	5
+blocking-on-async-code	PF3,X1	{"PF3": 5, "X1": 5}	5
+boundary-type-leakage	D23	{"D23": 5}	5
+build-provenance-and-signing	D36	{"D36": 5}	5
+business-logic-in-controller	DM4	{"D7": 1, "DM4": 5}	5
+business-logic-share	AX10	{"AX10": 5}	5
+call-indirection	D27	{"D27": 5}	5
+captive-dependency	AX1	{"AX1": 5}	5
+change-coupling	D35	{"D35": 5}	5
+churn-complexity-hotspot	D15	{"D15": 5}	5
+ci-build-and-test-pipeline	P1	{"P1": 5}	5
+ci-secret-exposure		{"D29": 2}	5
+ci-test-gate-integrity	P12	{"P12": 5}	5
+ci-token-excessive-permissions		{"D29": 2}	5
+ci-workflow-injection	D29	{"D29": 4}	5
+cleartext-storage-of-sensitive-data	C1,D32	{"C1": 5, "D29": 2, "D32": 4}	5
+cleartext-transmission	C1,D29,S1	{"C1": 5, "D29": 3, "S1": 5}	5
+client-controlled-identity	C2,D29	{"C2": 3, "D29": 5}	5
+client-side-enforced-security-check	D29	{"D29": 5}	5
+code-injection	D29	{"D29": 5}	5
+collection-modified-during-enumeration	X27	{"X27": 5}	5
+command-injection	D29	{"D29": 5}	5
+command-with-multiple-handlers	ED2	{"ED2": 5}	5
+commented-out-code	D17	{"D17": 5}	5
+committed-private-key	D13,D28	{"D13": 5, "D28": 5}	5
+compiled-code-size		{}	5
+consent-not-checked	C5,D32	{"C5": 5, "D32": 5}	5
+constructible-invalid-entity	DM11	{"DM11": 5}	5
+container-confinement-profile-unset	D31,D41	{"AXI1": 1, "D31": 5, "D41": 5}	5
+container-excess-capabilities	AXI1,D31	{"AXI1": 5, "D31": 5}	5
+container-excessive-privilege	AXI1,D31	{"AXI1": 5, "D31": 5}	5
+container-missing-resource-limits	D31	{"D31": 5}	5
+container-missing-resource-requests		{"D31": 2}	5
+container-privilege-escalation-allowed	AXI1,D31	{"AXI1": 5, "D31": 5}	5
+container-runs-as-root	AXI1,D31	{"AXI1": 5, "D31": 5}	5
+container-security-context-missing	AXI1,D31	{"AXI1": 5, "D31": 5, "D41": 1}	5
+container-writable-root-filesystem	AXI1,D31	{"AXI1": 5, "D31": 5}	5
+contradictory-support-guard	X30	{"X30": 5}	5
+cross-aggregate-object-reference	DM1	{"DM1": 5}	5
+cross-site-request-forgery	D29,S1	{"D29": 5, "S1": 3}	5
+cross-site-scripting	D29,X24	{"D29": 5, "X24": 5}	5
+cross-slice-coupling	AX7,R11	{"AX7": 5, "D7": 1, "R11": 3}	5
+cryptographic-key-reuse	D29,S1	{"D29": 5, "S1": 3}	5
+data-encryption-controls	C1	{"C1": 5}	5
+data-retention-policy	C4	{"C4": 5}	5
+data-subject-rights	C5	{"C5": 5}	5
+debug-mode-enabled	D29,S1	{"D29": 4, "S1": 4}	5
+dependencies-not-locked	SC1	{"SC1": 5}	5
+dependency-release-cooldown-missing		{}	5
+deployment-rollback-safety	P4	{"P4": 5}	5
+deprecated-dependency	D12	{"D12": 5}	5
+disaster-recovery-evidence	P5	{"P5": 5}	5
+documentation-accuracy	M4	{"M4": 5}	5
+documentation-quality	M1,M2	{"M1": 5, "M2": 3}	5
+domain-depends-on-infrastructure	AX4,D7,DM6	{"AX4": 5, "D7": 4, "DM6": 5}	5
+domain-event-never-handled		{}	5
+domain-vs-controller-coverage	P9	{"P9": 5}	5
+download-without-integrity-check	D31	{"D31": 4, "D36": 1}	5
+dual-write-without-outbox	ED4	{"ED4": 5}	5
+duplicated-code	D4,R10,X10	{"D4": 5, "R10": 5, "X10": 5}	5
+empty-catch-block	X3	{"X3": 5}	5
+encoded-token-without-integrity	D29	{"D29": 5}	5
+end-of-life-platform	D44	{"D44": 5}	5
+environment-separation		{}	5
+error-information-exposure	D29	{"D29": 5}	5
+event-not-named-in-past-tense	ED3	{"ED3": 5}	5
+event-schema-change-without-upcaster		{}	5
+excessive-data-exposure	D29	{"D29": 5}	5
+excessive-mocking	D10	{"D10": 5}	5
+executable-specifications	P11	{"P11": 5}	5
+exposed-directory-listing	D29	{"D29": 4, "S1": 1}	5
+fail-open-verification-check	D29	{"C2": 1, "D29": 5}	5
+fat-interface	AX6	{"AX6": 5}	5
+file-inclusion	D29	{"D29": 5}	5
+flaky-test	D11	{"D11": 5}	5
+floating-promise	X1	{"X1": 3}	5
+focus-outline-removed	AC6	{"AC6": 5, "AXR1": 1}	5
+folder-structure	D18,M3	{"D18": 3, "M3": 5}	5
+form-control-without-label	AC2	{"AC2": 5, "AXR1": 1}	5
+form-error-not-associated		{"AXR1": 2}	5
+frontend-tooling-scripts	R6	{"R6": 5}	5
+god-class	D3	{"D3": 5, "D6": 2}	5
+hand-rolled-structured-format-parsing	X6	{"X6": 5}	5
+hardcoded-credential	D13,D28	{"D13": 5, "D28": 4}	5
+hardcoded-cryptographic-key	C1,D13,D28	{"C1": 5, "D13": 5, "D28": 4}	5
+hardcoded-password	D13,D28	{"D13": 5, "D28": 4}	5
+heading-and-label-text-quality		{"AXR1": 2}	5
+high-cognitive-complexity	D2,R2	{"D2": 5, "R2": 4}	5
+high-cyclomatic-complexity	D1,R2	{"D1": 5, "R2": 4}	5
+host-header-in-generated-link	D29	{"D29": 5}	5
+host-namespace-sharing	D31	{"D31": 5}	5
+host-path-mount	D31	{"D31": 5}	5
+https-enforcement	C1,S1	{"AXH1": 2, "C1": 5, "S1": 5}	5
+iac-misconfiguration	D31	{"D31": 5}	5
+image-not-from-allowed-registry	D31	{"D31": 5}	5
+improper-certificate-validation	C1,D29,S1	{"C1": 3, "D29": 5, "S1": 3}	5
+improper-resource-disposal	X18	{"X18": 5}	5
+inbound-input-validation	S1	{"S1": 5}	5
+incomplete-implementation	IC1	{"IC1": 5}	5
+inconsistent-naming		{}	5
+index-access-outside-bounds-guard	X28	{"X28": 5}	5
+inert-configuration-option	X25	{"X25": 5}	5
+insecure-cookie-flags	AXK1,S1	{"AXK1": 5, "D29": 1, "S1": 5}	5
+insecure-deserialization	D29	{"D29": 5}	5
+insecure-randomness	D29,S1	{"D29": 5, "S1": 4}	5
+insufficient-password-hashing	D29,S1	{"C1": 1, "D29": 5, "S1": 4}	5
+insufficient-session-expiration	D29,S1	{"D29": 4, "S1": 3}	5
+integration-event-leaks-domain-type	D23,DM3	{"D23": 5, "DM3": 5}	5
+internal-api-inconsistency		{}	5
+invalid-aria-usage	AC5	{"AC5": 5}	5
+js-interop-contract-mismatch	X8	{"X8": 5}	5
+jsonp-cross-origin-data-exposure	D29	{"D29": 5}	5
+knowledge-concentration	D16	{"D16": 5}	5
+knowledge-freshness	D34	{"D34": 5}	5
+layer-dependency-violation	AX4,D7,DM6,R11	{"AX4": 5, "D7": 5, "DM6": 5, "R11": 5}	5
+ldap-injection	D29	{"D29": 5}	5
+leftover-debug-bypass	D29	{"C2": 1, "D29": 5}	5
+library-api-versioning	P10	{"P10": 5}	5
+license-policy-violation	D14	{"D14": 5}	5
+link-and-button-text-quality		{"AXR1": 2}	5
+lock-release-state-mismatch	X22	{"X22": 5}	5
+log-injection	D29	{"D29": 5}	5
+long-method		{}	5
+loop-decision-on-fixed-element	X29	{"X29": 5}	5
+low-class-cohesion	D6	{"D6": 5}	5
+low-value-comments		{}	5
+malicious-dependency		{}	5
+mass-assignment	D29	{"D29": 5}	5
+misplaced-dev-dependency	R8	{"R8": 5}	5
+missing-authentication-rate-limit	D29	{"D29": 4}	5
+missing-authorization	C2,D29	{"AXA1": 1, "C2": 5, "D29": 4}	5
+missing-cancellation-propagation	X2	{"X2": 5}	5
+missing-configure-await	PF3	{"PF3": 5}	5
+missing-function-level-authorization	C2,D29	{"C2": 5, "D29": 3}	5
+missing-health-probes	P4	{"P4": 5}	5
+missing-image-healthcheck	D31,P4	{"D31": 4, "P4": 3}	5
+missing-input-validation		{"S1": 1}	5
+missing-ownership-check	C2	{"C2": 5, "D29": 1}	5
+missing-security-event-logging	C3	{"C3": 5}	5
+missing-subresource-integrity		{"S1": 1}	5
+missing-text-alternative	AC1,AXR1	{"AC1": 5, "AXR1": 5}	5
+modal-focus-not-managed	AXR1	{"AXR1": 5}	5
+module-dependency-cycle	AX3,D5,R9	{"AX3": 5, "D5": 5, "R9": 5}	5
+module-off-main-sequence		{"D5": 1}	5
+motion-without-reduced-motion	AC6,AXR1	{"AC6": 5, "AXR1": 5}	5
+multi-aggregate-transaction	DM10	{"DM10": 5}	5
+mutable-image-reference	D31	{"D31": 5, "D36": 1}	5
+mutable-persisted-event	ES2	{"ES2": 5}	5
+network-egress-policy	D40	{"D40": 5}	5
+non-constant-time-secret-comparison	D29,S1	{"D29": 5, "S1": 3}	5
+non-idempotent-message-handler		{}	5
+non-keyboard-accessible-interaction	AC4	{"AC4": 5, "AXR1": 2}	5
+non-structured-log-message	X4	{"X4": 5}	5
+nondeterministic-event-fold	ES1	{"ES1": 5}	5
+nosql-injection	D29	{"D29": 5}	5
+not-implemented-placeholder	GD1,IC1	{"GD1": 5, "IC1": 4}	5
+null-dereference		{"D29": 1}	5
+null-forgiving-suppression	X5	{"X5": 5}	5
+nullable-analysis-disabled	X5	{"X5": 5}	5
+observability	P2	{"P2": 5}	5
+obsolete-symbol-still-used	D17	{"D17": 5}	5
+open-redirect	D29	{"D29": 5}	5
+outbound-http-resilience	P7	{"P7": 5}	5
+outdated-dependency	D12,R5	{"D12": 5, "R5": 5}	5
+output-encoding-disabled	D29,S1	{"D29": 5, "S1": 4}	5
+overly-permissive-rbac	D31	{"D31": 5}	5
+oversized-module	D26	{"D26": 5}	5
+oversized-source-file	R3	{"D3": 1, "R3": 5}	5
+page-structure-violation	AC3	{"AC3": 5, "AXR1": 2}	5
+path-traversal	D29	{"D29": 5}	5
+personal-data-in-event-store	D32,ES3	{"D32": 5, "ES3": 5}	5
+personal-data-inventory	D32	{"D32": 3}	5
+pointless-catch-rethrow		{"X3": 2}	5
+predictable-derived-credential	D29	{"D29": 5}	5
+prerelease-dependency	D12	{"D12": 5}	5
+primitive-entity-identifier	DM2	{"DM2": 5}	5
+primitive-obsession		{}	5
+privileged-container	AXI1,D31	{"AXI1": 5, "D31": 5, "D41": 2}	5
+production-depends-on-test-code	AX8	{"AX8": 5}	5
+prototype-pollution	D29	{"D29": 5}	5
+publicly-mutable-entity-state	DM5	{"DM5": 5}	5
+query-with-side-effects	AX9	{"AX9": 5}	5
+react-hook-missing-dependency		{}	5
+react-index-as-key		{}	5
+react-state-mutation		{}	5
+readme-quality	M1	{"M1": 5}	5
+redundant-condition-operand	X9	{"X9": 5}	5
+regex-denial-of-service	D29	{"D29": 5}	5
+release-hygiene	P6	{"P6": 5}	5
+repository-for-non-aggregate	DM7	{"DM7": 5}	5
+reproducible-boot	AXB1,AXB2	{"AXB1": 5, "AXB2": 5}	5
+rethrow-resets-stack-trace	X3	{"X3": 5}	5
+runtime-threat-detection-and-admission	D42	{"D42": 5}	5
+scattered-domain-rule	DM9	{"DM9": 5}	5
+secret-in-process-arguments	D29	{"D13": 2, "D29": 3}	5
+secret-in-version-history	D28	{"D28": 5}	5
+security-response-headers	AXH1,S1	{"AXH1": 5, "S1": 5}	5
+security-tooling-in-ci	P3	{"P3": 5}	5
+sensitive-data-in-browser-storage	D32	{"AXK1": 1, "C1": 1, "D29": 1, "D32": 5, "S1": 2}	5
+sensitive-data-in-logs	D32	{"D29": 1, "D32": 5}	5
+sensitive-data-in-token-payload	D29,D32	{"C1": 2, "D29": 4, "D32": 4}	5
+sensitive-data-in-url	D32	{"D29": 2, "D32": 5, "S1": 1}	5
+server-side-request-forgery	D29,X14	{"D29": 5, "X14": 5}	5
+session-fixation	D29,S1	{"D29": 5, "S1": 3}	5
+side-effect-in-conditional-guard	X21	{"X21": 5}	5
+silent-error-fallback	X7	{"X7": 5}	5
+skipped-test-without-reason	P12	{"P12": 5}	5
+solution-structure	D18	{"D18": 5}	5
+spoofable-client-ip-header	D29	{"D29": 5}	5
+sql-injection	D29	{"D29": 5}	5
+suppressed-diagnostic	D17	{"D17": 5}	5
+synchronous-remote-call-in-event-handler	ED1	{"ED1": 5}	5
+technical-debt-marker	D17	{"D17": 5}	5
+test-coverage	D8,R4	{"D8": 5, "R4": 5}	5
+test-failure-swallowed	D10	{"D10": 5}	5
+test-only-api-in-production-code	X31	{"X31": 5}	5
+test-pyramid-distribution		{}	5
+test-without-assertion	D10	{"D10": 5}	5
+third-party-data-flow	AXP1	{"AXP1": 5}	5
+token-issuer-or-audience-not-validated	D29	{"D29": 5, "S1": 2}	5
+token-signature-or-expiry-not-validated	D29,S1	{"D29": 5, "S1": 3}	5
+type-lookup-by-simple-name	X32	{"X32": 5}	5
+unauthenticated-reachable-endpoint	AXA1,C2	{"AXA1": 5, "C2": 3}	5
+unbounded-allocation-from-untrusted-length	X15	{"X15": 5}	5
+unbounded-truncation-loop	X16	{"X16": 5}	5
+unchecked-any-external-data		{}	5
+uncontrolled-recursion	X17	{"X17": 5}	5
+undeclared-dependency	R8	{"R8": 5}	5
+undocumented-api-endpoint	AXO1	{"AXO1": 5}	5
+undrained-child-process-stream	X13	{"X13": 5}	5
+unexpected-exposed-port	AXS1	{"AXS1": 5}	5
+unguarded-expensive-debug-logging	X23	{"X23": 5}	5
+unpinned-ci-action	D36	{"D36": 5}	5
+unreachable-code	IC1,X12	{"D17": 2, "IC1": 5, "X12": 5}	5
+unrestored-process-global-state	X19	{"X19": 5}	5
+unrestricted-file-upload	D29	{"D29": 5}	5
+unsafe-reflection	D29	{"D29": 5}	5
+unstable-dependency	D5	{"D5": 5}	5
+unsynchronized-callback-handoff	X26	{"X26": 5}	5
+unsynchronized-shared-state	AX2	{"AX2": 5}	5
+untyped-javascript-share	R1	{"R1": 5}	5
+unused-code	D17,R7	{"D17": 5, "R7": 5}	5
+unused-dependency	D12,R8	{"D12": 5, "R8": 5}	5
+unverified-password-change	D29	{"D29": 3}	5
+validation-before-canonicalization	D29	{"D29": 5}	5
+value-object-mutability		{}	5
+versioned-schema-migrations	P8	{"P8": 5}	5
+visual-and-motion-safety	AC6	{"AC6": 5, "AXR1": 2}	5
+vulnerability-disclosure-policy	D37	{"D37": 5}	5
+vulnerability-disclosure-policy-quality		{}	5
+vulnerable-dependency		{}	5
+weak-content-security-policy	S1	{"S1": 4}	5
+weak-cryptographic-algorithm	D29,S1	{"D29": 5, "S1": 5}	5
+weak-hash-algorithm	D29,S1	{"D29": 5, "S1": 5}	5
+weak-password-recovery	D29	{"D29": 5}	5
+weak-password-requirements	D29	{"D29": 5}	5
+workload-syscall-confinement	D41	{"D31": 2, "D41": 5}	5
+xml-external-entity	D29	{"D29": 5}	5
+xpath-injection	D29	{"D29": 5}	5

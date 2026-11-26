@@ -1,6 +1,33 @@
-# Harness contract (v1.7)
+# Harness contract (v1.9)
 
 The fixed interfaces between the parts of this harness. Change only with a version bump.
+
+## What changed in 1.9 (2026-11-26) — CAI's dimensions come from the taxonomy, not from an engine's mapping
+
+CAI decision 0024 measures an engine per (scored dimension, language) cell, and a cell must hold the same entries for
+every engine. Until 1.8 the only link from a concept to a dimension was each engine's mapping (`dimensions`, "the
+scanner's own grouping"), so two engines could count the same entry in different cells. 1.9 adds CAI's own link.
+
+- **`taxonomy.json` concepts carry `dimensions`:** the scored CAI dimensions the concept evidences, an empty list where
+  it evidences none. The assignment is CAI's, made by models, not by people: five fresh `claude-opus-5-5` sessions
+  with no tools each voted on every concept, seeing batches of 12 concepts with their descriptions and every scored
+  dimension's name and *Property* section, and never an engine's mapping; the majority decides. 242 of the 276
+  concepts evidence at least one dimension, and 42 assignments were decided three votes to two. The record is in
+  [`docs/concept-assignment/`](concept-assignment/): every concept's votes, the assignments decided three to two, and
+  the concepts and dimensions left without a counterpart.
+- **A scored run's report carries `caiDimensions`:** per CAI dimension, matching re-run within the dimension, exactly as
+  `dimensions` does for the engine's grouping. A dimension's entries are those whose concept the taxonomy assigns to it,
+  plus every `"*"` clean region. Its results are those whose concepts the taxonomy assigns to it, so one finding counts
+  in every dimension its concept evidences and never in another. Results placed on concepts that carry no CAI dimension form the
+  row `(no CAI dimension)`; results the mapping places on no concept appear in no `caiDimensions` row (they are
+  reported in `unplacedRules`), and ignored results in none.
+- **The engine's own grouping stays:** `dimensions` is unchanged and still reported, for the engine's own use. The
+  engine report (`engine-report`) reads `caiDimensions` when a report has it.
+- **What changes, and what does not:** every entry and every result scores as under 1.8, and the `dimensions` rows
+  are unchanged. What changes is the engine report: from a 1.9 report its cells, their F0.5 and the engine score are
+  computed over the taxonomy's dimensions instead of the engine's own grouping, so they can differ from the same run
+  scored under 1.8. `score --contract 1.8` (or `score(..., contract="1.8")`) scores without `caiDimensions`, so a
+  frozen measurement re-scores exactly.
 
 ## What changed in 1.8 (2026-11-06) — the standard names no producer; unplaced rules are reported
 

@@ -10,7 +10,7 @@ from .keyfile import KeyError_, load_json, validate_key
 from .mapping import Mapping, MappingError
 from .resources import dir_source
 from .sarif import SarifError, read_results
-from .scoring import render, score
+from .scoring import CONTRACTS, render, score
 
 
 def sha256_file(path):
@@ -71,7 +71,8 @@ def cmd_score(a):
 
     if a.repo_dir and not os.path.isdir(a.repo_dir):
         return _fail(f"--repo-dir {a.repo_dir} is not a directory")
-    report = score(key, results, mapping, scores, source=dir_source(a.repo_dir) if a.repo_dir else None)
+    report = score(key, results, mapping, scores, contract=a.contract,
+                   source=dir_source(a.repo_dir) if a.repo_dir else None)
     report = {
         "harness": {"name": "cai_bench", "version": __version__, "contract": CONTRACT_VERSION},
         "key": {"path": a.key, "sha256": sha256_file(a.key), "repo": key.get("repo"), "keyVersion": key.get("keyVersion")},
@@ -171,6 +172,8 @@ def main(argv=None):
     s.add_argument("--sarif", required=True)
     s.add_argument("--mapping", required=True, help="mappings/<scanner>.json")
     s.add_argument("--scores", help="JSON {concept-or-dimension: 0-100 score} for score-band entries")
+    s.add_argument("--contract", choices=CONTRACTS, default=None,
+                   help="score under an older contract, so a frozen measurement re-scores exactly (default: the current one)")
     s.add_argument("--repo-root-prefix", action="append",
                    help="path prefix to strip from result paths (repeatable); suffix matching works without it")
     s.add_argument("--repo-dir",

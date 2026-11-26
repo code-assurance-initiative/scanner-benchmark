@@ -3,6 +3,7 @@ import os
 import unittest
 
 from cai_bench import CONTRACT_VERSION
+from cai_bench.scoring import CONTRACTS
 from cai_bench.mapping import Mapping
 from tests.helpers import key, mf, res, run
 
@@ -32,7 +33,7 @@ class UnplacedRules(unittest.TestCase):
         self.assertEqual(r["unplacedRules"], [])
 
     def test_the_contract_is_1_8(self):
-        self.assertEqual(CONTRACT_VERSION, "1.8")
+        self.assertIn("1.8", CONTRACTS)
 
 
 class NoProducerInTheHarness(unittest.TestCase):
