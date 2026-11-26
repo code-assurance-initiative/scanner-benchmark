@@ -45,6 +45,20 @@ class Cli(unittest.TestCase):
         p = cli("sha256", "--key", fx("answer-key.json"))
         self.assertEqual(p.stdout.strip(), want)
 
+    def test_score_under_an_older_contract_has_no_cai_dimensions(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = {}
+            for c in ("1.8", "1.9"):
+                path = os.path.join(d, f"r{c}.json")
+                p = cli("score", "--key", fx("answer-key.json"), "--sarif", fx("report.sarif"),
+                        "--mapping", fx("mapping.json"), "--contract", c, "--json", path)
+                self.assertEqual(p.returncode, 0, p.stderr)
+                with open(path) as f:
+                    out[c] = json.load(f)
+        self.assertNotIn("caiDimensions", out["1.8"])
+        self.assertIn("caiDimensions", out["1.9"])
+        self.assertEqual(out["1.8"]["results"], out["1.9"]["results"])
+
     def test_score_end_to_end(self):
         with tempfile.TemporaryDirectory() as d:
             out = os.path.join(d, "report.json")

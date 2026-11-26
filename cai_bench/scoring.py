@@ -95,7 +95,7 @@ from .keyfile import entry_concepts, line_tolerance
 from .mapping import UNMAPPED
 from .paths import norm, path_match, repo_relative, same_file
 from .resources import ELEMENT, RESOURCE, UNAVAILABLE, UNSUPPORTED, ResourceIndex
-from .taxonomy import element_scope_concepts, file_scope_concepts, group_scope_concepts, resource_scope_concepts
+from .taxonomy import concept_dimensions, element_scope_concepts, file_scope_concepts, group_scope_concepts, resource_scope_concepts
 
 NOISE = ("trap-fp", "clean-fp", "na-fp", "unmatched-fp")
 NO_RULE = "(no scanner rule)"  # by_dimension row: entries whose concept no dimension of the scanner maps
@@ -706,6 +706,41 @@ def by_dimension(entries, results, mapping, tol, file_scope=frozenset(), resourc
     return {k: rows[k] for k in sorted(rows, key=lambda k: (k in (UNMAPPED, NO_RULE), k == NO_RULE, _natural(k)))}
 
 
+NO_CAI_DIMENSION = "(no CAI dimension)"
+
+
+def by_cai_dimension(entries, results, mapping, tol, concept_dims, file_scope=frozenset(), resource_scope=frozenset(),
+                     resources=None, **scopes):
+    """Contract 1.9: per CAI dimension, as the TAXONOMY assigns concepts to dimensions (never the engine's mapping).
+    Matching is re-run within each dimension: its entries are those whose concept the taxonomy assigns to it (and every
+    `"*"` clean region); its results are those whose concepts the taxonomy assigns to it, so the same finding counts in
+    every dimension its concept evidences and a hit is never credited across dimensions. Results whose concepts carry no
+    CAI dimension are reported in their own row, as noise no CAI dimension owns."""
+    def dims_of(concepts):
+        return {d for c in concepts for d in concept_dims.get(c, [])}
+
+    results = [r for r in results if not r.get("ignoreReason")]
+    dims = set()
+    for e in entries:
+        cs = entry_concepts(e) if e["label"] != "score-band" else []
+        if cs != STAR:
+            dims |= dims_of(cs)
+    for r in results:
+        dims |= dims_of(r["concepts"])
+    rows = {}
+    for d in dims:
+        ents = [e for e in entries if e["label"] != "score-band"
+                and (entry_concepts(e) == STAR or d in dims_of(entry_concepts(e)))]
+        rs = [r for r in results if d in dims_of(r["concepts"])]
+        m = Matcher(ents, rs, tol, mapping, file_scope, resource_scope, resources, **scopes)
+        rows[d] = totals(m, m.run())
+    orphan = [r for r in results if r["concepts"] and not dims_of(r["concepts"])]
+    if orphan:
+        m = Matcher([], orphan, tol, mapping)
+        rows[NO_CAI_DIMENSION] = totals(m, m.run())
+    return {k: rows[k] for k in sorted(rows, key=lambda k: (k == NO_CAI_DIMENSION, _natural(k)))}
+
+
 def _natural(s):
     import re
     return [int(t) if t.isdigit() else t for t in re.split(r"(\d+)", s)]
@@ -735,7 +770,7 @@ def score_bands(entries, scores, mapping):
 
 # --- the whole run --------------------------------------------------------------------------------------------------
 
-CONTRACTS = ("1.4", "1.5", "1.6", "1.7", "1.8")
+CONTRACTS = ("1.4", "1.5", "1.6", "1.7", "1.8", "1.9")
 
 
 def score(key, results, mapping, scores=None, contract=None, taxonomy=None, source=None):
@@ -758,6 +793,9 @@ def score(key, results, mapping, scores=None, contract=None, taxonomy=None, sour
     scopes = {"element_scope": element_scope_concepts(taxonomy) if rules_1_7 else frozenset(),
               "group_scope": group_scope_concepts(taxonomy) if rules_1_7 else frozenset(),
               "optimal": rules_1_7}
+    # contract 1.9: per-CAI-dimension figures through the taxonomy's own assignment (absent before 1.9, so a frozen
+    # measurement re-scores exactly)
+    concept_dims = concept_dimensions(taxonomy) if contract not in ("1.4", "1.5", "1.6", "1.7", "1.8") else {}
     resources = ResourceIndex(source)
     tol = line_tolerance(key)
     entries = key["entries"]
@@ -875,6 +913,8 @@ def score(key, results, mapping, scores=None, contract=None, taxonomy=None, sour
         "summary": summary,
         "concepts": by_concept(m, out),
         "dimensions": by_dimension(entries, results, mapping, tol, file_scope, resource_scope, resources, **scopes),
+        **({"caiDimensions": by_cai_dimension(entries, results, mapping, tol, concept_dims, file_scope, resource_scope,
+                                              resources, **scopes)} if concept_dims else {}),
         "contract": contract,
         "scoreBands": bands,
         "unmappedConcepts": unmapped_concepts(entries, mapping),
